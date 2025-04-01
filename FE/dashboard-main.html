@@ -17,12 +17,81 @@
             <img src="./images/SDGKU_Samall_Logo.png" alt="logo">
             <h1>SDGKU Survey Platform</h1>
         </div>
-    </header>
-
+    </header> 
 
 <body>
-    <!--? Dashboard -->
-    
+    <main>
+        <!--? Sidebar -->
+        <aside>
+            <nav>
+                <div class="sideLink" >
+                    <i class="fa-solid fa-house-user"></i>
+                    <a href="#">
+                        <p>Dashboard</p>
+                    </a>
+                </div>
+                
+                <div class="sideLink">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    <a href="#">
+                        <p>My Surveys</p>
+                    </a>
+                </div>
+                
+                <div class="sideLink">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <a href="#">
+                        <p>Create Survey</p>
+                    </a>
+                </div>
+                
+                <div class="sideLink">
+                    <i class="fa-solid fa-square-poll-vertical"></i>
+                    <a href="#">
+                        <p>Analytics</p>
+                    </a>
+                </div>
+                
+                <div class="sideLink">
+                    <i class="fa-solid fa-users"></i>
+                    <a href="#">
+                        <p>Users</p>
+                    </a>
+                </div>
+                
+                <div class="sideLink">
+                    <i class="fa-solid fa-cog"></i>
+                    <a href="#">
+                        <p>Settings</p>
+                    </a>
+                </div>
+            </nav>
+        
+            <div class="profile">
+                <div class="profile-img">
+                    <!--? Imagen del Usuario(if no image, use icon) -->
+                    <i class="fa-solid fa-circle-user" id = "userFoto"></i>
+                </div>
+                
+                <div class="profile-info">
+                    <h4>
+                        <!--? Rol del Usuario -->
+                        Rol del Usuario
+                    </h4>
+
+                    <small>
+                        <!--? Nombre del Usuario -->
+                        Nombre del Usuario
+                    </small>
+                </div>
+            </div>
+        </aside>
+
+        <!--? Main Dashboard -->
+        <div class="mainDashboard">
+
+        </div>
+    </main>
     <script src="../BE/scripts/dashboard.js"></script>
 </body>
 </html>

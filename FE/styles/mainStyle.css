@@ -39,6 +39,10 @@ img{
     height: auto;
 }
 
+main{
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+}
 
 /*? Fonts */
 body{
@@ -67,6 +71,10 @@ h3 {
 
 p {
     margin-bottom: 1rem;
+}
+
+a{
+    text-decoration: none;
 }
 
 /*? Navbar */
@@ -128,7 +136,115 @@ button:hover{
     transform: scale(1.05);
 }
 
-/*? Forms */
+/*? Sidebar */
+
+aside{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 92vh;
+    background-color: var(--neutral-light);
+    box-shadow: var(--box-shadow);
+}
+
+aside nav{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    text-align: left;
+    width: 100%;
+    gap: 1.5rem;
+    padding: 1rem 1rem;
+}
+
+aside nav a{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sideLink{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.5rem 0;
+    transition: 0.3s;
+}
+
+.sideLink a{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    height: 100%;
+}
+
+.sideLink a p {
+    margin: 0;  
+    line-height: 1;
+    color: var(--neutral-dark);
+}
+
+.sideLink i{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.sideLink:hover{
+    background-color: var(--secondary-dominant);
+    color: var(--neutral-light);
+    transition: 0.3s;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.5rem 0.5rem;
+}
+
+.sideLink:hover a p{
+    color: var(--neutral-light);
+}
+
+.profile{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1rem;
+    width: 100%;
+}
+
+.profile-img{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.profile-img i{
+    font-size: 5rem;
+    color: var(--secondary-dominant);
+}
+
+.profile-info{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;  
+    text-align: left;
+    width: 100%;
+}   
+    
+
+/*? Forms | (Chofis, tu agrega esto cuando hagas lo de Login) */
 
 
 /*? Inputs */
@@ -148,4 +264,4 @@ button:hover{
 /*?  */
 /*?  */
 /*?  */
-/*?  */
+/*?  */ 

@@ -67,6 +67,52 @@
 </html>s
 ```
 
+## Guía para crear tu branch de trabajo y hacer merge
+
+### 1. Crear una nueva rama (branch)
+```bash
+# Asegúrate de estar en la rama principal (main)
+git checkout main
+git pull origin main
+
+# Crea y cambia a una nueva rama (el nombre debea ser en lo que estes trabajando)
+git checkout -b nombre-de-tu-rama
+```
+
+### 2. Trabajar en tu rama
+- Realiza tus cambios en el código
+- Guarda tus cambios frecuentemente:
+```bash
+git add .
+git commit -m "Descripción clara de tus cambios"
+```
+
+### 3. Subir tus cambios a GitHub
+```bash
+git push origin nombre-de-tu-rama
+```
+
+### 4. Crear un Pull Request (PR)
+1. Ve a GitHub y crea un nuevo Pull Request
+2. Selecciona:
+   - Base branch: `main`
+   - Compare branch: `nombre-de-tu-rama`
+3. Describe tus cambios
+4. Espera la revisión y aprobación
+
+### 5. Después de la aprobación
+```bash
+# Vuelve a la rama principal
+git checkout main
+git pull origin main
+```
+
+### Consejos importantes
+- Siempre trabaja en una rama separada, nunca en `main`
+- Mantén tus commits descriptivos y organizados
+- Si hay conflictos, resuélvelos antes de hacer merge
+- Pide ayuda si no estás seguro de algo
+
 ## Guías Adicionales
 - Mantener el código limpio y bien documentado
 - Seguir las mejores prácticas de accesibilidad web
