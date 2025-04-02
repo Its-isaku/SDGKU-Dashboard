@@ -141,7 +141,7 @@ button{
 
 button:hover{
     color: var(--neutral-light);
-    transform: scale(1.05);
+    transform: scale(1.005);
 }
 
 .headerBtnOut{
@@ -260,7 +260,19 @@ aside nav a{
 }   
 
 /*? Inputs | (Chofis, tu agrega esto cuando hagas lo de Login) */
+input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+}
 
+input:focus {
+    outline: none;
+    border-color: var(--secondary-dominant);
+    box-shadow: 0 0 0 2px rgba(187, 38, 38, 0.3);
+}
 
 /*! <----------------------MEDIA QUERIES---------------------->*/
 

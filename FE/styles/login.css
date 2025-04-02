@@ -1,0 +1,140 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 450px;
+}
+
+.back-link {
+    margin-bottom: -20px;
+}
+
+
+.back-link a {
+    color: var(--primary-dominant);
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.back-link a:hover {
+    text-decoration: underline;
+}
+
+.homepage-link {
+    margin-bottom: 20px;
+}
+
+.homepage-link a {
+    color: var(--primary-dominant);
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.homepage-link a:hover {
+    text-decoration: underline;
+}
+
+.form-header {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.form-header h1 {
+    color: var(--primary-dominant);
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.form-header p {
+    color: var(--gray-600);
+    font-size: 0.9rem;
+}
+
+.login-form-container {
+    background-color: var(--neutral-light);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-action {
+    margin-top: 25px;
+}
+
+.form-btn {
+    width: 100%;
+    background-color: var(--primary-dominant);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.form-btn:hover {
+    background-color: var(--secondary-dominant);
+}
+
+.form-links {
+    text-align: right;
+    margin-top: 20px;
+}
+
+
+.form-links a {
+    color: var(--primary-dominant);
+    font-size: 0.9rem;
+}
+
+.form-links a:hover {
+    text-decoration: underline;
+}
+
+.error-msg {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: var(--error-color);
+    border: 1px solid rgba(220, 53, 69, 0.2);
+    border-radius: var(--border-radius);
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.message {
+    padding: 10px;
+    border-radius: var(--border-radius);
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.success-message {
+    background-color: rbga(40, 167, 69, 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
+@media (max-width: 768px) {
+    .login-form-container {
+        padding: 20px;
+    }
+}
