@@ -39,7 +39,7 @@ img{
     height: auto;
 }
 
-.dashboard-container {
+.dashboard-container  {
     display: grid;
     grid-template-columns: 1fr 5fr;
     min-height: 92vh;
