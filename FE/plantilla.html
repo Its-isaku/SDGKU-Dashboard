@@ -8,20 +8,23 @@
     <!--? Main Style -->
     <link rel="stylesheet" href="./styles/mainStyle.css">
     <!--? Dashboard Style -->
-    <link rel="stylesheet" href="./styles/dashboard-main.css">
+    <link rel="stylesheet" href="./styles/dashboard.css">
     <title>SDGKU Dashboard</title>
 </head>
     <!--? Header -->
     <header class="header">
         <div class="headerLogo">
-            <img src="./images/SDGKU_Samall_Logo.png" alt="logo">
+            <img src="./images/SDGKU_Small_Logo.png" alt="logo">
             <h1>SDGKU Survey Platform</h1>
+        </div>
+
+        <div class="headerBtn">
+            <button class="headerBtnOut">Logout</button>
         </div>
     </header> 
 
-<body>
-    <main>
-        <!--? Sidebar -->
+<body> 
+    <div class="dashboard-container">
         <aside>
             <nav>
                 <div class="sideLink" >
@@ -87,11 +90,11 @@
             </div>
         </aside>
 
-        <!--? Main Dashboard -->
-        <div class="mainDashboard">
-
-        </div>
-    </main>
+        <main>
+            <!--? Main Dashboard -->
+            
+        </main>
+    </div>
     <script src="../BE/scripts/dashboard.js"></script>
 </body>
 </html>

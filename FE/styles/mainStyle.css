@@ -39,9 +39,16 @@ img{
     height: auto;
 }
 
-main{
+.dashboard-container {
     display: grid;
     grid-template-columns: 1fr 5fr;
+    min-height: 92vh;
+}
+
+main {
+    padding: 1rem;
+    overflow-y: auto;
+    height: 92vh;
 }
 
 /*? Fonts */
@@ -109,6 +116,7 @@ a{
     align-items: center;
     height: 100%;
     margin: 0;
+    font-size: 2rem;
 }
 
 .headerBtnlogin{
@@ -134,6 +142,14 @@ button{
 button:hover{
     color: var(--neutral-light);
     transform: scale(1.05);
+}
+
+.headerBtnOut{
+    background-color: var(--secondary-dominant);
+}
+
+.headerBtnOut:hover{
+    background-color: var(--primary-dominant);
 }
 
 /*? Sidebar */
@@ -224,13 +240,13 @@ aside nav a{
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 80px;
-    height: 80px;
+    width: 4rem;
+    height: 4rem;
     border-radius: 50%;
 }
 
 .profile-img i{
-    font-size: 5rem;
+    font-size: 4rem;
     color: var(--secondary-dominant);
 }
 
@@ -242,21 +258,14 @@ aside nav a{
     text-align: left;
     width: 100%;
 }   
-    
-
-/*? Forms | (Chofis, tu agrega esto cuando hagas lo de Login) */
-
 
 /*? Inputs | (Chofis, tu agrega esto cuando hagas lo de Login) */
 
 
-/*? Tables */
-
-
-/*? Cards */
-
-
 /*! <----------------------MEDIA QUERIES---------------------->*/
+
+
+
 
 
 /*TODO <----------------------Css primario faltante---------------------->*/

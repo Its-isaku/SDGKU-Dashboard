@@ -64,7 +64,7 @@
     
     <script src="../BE/scripts/index.js"></script>
 </body>
-</html>s
+</html>
 ```
 
 ## Guía para crear tu branch de trabajo y hacer merge
