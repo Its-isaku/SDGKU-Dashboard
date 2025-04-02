@@ -14,7 +14,45 @@
 
 <body>
     <!--? Login -->
-    
-    <script src="../BE/scripts/index.js"></script>
+    <div class="login-container">
+
+        <div class="homepage-link">
+            <a href="index.html" class="homepage-link-btn">← Educational Survey Platform</a>
+        </div>
+
+        <div class="login-form-container">
+
+            <div class="form-header">
+                <h1>Login</h1>
+                <p>Enter your credentials to access your account</p>
+            </div>
+
+            <div class="error-msg" id="login-error"></div>
+
+            <form id="login-form" action="../BE/phpFiles/login.php" method="post">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" required >
+                </div>
+
+                <div class="form-links">
+                    <a href="forgot-password.html">Forgot Password?</a>
+                </div>
+
+                <div class="form-action">
+                    <button type="submit" class="form-btn" id="form-btn">Login</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <script src="../BE/scripts/login.js"></script>
 </body>
 </html>
