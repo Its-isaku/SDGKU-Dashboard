@@ -6,18 +6,18 @@
     
 }
 .TitleContainer h1{
-    font-size: 3.5rem;
+    font-size: 3rem;
     color: var(--secondary-dominant);
 }
 
 .TitleContainer p{
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: var(--gray-600);
 }
 
 .TitleContainer{
-    margin-top: 30px;
-    width: 50%;
+    margin-top: 10px;
+    max-width: 80%;
     text-align: center;
     
 }
@@ -47,11 +47,11 @@
 }
 
 .cardContainer-1 h3, .cardContainer-2 h3, .cardContainer-3 h3{
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 .cardContainer-1 p, .cardContainer-2 p, .cardContainer-3 p{
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 
 .cardContainer-2{
@@ -109,7 +109,7 @@
     }
 }
 
-@media (max-width: 1024px) { /** Tablet */
+@media (max-width: 1110px) { /** Tablet */
     .mainInfoContainer {
         flex-direction: column;
         align-items: center;
@@ -128,5 +128,14 @@
         width: 80%;
         padding: 2rem;
         
+    }
+    .TitleContainer h1{
+        font-size: 2.5rem;
+        color: var(--secondary-dominant);
+    }
+    
+    .TitleContainer p{
+        font-size: 1rem;
+        color: var(--gray-600);
     }
 }
