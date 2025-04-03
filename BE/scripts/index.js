@@ -43,4 +43,19 @@ document.addEventListener("DOMContentLoaded", function () {
         loginButton.disabled = false;
         loginButton.textContent = "Login";
     });
+
+    //? botones de login 
+    if (typeof $ !== "undefined") {
+        $(".loginBtn").click(function () {
+            window.location.href = "login.html";
+        });
+
+        $(".headerBtnlogin").click(function () {
+            window.location.href = "login.html";
+        });
+    } else {
+        console.error("jQuery is not loaded. Please include jQuery in your project.");
+    }
 });
+
+console.log("TESTING");
