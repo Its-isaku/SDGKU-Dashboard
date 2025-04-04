@@ -163,7 +163,7 @@ aside{
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: 92vh;
+    height: 100vh;
     background-color: var(--neutral-light);
     box-shadow: var(--box-shadow);
 }
@@ -177,6 +177,7 @@ aside nav{
     width: 100%;
     gap: 1.5rem;
     padding: 1rem 1rem;
+    height: 80%;
 }
 
 aside nav a{
@@ -231,13 +232,13 @@ aside nav a{
 .sideLink:hover a p{
     color: var(--neutral-light);
 }
-
 .profile{
     display: flex;
     align-items: center;
     gap: 1rem;
     padding: 1rem 1rem;
     width: 100%;
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .profile-img{
@@ -341,6 +342,7 @@ input:focus {
         background-color: #333;
         display: none;
         z-index: 10;
+        min-width: 358px;
     }
 
     .sideLink a p {
@@ -362,7 +364,6 @@ input:focus {
         display: block;
     }
     .hamburger {
-        
         display: block;
     }
     .dashboard-container {
