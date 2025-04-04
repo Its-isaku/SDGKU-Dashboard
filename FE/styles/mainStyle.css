@@ -263,7 +263,7 @@ aside nav a{
     width: 100%;
 }   
 
-/*? Inputs | (Chofis, tu agrega esto cuando hagas lo de Login) */
+/*? Inputs */
 input {
     width: 100%;
     padding: 12px;
@@ -279,67 +279,84 @@ input:focus {
 }
 
 /*! <----------------------MEDIA QUERIES---------------------->*/
-/* For screens smaller than 768px */
 @media screen and (max-width: 768px) {
-    
-    .header-title  {
-        display: none !important; 
-        background-color: var(--warning-color);
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 0.5rem 1rem;
+        position: relative;
     }
-    
-    .small-logo{
- 
+
+    .header-title {
         display: none !important;
     }
     
+    .small-logo {
+        display: none !important;
+    }
+    
+    .headerLogo {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
     .full-logo {
-        margin-left: -90px;
-        background-image: url(/SDGKU-Dashboard/FE/images/SDGKU_Full_Logo.png);
-        background-size: cover;
+        background-image: url(../images/SDGKU_Full_Logo.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
         display: block;
         height: 70px;
         width: 300px;
     }
-    
-    .headerLogo {
-        justify-content: left;
-    }
-    .header{
-        width: 100%;
-        gap: 8vw;
-        place-items: left;
- 
-    
+
+    .headerBtnlogin {
+        padding: 0.9rem 1rem;
+        font-size: 0.9rem;
     }
 }
 @media screen and (max-width: 400px) {
-  
-    .header-title  {
-        display: none !important; 
-        background-color: var(--warning-color);
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 0.5rem 1rem;
+        position: relative;
     }
-    
-    .small-logo{
+
+    .header-title {
         display: none !important;
     }
     
-    .full-logo {
-        margin-left: -90px;
-        background-image: url(/SDGKU-Dashboard/FE/images/SDGKU_Full_Logo.png);
-        background-size: cover;
-        display: block;
-        height: 65px; /* Adjust as needed */
-        width: 270px;
+    .small-logo {
+        display: none !important;
     }
     
     .headerLogo {
-        justify-content: left;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-    .header{
-       
-        width: 100%;
-        gap: 8vw;
-        place-items: left;
+    
+    .full-logo {
+        background-image: url(../images/SDGKU_Full_Logo.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        display: block;
+        height: 65px;
+        width: 270px;
+    }
+
+    .headerBtnlogin {
+        padding: 0.9rem 1rem;
+        font-size: 0.9rem;
     }
 }
 
