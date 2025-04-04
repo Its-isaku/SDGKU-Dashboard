@@ -12,7 +12,7 @@ body {
 }
 
 .back-link {
-    margin-bottom: -19px; 
+    margin-bottom: 19px; 
 }
 
 
@@ -120,7 +120,7 @@ body {
     text-align: center;
 }
 
-.message {
+.message { 
     padding: 10px;
     border-radius: var(--border-radius);
     margin-bottom: 15px;
