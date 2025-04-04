@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--? FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!--? Main Style -->
+    <link rel="stylesheet" href="./styles/mainStyle.css">
+    <!--? Dashboard Style -->
+    <link rel="stylesheet" href="./styles/dashboard.css">
+    <title>SDGKU Dashboard</title>
+</head>
+    
+<!--  -->
+<body> 
+    <!--? Header  -->
+    <header class="header">
+        <div class="headerLogo">
+            
+            <img src="./images/SDGKU_Small_Logo.png" alt="logo" class="small-logo">
+            <div class="full-logo"></div>
+            <h1 class="header-title">SDGKU Survey Platform</h1>
+        </div>
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="headerBtn">
+            <button class="headerBtnOut">Logout</button>
+        </div>
+    </header>
+    <div class="dashboard-container">
+        <aside>
+            <nav>
+                <div class="sideLink" >
+                    <i class="fa-solid fa-house-user"></i>
+                    <a href="#">
+                        <p>Dashboard</p>
+                    </a>
+                </div>
+                
+                <div class="sideLink">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    <a href="#">
+                        <p>My Surveys</p>
+                    </a>
+                </div>
+                
+                <div class="sideLink">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <a href="#">
+                        <p>Create Survey</p>
+                    </a>
+                </div>
+                
+                <div class="sideLink">
+                    <i class="fa-solid fa-square-poll-vertical"></i>
+                    <a href="#">
+                        <p>Analytics</p>
+                    </a>
+                </div>
+                
+                <div class="sideLink">
+                    <i class="fa-solid fa-users"></i>
+                    <a href="#"> 
+                        <p>Users</p>
+                    </a>
+                </div>
+                
+                <div class="sideLink">
+                    <i class="fa-solid fa-cog"></i>
+                    <a href="#">
+                        <p>Settings</p> 
+                    </a>
+                </div>
+
+                <div class="asideLogOutBtn">
+                    <button class="asideBtnOut">Logout</button>
+                </div>
+            </nav>
+            
+            <div class="profile">
+                <div class="profile-img">
+                    <!--? Imagen del Usuario(if no image, use icon) -->
+                    <i class="fa-solid fa-circle-user" id = "userFoto"></i>
+                </div>
+                
+                <div class="profile-info">
+                    <h4>
+                        <!--? Rol del Usuario -->
+                        Rol del Usuario
+                    </h4>
+
+                    <small>
+                        <!--? Nombre del Usuario -->
+                        Nombre del Usuario
+                    </small>
+                </div>
+            </div>
+        </aside>
+
+        <main>
+            <!--? Main Dashboard -->
+        </main>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="../BE/scripts/dashboard.js"></script>
+</body>
+</html>
