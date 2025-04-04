@@ -8,22 +8,26 @@
     <!--? Main Style -->
     <link rel="stylesheet" href="./styles/mainStyle.css">
     <!--? Dashboard Style -->
-    <link rel="stylesheet" href="./styles/...">
     <title>SDGKU Dashboard</title>
 </head>
+    
+<!--  -->
+<body> 
     <!--? Header -->
     <header class="header">
         <div class="headerLogo">
-            <img src="./images/SDGKU_Small_Logo.png" alt="logo">
-            <h1>SDGKU Survey Platform</h1>
+            <div class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+            <img src="./images/SDGKU_Small_Logo.png" alt="logo" class="small-logo">
+            <div class="full-logo"></div>
+            <h1 class="header-title">SDGKU Survey Platform</h1>
         </div>
 
         <div class="headerBtn">
             <button class="headerBtnOut">Logout</button>
         </div>
-    </header> 
-
-<body> 
+    </header>
     <div class="dashboard-container">
         <aside>
             <nav>
@@ -69,7 +73,7 @@
                     </a>
                 </div>
             </nav>
-        
+            
             <div class="profile">
                 <div class="profile-img">
                     <!--? Imagen del Usuario(if no image, use icon) -->
@@ -87,6 +91,9 @@
                         Nombre del Usuario
                     </small>
                 </div>
+            </div>
+            <div class="asideLogOutBtn">
+                <button class="asideBtnOut">Logout</button>
             </div>
         </aside>
 

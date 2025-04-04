@@ -278,6 +278,17 @@ input:focus {
     box-shadow: 0 0 0 2px rgba(187, 38, 38, 0.3);
 }
 
+/* Esconder botones antes de responsive */
+.asideBtnOut{
+    display: none;
+}
+.hamburger {
+    display: none;
+    font-size: 1.5rem;
+    color: white;
+    cursor: pointer;
+}
+
 /*! <----------------------MEDIA QUERIES---------------------->*/
 @media screen and (max-width: 768px) {
     .header {
@@ -318,14 +329,63 @@ input:focus {
         padding: 0.9rem 1rem;
         font-size: 0.9rem;
     }
+
+    /* Media Responsive Hamburguesa */
+
+    aside {
+        color: var(--neutral-light);
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: #333;
+        display: none;
+        z-index: 10;
+    }
+
+    .sideLink a p {
+        color: var(--neutral-light);
+    }
+    .asideBtnOut{
+        margin-left: 20px;
+        margin-top: 20px;
+        background-color: var(--secondary-dominant);
+        display: block;
+    }    
+    .asideBtnOut:hover{
+        background-color: var(--primary-dominant);
+    }
+    .headerBtnOut{
+        display: none;
+    }
+    aside.show {
+        display: block;
+    }
+    .hamburger {
+        
+        display: block;
+    }
+    .dashboard-container {
+        flex-direction: column;
+    }
+    nav .sideLink {
+        padding: 10px 20px;
+        
+        border-bottom: 1px solid #444;
+    }  
+    nav .sideLink a, nav .sideLink i {
+        color: white;
+    }
+
 }
 @media screen and (max-width: 400px) {
-    .header {
+    .header { 
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
         padding: 0.5rem 1rem;
+        min-width: 358px;
         position: relative;
     }
 
@@ -359,6 +419,7 @@ input:focus {
         font-size: 0.9rem;
     }
 }
+
 
 
 
