@@ -171,7 +171,7 @@ aside {
     top: 70px;
     bottom: 0;
     left: 0;
-    width: 300px;
+    width: 250px;
     height: calc(100vh - 70px);
     display: flex;
     flex-direction: column;
@@ -190,10 +190,10 @@ aside nav{
     justify-content: left;
     align-items: left;
     text-align: left;
-    width: 100%;
+    width: auto;
     gap: 1.5rem;
     padding: 1rem 1rem;
-    height: 80%;
+
 }
 
 aside nav a{
@@ -206,7 +206,7 @@ aside nav a{
     display: flex;
     align-items: center;
     gap: 1rem;
-    width: 219px;
+    width: 200px;
     padding: 0.5rem 0;
     transition: 0.3s;
 }
@@ -215,7 +215,7 @@ aside nav a{
     display: flex;
     align-items: center;
     gap: 1rem;
-    width: 100%;
+    width: auto;
     height: 100%;
 }
 
@@ -371,7 +371,7 @@ input:focus {
         margin-left: 0;
     }
     aside {
-        position: absolute;
+        margin-top: 10px;
         top: 70px;
         left: 0;
         width: 100%;
@@ -467,15 +467,9 @@ input:focus {
 @media screen and (max-width: 400px) {
     .header { 
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
+        justify-content: left;
+        width: auto;
         padding: 0.5rem 1rem;
-        min-width: 358px;
-        position: fixed; 
-        top: 0; 
-        left: 0; 
-        right: 0;
         z-index: 10; 
         height: 70px; 
     }
