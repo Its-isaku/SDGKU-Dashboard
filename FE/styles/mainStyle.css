@@ -31,7 +31,6 @@
 *{
     margin: 0;
     padding: 0;
-   
 }
 
 img{
@@ -156,23 +155,25 @@ button:hover{
 
 .headerBtnOut:hover{
     background-color: var(--primary-dominant);
+    
 }
 
 /* Dashboard contenedor */
 .dashboard-container {
-   
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
 /* Dashboard a un lado del aside */
 .principalDashboard{
-    padding: 10px;
     overflow: auto;
     margin-left: 250px;
     width: calc(100%-250px);
     height: auto;
+    overflow-x: hidden;
 }
+
+
 /*? Sidebar */
 
 aside {
@@ -212,7 +213,7 @@ aside nav a{
     display: flex;
     align-items: center;
     gap: 1rem;
-    width: 100%;
+    width: 219px;
     padding: 0.5rem 0;
     transition: 0.3s;
 }
