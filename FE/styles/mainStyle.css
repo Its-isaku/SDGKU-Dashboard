@@ -158,37 +158,30 @@ button:hover{
     
 }
 
-/* Dashboard contenedor */
 .dashboard-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
-/* Dashboard a un lado del aside */
-.principalDashboard{
-    overflow: auto;
-    margin-left: 250px;
-    width: calc(100%-250px);
-    height: auto;
-    overflow-x: hidden;
-}
-
 
 /*? Sidebar */
 
 aside {
     position: fixed;
-    top: 0;
+    top: 70px;
     bottom: 0;
     left: 0;
-    width: 250px;
-    height: 100vh;
+    width: 300px;
+    height: calc(100vh - 70px);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background-color: var(--neutral-light);
     box-shadow: var(--box-shadow);
     z-index: 5;
+    transform: translateX(0);
+    opacity: 1;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease;
 }
 
 aside nav{
@@ -302,15 +295,29 @@ input:focus {
     box-shadow: 0 0 0 2px rgba(187, 38, 38, 0.3);
 }
 
-/* Esconder botones antes de responsive */
 .asideBtnOut{
     display: none;
 }
 .hamburger {
-    display: none;
-    font-size: 1.5rem;
-    color: white;
+    display: none; 
     cursor: pointer;
+    font-size: 1.5rem;
+    color: var(--neutral-light); 
+    z-index: 1000;
+}
+
+.hamburger i {
+    display: block;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(-100%); opacity: 0; }
 }
 
 /*! <----------------------MEDIA QUERIES---------------------->*/
@@ -371,12 +378,41 @@ input:focus {
         height: auto;
         max-height: calc(100vh - 70px);
         display: none;
-        z-index: 10;
+        z-index: 999;
         min-width: 358px;
         overflow-y: auto;
         overflow-x: hidden;
         color: var(--neutral-light);
         background-color: #333;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease;
+        opacity: 0;
+    }
+
+    aside.show {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 70px); 
+        position: fixed;
+        top: 70px;
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    .hamburger {
+        display: block; 
+    }
+    
+    .hamburger i {
+        transition: transform 0.3s ease;
+    }
+    
+    .hamburger.active i {
+        transform: rotate(90deg);
+    }
+
+    .headerBtn {
+        display: none;
     }
 
     aside nav {
@@ -411,18 +447,6 @@ input:focus {
         display: none;
     }
     
-    aside.show {
-        display: flex;
-        flex-direction: column;
-        height: calc(100vh - 70px); 
-        position: fixed;
-        top: 70px;
-    }
-
-    .hamburger {
-        display: block;
-    }
-
     .dashboard-container {
         grid-template-columns: 1fr; 
         margin-top: 70px; 
@@ -431,7 +455,7 @@ input:focus {
 
     nav .sideLink {
         padding: 10px 20px;
-        
+        width: 80%;
         border-bottom: 1px solid #444;
     }  
 
