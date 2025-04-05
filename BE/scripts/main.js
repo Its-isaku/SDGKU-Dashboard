@@ -15,6 +15,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 960 && sidebar) {
+            sidebar.style.removeProperty('display');
+            sidebar.style.removeProperty('transform');
+            sidebar.style.removeProperty('opacity');
+            sidebar.style.removeProperty('animation');
+        }
+    });
+    
     const sideLinks = document.querySelectorAll('.sideLink a');
     
     sideLinks.forEach(link => {
