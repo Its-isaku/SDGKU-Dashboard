@@ -234,7 +234,7 @@ aside nav a{
     line-height: 1;
 }
 
-.sideLink:hover{
+.sideLink:hover, .selectLink{
     background-color: var(--secondary-dominant);
     color: var(--neutral-light);
     transition: 0.3s;
@@ -245,7 +245,7 @@ aside nav a{
     padding: 0.5rem 0.5rem;
 }
 
-.sideLink:hover a p{
+.sideLink:hover a p, .selectLink a p{
     color: var(--neutral-light);
 }
 .profile{ 
