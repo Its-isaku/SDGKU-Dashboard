@@ -31,7 +31,7 @@
 *{
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+   
 }
 
 img{
@@ -39,18 +39,10 @@ img{
     height: auto;
 }
 
-.dashboard-container {
-    display: grid;
-    grid-template-columns: 250px 1fr; 
-    position: relative;
-    min-height: 92vh;
-}
+
 
 main {
-    padding: 1rem;
     overflow-y: auto;
-    height: 92vh;
-    grid-column: 2;
 }
 
 /*? Fonts */
@@ -60,9 +52,9 @@ html body{
     background-color: var(--gray-100);
     margin: 0;
     padding: 0;
-    min-height: 100vh;
-    width: 100%;
+    width: auto;
     overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -99,7 +91,6 @@ a{
     align-items: center;
     text-align: center;
     padding: .5rem 6rem;
-    width: 100%;
     position: sticky;
     top: 0;
     z-index: 10;
@@ -167,20 +158,35 @@ button:hover{
     background-color: var(--primary-dominant);
 }
 
+/* Dashboard contenedor */
+.dashboard-container {
+   
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+/* Dashboard a un lado del aside */
+.principalDashboard{
+    padding: 10px;
+    overflow: auto;
+    margin-left: 250px;
+    width: calc(100%-250px);
+    height: auto;
+}
 /*? Sidebar */
 
 aside {
     position: fixed;
-    top: 8vh;
+    top: 0;
+    bottom: 0;
     left: 0;
     width: 250px;
-    height: 92vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background-color: var(--neutral-light);
     box-shadow: var(--box-shadow);
-    overflow-y: auto;
     z-index: 5;
 }
 
@@ -253,7 +259,7 @@ aside nav a{
     align-items: center;
     gap: 1rem;
     padding: 1rem 1rem;
-    width: 100%;
+    width: auto;
     box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
@@ -353,7 +359,9 @@ input:focus {
         padding: 0.9rem 1rem;
         font-size: 0.9rem;
     }
-
+    .principalDashboard{
+        margin-left: 0;
+    }
     aside {
         position: absolute;
         top: 70px;
@@ -365,6 +373,7 @@ input:focus {
         z-index: 10;
         min-width: 358px;
         overflow-y: auto;
+        overflow-x: hidden;
         color: var(--neutral-light);
         background-color: #333;
     }
