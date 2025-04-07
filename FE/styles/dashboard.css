@@ -15,8 +15,7 @@ main {
         "title"
         "summary"
         "accesos"
-        "l";
-    grid-template-rows: auto auto 1fr 1fr;
+    grid-template-rows: auto auto 1fr;
     padding-left: 40px;
     box-sizing: border-box;
 }
@@ -24,7 +23,8 @@ main {
 
 .titulo {
     grid-area: title;
-    margin-top: 15px;
+    display: inline-block;
+    margin-top: 90px;
 }
 
 .contenedorSummary {
