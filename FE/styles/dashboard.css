@@ -6,3 +6,103 @@
     height: auto;
     overflow-x: hidden;
 }
+
+main {
+    grid-area: main;
+    background-color: rgb(232, 235, 232);
+    display: grid;
+    grid-template-areas:
+        "title"
+        "summary"
+        "accesos"
+        "l";
+    grid-template-rows: auto auto 1fr 1fr;
+    max-width: 100%;
+    padding-left: 40px;
+    box-sizing: border-box;
+}
+
+
+.titulo {
+    grid-area: title;
+    margin-top: 30px;
+}
+
+.contenedorSummary {
+    grid-area: summary;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    justify-content: left;
+    margin-top: 50px;
+}
+
+.summaryAccesos {
+    background: rgb(255, 255, 255);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .3); 
+    border-radius: 10px;
+    display: inline-block;
+    width: 340px;
+    height: 150px;
+    padding: 18px;
+    gap: 30px;
+}
+
+.summaryAccesos h3 {
+    margin-top: 10px;
+    font-size: 45px;
+    font-weight: 50px;
+}
+
+.summaryAccesos small {
+    padding: 5px;
+}
+
+.contenedorAccesos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 25px;
+    margin-top: 50px;
+    padding-right: 35px;
+    padding-bottom: 10px;
+}
+
+.contenedorAccesos button {
+    width: 100%; 
+    height: 40px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 55px;
+    background: transparent;
+    border: 1px solid black;
+    border-radius: 5px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.contenedorAccesos small{
+    font-size: 15px;
+}
+
+.accesosDashboard {
+    background: rgb(255, 255, 255);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+    border-radius: 10px;
+    display: inline-block;
+    min-width: 0;
+    padding: 20px;
+}
+
+#createSurvey{
+    background: linear-gradient(to right, rgb(122, 29, 29) 55%, rgb(224, 13, 13) 70%); 
+    color: white;
+}
+
+#createSurvey button{
+    background: white;
+    color: rgb(109, 20, 20);
+    border: 0;
+}
+
+.accesosDashboard button:hover {
+    transform: scale(1.05); 
+}
