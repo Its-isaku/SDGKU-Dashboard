@@ -7,6 +7,22 @@ document.addEventListener("DOMContentLoaded", function() {
         loginError.textContent = message;
         loginError.style.color = isSuccess ? "green" : "red";
         loginError.style.display = "block";
+        
+        setTimeout(() => {
+            loginError.style.opacity = "1";
+            loxginError.style.transform = "translateY(0)";
+        }, 30);
+        
+    
+        if (!isSuccess) {
+            setTimeout(() => {
+                loginError.style.opacity = "0";
+                loginError.style.transform = "translateY(-7px)";
+                setTimeout(() => {
+                    loginError.style.display = "none";
+                }, 400); 
+            }, 3500);
+        }
     };
 
     const validateFields = (email, password) => {
