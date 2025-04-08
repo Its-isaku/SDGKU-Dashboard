@@ -7,7 +7,25 @@ document.addEventListener("DOMContentLoaded", function() {
         messageDiv.textContent = message;
         messageDiv.style.color = isSuccess ? 'green' : 'red';
         messageDiv.style.display = 'block'; 
-    };
+
+    messageDiv.style.opacity = '0';
+    messageDiv.style.transform = 'translateY(-7px)';
+    
+    setTimeout(() => {
+        messageDiv.style.opacity = '1';
+        messageDiv.style.transform = 'translateY(0)';
+    }, 30);
+    
+    if (!isSuccess) {
+        setTimeout(() => {
+            messageDiv.style.opacity = '0';
+            messageDiv.style.transform = 'translateY(-7px)';
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 400); 
+        }, 3500);
+    }
+};
 
     form?.addEventListener("submit", async function(e) {
         e.preventDefault();
