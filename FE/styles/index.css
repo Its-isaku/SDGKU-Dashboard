@@ -44,6 +44,8 @@
     border-top: var(--primary-dominant) solid 5px;
     overflow: hidden;
     gap: 1rem;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
 }
 
 .cardContainer-1 h3, .cardContainer-2 h3, .cardContainer-3 h3{
@@ -71,6 +73,8 @@
     align-items: center;
     border-radius: var(--border-radius);
     background: linear-gradient(to top left, var(--supplementary-color), #BC1D20);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
 }
 
 .startContainer h2{

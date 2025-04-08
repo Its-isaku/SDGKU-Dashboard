@@ -3,7 +3,7 @@
     overflow: auto;
     margin-left: 250px;
     width: calc(100%-250px);
-    height: auto;
+    height: 100vh;
     overflow-x: hidden;
 }
 
@@ -14,7 +14,7 @@ main {
     grid-template-areas:
         "title"
         "summary"
-        "accesos"
+        "accesos";
     grid-template-rows: auto auto 1fr;
     padding-left: 40px;
     box-sizing: border-box;
@@ -24,7 +24,7 @@ main {
 .titulo {
     grid-area: title;
     display: inline-block;
-    margin-top: 90px;
+    margin-top: 2rem;
 }
 
 .contenedorSummary {
@@ -38,7 +38,7 @@ main {
 
 .summaryAccesos {
     background: rgb(255, 255, 255);
-    box-shadow: 0 0 10px rgba(0, 0, 0, .3); 
+    box-shadow: var(--box-shadow); 
     border-radius: 10px;
     display: inline-block;
     width: 340px;
@@ -87,7 +87,7 @@ main {
 
 .accesosDashboard {
     background: rgb(255, 255, 255);
-    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+    box-shadow: var(--box-shadow);
     border-radius: 10px;
     display: inline-block;
     min-width: 0;
@@ -95,7 +95,7 @@ main {
 }
 
 #createSurvey{
-    background: linear-gradient(to right, rgb(122, 29, 29) 55%, rgb(224, 13, 13) 70%); 
+    background: linear-gradient(to top right, #551111, #F13939);
     color: white;
 }
 
