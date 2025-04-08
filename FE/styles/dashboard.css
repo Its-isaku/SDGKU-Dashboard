@@ -14,7 +14,7 @@ main {
     grid-template-areas:
         "title"
         "summary"
-        "accesos"
+        "accesos";
     grid-template-rows: auto auto 1fr;
     padding-left: 40px;
     box-sizing: border-box;
@@ -24,7 +24,7 @@ main {
 .titulo {
     grid-area: title;
     display: inline-block;
-    margin-top: 90px;
+    margin-top: 65px;
 }
 
 .contenedorSummary {
