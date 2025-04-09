@@ -1,43 +1,34 @@
-document.addEventListener("DOMContentLoaded", function() {
+import { showMessage, highlightInput } from './formUtils.js';
+document.addEventListener("DOMContentLoaded", function () {
     const loginForm = document.getElementById("login-form");
     const loginError = document.getElementById("login-error");
     const loginButton = document.getElementById("form-btn");
 
-    const showMessage = (message, isSuccess = false) => {
-        loginError.textContent = message;
-        loginError.style.color = isSuccess ? "green" : "red";
-        loginError.style.display = "block";
-        
-        setTimeout(() => {
-            loginError.style.opacity = "1";
-            loxginError.style.transform = "translateY(0)";
-        }, 30);
-        
-    
-        if (!isSuccess) {
-            setTimeout(() => {
-                loginError.style.opacity = "0";
-                loginError.style.transform = "translateY(-7px)";
-                setTimeout(() => {
-                    loginError.style.display = "none";
-                }, 400); 
-            }, 3500);
-        }
-    };
-
     const validateFields = (email, password) => {
-        if (!email || !password) {
-            showMessage("Please fill in all fields");
-            return false;
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        let valid = true;
+
+        if (!email) {
+            showMessage(loginError, "Please enter your email");
+            highlightInput(emailInput, "error");
+            valid = false;
+        }else if (!email.endsWith("@sdgku.edu")) {
+            showMessage(loginError, "Only institutional emails allowed");
+            highlightInput(emailInput, "error");
+            valid = false;
         }
-        if (!email.endsWith("@sdgku.edu")) {
-            showMessage("Only institutional emails allowed");
-            return false;
+        if (!password) {
+            showMessage(loginError, "Please enter your password");
+            highlightInput(passwordInput, "error");
+            valid = false;
         }
-        return true;
+
+        return valid;
+
     };
 
-    loginForm?.addEventListener("submit", async function(e) {
+    loginForm?.addEventListener("submit", async function (e) {
         e.preventDefault();
 
         const email = document.getElementById("email").value.trim();
@@ -57,18 +48,37 @@ document.addEventListener("DOMContentLoaded", function() {
 
             const data = await response.json();
 
-            if (!response.ok) throw new Error(data.message || "Login failed");
+            const emailInput = document.getElementById("email");
+            const passwordInput = document.getElementById("password");
+
+
+            if (!response.ok || !data.success) {
+
+                highlightInput(emailInput, "error");
+                highlightInput(passwordInput, "error");
+                throw new Error(data.message || "Invalid credentials");
+
+            }
+
+
 
             if (data.success) {
-                showMessage("Login successful! Redirecting...", true);
+                showMessage(loginError, "Login successful! Redirecting...", true);
                 sessionStorage.setItem("user", JSON.stringify(data.user));
                 setTimeout(() => window.location.href = "dashboard.html", 1500);
             } else {
-                showMessage(data.message || "Invalid credentials");
+                showMessage(loginError, data.message || "Invalid credentials");
             }
+
+            highlightInput(emailInput, "success");
+            highlightInput(passwordInput, "success");
+            showMessage(loginError, "Login successful! Redirecting...", true);
+            sessionStorage.setItem("user", JSON.stringify(data.user));
+            setTimeout(() => window.location.href = "dashboard.html", 1500);
+
         } catch (error) {
-            console.error("Login error:", error);
-            showMessage(error.message || "Something went wrong. Please try again.");
+            showMessage(loginError, error.message || "Something went wrong. Please try again.");
+
         } finally {
             loginButton.disabled = false;
             loginButton.textContent = "Login";

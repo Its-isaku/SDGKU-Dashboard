@@ -118,29 +118,6 @@ body {
     text-decoration: underline;
 }
 
-.error-msg {
-    background-color: rgba(220, 53, 69, 0.1);
-    color: var(--error-color);
-    border: 1px solid rgba(220, 53, 69, 0.2);
-    border-radius: var(--border-radius);
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-    text-align: center;
-}
-
-.message { 
-    padding: 10px;
-    border-radius: var(--border-radius);
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-}
-
-.success-message {
-    background-color: rbga(40, 167, 69, 0.1);
-    color: var(--success-color);
-    border: 1px solid rgba(40, 167, 69, 0.2);
-}
-
 @media (max-width: 768px) {
     .login-form-container {
         padding: 20px;
