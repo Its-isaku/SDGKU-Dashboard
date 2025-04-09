@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$db   = 'sdgku_platform';
+$db   = 'sdgku';
 $user = 'root';
 $pass = 'Paola123';
 $charset = 'utf8mb4';
