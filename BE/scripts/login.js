@@ -1,22 +1,19 @@
 import { showMessage, highlightInput } from './formUtils.js';
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const loginForm = document.getElementById("login-form");
     const loginError = document.getElementById("login-error");
     const loginButton = document.getElementById("form-btn");
 
     const validateFields = (email, password) => {
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    let valid = true;
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        let valid = true;
 
-    if (!email) {
-        showMessage(loginError, "Please enter your email");
-        highlightInput(emailInput, "error");
-        valid = false;
-        }
-
-
-        if (!email.endsWith("@sdgku.edu")) {
+        if (!email) {
+            showMessage(loginError, "Please enter your email");
+            highlightInput(emailInput, "error");
+            valid = false;
+        }else if (!email.endsWith("@sdgku.edu")) {
             showMessage(loginError, "Only institutional emails allowed");
             highlightInput(emailInput, "error");
             valid = false;
@@ -31,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     };
 
-    loginForm?.addEventListener("submit", async function(e) {
+    loginForm?.addEventListener("submit", async function (e) {
         e.preventDefault();
 
         const email = document.getElementById("email").value.trim();
@@ -62,15 +59,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 throw new Error(data.message || "Invalid credentials");
 
             }
-            
+
 
 
             if (data.success) {
-                showMessage("Login successful! Redirecting...", true);
+                showMessage(loginError, "Login successful! Redirecting...", true);
                 sessionStorage.setItem("user", JSON.stringify(data.user));
                 setTimeout(() => window.location.href = "dashboard.html", 1500);
             } else {
-                showMessage(data.message || "Invalid credentials");
+                showMessage(loginError, data.message || "Invalid credentials");
             }
 
             highlightInput(emailInput, "success");
@@ -80,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function() {
             setTimeout(() => window.location.href = "dashboard.html", 1500);
 
         } catch (error) {
-            showMessage(error.message || "Something went wrong. Please try again.");
+            showMessage(loginError, error.message || "Something went wrong. Please try again.");
 
         } finally {
             loginButton.disabled = false;
