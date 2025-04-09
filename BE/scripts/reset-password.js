@@ -1,6 +1,27 @@
+import { showMessage, highlightInput } from './formUtils.js';
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("reset-form");
-    const messageDiv = document.getElementById("reset-msg");
+    const loginError = document.getElementById("reset-msg"); 
+    const showMessage = (message, isSuccess = false) => {
+        loginError.textContent = message;
+        loginError.style.color = isSuccess ? "green" : "red";
+        loginError.style.display = "block";
+        
+        setTimeout(() => {
+            loginError.style.opacity = "1";
+            loginError.style.transform = "translateY(0)";
+        }, 30);
+        
+        if (!isSuccess) {
+            setTimeout(() => {
+                loginError.style.opacity = "0";
+                loginError.style.transform = "translateY(-7px)";
+                setTimeout(() => {
+                    loginError.style.display = "none";
+                }, 400); 
+            }, 3500);
+        }
+    };
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -9,8 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const confirmPassword = document.getElementById("confirm-password").value;
 
         if (password !== confirmPassword) {
-            messageDiv.textContent = "Passwords don't match";
-            messageDiv.style.color = "red";
+            showMessage("Passwords don't match");
             return;
         }
 
@@ -30,16 +50,13 @@ document.addEventListener("DOMContentLoaded", function () {
             const result = await response.json();
             
             if (result.success) {
-                messageDiv.textContent = "Password updated! Redirecting...";
-                messageDiv.style.color = "green";
+                showMessage("Password updated! Redirecting...", true);
                 setTimeout(() => window.location.href = "login.html", 2000);
             } else {
-                messageDiv.textContent = result.message || "Error resetting password";
-                messageDiv.style.color = "red";
+                showMessage(result.message || "Error resetting password");
             }
         } catch (error) {
-            messageDiv.textContent = "Network error. Try again later.";
-            messageDiv.style.color = "red";
+            showMessage("Network error. Try again later.");
         } finally {
             btn.disabled = false; 
         }

@@ -320,6 +320,56 @@ input:focus {
     to { transform: translateX(-100%); opacity: 0; }
 }
 
+/* Notifications */
+.input-error {
+    border: 2px solid #e74c3c;
+    background-color: #fcebea;
+}
+
+.input-success {
+    border: 2px solid #2ecc71;
+    background-color: #eafaf1;
+}
+
+.input-animate {
+    animation: popInput 0.3s ease;
+}
+
+@keyframes popInput {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.03);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.error-msg {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: var(--error-color);
+    border: 1px solid rgba(220, 53, 69, 0.2);
+    border-radius: var(--border-radius);
+    margin: 0.3rem;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.message { 
+    padding: 10px;
+    border-radius: var(--border-radius);
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.success-message {
+    background-color: rbga(40, 167, 69, 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
 /*! <----------------------MEDIA QUERIES---------------------->*/
 @media screen and (max-width: 960px) {
     main {
