@@ -1,8 +1,8 @@
 <?php
 $host = 'localhost';
-$db   = 'sdgku_platform';
+$db   = 'sdgku';
 $user = 'root';
-$pass = 'Paola123';
+$pass = 'AlmLan@1911-';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

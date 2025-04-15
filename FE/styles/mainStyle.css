@@ -31,6 +31,8 @@
 *{
     margin: 0;
     padding: 0;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
 }
 
 img{
@@ -46,11 +48,11 @@ main {
 
 /*? Fonts */
 html body{
-    font-family: 'Inter', sans-serif;
     line-height: 1.6;
     background-color: var(--gray-100);
     margin: 0;
     padding: 0;
+    height: 100%;
     width: auto;
     overflow-x: hidden;
     overflow-y: hidden;
@@ -320,7 +322,7 @@ input:focus {
     to { transform: translateX(-100%); opacity: 0; }
 }
 
-/* Notifications */
+/*? Notifications */
 .input-error {
     border: 2px solid #e74c3c;
     background-color: #fcebea;
@@ -368,6 +370,13 @@ input:focus {
     background-color: rbga(40, 167, 69, 0.1);
     color: var(--success-color);
     border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
+/*? Titulos */
+.titulo {
+    grid-area: title;
+    display: inline-block;
+    margin-top: 1.5rem;
 }
 
 /*! <----------------------MEDIA QUERIES---------------------->*/
