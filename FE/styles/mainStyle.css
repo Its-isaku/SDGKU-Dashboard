@@ -43,7 +43,9 @@ img{
 
 
 main {
+    height: auto;
     overflow-y: auto;
+    padding-bottom: 60px;
 }
 
 /*? Fonts */
@@ -55,7 +57,6 @@ html body{
     height: 100%;
     width: auto;
     overflow-x: hidden;
-    overflow-y: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -163,7 +164,7 @@ button:hover{
 .dashboard-container {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 /*? Sidebar */
