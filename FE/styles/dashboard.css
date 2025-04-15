@@ -9,7 +9,6 @@
 
 main {
     grid-area: main;
-    background-color: rgb(232, 235, 232);
     display: grid;
     grid-template-areas:
         "title"
@@ -37,7 +36,7 @@ main {
 }
 
 .summaryAccesos {
-    background: rgb(255, 255, 255);
+    background: var(--neutral-light);
     box-shadow: var(--box-shadow); 
     border-radius: 10px;
     display: inline-block;
@@ -86,7 +85,7 @@ main {
 }
 
 .accesosDashboard {
-    background: rgb(255, 255, 255);
+    background: var(--neutral-light);
     box-shadow: var(--box-shadow);
     border-radius: 10px;
     display: inline-block;
