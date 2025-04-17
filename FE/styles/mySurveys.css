@@ -5,10 +5,12 @@
     width: calc(100%-250px);
     height: auto;
     overflow-x: hidden;
+    overflow-y: auto;
+
 }
 /*Estilos para MiniHeader*/
 .mySurveysHeader{
-    background: #f9f9f9;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -21,6 +23,8 @@
     flex-direction: column;
     gap: 10px;
     margin-bottom: 5px;
+    width: 600px;
+
 }
 
 .searchAndCreate{
@@ -69,8 +73,165 @@
 .createSurveyBtn i {
     font-size: 1.2rem;
 }
+/* Estilos para botones active surveys e inactive surveys */
+
+.mySurveyOptions {
+    background-color: var(--gray-300);
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: var(--border-radius);
+    padding: 5px;
+
+}
+.mySurveyOptions button{
+    background-color: var(--gray-300);
+}
+.surveyOption {
+    margin: 0;
+    padding: 4px 10px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    flex: 1;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.surveyOption:not(.selectedOption):hover {
+    background-color: var(--gray-200);
+}
+
+.surveyOption h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--gray-800);
+}
+
+.selectedOption {
+    background-color: var(--neutral-light);
+    font-weight: bold;
+    border: none;
+    pointer-events: none;
+}
+
+
+/* Estilos para las encuestas activas */
+
+.principalDashboard{
+
+
+}
+.activeSurveys{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    height: 100%;
+    padding-bottom: 100px;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+
+}
+.surveyOption.selected {
+    background-color: red; /* Puedes poner el color que prefieras */
+    color: white; /* Texto blanco para contraste */
+}
+.activeSurveyList{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 10px;
+    padding-bottom: 100px;
+    overflow-y: auto;
+
+    overflow-x: hidden;
+}
+.activeSurveyList div{
+    height: auto;
+    width: 22vw;
+}
+.surveyStatus p{
+    color: green;
+    border-style: groove;
+    border-color: rgb(184, 240, 184);
+    border-radius: 20px;
+    width: 80px;
+    padding-left: 25px;
+}
+.activeTitleStatus{
+    display: flex;
+    gap: 40%;
+}
+.dropdown {
+    position: absolute;
+    top: 105px;
+    left: 210px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    display: none;
+    flex-direction: column;
+    z-index: 10;
+    width: 120px!important;
+}
+
+.dropdown a {
+    padding: 10px 16px;
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+}
+
+.dropdown a:hover {
+    background-color: #f2f2f2;
+}
+/*Estilos de botones*/
+.surveyActive-actions{
+    display: flex;
+
+    
+}
+.actions-btn, .results-btn {
+    width: 10vw;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    background-color: aqua;
+}
+
+.results-btn:hover {
+    background-color: var(--secondary-dominant);
+    transition: transform 0.2s ease-in-out;
+    
+}
+
+.actions-btn:hover {
+    background-color: rgb(68, 132, 68);
+    transition: transform 0.2s ease-in-out;
+}
+
+.actions-btn {
+    background: transparent;
+    color: black;
+    border: 1px solid var(--primary-dominant);
+}
+
+.results-btn {
+    width: 18vw;
+    background-color: var(--primary-dominant);
+    color: white;
+    margin-left: 0.5rem;
+}
 
 /* Estilos para las encuestas inactivas */
+
 .inactiveSurveys {
     display: flex;
     flex-direction: row;
@@ -150,4 +311,45 @@
     margin-left: 0.5rem;
 }
 
+@media screen and (max-width: 960px) {
+    main{
+    }
+.principalDashboard{
+    margin: 0;
+}
+    .activeSurveyList div{
+        height: auto;
+        width: 40vw;
+    }
+    .activeSurveyList{
+        grid-template-columns: repeat(2,1fr);
+    }
+}
 
+
+/* hide/show panels */
+.panel {
+    display: none !important;
+}
+.panel.visible {
+    display: block !important;
+}
+.surveyOption.selected {
+    background-color: var(--gray-200);
+    color: white; /* Texto blanco para contraste */
+}
+
+@media screen and (max-width: 450px) {
+
+    .principalDashboard{
+   
+    }
+    .activeSurveyList{
+        grid-template-columns: repeat(1,1fr);
+    }
+    .activeSurveyList div{
+        height: auto;
+        width: 77vw;
+       
+    }
+}
