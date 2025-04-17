@@ -103,7 +103,56 @@
         <main>
             <div class="principalDashboard">
                 <!--? Empezar a trabajar aqui -->
+                <div class="mySurveysHeader">
+                    <!-- Mini Header -->
+                    <div class="dashboardDescription">
+                        
+                        <h2>My Surveys</h2>
+                        <p>Manage your created surveys</p>
+                        <div class="mySurveyOptions">
+                            <button onclick="showOptionSelected('panel1')" class="surveyOption">
+                                <h3>Active Surveys</h3>
+                            </button>
+                        
+                            <button onclick="showOptionSelected('panel2')" class="surveyOption">
+                                <h3>Inactive Surveys</h3>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="searchAndCreate">
+                        <input type="text" id="searchSurveyId" placeholder="Search Surveys...." >
 
+                        <a href="/FE/createSurvey.html" class="createSurveyBtn">
+                            <button>
+                                <i class="fa-solid fa-circle-plus">
+
+                                </i>
+                                Create Survey
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="mySurveyButtons">
+                    <!-- active/Invactive Surveys buttons -->
+                    
+                </div>
+                <div id="panel1" class="panel visible">
+                    <div class="activeSurveys" id="activeSurveysId">
+                        <!-- active Surveys -->    
+                        <ul class="activeSurveyList" id="activeListId">
+                            <!-- Las encuestas activas se agregaran aqui -->
+                        </ul>
+                        <div class="divisionBottom"></div>
+                    </div>
+                </div>
+                <div id="panel2" class="panel">
+                    <div class="inactiveSurveys" id="inactiveSurveysId">
+                        <!-- Inactive Surveys -->
+                        <ul class="inactiveSurveyList" id="inactiveListId">
+                            <!-- Las encuestas inactivas se agregaran aqui -->
+                        </ul>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
