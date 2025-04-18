@@ -122,7 +122,6 @@
 
 .principalDashboard{
 
-
 }
 .activeSurveys{
     display: flex;
@@ -157,10 +156,14 @@
     transition: transform 0.2s;
     
 }
+.survey-item h3{
+    font-size: large;
+}
 
 .surveyStatus p{
-    color: green;
+    color: rgb(116, 221, 116);
     border-style: groove;
+    border-width: 2px;
     border-color: rgb(184, 240, 184);
     border-radius: 20px;
     width: 80px;
@@ -174,9 +177,9 @@
     gap: 40%;
 }
 .dropdown {
-    position: absolute;
-    top: 170px;
-    left: 190px;
+    position: fixed;
+    top: 30%;
+    left: 50%;
     background: white;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -323,6 +326,7 @@
 @media screen and (max-width: 960px) {
     main{
     }
+   
 .principalDashboard{
     margin: 0;
     width: 100%;
@@ -339,6 +343,7 @@
     width: 200px;
 }
 .dropdown {
+    top: 120px;
     left: 180px;
 }
 }
