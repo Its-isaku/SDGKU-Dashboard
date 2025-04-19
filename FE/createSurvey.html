@@ -162,74 +162,7 @@
                         <p>Enter the basic details for your survey</p>
                     </div>
 
-                    <div class="QuestionContent">
-                        <!--? Titulo y tipo de pregunta -->
-                        <div class="QuestionTitle">
-                            <h4 id="questionNumberTitle">Question (Num de pregunta)</h4>
-
-                            <div class="QuestionInput">
-                                <label for="questionTitle">Survey Title</label>
-                                <input type="text" id="questionTitle" placeholder="Enter survey name" required>
-                            </div>
-
-                            <div class="QuestionInput selectInput">
-                                <label for="questionType">Survey Type</label>
-                                <select id="questionType" required>
-                                    <option value="1">Multiple Choice</option>
-                                    <option value="2">Grade 1-5</option>
-                                    <option value="3">Open</option>
-                                    <option value="4">True/False</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!--? seccion de opciones -->
-                        <div class="QuestionMultiple" id="questionMultipleSection">
-                            <h4>Options</h4>
-
-                            <div class="QuestionInput optionInput" id="optionInput1">
-                                <input type="text" id="optionText1" placeholder="Enter option" required> <i class="fa-solid fa-trash"></i>
-                            </div>
-
-                            <div class="QuestionInput optionInput" id="optionInput2">
-                                <input type="text" id="optionText2" placeholder="Enter option" required> <i class="fa-solid fa-trash"></i>
-                            </div>
-
-                            <button id="btnAddOption"><i class="fa-solid fa-plus"></i> add Option</button>
-                        </div>
-
-                        <!--? seccion de Escala 1-5 -->
-                        <div class="QuestionGrade" id="questionGradeSection">
-                            <h4>Grade</h4>
-
-                            <div class="gradeContainer" id="gradeContainer">
-                                <label><input type="radio" name="gradeOption" value="1">1</label>
-                                <label><input type="radio" name="gradeOption" value="2">2</label>
-                                <label><input type="radio" name="gradeOption" value="3">3</label>
-                                <label><input type="radio" name="gradeOption" value="4">4</label>
-                                <label><input type="radio" name="gradeOption" value="5">5</label>
-                            </div>
-                        </div>
-
-                        <!--? seccion abierta -->
-                        <div class="QuestionOpen" id="questionOpenSection">
-                            <h4>Open text</h4>
-
-                            <div class="OpenInput">
-                                <textarea id="openText" placeholder="Type aswer here" required></textarea>
-                            </div>
-                        </div>
-
-                        <!--? seccion True/False -->
-                        <div class="QuestionTrueFalse" id="questionTrueFalseSection">
-                            <h4>Grade</h4>
-                            
-                            <div class="TrueFalseContainer" id="trueFalseContainer">
-                                <label><input type="radio" name="gradeOption" value="1">True</label>
-                                <label><input type="radio" name="gradeOption" value="2">False</label>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="questionFormsContainer" id="questionFormsContainer"></div>
 
                     <div class="btnQuestion">
                         <button class="btnAddQuestion" id="btnAddQuestion"><i class="fa-solid fa-plus"></i> Add Question</button>
@@ -255,45 +188,7 @@
                         </div>
 
                         <div class="previewContainer" id="previewContainer">
-                            <!--? Aqui debe cargarse el titulo del survey -->
-                            <h3 id="previewSurveyTitle">Survey Title</h3>
-                            <p id="previewSurveyDescription">Survey description will appear here.</p>
 
-                            <!--? aqui apareceran las preguntas -->
-                            <div class="previewQuestion multipleCoice" id="previewQuestion1">
-                                <h4 id="previewQuestionTitle1">Question text</h4>
-                                <div class="previewMultipleOptions" id="previewMultipleOptions1">
-                                    <label><input type="radio" name="option1" value="1">Option 1</label>
-                                    <label><input type="radio" name="option1" value="2">Option 2</label>
-                                    <label><input type="radio" name="option1" value="3">Option 3</label>
-                                </div>
-                            </div>
-
-                            <div class="previewQuestion multipleCoice" id="previewQuestion2">
-                                <h4 id="previewQuestionTitle2">Question text</h4>
-                                <div class="previewGrade" id="previewGrade2">
-                                    <label><input type="radio" name="option2" value="1">1</label>
-                                    <label><input type="radio" name="option2" value="2">2</label>
-                                    <label><input type="radio" name="option2" value="3">3</label>
-                                    <label><input type="radio" name="option2" value="4">4</label>
-                                    <label><input type="radio" name="option2" value="5">5</label>
-                                </div>
-                            </div>
-
-                            <div class="previewQuestion openText" id="previewQuestion3">
-                                <h4 id="previewQuestionTitle3">Question text</h4>
-                                <div class="previewOpenText" id="previewOpenText3">
-                                    <textarea name="textPreview" id="textPreview"></textarea>
-                                </div>
-                            </div>
-
-                            <div class="previewQuestion multipleCoice" id="previewQuestion4">
-                                <h4 id="previewQuestionTitle4">Question text</h4>
-                                <div class="previewTrueFalse" id="previewTrueFalse4">
-                                    <label><input type="radio" name="option4" value="1">True</label>
-                                    <label><input type="radio" name="option4" value="0">False</label>
-                                </div>
-                            </div>
                         </div> 
                     </div>
 
@@ -309,7 +204,7 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="../BE/scripts/main.js"></script>
-    <script src="../BE/scripts/createSurvey.js"></script>
+    <script type="module" src="../BE/scripts/createSurvey.js"></script>
     <script src="../BE/scripts/logout.js"></script>
 </body>
 </html>
