@@ -176,6 +176,18 @@
     
 }
 
+.QuestionContent .deleteBtn {
+    background-color: var(--secondary-dominant);
+    color: var(--neutral-light);
+}
+
+.QuestionContent .deleteBtn:hover {
+    background-color: var(--primary-dominant);
+    border: none;
+    color: var(--neutral-light);
+    transition: ease-in-out 0.3s;
+}
+
 .QuestionContent button {
     background-color: var(--neutral-light);
     height: 40px; 
