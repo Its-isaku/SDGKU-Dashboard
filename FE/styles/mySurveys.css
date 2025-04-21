@@ -10,7 +10,6 @@
 }
 /*Estilos para MiniHeader*/
 .mySurveysHeader{
-
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -23,12 +22,15 @@
     flex-direction: column;
     gap: 10px;
     margin-bottom: 5px;
+    margin-top: 0px;
     width: 600px;
 
 }
+.dashboardDescription h2{
+    margin: 0;
+}
 
 .searchAndCreate{
-    background-color: var(--neutral-light);
     display: flex;
     /*flex-direction: row;*/
     gap: 10px;
@@ -49,10 +51,29 @@
     padding: 0;
     border: none;
     border-radius: var(--border-radius);
-    background-color: orangered;
+    background-color: #F13939;
     color: var(--neutral-light);
     cursor: pointer;
     transition: background-color 0.3s ease;
+}
+.search-container{
+    position: relative;
+    display: inline-block;
+}
+.search-icon{
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: var(--neutral-dark);
+}
+#searchSurveyId{
+    padding-left: 30px; /* Espacio para el icono */
+    width: auto; /* Ajusta el ancho según el contenido */
+    border-radius: var(--border-radius);
+    border: 1px solid var(--neutral-dark);
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
 }
 .createSurveyBtn{
     display: flex;
@@ -60,13 +81,13 @@
     gap: 8px;
     color: white;
     text-decoration: none;
-    background-color: orangered;
+    background-color: #F13939;
     border-radius: var(--border-radius);
     padding: 0.5rem 1rem;
     transition: background-color 0.3s ease;
 }
 
-.createSurveyBtn:hover {
+.createSurveyBtn:hover{
     background-color: var(--secondary-dominant);
 }
 
@@ -248,16 +269,19 @@
     display: flex;
     flex-direction: row;
     gap: 20px;
+    height: 100%;
+    padding-bottom: 100px;
     margin-top: 1rem;
-    background: #f9f9f9;
     padding: 1rem;
     border-radius: 8px;
 }
 .inactiveSurveyList{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(340px,1fr));
     gap: 20px;
-    padding: 0px;
+    padding: 10px;
+    padding-bottom: 100px;
 }
 
 .surveyInactive-item {
@@ -267,11 +291,27 @@
     margin-bottom: 1 rem;
     border-radius: var(--border-radius);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    width: 300px;
     transition: transform 0.2s;
 }
+.surveyInactive-item h3{
+    font-size: large;
+}
+.inactiveTitleStatus{   
+    display: flex;
+    justify-content: center;
+    gap: 40%;
+}
 
-.survey-item:hover{
+.surveyInactiveStatus p{
+    color: white;
+    background-color: #F13939;
+    border-width: 2px;
+    border-radius: 20px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+}
+.surveyInactive-item:hover{
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
@@ -288,11 +328,13 @@
 .survey-actions {
     margin-top: 1rem;
     display: flex;
+    justify-content: center;
 }
 
 /*Estilos de botones*/
 .activate-btn, .delete-btn {
     padding: 0.5rem 1rem;
+    width: 150px;
     border: none;
     border-radius: var(--border-radius);
     cursor: pointer;
@@ -323,9 +365,10 @@
     margin-left: 0.5rem;
 }
 
+
 @media screen and (max-width: 960px) {
     main{
-    }
+}
    
 .principalDashboard{
     margin: 0;
@@ -336,8 +379,8 @@
 
 }
 .createSurveyBtn{
-    
 }
+
 
 #searchSurveyId{
     width: 200px;

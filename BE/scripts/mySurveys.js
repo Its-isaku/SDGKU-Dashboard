@@ -46,7 +46,7 @@ const Surveys = [
         
     },{
         title: "Pre-Course",
-        status:"Active",
+        status:"Inactive",
         description: "Introduction to Computer Science Pre-Course Assessment",
         notes: "Please complete this survey before the course",
         createdDate: "01/04/2025",
@@ -92,25 +92,54 @@ function getInactiveSurveys() {
 function renderInactiveSurveys() {
     const inactiveList = document.getElementById('inactiveListId');
     const inactiveSurveys = getInactiveSurveys();
-    inactiveSurveys.forEach((survey) => {
+    inactiveSurveys.forEach((survey, index) => {
         const surveyItem = document .createElement("div");
         surveyItem.className = "surveyInactive-item";
 // visualizacion de cada encuesta
-        surveyItem.innerHTML = ` 
-            <h3>${survey.title}</h3>
-            <p>${survey.description}</p>
+        surveyItem.innerHTML = `
+            <div class = "inactiveTitleStatus"> 
+                <div class = "surveytitle">
+                    <p>${survey.title}</p>
+                </div>
+                <div class = "surveyInactiveStatus">
+                    <p>${survey.status}</p>
+                </div>
+            </div>
+
+            <h3>${survey.description}</h3>
+            <p>${survey.notes}</p>
             <div class="survey-details">
                 <span><i class="fa-solid fa-clipboard-list"></i> Created: ${survey.createdDate}</span>
+                <span><i class="fa-solid fa-clipboard-list"></i> Expires: ${survey.expires}</span>
                 <span><i class="fa-solid fa-calendar-week"></i> ${survey.questions} questions</span>
+                <span>Program: ${survey.program}</span>
+                <span>Cohort: ${survey.cohort}</span>
             </div>
             
+            
             <div class="survey-actions">
-                <button class="activate-btn"><i class="fa-solid fa-circle-check"></i> Activate</button>
+                <button class="activate-btn" data-index="${index}"><i class="fa-solid fa-circle-check"></i> Activate</button>
                 <button class="delete-btn">Delete</button>
             </div>
         `;
         inactiveList.appendChild(surveyItem);
+        // Enlazar el evento al boton de activar
+        const activateBtn = surveyItem.querySelector('.activate-btn');
+        activateBtn.addEventListener('click', () => {
+            activateSurvey(survey);        
+        });
     });
+}
+
+function activateSurvey(surveyToActivate) {
+    // cambiar el estado de la encuesta a activa
+    surveyToActivate.status = "Active";
+    //limpiar la lista de encuestas inactivas
+    document.getElementById('inactiveListId').innerHTML = '';
+    document.getElementById('activeListId').innerHTML = '';
+    // volver a renderizar las encuestas inactivas y activas
+    renderInactiveSurveys();
+    renderActiveSurveys();
 }
 
 document.addEventListener("DOMContentLoaded", renderInactiveSurveys, renderActiveSurveys);
