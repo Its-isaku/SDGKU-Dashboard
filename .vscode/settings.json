@@ -8,13 +8,16 @@
         "contenedor",
         "Empezar",
         "encuestas",
+        "ERRMODE",
         "Foto",
         "Imagen",
         "inactivas",
         "Nombre",
+        "PHPMYADMIN",
         "SDGKU",
         "titulo",
         "trabajar",
-        "Usuario"
+        "Usuario",
+        "XAMPP"
     ]
 }

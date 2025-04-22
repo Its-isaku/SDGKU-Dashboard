@@ -1,6 +1,6 @@
 <?php
-$host = 'localhost';
-$db   = 'sdgku';
+$host = '192.168.1.76'; //? local IP: 192.168.1.82 | public IP: 187.250.25.76
+$db   = 'sdgku_db';
 $user = 'root';
 $pass = 'AlmLan@1911-';
 $charset = 'utf8mb4';
