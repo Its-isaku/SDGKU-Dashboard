@@ -32,3 +32,15 @@ export function highlightInput(input, status = "none") {
     setTimeout(() => input.classList.remove("input-animate"), 300);
     setTimeout(() => input.classList.remove("input-error", "input-success"), 3500);
 }
+
+export function toggleDisplay(element, displayType = 'flex') { //Opcion para utilizar solo tipo acordeones, dropdowns, collapsibles, etc.
+    const isVisible = element.style.display === displayType;
+    element.style.display = isVisible ? 'none' : displayType;
+}
+
+
+export function hideAll(selectors) {
+    document.querySelectorAll(selectors).forEach(el => {
+        el.style.display = 'none';
+    });
+}

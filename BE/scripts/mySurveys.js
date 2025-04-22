@@ -94,7 +94,7 @@ function renderInactiveSurveys() {
     const inactiveSurveys = getInactiveSurveys();
     inactiveSurveys.forEach((survey) => {
         const surveyItem = document .createElement("div");
-        surveyItem.className = "survey-item";
+        surveyItem.className = "surveyInactive-item";
 // visualizacion de cada encuesta
         surveyItem.innerHTML = ` 
             <h3>${survey.title}</h3>
@@ -126,7 +126,7 @@ function renderActiveSurveys() {
         activeSurveyItem.className = "survey-item";
     // visualizacion de cada encuesta
     activeSurveyItem.innerHTML = ` 
-            <div class = "activeTitleStatus">
+        <div class = "activeTitleStatus">
                 <div class = "surveytitle">
                     <p>${survey.title}</p>
                 </div>

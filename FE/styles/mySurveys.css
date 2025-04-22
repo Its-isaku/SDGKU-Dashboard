@@ -2,7 +2,7 @@
 .principalDashboard{
     overflow: auto;
     margin-left: 250px;
-    width: calc(100%-250px);
+    width: calc(100% - 250px);
     height: auto;
     overflow-x: hidden;
     overflow-y: auto;
@@ -122,7 +122,6 @@
 
 .principalDashboard{
 
-
 }
 .activeSurveys{
     display: flex;
@@ -133,42 +132,54 @@
     margin-top: 1rem;
     padding: 1rem;
     border-radius: 8px;
-
 }
+
 .surveyOption.selected {
     background-color: red; /* Puedes poner el color que prefieras */
     color: white; /* Texto blanco para contraste */
 }
 .activeSurveyList{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     gap: 20px;
     padding: 10px;
     padding-bottom: 100px;
-    overflow-y: auto;
+}
+.survey-item{
+    background: white;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin-bottom: 1 rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    
+}
+.survey-item h3{
+    font-size: large;
+}
 
-    overflow-x: hidden;
-}
-.activeSurveyList div{
-    height: auto;
-    width: 22vw;
-}
 .surveyStatus p{
-    color: green;
+    color: rgb(116, 221, 116);
     border-style: groove;
+    border-width: 2px;
     border-color: rgb(184, 240, 184);
     border-radius: 20px;
     width: 80px;
-    padding-left: 25px;
-}
-.activeTitleStatus{
     display: flex;
+    justify-content: center;
+    
+}
+.activeTitleStatus{   
+    display: flex;
+    justify-content: center;
     gap: 40%;
 }
 .dropdown {
-    position: absolute;
-    top: 105px;
-    left: 210px;
+    position: fixed;
+    top: 30%;
+    left: 50%;
     background: white;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -190,26 +201,25 @@
     background-color: #f2f2f2;
 }
 /*Estilos de botones*/
+
 .surveyActive-actions{
     display: flex;
-
-    
+    justify-content: center;
 }
-.actions-btn, .results-btn {
-    width: 10vw;
+
+.actions-btn, .results-btn {    
     padding: 0.5rem 1rem;
+    width: 150px;
     border: none;
     border-radius: var(--border-radius);
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.3s ease;
-    background-color: aqua;
 }
 
 .results-btn:hover {
     background-color: var(--secondary-dominant);
     transition: transform 0.2s ease-in-out;
-    
 }
 
 .actions-btn:hover {
@@ -218,17 +228,19 @@
 }
 
 .actions-btn {
+
     background: transparent;
     color: black;
     border: 1px solid var(--primary-dominant);
 }
 
 .results-btn {
-    width: 18vw;
+    
     background-color: var(--primary-dominant);
     color: white;
     margin-left: 0.5rem;
 }
+
 
 /* Estilos para las encuestas inactivas */
 
@@ -248,7 +260,7 @@
     padding: 0px;
 }
 
-.survey-item {
+.surveyInactive-item {
     background: white;
     border: 1px solid #ddd;
     padding: 1rem;
@@ -314,16 +326,40 @@
 @media screen and (max-width: 960px) {
     main{
     }
+   
 .principalDashboard{
     margin: 0;
+    width: 100%;
 }
-    .activeSurveyList div{
-        height: auto;
-        width: 40vw;
+.activeSurveyList div{ 
+    height: auto;
+
+}
+.createSurveyBtn{
+    
+}
+
+#searchSurveyId{
+    width: 200px;
+}
+.dropdown {
+    top: 120px;
+    left: 180px;
+}
+}
+
+
+@media screen and (max-width: 400px) {
+
+#searchSurveyId{
+        width: 150px;
     }
-    .activeSurveyList{
-        grid-template-columns: repeat(2,1fr);
-    }
+.activeSurveyList{
+    padding: 0;
+}
+.dropdown {
+    left: 170px;
+}
 }
 
 
@@ -337,19 +373,4 @@
 .surveyOption.selected {
     background-color: var(--gray-200);
     color: white; /* Texto blanco para contraste */
-}
-
-@media screen and (max-width: 450px) {
-
-    .principalDashboard{
-   
-    }
-    .activeSurveyList{
-        grid-template-columns: repeat(1,1fr);
-    }
-    .activeSurveyList div{
-        height: auto;
-        width: 77vw;
-       
-    }
 }
