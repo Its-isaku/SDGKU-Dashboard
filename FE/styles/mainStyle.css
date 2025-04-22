@@ -431,7 +431,7 @@ input:focus {
         margin-left: 0;
     }
     aside {
-        margin-top: 10px;
+        margin-top: 0;
         top: 70px;
         left: 0;
         width: 100%;
@@ -514,6 +514,7 @@ input:focus {
     }
 
     nav .sideLink {
+        
         padding: 10px 20px;
         width: 80%;
         border-bottom: 1px solid #444;
