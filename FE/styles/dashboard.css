@@ -37,23 +37,34 @@ main {
 
 .summaryAccesos {
     background: var(--neutral-light);
-    box-shadow: var(--box-shadow); 
-    border-radius: 10px;
-    display: inline-block;
-    width: 340px;
-    height: 150px;
-    padding: 18px;
-    gap: 30px;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    box-shadow: var(--box-shadow);
+}
+
+.summaryAccesos h2 {
+    font-size: 1.2rem;
+    color: var(--gray-800);
+    margin: 0;
 }
 
 .summaryAccesos h3 {
-    margin-top: 10px;
-    font-size: 45px;
-    font-weight: 50px;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0.5rem 0 0 0;
+    line-height: 1;
 }
 
 .summaryAccesos small {
-    padding: 5px;
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    display: block;
+    margin-top: 0.25rem;
 }
 
 .contenedorAccesos {
@@ -106,4 +117,94 @@ main {
 
 .accesosDashboard button:hover {
     transform: scale(1.05); 
+}
+
+
+@media (max-width: 1110px) { 
+    .principalDashboard {
+        margin-left: 0;
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    .contenedorSummary {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .summaryAccesos {
+        padding: 1.25rem;
+    }
+    
+    .summaryAccesos h3 {
+        font-size: 2rem;
+    }
+
+    .contenedorAccesos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) { 
+    main {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .summaryAccesos {
+        padding: 1rem;
+    }
+    
+    .summaryAccesos h3 {
+        font-size: 1.8rem;
+    }
+    
+    .summaryAccesos h2 {
+        font-size: 1.1rem;
+    }
+    
+    .summaryAccesos small {
+        font-size: 0.85rem;
+    }
+
+    .contenedorAccesos {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-right: 0;
+    }
+
+    .accesosDashboard {
+        width: 100%;
+    }
+
+    .contenedorAccesos button {
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 480px) { 
+    .titulo h2 {
+        font-size: 1.5rem;
+    }
+
+    .titulo small {
+        font-size: 0.9rem;
+    }
+
+    .summaryAccesos h3 {
+        font-size: 2rem;
+    }
+
+    .summaryAccesos h2 {
+        font-size: 1.2rem;
+    }
+
+    .accesosDashboard h2 {
+        font-size: 1.2rem;
+    }
+
+    .accesosDashboard small {
+        font-size: 0.9rem;
+    }
 }

@@ -102,7 +102,47 @@
         <main>
             <div class="principalDashboard">
                 <!--? Empezar a trabajar aqui -->
-
+                <div class="settings-container">
+                    <h2 class="settings-title">Settings</h2>
+                  
+                    <div class="createSurveyOptions" id="createSurveyOptions">
+                        <div class="surveyOption" id="optionSurveyDetails">
+                            <h3>Profile</h3>
+                        </div>
+                        
+                        <div class="surveyOption" id="optionQuestions">
+                            <h3>Security</h3>
+                        </div>
+    
+                    </div>
+                  
+                    <div class="settings-content">
+                      <!-- Profile Content -->
+                      <div class="tab-content" id="profile" style="display: block;">
+                        <h3>Profile Information</h3>
+                        <p>Update your account information</p>
+                        <label>Full Name</label>
+                        <input type="text" placeholder="Admin User" />
+                        <label>Role</label>
+                        <select>
+                          <option>Give admin role to...</option>
+                        </select>
+                        <button class="save-btn">Save Changes</button>
+                      </div>
+                  
+                      <!-- Security Content -->
+                      <div class="tab-content" id="security" style="display: none;">
+                        <h3>Security Settings</h3>
+                        <p>Update your password and security preferences</p>
+                        <label>Current Password</label>
+                        <input type="password" />
+                        <label>New Password</label>
+                        <input type="password" />
+                        <label>Confirm New Password</label>
+                        <input type="password" />
+                        <button class="save-btn">Change Password</button>
+                      </div>
+                    </div>
             </div>
         </main>
     </div>
