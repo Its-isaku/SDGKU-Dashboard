@@ -2,7 +2,7 @@
 .principalDashboard{
     overflow: auto;
     margin-left: 250px;
-    width: calc(100%-250px);
+    width: calc(100% - 250px); 
     height: 100vh;
     overflow-x: hidden;
 }
@@ -33,11 +33,12 @@ main {
     gap: 30px;
     justify-content: left;
     margin-top: 20px;
+    padding-right: 35px; 
 }
 
 .summaryAccesos {
     background: var(--neutral-light);
-    border-radius: var(--border-radius);
+    border-radius: 10px;
     padding: 1.5rem;
     width: 100%;
     height: auto;
