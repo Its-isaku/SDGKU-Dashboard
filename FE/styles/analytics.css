@@ -7,11 +7,116 @@
     overflow-x: hidden;
 }
 
-body {
-  
+.analyticsMenu {
+    background-color: var(--gray-300);
+    display: flex;
+    width: 70%;
+    gap: 0.5rem;
+    border-radius: var(--border-radius);
+    padding: 5px;
 }
 
-canvas {
-    max-width: 600px;
-    margin: auto;
+.analyticsMenu button{
+    background-color: var(--gray-300);
+    width: 100px;
+    
+}
+.menuOption {
+    margin: 0;
+    padding: 4px 10px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    flex: 1;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* principal */
+.principalAnalytics{
+   
+    /* width: 90vw; */
+}
+
+.analyticsSurveyInfo{
+    height: 150px;
+    width: 100%;
+    background-color: yellowgreen;
+}
+.analyticsFilters{
+    height: 200px;
+    width: 100%;
+    background-color: rgb(50, 104, 205);
+}
+.analyticsMenu{
+    height: 50px;
+
+}
+.analyticsGraphics{
+    height: auto;
+    background-color: tomato;
+}
+
+/* Menu Options */
+
+/* Overview */
+.overview{
+    background-color: aqua;
+    height: 400px;
+width: 100%;
+}
+
+/* responseAnalysis */
+
+.responseAnalysis{
+background-color: yellow;
+height: 400px;
+width: 100%;
+}
+
+/*comparison  */
+
+.comparison{
+background-color: violet;
+height: 400px;
+width: 100%;
+}
+
+/* reports */
+
+.reports{
+background-color: tomato;
+height: 400px;
+width: 100%;
+}
+
+
+/* Show and hide panels */
+.panel {
+    display: none !important;
+}
+.panel.visible {
+    display: block !important;
+}
+.menuOption.selected {
+    background-color: var(--gray-200);
+    color: white; /* Texto blanco para contraste */
+}
+
+
+
+/* media */
+
+@media screen and (max-width: 960px) {
+    
+    .principalDashboard{
+        margin: 0;
+        width: 100%;
+        
+    }
+    .principalAnalytics{
+        margin: 0;
+        width: 100vw;
+        background-color: aqua;
+    }
 }

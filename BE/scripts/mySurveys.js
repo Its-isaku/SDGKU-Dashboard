@@ -131,6 +131,7 @@ function renderInactiveSurveys() {
     });
 }
 
+
 function activateSurvey(surveyToActivate) {
     // cambiar el estado de la encuesta a activa
     surveyToActivate.status = "Active";

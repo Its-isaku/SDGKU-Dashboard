@@ -34,3 +34,25 @@ options: {
     }
 }
 });
+
+
+
+// funcion para cambiar de panel
+
+function showOptionSelected(id) {
+    // Ocultar todos los paneles
+    const paneles = document.querySelectorAll('.panel');
+    paneles.forEach(panel => {
+    panel.classList.remove('visible');
+    });
+    const buttons = document.querySelectorAll('.menuOption');
+buttons.forEach(button => {
+    button.classList.remove('selected');
+});
+
+    // Mostrar solo el panel seleccionado
+    const panelSeleccionado = document.getElementById(id);
+    panelSeleccionado.classList.add('visible');
+    const selectedButton = document.querySelector(`button[onclick="showOptionSelected('${id}')"]`);
+    selectedButton.classList.add('selected');
+}
