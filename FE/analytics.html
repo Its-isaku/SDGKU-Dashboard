@@ -102,9 +102,45 @@
         <main>
             <div class="principalDashboard">
                 <!--? Empezar a trabajar aqui -->
-                <h2>Students Analytics</h2>
-                <canvas id="studentChart"></canvas>
                 
+                <div class="principalAnalytics">
+                    
+                    <div class="analyticsSurveyInfo">
+                        <h2>Analytics Dashboard</h2>
+                    </div>
+                    <div class="analyticsFilters"></div>
+                    <div class="analyticsMenu">
+                        <button onclick="showOptionSelected('panel1')" class="menuOption">
+                            <h3>Overview</h3>
+                        </button>
+                        <button onclick="showOptionSelected('panel2')" class="menuOption">
+                            <h3>Response Analysis</h3>
+                        </button>
+                        <button onclick="showOptionSelected('panel3')" class="menuOption">
+                            <h3>Comparison</h3>
+                        </button>
+                        <button onclick="showOptionSelected('panel4')" class="menuOption">
+                            <h3>Reports</h3>
+                        </button>
+                    </div>
+                    <div class="analyticsGraphics">
+                        <div id="panel1" class="panel visible">
+                            <div class="overview visible">
+                                <!-- canvas que dio la profe: -->
+                                <!-- <canvas id="studentChart"></canvas> -->
+                            </div>
+                        </div>
+                        <div id="panel2" class="panel">
+                            <div class="responseAnalysis"></div>
+                        </div>
+                        <div id="panel3" class="panel">
+                            <div class="comparison"></div>
+                        </div>
+                        <div id="panel4" class="panel">
+                            <div class="reports"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>

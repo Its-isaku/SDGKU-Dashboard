@@ -384,7 +384,7 @@ input:focus {
 @media screen and (max-width: 960px) {
     main {
         grid-column: 1;
-        padding-top: 1rem;
+        
         height: auto;
         min-height: calc(100vh - 70px);
     }
