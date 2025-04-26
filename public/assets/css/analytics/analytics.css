@@ -10,26 +10,32 @@
 .analyticsMenu {
     background-color: var(--gray-300);
     display: flex;
-    width: 70%;
+    width: 100%; /* Cambia a 100% */
     gap: 0.5rem;
     border-radius: var(--border-radius);
     padding: 5px;
+    justify-content: center;
 }
 
 .analyticsMenu button{
     background-color: var(--gray-300);
-    width: 100px;
-    
+    /* width: 100px; */ /* Elimina el ancho fijo */
+    flex: 1; /* Asegura que todos los botones ocupen el mismo espacio */
+    min-width: 120px; /* Opcional: asegura un ancho mínimo */
+    max-width: 220px; /* Opcional: limita el ancho máximo */
 }
+
 .menuOption {
     margin: 0;
-    padding: 4px 10px;
+    padding: 8px 16px; /* Más espacio para el texto */
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
-    flex: 1;
-    font-size: 0.9rem;
+    font-size: 1rem;
     text-align: center;
+    white-space: nowrap; /* Evita salto de línea */
+    font-weight: bold;
+    width: 100%; /* Ocupa todo el ancho del botón padre */
 }
 
 /* principal */
@@ -46,7 +52,6 @@
     height: auto;
     width: 100%;
     position: relative;
-   
 }
 
 .analyticsMenu{
@@ -174,10 +179,12 @@ width: 100%;
 }
 .menuOption.selected {
     background-color: var(--gray-200);
-    color: white; /* Texto blanco para contraste */
+    color: white; 
 }
 
-
+.tempWidth{
+    width: 55% !important;
+}
 
 /* media */
 

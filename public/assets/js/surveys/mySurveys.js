@@ -13,7 +13,7 @@ const Surveys = [
     {
         title: "Teacher-Eval",
         status:"Inactive",
-        description: "Teacher-Evaluation - Programming Fundamentals",
+        description: "Teacher-Evaluation - Programming Fundamentals", 
         notes: "Please evaluate your instructor for this course",
         createdDate: "03/23/2025",
         expires: "4/23/2025",

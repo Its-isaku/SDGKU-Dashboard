@@ -11,7 +11,7 @@
 .mySurveysHeader{
 
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; 
     margin-bottom: 1.5rem;
     align-items: center;
     gap: 1rem;
@@ -24,7 +24,7 @@
     flex-direction: column;
     gap: 10px;
     margin-bottom: 5px;
-    width: 600px;
+    width: 60%;
 
 }
 .dashboardDescription h2{
@@ -33,7 +33,6 @@
 
 .searchAndCreate{
     display: flex;
-    /*flex-direction: row;*/
     gap: 10px;
     justify-content: flex-end;
     align-items: center;
@@ -103,55 +102,6 @@
     padding: 0;
     display: inline-block;
     line-height: 1;
-}
-/* Estilos para botones active surveys e inactive surveys */
-
-.mySurveyOptions {
-    display: flex;
-    width: 100%;
-    border-bottom: none;
-    margin: 1rem 0;
-}
-
-.surveyOption {
-    background-color: #f8f9fa;
-    color: #495057;
-    padding: 0.75rem 1.5rem;
-    border: 1px solid #dee2e6;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 500;
-    min-width: 150px;
-    text-align: center;
-    margin-right: 4px;
-    border-radius: 4px 4px 0 0;
-}
-
-.surveyOption h3 {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-.selectedOption {
-    background-color: white;
-    color: #212529;
-    font-weight: 600;
-    position: relative;
-    border-bottom: 3px solid #900;
-}
-
-.selectedOption:after {
-    content: none;
-}
-
-.selectedOption:hover {
-    background-color: white;
-}
-
-/* Remove this conflicting style */
-.surveyOption.selected {
-    display: none;
 }
 
 /* Estilos para las encuestas activas */
