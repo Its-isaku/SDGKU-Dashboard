@@ -1,0 +1,221 @@
+/*!  Cambiar si se necesita alterar algo del main en el display */
+.principalDashboard{
+    overflow: auto;
+    margin-left: 250px;
+    width: calc(100% - 250px); 
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+main {
+    grid-area: main;
+    display: grid;
+    grid-template-areas:
+        "title"
+        "summary"
+        "accesos";
+    grid-template-rows: auto auto 1fr;
+    padding-left: 40px;
+    box-sizing: border-box;
+}
+
+
+.titulo {
+    grid-area: title;
+    display: inline-block; 
+    margin-top: 2rem;
+}
+
+.contenedorSummary {
+    grid-area: summary;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    justify-content: left;
+    margin-top: 20px;
+    padding-right: 35px; 
+}
+
+.summaryAccesos {
+    background: var(--neutral-light);
+    border-radius: 10px;
+    padding: 1.5rem;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    box-shadow: var(--box-shadow);
+}
+
+.summaryAccesos h2 {
+    font-size: 1.2rem;
+    color: var(--gray-800);
+    margin: 0;
+}
+
+.summaryAccesos h3 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0.5rem 0 0 0;
+    line-height: 1;
+}
+
+.summaryAccesos small {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    display: block;
+    margin-top: 0.25rem;
+}
+
+.contenedorAccesos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 25px;
+    margin-top: 50px;
+    padding-right: 35px;
+    padding-bottom: 10px;
+}
+
+.contenedorAccesos button {
+    width: 100%; 
+    height: 40px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 55px;
+    background: transparent;
+    border: 1px solid var(--neutral-dark);
+    border-radius: 5px;
+    /* transition: transform 0.2s ease-in-out; */
+    color: var(--neutral-dark);
+    text-align: center;
+    padding: 10px;
+}
+
+.tempClass small{
+    color: var(--neutral-light) !important;
+    font-size: 15px;
+}
+
+.accesosDashboard {
+    background: var(--neutral-light);
+    box-shadow: var(--box-shadow);
+    border-radius: 10px;
+    display: inline-block;
+    min-width: 0;
+    transition: all 0.2s ease-in-out;
+    padding: 20px;
+}
+
+.accesosDashboard small {
+    color: var(--gray-800);
+}
+
+.accesosDashboard button:hover {
+    background: var(--supplementary-color);
+    color: var(--neutral-light);
+    border: none; 
+}
+
+
+#createSurvey{
+    background: linear-gradient(to top right, #551111, #F13939);
+    color: white;
+}
+
+#createSurvey button{
+    background: white;
+    color: var(--primary-dominant);
+    border: 0;
+}
+
+
+
+@media (max-width: 1110px) { 
+    .principalDashboard {
+        margin-left: 0;
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    .contenedorSummary {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .summaryAccesos {
+        padding: 1.25rem;
+    }
+    
+    .summaryAccesos h3 {
+        font-size: 2rem;
+    }
+
+    .contenedorAccesos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) { 
+    main {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .summaryAccesos {
+        padding: 1rem;
+    }
+    
+    .summaryAccesos h3 {
+        font-size: 1.8rem;
+    }
+    
+    .summaryAccesos h2 {
+        font-size: 1.1rem;
+    }
+    
+    .summaryAccesos small {
+        font-size: 0.85rem;
+    }
+
+    .contenedorAccesos {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-right: 0;
+    }
+
+    .accesosDashboard {
+        width: 100%;
+    }
+
+    .contenedorAccesos button {
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 480px) { 
+    .titulo h2 {
+        font-size: 1.5rem;
+    }
+
+    .titulo small {
+        font-size: 0.9rem;
+    }
+
+    .summaryAccesos h3 {
+        font-size: 2rem;
+    }
+
+    .summaryAccesos h2 {
+        font-size: 1.2rem;
+    }
+
+    .accesosDashboard h2 {
+        font-size: 1.2rem;
+    }
+
+    .accesosDashboard small {
+        font-size: 0.9rem;
+    }
+}

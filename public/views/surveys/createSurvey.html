@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--? FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!--? Main Style -->
+    <link rel="stylesheet" href="../../assets/css/app/mainStyle.css">
+    <!--? CreateSurvey Style -->
+    <link rel="stylesheet" href="../../assets/css/surveys/createSurvey.css"> 
+    <title>SDGKU CreateSurvey</title>
+</head>
+    
+<body> 
+    <!--? Header  -->
+    <header class="header">
+        <div class="headerLogo">
+            
+            <img src="../../assets/images/SDGKU_Small_Logo.png" alt="logo" class="small-logo">
+            <div class="full-logo"></div>
+            <h1 class="header-title">SDGKU Survey Platform</h1>
+        </div>
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="headerBtn">
+            <button class="headerBtnOut">Logout</button>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <aside>
+            <nav>
+                <a href="../app/dashboard.html" class="sideLink">
+                    <i class="fa-solid fa-house-user"></i>
+                    <p>Dashboard</p>
+                </a>
+                
+                <a href="mySurveys.html" class="sideLink">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    <p>My Surveys</p>
+                </a>
+                
+                <a href="createSurvey.html" class="sideLink selectLink">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <p>Create Survey</p>
+                </a>
+                
+                <a href="../analytics/analytics.html" class="sideLink">
+                    <i class="fa-solid fa-square-poll-vertical"></i>
+                    <p>Analytics</p>
+                </a>
+                
+                <a href="../app/users.html" class="sideLink">
+                    <i class="fa-solid fa-users"></i>
+                    <p>Users</p>
+                </a>
+                
+                <a href="../app/settings.html" class="sideLink">
+                    <i class="fa-solid fa-cog"></i>
+                        <p>Settings</p> 
+                </a>
+
+                <div class="asideLogOutBtn">
+                    <button class="asideBtnOut">Logout</button>
+                </div>
+            </nav>
+            
+            <div class="profile">
+                <div class="profile-img">
+                    <!--? Imagen del Usuario(if no image, use icon) -->
+                    <i class="fa-solid fa-circle-user" id = "userFoto"></i>
+                </div>
+                
+                <div class="profile-info">
+                    <h4>
+                        <!--? Rol del Usuario -->
+                        Rol del Usuario
+                    </h4>
+
+                    <small>
+                        <!--? Nombre del Usuario -->
+                        Nombre del Usuario
+                    </small>
+                </div>
+            </div>
+        </aside>
+
+        <main>
+            <div class="principalDashboard" id="principalDashboard">
+                <!--? Empezar a trabajar aqui -->    
+
+                <div class="titulo">
+                    <h2 id="createSurveyTitle">Create new survey</h2>
+                </div>
+
+                <!--? Seccion para opciones -->
+                <div class="createSurveyOptions" id="createSurveyOptions">
+                    <div class="surveyOption" id="optionSurveyDetails">
+                        <h3>Survey Details</h3>
+                    </div>
+                    
+                    <div class="surveyOption" id="optionQuestions">
+                        <h3>Questions</h3>
+                    </div>
+
+                    <div class="surveyOption" id="optionPreview">
+                        <h3>Preview</h3>
+                    </div>
+                </div>
+                
+                <!--? Survey Details -->
+                <div class="SurveyInfo" id="surveyDetailsSection">
+                    <div class="infoTitle">
+                        <h3>Survey Information</h3>
+                        <p>Enter the basic details for your survey</p>
+                    </div>
+
+                    <div class="infoContent">
+                        <div class="infoInput">
+                            <label for="surveyTitle">Survey Title</label>
+                            <input type="text" id="surveyTitle" placeholder="Enter survey name" required>
+                        </div>
+
+                        <div class="infoInput">
+                            <label for="surveyDescription">Description</label>
+                            <textarea id="surveyDescription" placeholder="Enter survey description" required></textarea>
+                        </div>
+
+                        <div class="infoInput">
+                            <label for="surveyType">Survey Type</label>
+                            <select id="surveyType" required>
+                                <option value="" disabled selected hidden>Enter survey type</option>
+                                <option value="1">Pre-test</option>
+                                <option value="2">Post-test</option>
+                                <option value="3">Finals Assesment</option>
+                                <option value="4">Graduation Survey</option>
+                                <option value="5">Course Evaluation</option>
+                            </select>
+                        </div>
+
+                        <button id="btnContinueToQuestions">Continue to Questions</button>
+                    </div>
+                </div>
+                
+                <!--? Questions -->
+                <div class="SurveyQuestions" id="surveyQuestionsSection"> 
+                    <div class="infoTitle">
+                        <h3>Survey Questions</h3>
+                        <p>Enter the basic details for your survey</p>
+                    </div>
+
+                    <div class="questionFormsContainer" id="questionFormsContainer"></div>
+
+                    <div class="btnQuestion">
+                        <button class="btnAddQuestion" id="btnAddQuestion"><i class="fa-solid fa-plus"></i> Add Question</button>
+                        
+                        <div class="QuestionEndBtn">
+                            <button class="backBtn" id="btnBackToDetails">Back to details</button>
+                            <button class="nextBtn" id="btnPreviewSurvey">Preview Survey</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--? Preview --> 
+                <div class="SurveyPreview" id="surveyPreviewSection">
+                    <div class="infoTitle">
+                        <h3>Survey Preview</h3>
+                        <p>Review your survey before publishing</p>
+                    </div>
+
+                    <div class="PreviewContent">
+                        <div class="infoInput emailInput">
+                            <label for="studentEmail">Enter Your email</label>
+                            <input type="text" id="studentEmail" placeholder="e.g., student@sdgku.com" required>
+                        </div>
+
+                        <div class="previewContainer" id="previewContainer">
+
+                        </div> 
+                    </div>
+
+                    <div class="btnQuestion">
+                        <div class="QuestionEndBtn">
+                            <button class="backBtn" id="btnBackToQuestions">Back to Questions</button>
+                            <button class="nextBtn" id="btnCreateSurvey">Create Survey</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script type="module" src="../../assets/js/surveys/createSurvey.js"></script>
+    <script src="../../assets/js/app/main.js"></script>
+    <script src="../../assets/js/auth/logout.js"></script>
+</body>
+</html>

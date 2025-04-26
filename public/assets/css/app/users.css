@@ -1,0 +1,378 @@
+/*!  Cambier si se necesita alterar algo del main en el display */
+.principalDashboard{
+    overflow: auto;
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    height: auto;
+    overflow-x: hidden;
+    padding: 30px;
+}
+
+.user-management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem
+}
+
+.user-management-header h2 {
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+    color: #333;
+}
+
+.user-management-header p {
+    color: var(--gray-700);
+}
+
+/*search users box*/
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.search-container {
+    position: relative;
+    flex-grow: 1;
+    min-width: 200px;
+}
+
+.search-container i {
+    position: absolute;
+    top: 30%;
+    left: 0.75rem;
+    color: var(--gray-500);
+}
+
+#search-input {
+    padding: 0.5rem 0.75rem 0.5rem 2rem;
+    border-radius: var(--border-radius);
+    width: 100%;
+    max-width: 250px;
+}
+
+/*users container*/
+.users-container {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+}
+
+.users-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.users-header h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.users-header p {
+    font-size: 0.875rem;
+}
+
+.users-table-container {
+    overflow-x: auto;
+}
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+th {
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 0.1rem 0.75rem;
+    border-radius: 50px;
+    font-weight: 400;
+}
+
+.role-admin {
+    background-color: var(--secondary-dominant);
+    color: white;
+}
+
+.role-faculty {
+    background-color: var(--supplementary-color);
+    color: white;
+}
+
+/*buttons*/
+.action-btn {
+    background: transparent;
+    color: var(--gray-700);
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.action-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--gray-900);
+}
+
+.action-btn #trashcan-users {
+    color: var(--error-color);
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--supplementary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--supplementary-dark);
+}
+
+.btn-cancel {
+    background-color: var(--secondary-dominant);
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: var(--primary-dominant);
+}
+
+.btn-danger {
+    background-color: var(--error-color);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #a01414;
+}
+
+/*modal windows*/
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    animation: modalFadeIn 0.3s;
+    margin: 0 1rem;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--gray-200);
+    position: relative;
+    padding-right: 2rem;
+}
+
+.modal-header h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.modal-header p {
+    color: var(--gray-600);
+    font-size: 0.875rem;
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--gray-500);
+}
+
+.modal-body {
+    padding: 1.25rem;
+}
+
+/*modal forms*/
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.625rem;
+    border-radius: var(--border-radius);
+    /* border: none; */
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+/*notification*/
+/*center notification*/
+.notification {
+    position: fixed;
+    top: 1rem;
+    left: 5rem;
+    padding: 1rem;
+    border-radius: 4px;
+    color: white;
+    font-weight: 500;
+    z-index: 2000;
+    display: none;
+    animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.notification.success {
+    background-color: #28a745;
+}
+
+.notification.error {
+    background-color: #dc3545;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+/* responsive */
+@media screen and (max-width: 992px) {
+    .principalDashboard {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px;
+    }
+
+    .user-management-header {
+    flex-direction: column;
+    align-items: flex-start;
+    }
+
+    .user-actions {
+    width: 100%;
+    justify-content: space-between;
+    }
+
+    #search-input {
+    max-width: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .user-actions {
+    flex-direction: column;
+    align-items: stretch;
+    }
+
+    .search-container {
+    width: 100%;
+    max-width: none;
+    }
+
+    #search-input {
+    max-width: none;
+    }
+
+    #add-user-btn {
+    width: 100%;
+    }
+
+    .form-actions {
+    justify-content: center;
+    }
+
+    .form-actions button {
+    flex: 1;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .principalDashboard {
+    padding: 15px;
+    }
+
+    .user-management-header h2 {
+    font-size: 1.5rem;
+    }
+
+    .users-header {
+    padding: 1rem;
+    }
+
+    th,
+    td {
+    padding: 0.75rem;
+    }
+}

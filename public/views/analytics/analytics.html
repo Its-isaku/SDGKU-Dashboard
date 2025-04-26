@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--? FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!--? Main Style -->
+    <link rel="stylesheet" href="../../assets/css/app/mainStyle.css">
+    <!--? analytics Style -->
+    <link rel="stylesheet" href="../../assets/css/analytics/analytics.css"> 
+    <title>SDGKU analytics</title>
+</head>
+    
+<!--  -->
+<body> 
+    <!--? Header  -->
+    <header class="header">
+        <div class="headerLogo">
+            
+            <img src="../../assets/images/SDGKU_Small_Logo.png" alt="logo" class="small-logo">
+            <div class="full-logo"></div>
+            <h1 class="header-title">SDGKU Survey Platform</h1>
+        </div>
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="headerBtn">
+            <button class="headerBtnOut">Logout</button>
+        </div>
+    </header>
+    <div class="dashboard-container">
+        <aside>
+            <nav>
+                <a href="../app/dashboard.html" class="sideLink" >
+                    <i class="fa-solid fa-house-user"></i>
+                    <p>Dashboard</p>
+                </a>
+                
+                <a href="../surveys/mySurveys.html" class="sideLink">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    <p>My Surveys</p>
+                </a>
+                
+                <a href="../surveys/createSurvey.html" class="sideLink">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <p>Create Survey</p>
+                </a>
+                
+                <a href="../analytics/analytics.html" class="sideLink selectLink">
+                    <i class="fa-solid fa-square-poll-vertical"></i>
+                    <p>Analytics</p>
+                </a>
+                
+                <a href="../app/users.html" class="sideLink">
+                    <i class="fa-solid fa-users"></i>
+                    <p>Users</p>
+                </a>
+                
+                <a href="../app/settings.html" class="sideLink">
+                    <i class="fa-solid fa-cog"></i>
+                        <p>Settings</p> 
+                </a>
+                <div class="asideLogOutBtn">
+                    <button class="asideBtnOut">Logout</button>
+                </div>
+            </nav>
+            
+            <div class="profile">
+                <div class="profile-img">
+                    <!--? Imagen del Usuario(if no image, use icon) -->
+                    <i class="fa-solid fa-circle-user" id = "userFoto"></i>
+                </div>
+                
+                <div class="profile-info">
+                    <h4>
+                        <!--? Rol del Usuario -->
+                        Rol del Usuario
+                    </h4>
+
+                    <small>
+                        <!--? Nombre del Usuario -->
+                        Nombre del Usuario
+                    </small>
+                </div>
+            </div>
+        </aside>
+
+        <main>
+            <div class="principalDashboard">
+                <!--? Empezar a trabajar aqui -->
+                
+                <div class="principalAnalytics">
+                    
+                    <div class="analyticsSurveyInfo">
+                        <div class="headInfo">
+                            <h2>Analytics Dashboard</h2>
+                        <small>
+                            View insights and statistics  from your surveys
+                        </small>
+                        </div>
+                        
+                        <div class="surveyCards">
+                            <div class=" surveyTotal">
+                                <p>Total Surveys</p>
+                                <b id="surveyTotalId">
+                                    24
+                                </b>
+                                <small id="totalLastMonth"> 
+                                    12% from last month
+                                </small>
+                            </div>
+                            <div class=" surveyResponse">
+                                <p>Response Rate</p>
+                                <b id="responseRatelId">
+                                    87%
+                                </b>
+                                <small id="responseLastMonth"> 
+                                    15% from last month
+                                </small>
+                            </div>
+                            <div class=" surveyTime">
+                                <p>Avg. Completion Time</p>
+                                <b id="timeRatelId">
+                                    4m 32s
+                                </b>
+                                <small id="timeLastMonth"> 
+                                    -30s from last month
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="analyticsFilters">
+                        <div class="analyticsHeadInfo">
+                            <h3>Analytics Filters</h3>
+                            <small>Filter survey results by program, date, and type</small>
+                        </div>
+                        <div class="analyticsSelections">
+                            <div class="programSelect">
+                                <label for="program">
+                                    <b>
+                                        Program
+                                    </b>
+                                </label> 
+                                <select name="program" id="selectProgramId">
+                                    <option value="opcion0">All programs</option>  
+                                    <option value="opcion1">Opcion 1</option>    
+                                    <option value="opcion2">Opcion 2</option>    
+                                    <option value="opcion3">Opcion 3</option>    
+                                    <option value="opcion4">Opcion 4</option>    
+                                </select>
+                            </div>
+                            
+                            <div class="surveyTypeSelect">
+                                <label for="surveyType">
+                                    <b>
+                                        Survey Type
+                                    </b>
+                                </label> 
+                                <select name="surveyType" id="selectTypeId">
+                                    <option value="opcion0">All Types</option>  
+                                    <option value="opcion1">Opcion 1</option>    
+                                    <option value="opcion2">Opcion 2</option>    
+                                    <option value="opcion3">Opcion 3</option>  
+                                    <option value="opcion4">Opcion 4</option>
+                                </select>
+                            </div>
+                            
+                            <div class="timePeriodSelect">
+                                <label for="timePeriod">
+                                    <b>Time Period
+                                    </b>
+                                </label> 
+                                <select name="timePeriod" id="selectTimeId">
+                                    <option value="opcion0">Custom Range</option>  
+                                    <option value="opcion1">Opcion 1</option>    
+                                    <option value="opcion2">Opcion 2</option>    
+                                    <option value="opcion3">Opcion 3</option>    
+                                    <option value="opcion4">Opcion 4</option>  
+                                </select>
+                            </div>
+                            
+                        </div>
+                    <button class="applyFiltersBtn">
+                        Apply Filters
+                    </button>
+                    </div>
+                    <div class="analyticsMenu">
+                        <button onclick="showOptionSelected('panel1')" class="menuOption">
+                            <h3>Overview</h3>
+                        </button>
+                        <button onclick="showOptionSelected('panel2')" class="menuOption">
+                            <h3>Response Analysis</h3>
+                        </button>
+                        <button onclick="showOptionSelected('panel3')" class="menuOption">
+                            <h3>Comparison</h3>
+                        </button>
+                        <button onclick="showOptionSelected('panel4')" class="menuOption">
+                            <h3>Reports</h3>
+                        </button>
+                    </div>
+                    <div class="analyticsGraphics">
+                        <div id="panel1" class="panel visible">
+                            <div class="overview visible">
+                                <!-- canvas que dio la profe: -->
+                                <!-- <canvas id="studentChart"></canvas> -->
+                            </div>
+                        </div>
+                        <div id="panel2" class="panel">
+                            <div class="responseAnalysis"></div>
+                        </div>
+                        <div id="panel3" class="panel">
+                            <div class="comparison"></div>
+                        </div>
+                        <div id="panel4" class="panel">
+                            <div class="reports"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../assets/js/app/main.js"></script>
+    <script src="../../assets/js/analytics/analytics.js"></script>
+    <script src="../../assets/js/auth/logout.js"></script>
+</body>
+</html>
