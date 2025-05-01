@@ -1,0 +1,86 @@
+
+.comparisonContainer {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    padding: 20px;
+}
+
+.comparisonKnowledge{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    height: 500px;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: var(--border-radius);
+    background-color: var( --neutral-light);
+    box-shadow: var(--box-shadow);
+
+}
+.comparisonFilter{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    height: auto;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: var(--border-radius);
+    background-color: var( --neutral-light);
+    box-shadow: var(--box-shadow);
+   
+}
+
+.comparisonKnowledge h1{
+    font-size: var(--text-heading);
+    color: var(--neutral-dark);
+}
+.comparisonKnowledge p{
+    font-size: var(--text-subheading);
+    color: var(--neutral-dark);
+}
+
+.applyFiltersBtn{
+    text-align: center;
+    width: 150px;
+    background-color: var(--secondary-dominant);
+    margin-top: 20px;
+}
+
+
+/* Comparison Filters */
+
+.surveyComparison h1{
+    margin: 0;   
+    font-size: var(--text-heading);
+    color: var(--neutral-dark);
+}
+
+.comparisonSelections{
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+}
+.courseSelect{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.comparisonSelections select {
+    min-width: 200px; 
+    width: 100%;
+    height: 30px;
+    border-radius: 5px;
+}
+
+.comparisonContainer button {
+    text-align: center;
+    width: 150px;
+    background-color: var(--secondary-dominant);
+}
