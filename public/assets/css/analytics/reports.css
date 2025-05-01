@@ -1,0 +1,93 @@
+.reportCardsContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    padding: 20px;
+}
+
+.reportCard {
+    background: var(--neutral-light);
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.reportCard:hover {
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+}
+
+.reportTags {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.reportTag {
+    padding: 0.25rem 0.5rem;
+    border-radius: 5px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: white;
+}
+
+.reportTag.pre-course {
+    background-color: #3498db;
+}
+
+.reportTag.teacher-eval {
+    background-color: var(--supplementary-color);
+}
+
+.reportTag.inactive {
+    background-color: var(--error-color);
+}
+
+.reportCard h4 {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.reportCard p {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.reportCardDetails {
+    font-size: 0.8rem;
+    color: #777;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 1rem;
+}
+
+.reportCardDetails i {
+    margin-right: 5px;
+}
+
+.downloadBtn {
+    background-color: var(--primary-dominant);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.6rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.downloadBtn:hover {
+    background-color: var(--secondary-dominant);
+}
+
+@media (max-width: 768px) {
+    .reportCardsContainer {
+        grid-template-columns: 1fr;
+    }
+}
