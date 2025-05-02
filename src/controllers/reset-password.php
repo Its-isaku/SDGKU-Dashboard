@@ -12,7 +12,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$input = json_decode(file_get_contents('php://input'), true); // Thats importat, because this convert text to json, without this dont work
+$input = json_decode(file_get_contents('php://input'), true); 
 $email = $input['email'] ?? null;
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$email) {

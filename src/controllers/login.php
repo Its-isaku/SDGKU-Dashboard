@@ -10,7 +10,7 @@ require '../config/config.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $input = json_decode(file_get_contents("php://input"), true);  // Thats important, because this convert text to json, without this dont work
+    $input = json_decode(file_get_contents("php://input"), true); 
 
     if (!isset($input['email']) || !isset($input['password'])) {
         echo json_encode(['success' => false, 'message' => 'Missing email or password.']);

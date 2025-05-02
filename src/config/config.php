@@ -1,8 +1,8 @@
 <?php
-$host = 'localhost'; //? local IP: 192.168.1.82 | public IP: 187.250.25.76
+$host = ''; 
 $db   = 'sdgku';
-$user = 'root';
-$pass = 'Paola123';
+$user = '';
+$pass = '';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
