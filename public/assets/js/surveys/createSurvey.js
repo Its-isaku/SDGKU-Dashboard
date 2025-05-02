@@ -4,7 +4,8 @@ const surveyData = {
     details: {
         title: '',
         description: '',
-        type: ''
+        type: '',
+        date: '',
     },
     questions: []
 };
@@ -57,10 +58,12 @@ document.getElementById('btnContinueToQuestions').addEventListener('click', () =
     const title = document.getElementById('surveyTitle').value.trim();
     const description = document.getElementById('surveyDescription').value.trim();
     const type = document.getElementById('surveyType').value;
+    const date = document.getElementById('surveyDate').value.trim();
 
     surveyData.details.title = title;
     surveyData.details.description = description;
     surveyData.details.type = type;
+    surveyData.details.date = date; 
 });
 
 
@@ -99,10 +102,12 @@ function createQuestionForm(id) {
                 <div class="QuestionInput optionInput">
                     <input type="text" placeholder="Enter option" required>
                     <i class="fa-solid fa-trash"></i>
+                    <i class="fa-solid fa-circle-check"></i>
                 </div>
                 <div class="QuestionInput optionInput">
                     <input type="text" placeholder="Enter option" required>
                     <i class="fa-solid fa-trash"></i>
+                    <i class="fa-solid fa-circle-check"></i>
                 </div>
             </div>
             <button class="btnAddOption" data-id="${id}"><i class="fa-solid fa-plus"></i> add Option</button>
