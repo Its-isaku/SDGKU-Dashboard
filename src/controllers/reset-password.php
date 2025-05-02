@@ -1,6 +1,8 @@
 <?php
-require '../config/config.php';
-require _DIR_ . '/../vendor/autoload.php';
+require '../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -38,8 +40,8 @@ if ($user) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'paola.gomez.faustino@uabc.edu.mx';
-        $mail->Password = ' ';
+        $mail->Username = $_ENV['MAIL_USERNAME'];
+        $mail->Password = $_ENV['MAIL_PASSWORD'];
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
