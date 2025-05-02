@@ -240,6 +240,7 @@
                         <div id="panel2" class="panel">
                             <div class="responseAnalysis">
                                 <div class="comparisonContainer">
+                                    <!-- Filtros -->
                                     <div class="comparisonFilter">
                                         <div class="surveyComparison">
                                             <h1>Response Analysis</h1>
@@ -258,6 +259,19 @@
                                                     <option value="s4">Option 4</option>    
                                                 </select>
                                             </div>
+                                
+                                            <div class="courseSelect">
+                                                <label for="dateRange">
+                                                    <b>Date Range</b>
+                                                </label> 
+                                                <select name="dateRange" id="selectDateRangeId">
+                                                    <option value="last7">Last 7 Days</option>
+                                                    <option value="last30" selected>Last 30 Days</option>
+                                                    <option value="thisMonth">This Month</option>
+                                                    <option value="custom">Custom Range</option>
+                                                </select>
+                                            </div>
+                                
                                             <div class="courseSelect">
                                                 <label for="groupBy">
                                                     <b>Group By</b>
@@ -271,11 +285,13 @@
                                         </div>
                                     </div>
                                 
+                                    <!-- Gráfico (vacío por ahora) -->
                                     <div class="comparisonKnowledge">
                                         <h1>Question Analysis</h1>
                                         <p>Average ratings grouped by selected option</p>
                                     </div>
                                 </div>
+                                
                                 
                             </div>
                         </div>
