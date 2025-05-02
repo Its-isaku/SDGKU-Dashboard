@@ -239,7 +239,44 @@
 
                         <div id="panel2" class="panel">
                             <div class="responseAnalysis">
-
+                                <div class="comparisonContainer">
+                                    <div class="comparisonFilter">
+                                        <div class="surveyComparison">
+                                            <h1>Response Analysis</h1>
+                                            <p>View average responses grouped by question or participant</p>
+                                        </div>
+                                        <div class="comparisonSelections">
+                                            <div class="courseSelect">
+                                                <label for="surveyChoice">
+                                                    <b>Select Survey</b>
+                                                </label> 
+                                                <select name="surveyChoice" id="selectSurveyId">
+                                                    <option value="s0">CS101 - Course Evaluation</option>  
+                                                    <option value="s1">Option 1</option>    
+                                                    <option value="s2">Option 2</option>    
+                                                    <option value="s3">Option 3</option>    
+                                                    <option value="s4">Option 4</option>    
+                                                </select>
+                                            </div>
+                                            <div class="courseSelect">
+                                                <label for="groupBy">
+                                                    <b>Group By</b>
+                                                </label> 
+                                                <select name="groupBy" id="selectGroupById">
+                                                    <option value="question">Question</option>  
+                                                    <option value="user">User</option>    
+                                                    <option value="type">Type</option>    
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="comparisonKnowledge">
+                                        <h1>Question Analysis</h1>
+                                        <p>Average ratings grouped by selected option</p>
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
 
