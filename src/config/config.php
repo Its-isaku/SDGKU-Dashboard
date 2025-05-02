@@ -1,8 +1,22 @@
 <?php
-$host = ''; 
-$db   = 'sdgku';
-$user = '';
-$pass = '';
+// load environment variables from .env file
+$envFile = __DIR__ . '/../../.env';
+if (file_exists($envFile)) {
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
+            list($key, $value) = explode('=', $line, 2);
+            $_ENV[trim($key)] = trim($value);
+            putenv(sprintf('%s=%s', trim($key), trim($value)));
+        }
+    }
+}
+
+$host = $_ENV['DB_HOST'] ?? ''; 
+$db   = $_ENV['DB_NAME'] ?? '';
+$user = $_ENV['DB_USER'] ?? '';
+$pass = $_ENV['DB_PSW'] ?? '';
+$port = $_ENV['DB_PORT'] ?? '3306'; 
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
