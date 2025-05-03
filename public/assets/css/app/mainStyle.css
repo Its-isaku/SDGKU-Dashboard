@@ -12,6 +12,7 @@
     --gradient-primary: linear-gradient(to top right, var(--supplementary-color), #BC1D20);
     --gradient-secondary: linear-gradient(to top right, #F13939, #551111);
     --success-color: #10b981;
+    --success-color-dark: #05724e;
     --gray-100: #f1f5f9;
     --gray-200: #e2e8f0;
     --gray-300: #cbd5e1;

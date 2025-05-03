@@ -13,7 +13,7 @@
 </head>
     
 <body> 
-    <!--? Header  -->
+    <!--? Header  --> 
     <header class="header">
         <div class="headerLogo">
             
@@ -127,22 +127,24 @@
                             <label for="surveyDescription">Description</label>
                             <textarea id="surveyDescription" placeholder="Enter survey description" required></textarea>
                         </div>
-
-                        <div class="infoInput">
-                            <label for="surveyType">Survey Type</label>
-                            <select id="surveyType" required>
-                                <option value="" disabled selected hidden>Enter survey type</option>
-                                <option value="1">Pre-test</option>
-                                <option value="2">Post-test</option>
-                                <option value="3">Finals Assesment</option>
-                                <option value="4">Graduation Survey</option>
-                                <option value="5">Course Evaluation</option>
-                            </select>
-                        </div>
-
-                        <div class="infoInput">
-                            <label for="surveyDate">Survey Expire Date</label>
-                            <input type="date" id="surveyDate" required>
+                        
+                        <div class="infoTypeDate">
+                            <div class="infoInput">
+                                <label for="surveyType">Survey Type</label>
+                                <select id="surveyType" required>
+                                    <option value="" disabled selected hidden>Enter survey type</option>
+                                    <option value="1">Pre-test</option>
+                                    <option value="2">Post-test</option>
+                                    <option value="3">Finals Assesment</option>
+                                    <option value="4">Graduation Survey</option>
+                                    <option value="5">Course Evaluation</option>
+                                </select>
+                            </div>
+    
+                            <div class="infoInput">
+                                <label for="surveyDate">Survey Expire Date</label>
+                                <input type="datetime-local" id="surveyDate" required>
+                            </div>
                         </div>
 
                         <button id="btnContinueToQuestions">Continue to Questions</button>
@@ -156,7 +158,9 @@
                         <p>Enter the basic details for your survey</p>
                     </div>
 
-                    <div class="questionFormsContainer" id="questionFormsContainer"></div>
+                    <div class="questionFormsContainer" id="questionFormsContainer">
+
+                    </div>
 
                     <div class="btnQuestion">
                         <button class="btnAddQuestion" id="btnAddQuestion"><i class="fa-solid fa-plus"></i> Add Question</button>
@@ -176,9 +180,17 @@
                     </div>
 
                     <div class="PreviewContent">
-                        <div class="infoInput emailInput">
-                            <label for="studentEmail">Enter Your email</label>
-                            <input type="text" id="studentEmail" placeholder="e.g., student@sdgku.com" required>
+                        <div class="emailContainer">
+                            <div class="emailInput">
+                                <label for="studentEmail">Enter Your email</label>
+                                <input type="text" id="studentEmail" placeholder="e.g., student@sdgku.com" required>
+                            </div>
+                            <div>
+                                <label for="studentEmail">Expiration Date</label>
+                                <div class="expirationDate" id="expirationDatePreview">
+                                    <!-- Expiration Date info will appear here -->
+                                </div>
+                            </div>
                         </div>
 
                         <div class="previewContainer" id="previewContainer">

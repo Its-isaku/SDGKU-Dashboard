@@ -1,4 +1,4 @@
-/*!  Cambier si se necesita alterar algo del main en el display */
+/* ? Dashboard */
 .principalDashboard {
     overflow-y: auto; 
     overflow-x: hidden;
@@ -8,8 +8,12 @@
     width: calc(100% - 250px);
     min-height: calc(100vh - 70px);
 }
+/** Dashboard Media*/
 
-/*? Survey Detail */
+
+/**<--------------------------->*/
+
+/* ? SurveyInfo */
 .SurveyInfo{
     display: flex;
     flex-direction: column;
@@ -29,6 +33,14 @@
 
 .infoTitle p {
     margin-top: 0;
+}
+
+.questionFormsContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 99%;
+    font-weight: bold;
 }
 
 .infoContent{
@@ -67,6 +79,16 @@
     
 }
 
+.infoTypeDate{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    width: 99%;
+    font-weight: bold;
+}
+
 .infoContent button {
     background-color: var(--secondary-dominant);
     height: 40px; 
@@ -82,8 +104,12 @@
 .infoContent button:hover {
     background-color: var(--primary-dominant);
 }
+/** SurveyInfo Media*/
 
-/*? Questions */
+
+/**<--------------------------->*/
+
+/* ? SurveyQuestions */
 .SurveyQuestions{
     display: flex;
     flex-direction: column;
@@ -96,7 +122,12 @@
     border: 1px solid var(--gray-300);
     box-shadow: var(--box-shadow);
 }
+/** SurveyQuestions Media*/
 
+
+/**<--------------------------->*/
+
+/* ? QuestionContent */
 .QuestionContent{
     display: flex;
     flex-direction: column;
@@ -106,7 +137,6 @@
     border-radius: var(--border-radius);
     border: 1px solid var(--gray-400);
 }
-
 
 .QuestionInput{
     display: flex;
@@ -179,14 +209,24 @@
     width: 99%;
     font-weight: bold;
 }
+/** QuestionContent Media*/
 
-/** Pregunta multiple */
+
+/**<--------------------------->*/
+
+/* ? QuestionMultiple */
 .QuestionMultiple {
     display: flex;
     flex-direction: column;
-    gap: .3rem; 
+    gap: 1.5rem; 
     width: 99%;
     font-weight: bold;
+}
+
+.optionsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .optionInput {
@@ -197,6 +237,7 @@
     gap: 1rem;
     width: 99%;
     font-weight: bold;
+    margin-bottom: 1rem !important;
 }
 
 .optionInput i {
@@ -226,6 +267,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 1.5rem;
 }
 
 .btnAddQuestion:hover {
@@ -278,7 +320,18 @@
     transition: ease-in-out 0.3s;
 }
 
-/** Escala */
+.answerDiscpription {
+    font-size: .9rem;
+    color: var(--gray-500);
+    font-weight: normal;
+
+}
+/** QuestionMultiple Media*/
+
+
+/**<--------------------------->*/
+
+/* ? QuestionGrade */
 .QuestionGrade {
     display: flex;
     flex-direction: column;
@@ -290,7 +343,7 @@
 .gradeContainer{
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     gap: 1rem;
     width: 50%;
@@ -311,8 +364,8 @@
 }
 
 .gradeContainer input:checked {
-    background-color: var(--secondary-dominant);
-    border-color: var(--secondary-dominant);
+    background-color: var(--success-color);
+    border-color: var(--success-color-dark);
 }
 
 .gradeContainer label {
@@ -322,9 +375,14 @@
     display: flex;
     align-items: center;
     margin-left: 0.5rem; 
+    white-space: nowrap;      
 }
+/** QuestionGrade Media*/
 
-/** abierto */
+
+/**<--------------------------->*/
+
+/* ? QuestionOpen */
 .QuestionOpen {
     display: flex;
     flex-direction: column;
@@ -344,9 +402,12 @@
     resize: none; 
     
 }
+/** QuestionOpen Media*/
 
-/** True/False */
 
+/**<--------------------------->*/
+
+/* ? QuestionTrueFalse */
 .QuestionTrueFalse {
     display: flex;
     flex-direction: column;
@@ -379,8 +440,8 @@
 }
 
 .TrueFalseContainer input:checked {
-    background-color: var(--secondary-dominant);
-    border-color: var(--secondary-dominant);
+    background-color: var(--success-color);
+    border-color: var(--success-color-dark);
 }
 
 .TrueFalseContainer label {
@@ -391,8 +452,12 @@
     align-items: center;
     margin-left: 0.5rem; 
 }
+/** QuestionTrueFalse Media*/
 
-/*? Preview */
+
+/**<--------------------------->*/
+
+/* ? SurveyPreview */
 .SurveyPreview{
     display: flex;
     flex-direction: column;
@@ -418,7 +483,18 @@
 }
 
 .emailInput{
-    color: var(--primary-dominant);
+    width: 100%;
+}
+
+.emailContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    color: var(--primary-dominant); 
+    gap: 1rem;
+    padding: .5rem;
+    width: 99%;
 }
 
 .previewContainer h3 {
@@ -436,9 +512,28 @@
     margin-bottom: 0.5rem; 
     font-weight: bold;
     color: var(--gray-600);
+    margin-bottom: 1.5rem;
+    /*! quitar si no convence*/
+    padding-bottom: 1rem;
 }
 
-/**Opcion multiple */
+.expirationDate{
+    width: 200px;
+    height: 45px;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    background-color: var(--neutral-light);
+    text-align: center;
+}
+
+/** SurveyPreview Media*/
+
+
+/**<--------------------------->*/
+
+/* ? PreviewMultipleOptions */
 .multipleCoice{
     width: 20%;
 }
@@ -446,8 +541,7 @@
 .previewMultipleOptions{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     gap: 1rem;
     width: 50%;
     font-weight: bold;
@@ -480,19 +574,48 @@
     margin-left: 0.5rem; 
 }
 
-/** Escala */
+.correctAnswer input {
+    appearance: none;
+    width: 2rem;
+    height: 2rem;
+    border: 2px solid var(--gray-400);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0.5rem;
+}
 
-.previewGrade{
+.correctAnswer input:checked {
+    background-color: var(--success-color);
+    border-color: var(--success-color-dark);
+}
+
+.correctAnswer label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--neutral-dark);
+    display: flex;
+    align-items: center;    
+}
+/** PreviewMultipleOptions Media*/
+
+
+/**<--------------------------->*/
+
+/* ? PreviewGrade 1-5 */
+.previewGrade5{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    width: 50%;
+    width: 60%;
     font-weight: bold;
 }
 
-.previewGrade input {
+.previewGrade5 input {
     appearance: none;
     width: 1rem;
     height: 1rem;
@@ -505,12 +628,12 @@
     margin: 0 0.5rem;
 }
 
-.previewGrade input:checked {
+.previewGrade5 input:checked {
     background-color: var(--secondary-dominant);
     border-color: var(--secondary-dominant);
 }
 
-.previewGrade label {
+.previewGrade5 label {
     font-size: 1rem;
     font-weight: bold;
     color: var(--neutral-dark);
@@ -518,13 +641,59 @@
     align-items: center;
     margin-left: 0.5rem; 
 }
+/** PreviewGrade5 Media*/
 
-/** Abierto */
+
+/**<--------------------------->*/
+
+/* ? PreviewGrade 1-3 */
+.previewGrade3{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    width: 35%;
+    font-weight: bold;
+}
+
+.previewGrade3 input {
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid var(--gray-400);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0.5rem;
+}
+
+.previewGrade3 input:checked {
+    background-color: var(--secondary-dominant);
+    border-color: var(--secondary-dominant);
+}
+
+.previewGrade3 label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--neutral-dark);
+    display: flex;
+    align-items: center;
+    margin-left: 0.5rem; 
+}
+/** PreviewGrade3 Media*/
+
+
+/**<--------------------------->*/
+
+/* ? PreviewOpenText */
 .previewOpenText{
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    width: 99%;
+    width: 50%;
     font-weight: bold;
 }
 
@@ -539,16 +708,19 @@
     resize: none; 
     
 }
+/** PreviewOpenText Media*/
 
 
-/** True/False */
+/**<--------------------------->*/
+
+/* ? PreviewTrueFalse */
 .previewTrueFalse{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    width: 50%;
+    width: 20%;
     font-weight: bold;
 }
 
@@ -578,3 +750,17 @@
     align-items: center;
     margin-left: 0.5rem; 
 }
+/** PreviewTrueFalse Media*/
+
+
+/**<--------------------------->*/
+
+/* ? Misc */
+.QuestionMultipleContainer{
+    display: flex;
+    flex-direction: row;
+}
+/** Misc Media*/
+
+
+/**<--------------------------->*/
