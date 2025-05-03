@@ -133,10 +133,11 @@ main {
 
 @media (max-width: 1110px) { 
     .principalDashboard {
-        margin-left: 0;
-        width: 100%;
+        margin-left: 250px;
+        width: calc(100% - 250px);
         padding: 0 1rem;
-    }
+        box-sizing: border-box;
+      }
 
     .contenedorSummary {
         flex-wrap: wrap;
@@ -219,3 +220,24 @@ main {
         font-size: 0.9rem;
     }
 }
+
+@media (max-width: 960px) {
+    .principalDashboard {
+      margin-left: 0;
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 960px) {
+    body.aside-hidden .principalDashboard {
+      margin-left: 0;
+      width: 100%;
+      padding: 0 1rem;
+    }
+  
+    body.aside-hidden aside {
+      display: none;
+    }
+  }
+  
+  
