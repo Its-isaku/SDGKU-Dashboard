@@ -540,3 +540,13 @@ document.getElementById('btnCreateSurvey').addEventListener('click', function() 
         // TODO: Show error modal notification here
     });
 });
+
+//TODO: Add these  sections to comolete tge data for the survey 
+/*
+? Created_at: automatically set to the current date and time when the survey is created. 
+? Program_type: the type of program the survey is related to (e.g., "Bootcamp", "Bachelors", "Masters".).
+? Program_id: the ID of the specific program associated with the survey.
+? Cohort: the cohort or group of students for whom the survey is intended.
+? Subject: the subject or topic of the survey.
+*/
+//! Add the elements  to be abel to make an object with the data to be sent to the backend
