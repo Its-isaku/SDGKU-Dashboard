@@ -6,7 +6,12 @@ const surveyData = {
         title: '',
         description: '',
         type: '',
-        date: '',
+        programType: '',
+        program: '',
+        cohort: '',
+        subject: '',
+        expirationDate: '',
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
     },
     questions: [] 
 };
@@ -17,8 +22,96 @@ const sections = {
     optionPreview: 'surveyPreviewSection',
 };
 
+//? Validation for Survey Details
+function validateSurveyDetails() {
+    const title = document.getElementById('surveyTitle').value.trim();
+    const description = document.getElementById('surveyDescription').value.trim();
+    const type = document.getElementById('surveyType').value;
+    const programType = document.getElementById('programType').value;
+    const program = document.getElementById('program').value;
+    const cohort = document.getElementById('cohort').value;
+    const subject = document.getElementById('subject').value;
+    const expirationDate = document.getElementById('expirationDate').value.trim();
+
+    if (!title || !description || !type || !programType || !program || !cohort || !subject || !expirationDate) {
+        showNotification('Please fill in all required survey details before continuing.', 'error'); 
+        return false;
+    }
+    return true;
+}
+
+//? notification Logic
+function showNotification(message, type = 'success') {
+    const notification = document.getElementById('notification');
+    if (!notification) return;
+    notification.textContent = message;
+    notification.className = `notification ${type}`;
+    notification.style.display = 'block';
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 3000);
+}
+
+//? Preview Logic
+function validateQuestions() {
+    let isValid = true;
+    const questionForms = document.querySelectorAll('.QuestionContent');
+
+    questionForms.forEach((form, index) => {
+        const titleInput = form.querySelector('.questionTitleInput');
+        const typeSelect = form.querySelector('.questionTypeSelect');
+        const title = titleInput.value.trim();
+        const type = typeSelect.value;
+
+        if (!title) {
+            isValid = false;
+            showNotification(`Question ${index + 1}: Title is required.`, 'error');
+        }
+        if (!type) {
+            isValid = false;
+            showNotification(`A question Type is required.`, 'error');
+        }
+        if (type === '1') { //* Multiple Choice
+            const options = form.querySelectorAll('.optionInput input[type="text"]');
+            let allFilled = true;
+            options.forEach(opt => {
+                if (!opt.value.trim()) allFilled = false;
+            });
+            if (!allFilled) {
+                isValid = false;
+                showNotification(`Question ${index + 1}: All multiple choice options must be filled.`, 'error');
+            }
+            const correct = form.querySelector('.optionInput input[type="radio"]:checked');
+            if (!correct) {
+                isValid = false;
+                showNotification(`Question ${index + 1}: A correct answer must be selected for multiple choice.`, 'error');
+            }
+        }
+        if (type === '5') { //* True/False
+            const correct = form.querySelector('.QuestionTrueFalse input[type="radio"]:checked');
+            if (!correct) {
+                isValid = false;
+                showNotification(`Question ${index + 1}: A correct answer must be selected for true/false.`, 'error');
+            }
+        }
+    });
+    return isValid;
+}
+
 //? Section Navigation Logic
 function handleSectionClick(clickedId) {
+    //* Prevent navigation to Questions or Preview if details are incomplete
+    if ((clickedId === 'optionQuestions' || clickedId === 'optionPreview') && !validateSurveyDetails()) {
+        return;
+    }
+    //* Prevent navigation to Preview if questions are incomplete
+    if (clickedId === 'optionPreview') {
+        const isValidQuestions = validateQuestions();
+        if (!isValidQuestions) {
+            showNotification('Please complete all questions before previewing.', 'error'); 
+            return;
+        }
+    }
     //* Hide all main survey sections
     hideAll('.SurveyInfo, .SurveyQuestions, .SurveyPreview');
 
@@ -70,12 +163,20 @@ document.getElementById('btnContinueToQuestions').addEventListener('click', () =
     const title = document.getElementById('surveyTitle').value.trim();
     const description = document.getElementById('surveyDescription').value.trim();
     const type = document.getElementById('surveyType').value;
-    const date = document.getElementById('surveyDate').value.trim();
+    const programType = document.getElementById('programType').value;
+    const program = document.getElementById('program').value;
+    const cohort = document.getElementById('cohort').value;
+    const subject = document.getElementById('subject').value;
+    const expirationDate = document.getElementById('expirationDate').value.trim();
 
     surveyData.details.title = title;
     surveyData.details.description = description;
     surveyData.details.type = type;
-    surveyData.details.date = date; 
+    surveyData.details.programType = programType;
+    surveyData.details.program = program;
+    surveyData.details.expirationDate = expirationDate; 
+    surveyData.details.cohort = cohort;
+    surveyData.details.subject = subject;
 });
 
 //? Question Form Logic
@@ -168,7 +269,7 @@ function createQuestionForm(id) {
         <div class="QuestionOpen questionOptions" id="questionOpenSection${id}" style="display: none;">
             <h4>Open text</h4>
             <div class="OpenInput">
-                <textarea placeholder="Type answer here" required></textarea>
+                <textarea id="Open" placeholder="Type answer here" required></textarea>
             </div>
         </div>
 
@@ -178,8 +279,8 @@ function createQuestionForm(id) {
             <P class="answerDiscpription">Select the correct answer</P>
 
             <div class="TrueFalseContainer">
-                <label><input type="radio" name="trueFalse${id}" value="1">True</label>
-                <label><input type="radio" name="trueFalse${id}" value="2">False</label>
+                <label><input type="radio" name="trueFalse${id}" value=1>True</label>
+                <label><input type="radio" name="trueFalse${id}" value=0>False</label>
             </div>
         </div>
 
@@ -234,14 +335,13 @@ function createQuestionForm(id) {
 
     //? Add event listener for the delete question button
     container.querySelector('.deleteQuestionBtn').addEventListener('click', () => {
-        //* Remove the entire question form
-        container.remove();
-        if (questionCounter == 0){
-            questionCounter = 1;
-        }else{
-            questionCounter-=1;
+        const totalQuestions = document.querySelectorAll('.QuestionContent').length;
+        if (totalQuestions === 1) {
+            showNotification('There must be at least one question in the survey.', 'error');
+            return;
         }
-            
+        container.remove();
+        questionCounter -= 1;
     });
 
     return container;
@@ -255,6 +355,16 @@ document.getElementById('btnAddQuestion').addEventListener('click', () => {
     questionCounter++;
 });
 
+// Ensure at least one question form is loaded on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('questionFormsContainer');
+    if (container && container.children.length === 0) {
+        const form = createQuestionForm(questionCounter);
+        container.appendChild(form);
+        questionCounter++;
+    }
+});
+
 //? Format Expiration Date
 function formatExpirationDate(dateString) {
     if (!dateString) return '';
@@ -264,55 +374,24 @@ function formatExpirationDate(dateString) {
     return `${date} : ${time}`;
 }
 
-//? Preview Logic
-function validateQuestions() {
-    let isValid = true;
-    const questionForms = document.querySelectorAll('.QuestionContent');
+//? Helper to get local datetime string in 'YYYY-MM-DD HH:mm:ss' format
+function getLocalDateTimeString() {
+    const now = new Date();
+    return now.getFullYear() + '-' +
+        String(now.getMonth() + 1).padStart(2, '0') + '-' +
+        String(now.getDate()).padStart(2, '0') + ' ' +
+        String(now.getHours()).padStart(2, '0') + ':' +
+        String(now.getMinutes()).padStart(2, '0') + ':' +
+        String(now.getSeconds()).padStart(2, '0');
+}
 
-    questionForms.forEach((form, index) => {
-        const titleInput = form.querySelector('.questionTitleInput');
-        const typeSelect = form.querySelector('.questionTypeSelect');
-        const title = titleInput.value.trim();
-        const type = typeSelect.value;
-
-        if (!title) {
-            isValid = false;
-            console.error(`Question ${index + 1}: Title is required.`);
-            // TODO: Show modal notification for missing title
-        }
-        if (!type) {
-            isValid = false;
-            console.error(`A question Type is required.`);
-            // TODO: Show modal notification for missing type
-        }
-        if (type === '1') { //* Multiple Choice
-            const options = form.querySelectorAll('.optionInput input[type="text"]');
-            let allFilled = true;
-            options.forEach(opt => {
-                if (!opt.value.trim()) allFilled = false;
-            });
-            if (!allFilled) {
-                isValid = false;
-                console.error(`Question ${index + 1}: All multiple choice options must be filled.`);
-                // TODO: Show modal notification for empty options
-            }
-            const correct = form.querySelector('.optionInput input[type="radio"]:checked');
-            if (!correct) {
-                isValid = false;
-                console.error(`Question ${index + 1}: A correct answer must be selected for multiple choice.`);
-                // TODO: Show modal notification for missing correct answer
-            }
-        }
-        if (type === '5') { // True/False
-            const correct = form.querySelector('.QuestionTrueFalse input[type="radio"]:checked');
-            if (!correct) {
-                isValid = false;
-                console.error(`Question ${index + 1}: A correct answer must be selected for true/false.`);
-                // TODO: Show modal notification for missing correct answer
-            }
-        }
-    });
-    return isValid;
+//? Helper to format expiration date from input type="datetime-local" to 'YYYY-MM-DD HH:mm:ss'
+function formatExpirationDateToLocal(dateString) {
+    if (!dateString) return '';
+    const [date, time] = dateString.split('T');
+    if (!date || !time) return dateString;
+    const timeWithSeconds = time.length === 5 ? time + ':00' : time;
+    return `${date} ${timeWithSeconds}`;
 }
 
 function updatePreview() {
@@ -329,7 +408,7 @@ function updatePreview() {
     container.appendChild(descEl);
 
     //* Always get the expiration date directly from the input
-    const expirationInput = document.getElementById('surveyDate');
+    const expirationInput = document.getElementById('expirationDate');
     const expirationDateValue = expirationInput ? expirationInput.value : '';
     const formattedExpiration = formatExpirationDate(expirationDateValue);
     const expirationDatePreview = document.getElementById('expirationDatePreview');
@@ -409,8 +488,8 @@ function updatePreview() {
             const tf = document.createElement('div');
             tf.className = 'previewTrueFalse';
             tf.innerHTML =  `
-                <label><input type="radio" name="previewQ${idx}" value="true"> True</label>
-                <label><input type="radio" name="previewQ${idx}" value="false"> False</label>
+                <label><input type="radio" name="previewQ${idx}" value=1> True</label>
+                <label><input type="radio" name="previewQ${idx}" value=0> False</label>
             `;
             qEl.appendChild(tf);
         }
@@ -421,18 +500,22 @@ function updatePreview() {
 
 //? Add event listener for the preview button
 document.getElementById('btnPreviewSurvey').addEventListener('click', () => {
+    const questionForms = document.querySelectorAll('.QuestionContent');
+    if (questionForms.length === 0) {
+        showNotification('You must add at least one question before previewing.', 'error');
+        return false;
+    }
     surveyData.questions = [];
     const isValid = validateQuestions();
     if (!isValid) {
-        // TODO: Show error modal notification here
+        showNotification('Please complete all questions before previewing.', 'error');
         return;
     }
-    const questionForms = document.querySelectorAll('.QuestionContent');
+
     questionForms.forEach((form, index) => {
         const titleInput = form.querySelector('.questionTitleInput');
         const typeSelect = form.querySelector('.questionTypeSelect');
         const question = {
-            id: index + 1,
             title: titleInput.value.trim(),
             type: typeSelect.value,
             options: []
@@ -446,6 +529,7 @@ document.getElementById('btnPreviewSurvey').addEventListener('click', () => {
         surveyData.questions.push(question);
         console.log(JSON.stringify(surveyData, null, 2));
     });
+    
     updatePreview();
 });
 
@@ -458,7 +542,7 @@ if (previewOption) {
         if (!isValid) {
             //* Prevent navigation to preview if validation fails
             e.preventDefault();
-            // TODO: Show error modal notification here
+            showNotification('Please complete all questions before previewing.', 'error');
             return;
         }
         updatePreview();
@@ -472,8 +556,13 @@ document.getElementById('btnCreateSurvey').addEventListener('click', function() 
     const surveyDetails = {
         title: document.getElementById('surveyTitle').value.trim(),
         description: document.getElementById('surveyDescription').value.trim(),
-        type: document.getElementById('surveyType').value,
-        date: document.getElementById('surveyDate').value.trim(),
+        programType: document.getElementById('programType').value,
+        program: document.getElementById('program').value,
+        cohort: document.getElementById('cohort').value,
+        subject: document.getElementById('subject').value,
+        surveyType: document.getElementById('surveyType').value,
+        createdAt: getLocalDateTimeString(),
+        expirationDate: formatExpirationDateToLocal(document.getElementById('expirationDate').value.trim()),
         email: document.getElementById('studentEmail').value.trim()
     };
 
@@ -502,10 +591,9 @@ document.getElementById('btnCreateSurvey').addEventListener('click', function() 
                 if (radio.checked) question.correctAnswer = i;
             });
         } else if (type === '5') { //* True/False
-            //* Find correct answer (value: 'true' or 'false')
             const tf = form.querySelector('.QuestionTrueFalse input[type="radio"]:checked');
-            if (tf) question.correctAnswer = tf.value === '1' ? 'true' : 'false';
-        } 
+            if (tf) question.correctAnswer = Number(tf.value) === 1 ? 1 : 0;
+        }
         //* For other types, you can add more logic if needed
         questions.push(question);
     });
@@ -533,20 +621,207 @@ document.getElementById('btnCreateSurvey').addEventListener('click', function() 
     })
     .then(data => {
         console.log('Survey created successfully:', data);
-         // TODO: Show success modal notification here
+        showNotification('Survey created successfully!', 'success');
+        setTimeout(() => {
+            window.location.reload();
+        }, 1500);
     })
     .catch(error => {
         console.error(error);
-        // TODO: Show error modal notification here
+        if(data.status === 'error') {showNotification('Error creating survey: ' + data.message, 'error');}
     });
 });
 
-//TODO: Add these  sections to comolete tge data for the survey 
-/*
-? Created_at: automatically set to the current date and time when the survey is created. 
-? Program_type: the type of program the survey is related to (e.g., "Bootcamp", "Bachelors", "Masters".).
-? Program_id: the ID of the specific program associated with the survey.
-? Cohort: the cohort or group of students for whom the survey is intended.
-? Subject: the subject or topic of the survey.
-*/
-//! Add the elements  to be abel to make an object with the data to be sent to the backend
+//? get Program Types and send them to the frontend
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getProgramTypes')
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success') {
+            const select = document.getElementById('programType');
+            data.data.forEach(programType => {
+                const option = document.createElement('option');
+                option.value = programType.program_type_id;
+                option.textContent = programType.program_name;
+                select.appendChild(option);
+
+            });
+        }
+        else {console.error('Error fetching program types:', data.message);}
+    });
+});
+
+//? get Programs and send them to the frontend
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getPrograms')
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success') {
+            const select = document.getElementById('program');
+            data.data.forEach(program => {
+                const option = document.createElement('option');
+                option.value = program.prog_id;
+                option.textContent = program.name;
+                select.appendChild(option);
+
+            });
+        }
+        else {console.error('Error fetching program types:', data.message);}
+    });
+});
+        
+
+//? get cohorts and send them to the frontend
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getCohorts')
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success') {
+            const select = document.getElementById('cohort');
+            data.data.forEach(cohort => {
+                const option = document.createElement('option');
+                option.value = cohort.cohort_id;
+                option.textContent = cohort.cohort;
+                select.appendChild(option);
+
+            });
+        }
+        else {console.error('Error fetching program types:', data.message);}
+    });
+});
+
+//? get subjects and send them to the frontend
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getSubjects')
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success') {
+            const select = document.getElementById('subject');
+            data.data.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject.subject_id;
+                option.textContent = subject.subject;
+                select.appendChild(option);
+            });
+        }
+        else {console.error('Error fetching subjects:', data.message);}
+    });
+});
+
+//? get survey types and send them to the frontend
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getSurveyTypes')
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success') {
+            const select = document.getElementById('surveyType');
+            data.data.forEach(surveyType => {
+                const option = document.createElement('option');
+                option.value = surveyType.survey_type_id;
+                option.textContent = surveyType.type_name;
+                select.appendChild(option);
+            });
+        }
+        else {console.error('Error fetching program types:', data.message);}
+    });
+});
+
+function populateSelect({ url, selectId, valueKey, textKey }) {
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                const select = document.getElementById(selectId);
+                select.innerHTML = ''; 
+                data.data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item[valueKey];
+                    option.textContent = item[textKey];
+                    select.appendChild(option);
+                });
+            } else {
+                console.error('Error fetching data:', data.message);
+            }
+        });
+}
+
+//? Add Program button to send data to the backend
+document.getElementById('addProgram').addEventListener('click', function() {
+    console.log('Add Program button clicked'); // Add this line
+    const programName = document.getElementById('newProgram').value.trim();
+    const programTypeId = document.getElementById('programType').value;
+    if (!programTypeId) {
+        showNotification('Please select a program type before adding a new program.', 'error');
+        return;
+    }
+    if (!programName) {
+        showNotification('Please enter a program name.', 'error');
+        return;
+    }
+    fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=addProgram', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ programName, programTypeId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            populateSelect({
+                url: '/SDGKU-Dashboard/src/models/createSurvey.php?action=getPrograms',
+                selectId: 'program',
+                valueKey: 'prog_id',
+                textKey: 'name'
+            });
+        }
+    });
+});
+
+//? Add Cohort button to send data to the backend
+document.getElementById('addCohort').addEventListener('click', function() {
+    const cohortName = document.getElementById('newCohort').value.trim();
+    if (!cohortName) {
+        showNotification('Please enter a cohort name.', 'error');
+        return;
+    }
+    fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=addCohort', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cohortName })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            populateSelect({
+                url: '/SDGKU-Dashboard/src/models/createSurvey.php?action=getCohorts',
+                selectId: 'cohort',
+                valueKey: 'cohort_id',
+                textKey: 'cohort'
+            });
+        }
+    });
+});
+
+//? Add Subject button to send data to the backend
+document.getElementById('addSubject').addEventListener('click', function() {
+    const subjectName = document.getElementById('newSubject').value.trim();
+    if (!subjectName) {
+        showNotification('Please enter a subject name.', 'error');
+        return;
+    }
+    fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=addSubject', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subjectName })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            populateSelect({
+                url: '/SDGKU-Dashboard/src/models/createSurvey.php?action=getSubjects',
+                selectId: 'subject',
+                valueKey: 'subject_id',
+                textKey: 'subject'
+            });
+        }
+    });
+});

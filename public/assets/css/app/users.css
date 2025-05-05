@@ -9,7 +9,7 @@
 }
 
 .user-management-header {
-    display: flex;
+    display: flex; 
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
@@ -259,52 +259,6 @@ th {
     justify-content: flex-end;
     gap: 0.75rem;
     margin-top: 1.5rem;
-}
-
-/*notification*/
-/*center notification*/
-.notification {
-    position: fixed;
-    top: 1rem;
-    left: 5rem;
-    padding: 1rem;
-    border-radius: 4px;
-    color: white;
-    font-weight: 500;
-    z-index: 2000;
-    display: none;
-    animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.notification.success {
-    background-color: #28a745;
-}
-
-.notification.error {
-    background-color: #dc3545;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
 }
 
 /* responsive */

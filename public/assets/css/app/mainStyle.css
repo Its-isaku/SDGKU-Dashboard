@@ -5,7 +5,7 @@
 :root{
     --neutral-light: #FFFFFF;
     --neutral-dark: #333333;
-    --primary-dominant: #7B1315;
+    --primary-dominant: #7B1315; 
     --secondary-dominant: #BB2626;
     --supplementary-color: #F4971D;
     --supplementary-dark: #c57307;
@@ -65,11 +65,56 @@ main {
     padding-bottom: 60px;
 }
 
+/*? notification*/
+.notification {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    left: auto;
+    top: auto;
+    padding: 1rem;
+    border-radius: 4px;
+    color: white;
+    font-weight: 500;
+    z-index: 2000;
+    display: none;
+    animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.notification.success {
+    background-color: #28a745;
+}
+
+.notification.error {
+    background-color: #dc3545;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
 /*? Fonts */
 html body{
     line-height: 1.6;
-    background-color: var(--gray-100);
-    margin: 0;
     padding: 0;
     height: 100%;
     width: auto;
