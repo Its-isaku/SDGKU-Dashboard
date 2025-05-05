@@ -123,6 +123,77 @@
                             <input type="text" id="surveyTitle" placeholder="Enter survey name" required>
                         </div>
 
+                        <div class="programContainer">
+                            <div class="infoInput">
+                                <label for="ProgramType">Program Type</label>
+                                <select id="programType" required>
+                                    <option value="" disabled selected hidden>Chose a program type</option>
+                                    <!--! options from the db -->
+                                </select>
+                            </div>
+
+                            <div class="infoInput">
+                                <label for="program">Program</label>
+                                <select id="program" required>
+                                    <option value="" disabled selected hidden>Chose a program</option>
+                                    <!--! options from the db -->
+                                </select>
+                            </div>
+
+                            <div class="infoInput">
+                                <div class="addProgram">
+                                    <label for="addProgram">Add Program</label>
+                                    <p>(Opcional)</p>
+                                </div>
+                                <div class="addProgramContainer">
+                                    <input type="text" id="newProgram" placeholder="Enter new program" required>
+                                    <button id="addProgram">Add</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cohortContainer">
+                            <div class="infoInput">
+                                <label for="cohort">Cohort</label>
+                                <select id="cohort" required>
+                                    <option value="" disabled selected hidden>Chose a Cohort</option>
+                                    <!--! options from the db -->
+                                </select>
+                            </div>
+
+                            <div class="infoInput">
+                                <div class="addCohort">
+                                    <label for="addCohort">Add Cohort</label>
+                                    <p>(Opcional)</p>
+                                </div>
+                                <div class="addCohortContainer">
+                                    <input type="text" id="newCohort" placeholder="Enter new cohort" required>
+                                    <button id="addCohort">Add</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subjectContainer">
+                            <div class="infoInput">
+                                <label for="surveyTitle">Subject</label>
+                                <select id="subject" required>
+                                    <option value="" disabled selected hidden>Chose a Subject</option>
+                                    <!--! options from the db -->
+                                </select>
+                            </div>
+
+                            <div class="infoInput">
+                                <div class="addSubject">
+                                    <label for="addSubject">Add Subject</label>
+                                    <p>(Opcional)</p>
+                                </div>
+                                <div class="addSubjectContainer">
+                                    <input type="text" id="newSubject" placeholder="Enter new Subject" required>
+                                    <button id="addSubject">Add</button>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="infoInput">
                             <label for="surveyDescription">Description</label>
                             <textarea id="surveyDescription" placeholder="Enter survey description" required></textarea>
@@ -133,17 +204,13 @@
                                 <label for="surveyType">Survey Type</label>
                                 <select id="surveyType" required>
                                     <option value="" disabled selected hidden>Enter survey type</option>
-                                    <option value="1">Pre-test</option>
-                                    <option value="2">Post-test</option>
-                                    <option value="3">Finals Assesment</option>
-                                    <option value="4">Graduation Survey</option>
-                                    <option value="5">Course Evaluation</option>
+                                    <!--! options from the db -->
                                 </select>
                             </div>
     
                             <div class="infoInput">
-                                <label for="surveyDate">Survey Expire Date</label>
-                                <input type="datetime-local" id="surveyDate" required>
+                                <label for="expirationDate">Survey Expire Date</label>
+                                <input type="datetime-local" id="expirationDate" required>
                             </div>
                         </div>
 
@@ -205,6 +272,10 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Notification -->
+                <div id="notification" class="notification"></div>
+
             </div>
         </main>
     </div>
