@@ -1,92 +1,46 @@
-const Surveys = [
-    {
-        title: "Pre-Course",
-        status:"Active",
-        description: "Introduction to Computer Science Pre-Course Assessment",
-        notes: "Please complete this survey before the course",
-        createdDate: "01/04/2025",
-        expires: "4/23/2025",
-        questions: 5,
-        program: "Bootcamp",
-        cohort: "Spring 2024",
-    },
-    {
-        title: "Teacher-Eval",
-        status:"Inactive",
-        description: "Teacher-Evaluation - Programming Fundamentals", 
-        notes: "Please evaluate your instructor for this course",
-        createdDate: "03/23/2025",
-        expires: "4/23/2025",
-        questions: 3,
-        program: "Bachelor",
-        cohort: "Summer 2024",
-        
-    },
-    {
-        title: "Pre-Course",
-        status:"Inactive",
-        description: "Introduction to Computer Science Pre-Course Assessment",
-        notes: "Please complete this survey before the course",
-        createdDate: "01/04/2025",
-        expires: "5/22/2025",
-        questions: 3,
-        program: "Bachelor",
-        cohort: "Winter 2024",
-    },
-    {
-        title: "Teacher-Eval",
-        status:"Inactive",
-        description: "Teacher-Evaluation - Programming Fundamentals",
-        notes: "Please evaluate your instructor for this course",
-        createdDate: "03/23/2025",
-        expires: "4/23/2025",
-        questions: 4,
-        program: "Bootcamp",
-        cohort: "Fall 2024",
-        
-    },{
-        title: "Pre-Course",
-        status:"Active",
-        description: "Introduction to Computer Science Pre-Course Assessment",
-        notes: "Please complete this survey before the course",
-        createdDate: "01/04/2025",
-        expires: "4/23/2025",
-        questions: 5,
-        program: "Bootcamp",
-        cohort: "Spring 2024",
-    },
-    {
-        title: "Teacher-Eval",
-        status:"Active",
-        description: "Teacher-Evaluation - Programming Fundamentals",
-        notes: "Please evaluate your instructor for this course",
-        createdDate: "03/23/2025",
-        expires: "4/23/2025",
-        questions: 3,
-        program: "Bachelor",
-        cohort: "Summer 2024",
-        
-    },
-    {
-        title: "Pre-Course",
-        status:"Active",
-        description: "Introduction to Computer Science Pre-Course Assessment",
-        notes: "Please complete this survey before the course",
-        createdDate: "01/04/2025",
-        expires: "5/22/2025",
-        questions: 3,
-        program: "Bachelor",
-        cohort: "Winter 2024",
-    },
-    // Mas encuestas...
-];
+//lista de datos: variables: type, status, title, description, 
+// createdDate, expires, questions, program, cohort.
+const Surveys = [];
 
+
+//get de las surveys
+fetch('/SDGKU-Dashboard/src/models/mySurveys.php?action=getSurveys') //archivo PHP
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Error al obtener los datos");
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Suponiendo que data es un array de objetos
+        data.forEach(item => {
+            Surveys.push({
+                type: item.type,
+                status: item.status,
+                title: item.title,
+                description: item.description,
+                createdDate: item.createdDate,
+                expires: item.expires,
+                questions: parseInt(item.questions),
+                program: item.program,
+                cohort: item.cohort
+            });
+        });
+        // Renderizar encuestas
+        renderInactiveSurveys();
+        renderActiveSurveys();
+    })
+    .catch(error => {
+        console.error("Hubo un problema al cargar las encuestas:", error);
+    });
+//obtiene los surveys activos
 function getActiveSurveys() {
-    return Surveys.filter(survey => survey.status === "Active");
+    
+    return Surveys.filter(survey => survey.status === "active");
 }
-
+//obtiene los inactivos
 function getInactiveSurveys() {
-    return Surveys.filter(survey => survey.status === "Inactive");
+    return Surveys.filter(survey => survey.status === "inactive");
 }
 
 function renderInactiveSurveys() {
@@ -99,15 +53,15 @@ function renderInactiveSurveys() {
         surveyItem.innerHTML = ` 
             <div class = "inactiveTitleStatus"> 
                 <div class = "surveytitle">
-                    <p>${survey.title}</p>
+                    <p>${survey.type}</p>
                 </div>
                 <div class = "surveyInactiveStatus">
                     <p>${survey.status}</p>
                 </div>
             </div>
 
-            <h3>${survey.description}</h3>
-            <p>${survey.notes}</p>
+            <h3>${survey.title}</h3>
+            <p>${survey.description}</p>
             <div class="survey-details">
                 <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
                 <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
@@ -134,7 +88,7 @@ function renderInactiveSurveys() {
 
 function activateSurvey(surveyToActivate) {
     // cambiar el estado de la encuesta a activa
-    surveyToActivate.status = "Active";
+    surveyToActivate.status = "active";
     //limpiar la lista de encuestas inactivas
     document.getElementById('inactiveListId').innerHTML = '';
     document.getElementById('activeListId').innerHTML = '';
@@ -146,15 +100,15 @@ function activateSurvey(surveyToActivate) {
 
 document.addEventListener("DOMContentLoaded", function() {
     // Render inicial
+    
     renderInactiveSurveys();
     renderActiveSurveys();
-
     // Selección de botones y paneles
     const btnActive = document.getElementById('activeBtnId');
     const btnInactive = document.getElementById('inactiveBtnId');
     const panel1 = document.getElementById('panel1');
     const panel2 = document.getElementById('panel2');
-
+    
     // Función para cambiar de pestaña
     function switchTab(isActive) {
         if (isActive) {
@@ -194,24 +148,29 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 function renderActiveSurveys() {
+    
     const activeList = document.getElementById('activeListId');
+    activeList.innerHTML = '';
+    
     const activeSurveys = getActiveSurveys();
     activeSurveys.forEach((survey) => {
+    console.log('activos');
     const activeSurveyItem = document .createElement("div");
         activeSurveyItem.className = "survey-item";
     // visualizacion de cada encuesta
+   
     activeSurveyItem.innerHTML = ` 
         <div class = "activeTitleStatus">
                 <div class = "surveytitle">
-                    <p>${survey.title}</p>
+                    <p>${survey.type}</p>
                 </div>
                 <div class = "surveyStatus">
                     <p>${survey.status}</p>
                 </div>
                 
             </div>
-            <h3>${survey.description}</h3>
-            <p>${survey.notes}</p>
+            <h3>${survey.title}</h3>
+            <p>${survey.description}</p>
             <div class="survey-details">
                 <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
                 <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
@@ -277,3 +236,6 @@ function closeDropdown(container) {
     const dropdown = container.querySelector('.dropdown');
     dropdown.style.display = 'none';
 }
+
+
+
