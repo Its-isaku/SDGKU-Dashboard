@@ -1,6 +1,16 @@
 export function showMessage(element, message, isSuccess = false, autoHide = true) {
     element.textContent = message;
-    element.style.color = isSuccess ? "green" : "red";
+
+    element.classList.remove("error-msg", "success-msg");
+
+    if (isSuccess) {
+        element.style.color = "green";
+        element.classList.add("success-msg");
+    } else {
+        element.style.color = "red";
+        element.classList.add("error-msg");
+    }
+
     element.style.display = "block";
 
     setTimeout(() => {
@@ -8,12 +18,13 @@ export function showMessage(element, message, isSuccess = false, autoHide = true
         element.style.transform = "translateY(0)";
     }, 30);
 
-    if (!isSuccess && autoHide) {
+    if (autoHide) {
         setTimeout(() => {
             element.style.opacity = "0";
             element.style.transform = "translateY(-7px)";
             setTimeout(() => {
                 element.style.display = "none";
+                element.classList.remove("error-msg", "success-msg");
             }, 400);
         }, 3500);
     }

@@ -35,7 +35,7 @@ if ($user) {
     $stmt = $pdo->prepare("UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE email = ?");
     $stmt->execute([$token, $expires, $email]);
 
-   $mail = new PHPMailer(true);
+    $mail = new PHPMailer(true);
 
     try {
         $mail->isSMTP();

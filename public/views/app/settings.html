@@ -99,18 +99,26 @@
             
                 <div class="settings-content">
                 <!-- Profile Content -->
-                      <!-- Security Content -->
-                      <div class="tab-content" id="security" style="display: block;">
+                <!-- Security Content -->
+
+                    <div class="tab-content" id="security" style="display: block;">
                         <h3>Security Settings</h3>
                         <p>Update your password and security preferences</p>
-                        <label>Current Password</label>
-                        <input type="password" />
-                        <label>New Password</label>
-                        <input type="password" />
-                        <label>Confirm New Password</label>
-                        <input type="password" />
-                        <button class="save-btn">Change Password</button>
-                      </div>
+
+                        <form id="Security-form">
+                            <label>Current Password</label>
+                            <input type="password" id="current-password" class="input" />
+
+                            <label>New Password</label>
+                            <input type="password" id="new-password" class="input" />
+
+                            <label>Confirm New Password</label>
+                            <input type="password" id="confirm-password" class="input" />
+
+                        <button type="submit" class="save-btn" id="change-password-btn">Change Password</button>
+                        <p id="security-msg" style="display:none; margin-top: 10px;"></p>
+                                </form>
+                            </div>
                     </div>
             </div>
         </main>

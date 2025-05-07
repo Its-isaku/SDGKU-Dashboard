@@ -12,12 +12,12 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!email) {
             showMessage(loginError, "Please enter your email");
             highlightInput(emailInput, "error");
-            valid = false;
-        }else if (!email.endsWith("@sdgku.edu")) {
-            showMessage(loginError, "Only institutional emails allowed");
-            highlightInput(emailInput, "error");
-            valid = false;
-        }
+        //     valid = false;
+        // }else if (!email.endsWith("@sdgku.edu")) {
+        //     showMessage(loginError, "Only institutional emails allowed");
+        //     highlightInput(emailInput, "error");
+        //     valid = false;
+    }
         if (!password) {
             showMessage(loginError, "Please enter your password");
             highlightInput(passwordInput, "error");
