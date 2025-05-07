@@ -5,6 +5,7 @@
     width: calc(100% - 250px); 
     height: auto;
     overflow-x: hidden;
+    padding: 3px 8px; 
 }
 
 .settings-container {
@@ -16,12 +17,11 @@
     grid-template-rows: auto auto 1fr;
     gap: 1rem;
     padding: 2rem;
-    background-color: #f5f5f5;
   }
   
   .settings-title {
     grid-area: title;
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: bold;
   }
   

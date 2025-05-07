@@ -27,6 +27,13 @@
     box-shadow: var(--box-shadow);
 }
 
+.titulo {
+    padding-top: 1rem;
+    margin-bottom: 0px;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
 .infoTitle h3 {
     margin-bottom: 0.2rem; 
 }

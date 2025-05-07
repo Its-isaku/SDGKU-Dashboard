@@ -6,6 +6,9 @@
     height: auto;
     overflow-x: hidden;
     padding: 30px;
+    padding: 30px 48px; 
+    padding-top: 2rem;
+
 }
 
 .user-management-header {
@@ -19,12 +22,11 @@
 
 .user-management-header h2 {
     font-size: 2rem;
-    margin-bottom: 0.25rem;
-    color: #333;
+    margin-bottom: 20px;
 }
 
 .user-management-header p {
-    color: var(--gray-700);
+    font-size: 0.9rem;
 }
 
 /*search users box*/
