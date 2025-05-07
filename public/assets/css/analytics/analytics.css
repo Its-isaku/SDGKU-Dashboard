@@ -5,6 +5,9 @@
     width: calc(100% - 250px);
     height: auto;
     overflow-x: hidden;
+    padding: 34px 53px; 
+    padding-top: 1rem;
+    margin-left: 210px; 
 }
 
 .analyticsMenu {
@@ -86,7 +89,7 @@
     padding: 10px;
 }
 .headInfo h2{
-    margin-bottom: 0;
+    margin-bottom: 20px;
     
 }
 
@@ -175,18 +178,65 @@ width: 100%;
     width: 55% !important;
 }
 
+.analytics-panels-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.analytics-panel {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.08);
+    flex: 1;
+    max-width: 100%;
+}
+
+.analytics-panel p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #222;
+}
+
+.analytics-panel b {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0.4rem 0;
+    color: #111;
+}
+
+.analytics-panel small {
+    font-size: 0.9rem;
+    color: #666;
+}
+
 /* media */
 
-@media screen and (max-width: 960px) {
-    
-    .principalDashboard{
-        margin: 0;
-        width: 100%;
-        
+@media (max-width: 960px) {
+    aside {
+        display: none;
     }
-    .principalAnalytics{
-        margin: 0;
-        width: 100vw;
-        background-color: aqua;
+
+    .principalDashboard {
+        margin-left: 0 !important;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .SurveyOptions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .surveyOption {
+        width: 100%;
+        padding: 0.8rem;
+        text-align: center;
     }
 }
