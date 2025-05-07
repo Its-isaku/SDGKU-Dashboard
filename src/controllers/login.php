@@ -9,7 +9,7 @@ require '../config/config.php';
 
 header('Content-Type: application/json');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {    
     $input = json_decode(file_get_contents("php://input"), true); 
 
     if (!isset($input['email']) || !isset($input['password'])) {
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
-    if ($user && password_verify($password, $user['password'])) {
+    if ($user && password_verify($password, $user['password_hash'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['email'] = $user['email'];
 
