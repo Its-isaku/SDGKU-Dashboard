@@ -4,8 +4,8 @@
 require '../vendor/autoload.php';
 
 $envFile = __DIR__ . '/../../.env';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv -> load();
+// $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+// $dotenv -> load();
 
 $envFile = __DIR__ . '/../../.env';
 if (file_exists($envFile)) {
