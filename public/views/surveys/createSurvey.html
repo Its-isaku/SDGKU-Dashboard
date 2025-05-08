@@ -27,7 +27,7 @@
         <div class="headerBtn">
             <button class="headerBtnOut">Logout</button>
         </div>
-    </header>
+    </header> 
 
     <div class="dashboard-container">
         <aside>
@@ -118,12 +118,12 @@
                     </div>
 
                     <div class="infoContent">
-                        <div class="infoInput">
-                            <label for="surveyTitle">Survey Title</label>
-                            <input type="text" id="surveyTitle" placeholder="Enter survey name" required>
-                        </div>
-
                         <div class="programContainer">
+                            <div class="infoInput">
+                                <label for="surveyTitle">Survey Title</label>
+                                <input type="text" id="surveyTitle" placeholder="Enter survey name" required>
+                            </div>
+
                             <div class="infoInput">
                                 <label for="ProgramType">Program Type</label>
                                 <select id="programType" required>
@@ -131,7 +131,9 @@
                                     <!--! options from the db -->
                                 </select>
                             </div>
+                        </div>
 
+                        <div class="cohortContainer">
                             <div class="infoInput">
                                 <label for="program">Program</label>
                                 <select id="program" required>
@@ -140,57 +142,13 @@
                                 </select>
                             </div>
 
+                            
                             <div class="infoInput">
-                                <div class="addProgram">
-                                    <label for="addProgram">Add Program</label>
-                                    <p>(Opcional)</p>
-                                </div>
-                                <div class="addProgramContainer">
-                                    <input type="text" id="newProgram" placeholder="Enter new program" required>
-                                    <button id="addProgram">Add</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="cohortContainer">
-                            <div class="infoInput">
-                                <label for="cohort">Cohort</label>
-                                <select id="cohort" required>
-                                    <option value="" disabled selected hidden>Chose a Cohort</option>
-                                    <!--! options from the db -->
-                                </select>
-                            </div>
-
-                            <div class="infoInput">
-                                <div class="addCohort">
-                                    <label for="addCohort">Add Cohort</label>
-                                    <p>(Opcional)</p>
-                                </div>
-                                <div class="addCohortContainer">
-                                    <input type="text" id="newCohort" placeholder="Enter new cohort" required>
-                                    <button id="addCohort">Add</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="subjectContainer">
-                            <div class="infoInput">
-                                <label for="surveyTitle">Subject</label>
+                                <label for="surveyTitle">Course</label>
                                 <select id="subject" required>
-                                    <option value="" disabled selected hidden>Chose a Subject</option>
+                                    <option value="" disabled selected hidden>Chose a Course</option>
                                     <!--! options from the db -->
                                 </select>
-                            </div>
-
-                            <div class="infoInput">
-                                <div class="addSubject">
-                                    <label for="addSubject">Add Subject</label>
-                                    <p>(Opcional)</p>
-                                </div>
-                                <div class="addSubjectContainer">
-                                    <input type="text" id="newSubject" placeholder="Enter new Subject" required>
-                                    <button id="addSubject">Add</button>
-                                </div>
                             </div>
                         </div>
 

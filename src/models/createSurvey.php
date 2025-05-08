@@ -1,6 +1,6 @@
 <?php
 //? Set error reporting to minimal for production
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 ini_set('log_errors', 1);
 error_reporting(E_ERROR | E_PARSE);
 require_once __DIR__ . '/../config/config.php';
@@ -29,10 +29,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 
 //? GET programs
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getPrograms') {
+    $programTypeId = isset($_GET['program_type_id']) ? trim($_GET['program_type_id']) : null;
+
     try {
-        $sql = "SELECT prog_id, name FROM programs";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
+        if ($programTypeId) {
+            $sql = "SELECT prog_id, name, program_type_id FROM programs WHERE program_type_id = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$programTypeId]);
+        } else {
+            $sql = "SELECT prog_id, name, program_type_id FROM programs";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+        }
         $programs = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode(['status' => 'success', 'data' => $programs]);
     } catch (Exception $e) {
@@ -55,12 +63,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     exit;
 }
 
-//? GET subjects
+//? GET subjects filtered by program via surveys
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getSubjects') {
+    $programId = isset($_GET['program_id']) ? trim($_GET['program_id']) : null;
     try {
-        $sql = "SELECT subject_id, subject FROM subjects";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
+        if ($programId) {
+            $sql = "SELECT DISTINCT s.subject_id, s.subject
+                    FROM subjects s
+                    INNER JOIN surveys v ON v.subject_id = s.subject_id
+                    WHERE v.program_id = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$programId]);
+        } else {
+            echo json_encode(['status' => 'success', 'data' => []]);
+            exit;
+        }
         $subject = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode(['status' => 'success', 'data' => $subject]);
     } catch (Exception $e) {
@@ -83,71 +100,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     exit;
 }
 
-//! <-------------------------------- POST --------------------------------> - add program, Cohort and subject
-//? Add program
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'addProgram') {
-    try {
-        $input = file_get_contents('php://input');
-        $data = json_decode($input, true);
-        $programName = $data['programName'] ?? null;
-        $programTypeId = $data['programTypeId'] ?? null;
-
-        if ($programName && $programTypeId) {
-            $sql = "INSERT INTO programs (name, program_type_id) VALUES(?, ?)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([$programName, $programTypeId]);
-            respond('success', 'Program added successfully!');
-        } else {
-            respond('error', 'Invalid data received!');
-        }
-    } catch (Exception $e) {
-        respond('error', 'Database error: ' . $e->getMessage());
-    }
-    exit;
-}
-
-//? Add cohort
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'addCohort') {
-    try {
-        $input = file_get_contents('php://input');
-        $data = json_decode($input, true);
-        $cohortName = $data['cohortName'] ?? null;
-
-        if ($cohortName) {
-            $sql = "INSERT INTO cohort (cohort) VALUES(?)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([$cohortName]);
-            respond('success', 'Cohort added successfully!');
-        } else {
-            respond('error', 'Invalid data received!');
-        }
-    } catch (Exception $e) {
-        respond('error', 'Database error: ' . $e->getMessage());
-    }
-    exit;
-}
-
-//? Add subject
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'addSubject') {
-    try {
-        $input = file_get_contents('php://input');
-        $data = json_decode($input, true);
-        $subjectName = $data['subjectName'] ?? null;
-
-        if ($subjectName) {
-            $sql = "INSERT INTO subjects (subject) VALUES(?)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([$subjectName]);
-            respond('success', 'Subject added successfully!');
-        } else {
-            respond('error', 'Invalid data received!');
-        }
-    } catch (Exception $e) {
-        respond('error', 'Database error: ' . $e->getMessage());
-    }
-    exit;
-}
-
 //! <-------------------------------- POST --------------------------------> - Create a survey
 try {
     //? Input Handling
@@ -166,16 +118,27 @@ try {
         $type = $details['surveyType'] ?? null;
         $programType = $details['programType'] ?? null;
         $program = $details['program'] ?? null;
-        $cohort = $details['cohort'] ?? null;
         $subject = $details['subject'] ?? null; 
         $expirationDate = $details['expirationDate'] ?? null;
         $createdAt = $details['createdAt'] ?? null;
-        $status = "active" ?? null;
+        $status = "active";
 
         try {
-            $sql = "INSERT INTO surveys (title, description, program_type_id, cohort_id, program_id, subject_id, last_edited, created_at, expires_at, status, survey_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO surveys (title, description, program_type_id, program_id, subject_id, last_edited, created_at, expires_at, status, survey_type_id)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([$title, $description, $programType, $cohort, $program, $subject, $createdAt, $createdAt, $expirationDate, $status, $type]);
+            $stmt->execute([
+                $title,
+                $description,
+                $programType,
+                $program,
+                $subject,
+                $createdAt,
+                $createdAt,
+                $expirationDate,
+                $status,
+                $type
+            ]);
 
             $response = [
                 'status' => 'success',
