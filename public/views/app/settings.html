@@ -88,37 +88,107 @@
         <main>
             <div class="principalDashboard">
                 <!--? Empezar a trabajar aqui -->
-                <div class="settings-container">
                     <h2 class="settings-title">Settings</h2>
                 
-            <div class="createSurveyOptions" id="createSurveyOptions">
-                    <div class="surveyOption selectedOption" id="optionQuestions">
+                    <div class="createSurveyOptions" id="createSurveyOptions">
+                        <div class="surveyOption selectedOption" id="security">
                             <h3>Security</h3>
                         </div>
+
+                        <div class="surveyOption " id="manageData">
+                            <h3>Manage Data</h3>
+                        </div>
                     </div>
-            
-                <div class="settings-content">
-                <!-- Profile Content -->
-                <!-- Security Content -->
-
-                    <div class="tab-content" id="security" style="display: block;">
-                        <h3>Security Settings</h3>
-                        <p>Update your password and security preferences</p>
-
-                        <form id="Security-form">
-                            <label>Current Password</label>
-                            <input type="password" id="current-password" class="input" />
-
-                            <label>New Password</label>
-                            <input type="password" id="new-password" class="input" />
-
-                            <label>Confirm New Password</label>
-                            <input type="password" id="confirm-password" class="input" />
-
-                        <button type="submit" class="save-btn" id="change-password-btn">Change Password</button>
-                        <p id="security-msg" style="display:none; margin-top: 10px;"></p>
-                                </form>
+                    
+                    <div class="settings-content">
+                        <!--? Security  -->
+                        <div class="securityContent" id="securitySection" style="display: block;">
+                            <div class="contentTitle">
+                                <h3>Security Settings</h3>
+                                <p>Update your password and security preferences</p>
                             </div>
+
+                            <div class="securityInfo">
+                                <div class="securityInput">
+                                    <label>Current Password</label>
+                                    <input type="password" id="current-password-security" class="input" />
+                                </div>
+                                
+                                <div class="securityInput">
+                                    <label>New Password</label>
+                                    <input type="password" id="new-password-security" class="input" />
+                                </div>
+                                
+                                <div class="securityInput">
+                                    <label>Confirm New Password</label>
+                                    <input type="password" id="confirm-password-security" class="input" />
+                                </div>
+                                
+                                <button type="submit" class="save-btn" id="change-password-btn-security">Change Password</button>
+                            </div>
+                        </div>
+
+                        <!--? Manage Data -->
+                        <div class="manageDataContent" id="manageDataSection" style="display: none;">
+                            <div class="contentTitle">
+                                <h3>Manage Data</h3>
+                                <p>Add, delete, and organize your programs, cohorts, and courses</p>
+                            </div>
+
+                            <div class="addProgramContent">
+                                <div class="manageDataInput">
+                                    <label for="ProgramType">Program Type</label>
+                                    <select id="programType" required>
+                                        <option value="" disabled selected hidden>Chose a program type</option>
+                                        <!--! options from the db -->
+                                    </select>
+                                </div>
+
+                                <div class="manageDataInput">
+                                    <div class="addProgram">
+                                        <label for="addProgram">Add Program</label>
+                                        <p>(Depends on Program Type)</p>
+                                    </div>
+                                    <div class="addProgramContainer">
+                                        <input type="text" id="newProgram" placeholder="Enter new program" required>
+                                        <button id="addProgram">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="addCohortContent">
+                                <div class="manageDataInput">
+                                    <label for="program">Program</label>
+                                    <select id="program" required>
+                                        <option value="" disabled selected hidden>Chose a program</option>
+                                        <!--! options from the db -->
+                                    </select>
+                                </div>
+
+                                <div class="manageDataInput">
+                                    <div class="addCohort">
+                                        <label for="addCohort">Add Cohort</label>
+                                        <p>(Depends on program)</p>
+                                    </div>
+                                    <div class="addCohortContainer">
+                                        <input type="text" id="newCohort" placeholder="Enter new cohort" required>
+                                        <button id="addCohort">Add</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="manageDataInput">
+                                    <div class="addCourse">
+                                        <label for="addCourse">Add Course</label>
+                                        <p>(Depends on program)</p>
+                                    </div>
+                                    <div class="addCourseContainer">
+                                        <input type="text" id="newCourse" placeholder="Enter new Course" required>
+                                        <button id="addCourse">Add</button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
                     </div>
             </div>
         </main>

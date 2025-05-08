@@ -1,191 +1,278 @@
-/*!  Cambier si se necesita alterar algo del main en el display */
-.principalDashboard{
-    overflow: auto;
-    margin-left: 250px;
-    width: calc(100% - 250px); 
-    height: auto;
-    overflow-x: hidden;
-    padding: 3px 8px; 
+.principalDashboard {
+  overflow-y: auto; 
+  overflow-x: hidden;
+  margin-left: 250px;
+  padding-left: 40px;
+  padding-bottom: 20px; 
+  width: calc(100% - 250px);
+  min-height: calc(100vh - 70px);
 }
 
-.settings-container {
-    display: grid;
-    grid-template-areas:
-      "title"
-      "tabs"
-      "content";
-    grid-template-rows: auto auto 1fr;
-    gap: 1rem;
-    padding: 2rem;
-  }
-  
-  .settings-title {
-    grid-area: title;
-    font-size: 2rem;
-    font-weight: bold;
-  }
-  
-  .createSurveyOptions {
-    background-color: var(--gray-300);
-    display: flex;
-    flex-direction: row;
-    width: 40%;
-    gap: 0.5rem;
-    align-items: center;
-    justify-content: space-evenly;
-    border-radius: var(--border-radius);
-    padding: 5px;
+.createSurveyOptions {
+  background-color: var(--gray-300);
+  display: flex;
+  flex-direction: row;
+  width: 40%;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: var(--border-radius);
+  padding: 5px;
 }
 
-.surveyOption {
-    margin: 0;
-    padding: 4px 10px;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    flex: 1;
-    font-size: 0.9rem;
-    text-align: center;
+.contentTitle h3 {
+  margin-bottom: 0.2rem; 
 }
 
-.surveyOption:not(.selectedOption):hover {
-    background-color: var(--gray-200);
+.contentTitle p {
+  margin-top: 0;
 }
 
-.surveyOption h3 {
-    margin: 0;
-    font-size: 1.2rem;
-    color: var(--gray-800);
+/*? security */
+.securityContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 81vw;
+  padding: 1rem;
+  margin: 1rem 0;  
+  border-radius: var(--border-radius);
+  background-color: var(--neutral-light);
+  border: 1px solid var(--gray-300);
+  box-shadow: var(--box-shadow);
 }
 
-.selectedOption {
-    background-color: var(--neutral-light);
-    font-weight: bold;
-    border: none;
-    pointer-events: none;
-}
-  
-  .settings-content {
-    grid-area: content;
-    background-color: white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
-  }
-  
-  .tab-content {
-    display: none;
-  }
-  
-  .tab-content h3 {
-    margin-bottom: 0.5rem;
-  }
-  
-  .tab-content p {
-    margin-bottom: 1rem;
-    color: #555;
-  }
-  
-  .tab-content label {
-    display: block;
-    margin-top: 1rem;
-    font-weight: 500;
-  }
-  
-  .tab-content input,
-  .tab-content select {
-    width: 100%;
-    padding: 0.5rem;
-    margin-top: 0.3rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .save-btn {
-    margin-top: 1.5rem;
-    background-color: var(--secondary-dominant);
-    color: white;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  .save-btn:hover {
-    background-color: var(--primary-dominant);
-  }
-
-  @media (max-width: 1110px) {
-    .principalDashboard {
-        margin-left: 250px;
-        width: calc(100% - 250px);
-        padding: 0 1rem;
-        box-sizing: border-box;
-    }
-
-    .settings-container {
-        padding: 1.5rem;
-    }
-
-    .createSurveyOptions {
-        width: 100%;
-        flex-direction: column;
-    }
-
-    .surveyOption {
-        width: 100%;
-        padding: 0.8rem;
-    }
+.securityContent button {
+  background-color: var(--secondary-dominant);
+  height: 40px; 
+  width: 200px;
+  text-align: center;
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  padding: 0 10px;
+  font-size: 1rem;
+  margin-top: 1rem;
 }
 
-@media (max-width: 768px) {
-    .settings-container {
-        padding: 1rem;
-    }
+.securityContent button:hover {
+  background-color: var(--primary-dominant);
+}
 
-    .settings-title {
-      font-size: 1.8rem;
-      font-weight: bold;
-      text-align: left;
-  }
+.securityInfo{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 70%;
+}
+
+.securityInput{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 70%;
+  font-weight: bold;
+}
+
+.securityInput select {
+  width: 100%;
+  height: 46px;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--gray-300);
+  background-color: var(--white);
+  font-size: 1rem;
+}
+
+.securityInput textarea {
+  width: 100%;
+  height: 150px; 
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--gray-300);
+  background-color: var(--white);
+  font-size: 1rem;
+  resize: none; 
   
-
-    .settings-content {
-        padding: 1rem;
-    }
-
-    .tab-content input,
-    .tab-content select {
-        padding: 0.8rem;
-    }
-
-    .save-btn {
-        width: 100%;
-        padding: 0.8rem;
-    }
-    
 }
 
-@media (max-width: 480px) {
-    .settings-title {
-        font-size: 1.3rem;
-    }
+/*? <|--------------------------manage Data--------------------------|> */
 
-    .tab-content h3 {
-        font-size: 1.1rem;
-    }
-
-    .tab-content p {
-        font-size: 0.9rem;
-    }
+.manageDataContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 81vw;
+  padding: 1rem;
+  margin: 1rem 0;  
+  border-radius: var(--border-radius);
+  background-color: var(--neutral-light);
+  border: 1px solid var(--gray-300);
+  box-shadow: var(--box-shadow);
 }
 
-@media (max-width: 960px) {
-  .principalDashboard {
-      margin-left: 0;
-      width: 100%;
-      padding-left: 1rem;
-      padding-right: 1rem;
-      box-sizing: border-box;
-  }
+.manageDataContent button {
+  background-color: var(--secondary-dominant);
+  height: 40px; 
+  width: 200px;
+  text-align: center;
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  padding: 0 10px;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.manageDataContent button:hover {
+  background-color: var(--primary-dominant);
+}
+
+.manageDataInput{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 99%;
+  font-weight: bold;
+}
+
+.manageDataInput select {
+  width: 100%;
+  height: 46px;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--gray-300);
+  background-color: var(--white);
+  font-size: 1rem;
+}
+
+.manageDataInput textarea {
+  width: 100%;
+  height: 150px; 
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--gray-300);
+  background-color: var(--white);
+  font-size: 1rem;
+  resize: none; 
+  
+}
+
+/** sub: Programs  */
+.addProgramContent {
+  display: flex ;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width:99%;
+}
+
+.addProgram{
+  display: flex;
+  flex-direction:row;
+  align-items: center;
+  gap: .5rem;
+}
+
+.addProgram p {
+  margin: 0;
+  padding: 0;
+  font-size: .8rem;
+  text-align: center;
+  color: var(--gray-500);
+}
+
+.addProgramContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  font-weight: bold;
+}
+
+.addProgramContainer button {
+  padding: 0;
+  margin: 0;
+}
+
+/** sub: Cohort  */
+.addCohortContent {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  width: 99%;
+}
+
+.addCohort{
+  display: flex;
+  flex-direction:row;
+  align-items: center;
+  gap: .5rem;
+}
+
+.addCohort p {
+  margin: 0;
+  padding: 0;
+  font-size: .8rem;
+  text-align: center;
+  color: var(--gray-500);
+}
+
+.addCohortContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  font-weight: bold;
+}
+
+.addCohortContainer button {
+  padding: 0;
+  margin: 0;
+}
+
+/** sub: Course  */
+.addCourseContent {
+  display: flex ;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width:99%;
+}
+
+.addCourse{
+  display: flex;
+  flex-direction:row;
+  align-items: center;
+  gap: .5rem;
+}
+
+.addCourse p {
+  margin: 0;
+  padding: 0;
+  font-size: .8rem;
+  text-align: center;
+  color: var(--gray-500);
+}
+
+.addCourseContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  font-weight: bold;
+}
+
+.addCourseContainer button {
+  padding: 0;
+  margin: 0;
 }

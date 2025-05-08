@@ -2,8 +2,6 @@
 // load environment variables from .env file
 
 require '../vendor/autoload.php';
-
-$envFile = __DIR__ . '/../../.env';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv -> load();
 

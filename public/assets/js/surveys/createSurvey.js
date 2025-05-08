@@ -8,7 +8,6 @@ const surveyData = {
         type: '',
         programType: '',
         program: '',
-        cohort: '',
         subject: '',
         expirationDate: '',
         createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
@@ -29,11 +28,10 @@ function validateSurveyDetails() {
     const type = document.getElementById('surveyType').value;
     const programType = document.getElementById('programType').value;
     const program = document.getElementById('program').value;
-    const cohort = document.getElementById('cohort').value;
     const subject = document.getElementById('subject').value;
     const expirationDate = document.getElementById('expirationDate').value.trim();
 
-    if (!title || !description || !type || !programType || !program || !cohort || !subject || !expirationDate) {
+    if (!title || !description || !type || !programType || !program || !subject || !expirationDate) {
         showNotification('Please fill in all required survey details before continuing.', 'error'); 
         return false;
     }
@@ -165,7 +163,6 @@ document.getElementById('btnContinueToQuestions').addEventListener('click', () =
     const type = document.getElementById('surveyType').value;
     const programType = document.getElementById('programType').value;
     const program = document.getElementById('program').value;
-    const cohort = document.getElementById('cohort').value;
     const subject = document.getElementById('subject').value;
     const expirationDate = document.getElementById('expirationDate').value.trim();
 
@@ -175,7 +172,6 @@ document.getElementById('btnContinueToQuestions').addEventListener('click', () =
     surveyData.details.programType = programType;
     surveyData.details.program = program;
     surveyData.details.expirationDate = expirationDate; 
-    surveyData.details.cohort = cohort;
     surveyData.details.subject = subject;
 });
 
@@ -470,7 +466,7 @@ function updatePreview() {
             Likert3.forEach((labelText, i) => {
                 const label = document.createElement('label');
                 label.innerHTML = `<input type="radio" name="previewQ${idx}" value="${i + 1}"> ${labelText}`;
-                grade.appendChild(label);
+                grade.appendChild(label); //! Fixed: append label, not grade
             });
             qEl.appendChild(grade);
         }
@@ -515,21 +511,33 @@ document.getElementById('btnPreviewSurvey').addEventListener('click', () => {
     questionForms.forEach((form, index) => {
         const titleInput = form.querySelector('.questionTitleInput');
         const typeSelect = form.querySelector('.questionTypeSelect');
+        const type = typeSelect.value;
         const question = {
             title: titleInput.value.trim(),
-            type: typeSelect.value,
+            type: type,
             options: []
         };
-        if (question.type === '1') {
-            const options = form.querySelectorAll(`#optionsContainer${question.id} input[type="text"]`);
+        if (type === '1') {
+            // Multiple Choice
+            const options = form.querySelectorAll('.optionInput input[type="text"]');
             options.forEach(opt => {
                 if (opt.value.trim()) question.options.push(opt.value.trim());
             });
+        } else if (type === '2') {
+            //* Likert 1-5
+            //* No options needed, just type
+        } else if (type === '3') {
+            //* Likert 1-3
+            //* No options needed, just type
+        } else if (type === '4') {
+            //* Open text
+            //* No options needed, just type
+        } else if (type === '5') {
+            //* True/False
+            //* No options needed, just type
         }
-        surveyData.questions.push(question);
-        console.log(JSON.stringify(surveyData, null, 2));
+        surveyData.questions.push(question); //* Always push the question
     });
-    
     updatePreview();
 });
 
@@ -546,7 +554,6 @@ if (previewOption) {
             return;
         }
         updatePreview();
-        handleSectionClick('optionPreview');
     });
 }
 
@@ -558,7 +565,6 @@ document.getElementById('btnCreateSurvey').addEventListener('click', function() 
         description: document.getElementById('surveyDescription').value.trim(),
         programType: document.getElementById('programType').value,
         program: document.getElementById('program').value,
-        cohort: document.getElementById('cohort').value,
         subject: document.getElementById('subject').value,
         surveyType: document.getElementById('surveyType').value,
         createdAt: getLocalDateTimeString(),
@@ -651,62 +657,73 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-//? get Programs and send them to the frontend
+//? Add event listener to programType select to fetch programs for selected type
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getPrograms')
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === 'success') {
-            const select = document.getElementById('program');
-            data.data.forEach(program => {
-                const option = document.createElement('option');
-                option.value = program.prog_id;
-                option.textContent = program.name;
-                select.appendChild(option);
-
-            });
-        }
-        else {console.error('Error fetching program types:', data.message);}
-    });
-});
-        
-
-//? get cohorts and send them to the frontend
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getCohorts')
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === 'success') {
-            const select = document.getElementById('cohort');
-            data.data.forEach(cohort => {
-                const option = document.createElement('option');
-                option.value = cohort.cohort_id;
-                option.textContent = cohort.cohort;
-                select.appendChild(option);
-
-            });
-        }
-        else {console.error('Error fetching program types:', data.message);}
-    });
+    const programTypeSelect = document.getElementById('programType');
+    if (programTypeSelect) {
+        programTypeSelect.addEventListener('change', function() {
+            const programTypeId = this.value;
+            const programSelect = document.getElementById('program');
+            programSelect.innerHTML = '<option value="" disabled selected hidden>Chose a program</option>';
+            if (!programTypeId) return;
+            fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getPrograms&program_type_id=' + programTypeId)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        if (data.data.length === 0) {
+                            const option = document.createElement('option');
+                            option.value = '';
+                            option.textContent = 'No programs found';
+                            option.disabled = true;
+                            programSelect.appendChild(option);
+                        } else {
+                            data.data.forEach(program => {
+                                const option = document.createElement('option');
+                                option.value = program.prog_id;
+                                option.textContent = program.name;
+                                programSelect.appendChild(option);
+                            });
+                        }
+                    } else {
+                        console.error('Error fetching programs:', data.message);
+                    }
+                });
+        });
+    }
 });
 
 //? get subjects and send them to the frontend
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getSubjects')
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === 'success') {
-            const select = document.getElementById('subject');
-            data.data.forEach(subject => {
-                const option = document.createElement('option');
-                option.value = subject.subject_id;
-                option.textContent = subject.subject;
-                select.appendChild(option);
+const programSelect = document.getElementById('program');
+if (programSelect) {
+    programSelect.addEventListener('change', function() {
+        const programId = this.value;
+        const subjectSelect = document.getElementById('subject');
+        subjectSelect.innerHTML = '<option value="" disabled selected hidden>Chose a Course</option>';
+        if (!programId) return;
+        fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getSubjects&program_id=' + programId)
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    if (data.data.length === 0) {
+                        const option = document.createElement('option');
+                        option.value = '';
+                        option.textContent = 'No courses found';
+                        option.disabled = true;
+                        subjectSelect.appendChild(option);
+                    } else {
+                        data.data.forEach(subject => {
+                            const option = document.createElement('option');
+                            option.value = subject.subject_id;
+                            option.textContent = subject.subject;
+                            subjectSelect.appendChild(option);
+                        });
+                    }
+                } else {
+                    console.error('Error fetching courses:', data.message);
+                }
             });
-        }
-        else {console.error('Error fetching subjects:', data.message);}
     });
-});
+}
 
 //? get survey types and send them to the frontend
 document.addEventListener('DOMContentLoaded', function() {
@@ -726,102 +743,41 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function populateSelect({ url, selectId, valueKey, textKey }) {
-    fetch(url)
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === 'success') {
-                const select = document.getElementById(selectId);
-                select.innerHTML = ''; 
-                data.data.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item[valueKey];
-                    option.textContent = item[textKey];
-                    select.appendChild(option);
-                });
-            } else {
-                console.error('Error fetching data:', data.message);
+//? Add event listeners for programType, program, and subject selects (cleaned up)
+document.addEventListener('DOMContentLoaded', function() {
+    const programTypeSelect = document.getElementById('programType');
+    const programSelect = document.getElementById('program');
+    const subjectSelect = document.getElementById('subject');
+
+    if (programTypeSelect && programSelect) {
+        // * Show message if program is clicked before program type is selected
+        programSelect.addEventListener('mousedown', function() {
+            if (!programTypeSelect.value) {
+                programSelect.innerHTML = `
+                    <option value="" disabled selected hidden>Chose a program</option>
+                    <option value="" disabled>Select program type first</option>
+                `;
             }
         });
-}
+        // * Reset program select when program type changes
+        programTypeSelect.addEventListener('change', function() {
+            programSelect.innerHTML = '<option value="" disabled selected hidden>Chose a program</option>';
+        });
+    }
 
-//? Add Program button to send data to the backend
-document.getElementById('addProgram').addEventListener('click', function() {
-    console.log('Add Program button clicked'); // Add this line
-    const programName = document.getElementById('newProgram').value.trim();
-    const programTypeId = document.getElementById('programType').value;
-    if (!programTypeId) {
-        showNotification('Please select a program type before adding a new program.', 'error');
-        return;
+    if (programSelect && subjectSelect) {
+        // * Show message if subject is clicked before program is selected
+        subjectSelect.addEventListener('mousedown', function() {
+            if (!programSelect.value) {
+                subjectSelect.innerHTML = `
+                    <option value="" disabled selected hidden>Chose a Course</option>
+                    <option value="" disabled>Select program first</option>
+                `;
+            }
+        });
+        // * Reset subject select when program changes
+        programSelect.addEventListener('change', function() {
+            subjectSelect.innerHTML = '<option value="" disabled selected hidden>Chose a Course</option>';
+        });
     }
-    if (!programName) {
-        showNotification('Please enter a program name.', 'error');
-        return;
-    }
-    fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=addProgram', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ programName, programTypeId })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            populateSelect({
-                url: '/SDGKU-Dashboard/src/models/createSurvey.php?action=getPrograms',
-                selectId: 'program',
-                valueKey: 'prog_id',
-                textKey: 'name'
-            });
-        }
-    });
-});
-
-//? Add Cohort button to send data to the backend
-document.getElementById('addCohort').addEventListener('click', function() {
-    const cohortName = document.getElementById('newCohort').value.trim();
-    if (!cohortName) {
-        showNotification('Please enter a cohort name.', 'error');
-        return;
-    }
-    fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=addCohort', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cohortName })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            populateSelect({
-                url: '/SDGKU-Dashboard/src/models/createSurvey.php?action=getCohorts',
-                selectId: 'cohort',
-                valueKey: 'cohort_id',
-                textKey: 'cohort'
-            });
-        }
-    });
-});
-
-//? Add Subject button to send data to the backend
-document.getElementById('addSubject').addEventListener('click', function() {
-    const subjectName = document.getElementById('newSubject').value.trim();
-    if (!subjectName) {
-        showNotification('Please enter a subject name.', 'error');
-        return;
-    }
-    fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=addSubject', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ subjectName })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            populateSelect({
-                url: '/SDGKU-Dashboard/src/models/createSurvey.php?action=getSubjects',
-                selectId: 'subject',
-                valueKey: 'subject_id',
-                textKey: 'subject'
-            });
-        }
-    });
 });
