@@ -10,10 +10,9 @@
 }
 
 
-/*Estilos para MiniHeader*/
+/*Estilos para MiniHeader donde estan la opcion activas e inactivas, search y create*/
 /* ------------------------------------ */
 .mySurveysHeader{
-
     display: flex;
     justify-content: space-between;
     margin-bottom: 1.5rem;
@@ -34,7 +33,8 @@
 .dashboardDescription h2{
     margin: 0;
 }
-
+/* div de Search y create juntos */
+/* ------------------------------------ */
 .searchAndCreate{
     display: flex;
     /*flex-direction: row;*/
@@ -43,7 +43,7 @@
     align-items: center;
     margin-top: 10px;
 }
-
+/* input search */
 .searchAndCreate input{
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -51,12 +51,12 @@
     /*border: 1px solid var(--neutral-dark);*/
     width: 220px;
 }
-
+/* boton create */
 .searchAndCreate button{
     padding: 0;
     border: none;
     /*border-radius: var(--border-radius);*/
-    background-color: #F13939;
+    background-color: var(--secondary-dominant);
     color: var(--neutral-light);
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -73,8 +73,8 @@
     color: var(--gray-500);
 }
 #searchSurveyId{
-    padding-left: 30px; /* Espacio para el icono */
-    width: auto; /* Ajusta el ancho según el contenido */
+    padding-left: 30px; 
+    width: auto; 
     border-radius: var(--border-radius);
     /*border: 1px solid var(--neutral-dark);*/
     font-size: 1rem;
@@ -87,22 +87,22 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    color: white;
+    color: var(--neutral-light);
     text-decoration: none;
-    background-color: #F13939;
+    background-color: var(--secondary-dominant);
     border-radius: var(--border-radius);
     padding: 0.5rem 1rem;
-    transition: background-color 0.3s ease, color 0.3s ease;/**Color de transision*/
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .createSurveyBtn:hover {
-    background-color: var(--secondary-dominant);
-    color: #fff ;
+    background-color: var(--primary-dominant);
+    color: var(--neutral-light);
 }
 
 .createSurveyBtn i {
     font-size: 1.2rem;
-    color: #fff;
+    color: var(--neutral-light);
     display: inline-flex;
     align-items: center;
     
@@ -115,6 +115,7 @@
 }
 
 /* Estilos para botones active surveys e inactive surveys */
+/* Div principal */
 .mySurveyOptions {
     background-color: var(--gray-300);
     display: flex;
@@ -125,11 +126,12 @@
     justify-content: space-evenly;
     border-radius: var(--border-radius);
     padding: 5px;
-
 }
+
 .mySurveyOptions button{
     background-color: var(--gray-300);
 }
+
 .surveyOption {
     margin: 0;
     padding: 4px 10px;
@@ -161,9 +163,6 @@
 
 /* Estilos para las encuestas activas */
 /* ---------------------------------------------------- */
-.principalDashboard{
-
-}
 .activeSurveys{
     display: flex;
     flex-direction: row;
@@ -175,12 +174,6 @@
     padding-top: 0;
     border-radius: 8px;
 }
-
-
-/* .surveyOption.selected {
-    background-color: rgb(103, 161, 48); 
-    color: white;
-} */
 
 /* ordenmiento de las listas */
 .activeSurveyList{
@@ -195,7 +188,6 @@
 /* div que contiene desde type hasta description de cada survey */
 .principalInformation{
     height: 200px!important;
-
 }
 /* cada survey de la lista */
 .survey-item{
@@ -258,8 +250,8 @@
 .dropdown a:hover {
     background-color: #f2f2f2;
 }
-/*Estilos de botones*/
-
+/*Estilos de botones actives*/
+/* ------------------------------------ */
 .surveyActive-actions{
     display: flex;
     justify-content: center;
@@ -384,7 +376,7 @@
     justify-content: center;
 }
 
-/*Estilos de botones*/
+/*Estilos de botones inactives*/
 /* ---------------------------------------------------- */
 .activate-btn, .delete-btn {
     padding: 0.5rem 1rem;
@@ -424,8 +416,6 @@
 /* Media De TABLETS */
 /* ---------------------------------------------------- */
 @media screen and (max-width: 960px) {
-    main{
-    }
     .activeSurveyList{
         /* grid auto reductor responsive: */
         grid-template-columns: repeat(auto-fit, minmax(330px, 2fr));
@@ -444,10 +434,6 @@
         height: auto;
 
     }
-    .createSurveyBtn{
-        
-    }
-
     #searchSurveyId{
         width: 200px;
     }
@@ -483,5 +469,5 @@
 }
 .surveyOption.selected {
     background-color: var(--gray-200);
-    color: white; /* Texto blanco para contraste */
+    color: white; 
 }
