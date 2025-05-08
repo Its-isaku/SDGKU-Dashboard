@@ -143,8 +143,8 @@
     text-align: center;
 }
 
-.surveyOption:not(.selectedOption):hover {
-    background-color: var(--gray-200);
+.surveyOption.selectedOption {
+    background-color: var(--neutral-light);
 }
 
 .surveyOption h3 {
