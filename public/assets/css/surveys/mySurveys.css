@@ -8,7 +8,10 @@
     overflow-y: auto;
 
 }
+
+
 /*Estilos para MiniHeader*/
+/* ------------------------------------ */
 .mySurveysHeader{
 
     display: flex;
@@ -77,6 +80,8 @@
     font-size: 1rem;
     transition: border-color 0.3s ease;
 }
+
+/* Boton create Survey */
 .createSurveyBtn{
     display: flex;
     align-items: center;
@@ -108,8 +113,8 @@
     display: inline-block;
     line-height: 1;
 }
-/* Estilos para botones active surveys e inactive surveys */
 
+/* Estilos para botones active surveys e inactive surveys */
 .mySurveyOptions {
     background-color: var(--gray-300);
     display: flex;
@@ -155,7 +160,7 @@
 
 
 /* Estilos para las encuestas activas */
-
+/* ---------------------------------------------------- */
 .principalDashboard{
 
 }
@@ -171,10 +176,12 @@
     border-radius: 8px;
 }
 
+
 /* .surveyOption.selected {
     background-color: rgb(103, 161, 48); 
     color: white;
 } */
+
 /* ordenmiento de las listas */
 .activeSurveyList{
     display: grid;
@@ -223,6 +230,7 @@
     justify-content: center;
     gap: 40%;
 }
+
 /* el dropdown */
 .dropdown {
     position: fixed;
@@ -276,7 +284,7 @@
 .actions-btn:hover {
     background-color: var(--supplementary-color);
     color: var(--neutral-light);
-    border: none;
+    border-color: transparent;
     transition: transform 0.2s ease-in-out;
 }
 
@@ -294,6 +302,7 @@
 
 
 /* Estilos para las encuestas inactivas */
+/* ---------------------------------------------------- */
 
 .inactiveSurveys {
     display: flex;
@@ -351,7 +360,14 @@
     justify-content: center;
 }
 
-
+.surveyInactive-item:hover{
+    transform: translateY(0px);
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.15);
+}
+.survey-item:hover{
+    transform: translateY(0px);
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.15);
+}
 
 .survey-details {
     margin: 10px;;
@@ -369,6 +385,7 @@
 }
 
 /*Estilos de botones*/
+/* ---------------------------------------------------- */
 .activate-btn, .delete-btn {
     padding: 0.5rem 1rem;
     width: 150px;
@@ -388,7 +405,7 @@
 .activate-btn:hover {
     background-color: var(--success-color);
     color: var(--neutral-light);
-    border: none;
+    border-color: transparent;
     transition: transform 0.2s ease-in-out;
 }
 
@@ -404,6 +421,8 @@
     margin-left: 0.5rem;
 }
 
+/* Media De TABLETS */
+/* ---------------------------------------------------- */
 @media screen and (max-width: 960px) {
     main{
     }
@@ -438,7 +457,8 @@
     }
 }
 
-
+/* Media De Telefonos*/
+/* ---------------------------------------------------- */
 @media screen and (max-width: 400px) {
 
 #searchSurveyId{
@@ -453,7 +473,8 @@
 }
 
 
-/* hide/show panels */
+/* hide/show panels para mostrarlos o ocultarlos */
+/* ---------------------------------------------------- */
 .panel {
     display: none !important;
 }

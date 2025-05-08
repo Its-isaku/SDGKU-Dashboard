@@ -12,7 +12,7 @@ fetch('/SDGKU-Dashboard/src/models/mySurveys.php?action=getSurveys') //archivo P
         return response.json();
     })
     .then(data => {
-        // Suponiendo que data es un array de objetos
+        // array para asignar datos
         data.forEach(item => {
             Surveys.push({
                 type: item.type,
@@ -42,7 +42,7 @@ function getActiveSurveys() {
 function getInactiveSurveys() {
     return Surveys.filter(survey => survey.status === "inactive");
 }
-
+// Render de las inactivas
 function renderInactiveSurveys() {
     const inactiveList = document.getElementById('inactiveListId');
     const inactiveSurveys = getInactiveSurveys();
@@ -60,10 +60,9 @@ function renderInactiveSurveys() {
                     <p>${survey.status}</p>
                 </div>
             </div>
-             <h3>${survey.title}</h3>
+            <h3>${survey.title}</h3>
             <p>${survey.description}</p>
         </div>
-           
             <div class="survey-details">
                 <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
                 <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
@@ -102,7 +101,6 @@ function activateSurvey(surveyToActivate) {
 
 document.addEventListener("DOMContentLoaded", function() {
     // Render inicial
-    
     renderInactiveSurveys();
     renderActiveSurveys();
     // Selección de botones y paneles
@@ -160,7 +158,6 @@ function renderActiveSurveys() {
     const activeSurveyItem = document .createElement("div");
         activeSurveyItem.className = "survey-item";
     // visualizacion de cada encuesta
-   
     activeSurveyItem.innerHTML = ` 
         <div class = "principalInformation">
             <div class = "activeTitleStatus">
