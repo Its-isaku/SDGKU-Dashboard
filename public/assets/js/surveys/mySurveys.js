@@ -314,7 +314,11 @@ function renderSurveys(surveys) {
         } else {
             inactiveContainer.appendChild(card);
         }
+        
     });
+
+    setupActionDropdowns();
+
 }
 
 function setupSearchBar() {
@@ -341,3 +345,25 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchSurveys();
     setupSearchBar();
 });
+
+
+function setupActionDropdowns() {
+    document.querySelectorAll('.actions-btn').forEach(button => {
+        const container = button.closest('.actions-container');
+        const dropdown = container.querySelector('.dropdown');
+
+
+        button.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+
+            document.querySelectorAll('.dropdown').forEach(menu => {
+                menu.style.display = 'none';
+            });
+
+            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+        });
+    });
+
+}
+
