@@ -4,6 +4,8 @@ const Surveys = [];
 
 
 //get de las surveys
+// -------------------------------------------------------------------------------
+
 fetch('/SDGKU-Dashboard/src/models/mySurveys.php?action=getSurveys') //archivo PHP
     .then(response => {
         if (!response.ok) {
@@ -33,6 +35,9 @@ fetch('/SDGKU-Dashboard/src/models/mySurveys.php?action=getSurveys') //archivo P
     .catch(error => {
         console.error("Hubo un problema al cargar las encuestas:", error);
     });
+
+//funciones para obtener las surveys correspondientes
+// -------------------------------------------------------------------------------
 //obtiene los surveys activos
 function getActiveSurveys() {
     
@@ -43,6 +48,10 @@ function getInactiveSurveys() {
     return Surveys.filter(survey => survey.status === "inactive");
 }
 
+
+//render de inactivas
+// -------------------------------------------------------------------------------
+
 function renderInactiveSurveys() {
     const inactiveList = document.getElementById('inactiveListId');
     const inactiveSurveys = getInactiveSurveys();
@@ -51,6 +60,7 @@ function renderInactiveSurveys() {
         surveyItem.className = "surveyInactive-item";
 // visualizacion de cada encuesta
         surveyItem.innerHTML = ` 
+        <div class = "principalInformationInactives">    
             <div class = "inactiveTitleStatus"> 
                 <div class = "surveytitle">
                     <p>${survey.type}</p>
@@ -59,9 +69,10 @@ function renderInactiveSurveys() {
                     <p>${survey.status}</p>
                 </div>
             </div>
-
             <h3>${survey.title}</h3>
             <p>${survey.description}</p>
+        </div>
+            
             <div class="survey-details">
                 <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
                 <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
@@ -97,6 +108,9 @@ function activateSurvey(surveyToActivate) {
     renderActiveSurveys();
 }
 
+
+//panel change logic
+// -------------------------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", function() {
     // Render inicial
@@ -144,8 +158,8 @@ document.addEventListener("DOMContentLoaded", function() {
     switchTab(true);
 });
 
-// Activate Surveys
-
+// Activate Surveys render
+// -------------------------------------------------------------------------------
 
 function renderActiveSurveys() {
     
@@ -158,19 +172,20 @@ function renderActiveSurveys() {
     const activeSurveyItem = document .createElement("div");
         activeSurveyItem.className = "survey-item";
     // visualizacion de cada encuesta
-   
     activeSurveyItem.innerHTML = ` 
-        <div class = "activeTitleStatus">
-                <div class = "surveytitle">
-                    <p>${survey.type}</p>
+        <div class = "principalInformation">
+            <div class = "activeTitleStatus">
+                    <div class = "surveytitle">
+                        <p>${survey.type}</p>
+                    </div>
+                    <div class = "surveyStatus">
+                        <p>${survey.status}</p>
+                    </div>
+                    
                 </div>
-                <div class = "surveyStatus">
-                    <p>${survey.status}</p>
-                </div>
-                
-            </div>
             <h3>${survey.title}</h3>
             <p>${survey.description}</p>
+        </div>
             <div class="survey-details">
                 <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
                 <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
@@ -197,27 +212,9 @@ function renderActiveSurveys() {
     });
 }
 
-const sections = {
-    activeBtnId: 'activeSectionId',
-    inactiveBtnId: 'inactiveSectionId'
-};
 
-
-function handleSectionClick(clickedId) {
-    hideAll('.activeSurveysId, .inactiveSurveysId');
-
-    document.querySelectorAll('.surveyOption').forEach(opt => {
-        opt.classList.remove('selectedOption');
-    });
-
-    const sectionId = sections[clickedId];
-    const section = document.getElementById(sectionId);
-    if (section) section.style.display = 'flex';
-
-    const clickedBtn = document.getElementById(clickedId);
-    if (clickedBtn) clickedBtn.classList.add('selectedOption');
-}
-
+//drop down logic
+// -------------------------------------------------------------------------------
 function toggleDropdown(button) {
     const dropdown = button.nextElementSibling;
     const isVisible = dropdown.style.display === 'flex';
@@ -236,6 +233,10 @@ function closeDropdown(container) {
     const dropdown = container.querySelector('.dropdown');
     dropdown.style.display = 'none';
 }
+
+
+//search logic
+// -------------------------------------------------------------------------------
 
 let allSurveys = [];
 
@@ -346,6 +347,9 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSearchBar();
 });
 
+
+
+// -------------------------------------------------------------------------------
 
 function setupActionDropdowns() {
     document.querySelectorAll('.actions-btn').forEach(button => {
