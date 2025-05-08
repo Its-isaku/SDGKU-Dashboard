@@ -238,5 +238,133 @@ function closeDropdown(container) {
     dropdown.style.display = 'none';
 }
 
+let allSurveys = [];
 
+async function fetchSurveys() {
+    try {
+        const response = await fetch('../../../src/models/mySurveys.php?action=getSurveys');
+        const data = await response.json();
+        allSurveys = data;
+        renderSurveys(data);
+    } catch (error) {
+        console.error('Error fetching surveys:', error);
+    }
+}
+
+function renderSurveys(surveys) {
+    const activeContainer = document.getElementById('activeListId');
+    const inactiveContainer = document.getElementById('inactiveListId');
+
+    activeContainer.innerHTML = '';
+    inactiveContainer.innerHTML = '';
+
+    if (surveys.length === 0) {
+        const msg = document.createElement('p');
+        msg.textContent = 'Sin resultados';
+        msg.style.padding = '2rem';
+        msg.style.fontSize = '1.2rem';
+        msg.style.gridColumn = '1 / -1';
+        activeContainer.appendChild(msg);
+        inactiveContainer.appendChild(msg.cloneNode(true));
+        return;
+    }
+
+    surveys.forEach(survey => {
+        const card = document.createElement('div');
+        card.className = survey.status === 'active' ? 'survey-item' : 'surveyInactive-item';
+
+        card.innerHTML = `
+            <div class="${survey.status === 'active' ? 'activeTitleStatus' : 'inactiveTitleStatus'}">
+                <div class="surveytitle">
+                    <p>${survey.type}</p>
+                </div>
+                <div class="${survey.status === 'active' ? 'surveyStatus' : 'surveyInactiveStatus'}">
+                    <p>${survey.status}</p>
+                </div>
+            </div>
+            <h3>${survey.title}</h3>
+            <p>${survey.description}</p>
+            <div class="survey-details">
+                <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
+                <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
+                <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
+                <span><i class="fa-solid fa-layer-group"></i> Program: ${survey.program}</span>
+                <span><i class="fa-solid fa-users"></i> Cohort: ${survey.cohort}</span>
+            </div>
+            <div class="${survey.status === 'active' ? 'surveyActive-actions' : 'survey-actions'}">
+                ${
+                    survey.status === 'active' 
+                    ? `<div class="actions-container">
+                            <button class="actions-btn">Actions</button>
+                            <div class="dropdown">
+                                <a href="#">Copy Access Link</a>
+                                <a href="#">Edit Survey</a>
+                                <a href="#">Duplicate</a>
+                                <a href="#">Deactivate</a>
+                                <a href="#" style="color: red;">Delete</a>
+                            </div>
+                        </div>
+                        <button class="results-btn">Results</button>`
+                    : `<button class="activate-btn">Activate</button><button class="delete-btn">Delete</button>`
+                }
+            </div>
+        `;
+
+        if (survey.status === 'active') {
+            activeContainer.appendChild(card);
+        } else {
+            inactiveContainer.appendChild(card);
+        }
+        
+    });
+
+    setupActionDropdowns();
+
+}
+
+function setupSearchBar() {
+    const searchInput = document.getElementById('searchSurveyId');
+    searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const term = searchInput.value.trim().toLowerCase();
+
+            if (term === '') {
+                renderSurveys(allSurveys);
+                return;
+            }
+
+            const filtered = allSurveys.filter(s =>
+                s.title.toLowerCase().includes(term) || s.type.toLowerCase().includes(term)
+            );
+
+            renderSurveys(filtered);
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetchSurveys();
+    setupSearchBar();
+});
+
+
+function setupActionDropdowns() {
+    document.querySelectorAll('.actions-btn').forEach(button => {
+        const container = button.closest('.actions-container');
+        const dropdown = container.querySelector('.dropdown');
+
+
+        button.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+
+            document.querySelectorAll('.dropdown').forEach(menu => {
+                menu.style.display = 'none';
+            });
+
+            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+        });
+    });
+
+}
 

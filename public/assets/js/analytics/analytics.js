@@ -40,21 +40,45 @@ options: {
 // funcion para cambiar de panel
 
 function showOptionSelected(id) {
-    // Ocultar todos los paneles
-    const paneles = document.querySelectorAll('.panel');
-    paneles.forEach(panel => {
-        panel.classList.remove('visible');
-    });
-    // Quitar la clase selectedOption de todos los botones
-    const buttons = document.querySelectorAll('.surveyOption');
-    buttons.forEach(button => {
-        button.classList.remove('selectedOption');
-    });
 
-    // Mostrar solo el panel seleccionado
+    const paneles = document.querySelectorAll('.panel');
+    paneles.forEach(panel => panel.classList.remove('visible'));
+
+
+    const buttons = document.querySelectorAll('.surveyOption');
+    buttons.forEach(button => button.classList.remove('selectedOption'));
+
+
     const panelSeleccionado = document.getElementById(id);
     panelSeleccionado.classList.add('visible');
-    // Agregar la clase selectedOption al botón correspondiente
+
+
     const selectedButton = document.querySelector(`button[onclick="showOptionSelected('${id}')"]`);
     if (selectedButton) selectedButton.classList.add('selectedOption');
+
+
+    if (id === 'panel4' && typeof fetchReports === 'function') {
+        fetchReports();
+    }
 }
+
+async function loadAnalyticsStats() {
+    try {
+        const response = await fetch('../../../src/models/get_analytics_stats.php');
+        const result = await response.json();
+
+        if (result.status === 'success') {
+            console.log('Datos recibidos:', result.data); 
+            document.getElementById('surveyTotalId').textContent = result.data.totalSurveys;
+        }
+        else {
+            console.error('Error fetching analytics stats:', result.message);
+        }
+    } catch (error) {
+        console.error('Fetch error:', error);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadAnalyticsStats(); // llamada al cargar
+});
