@@ -7,8 +7,10 @@
     overflow-x: hidden;
 }
 
-.mySurveysHeader{
+/*Estilos para MiniHeader donde estan la opcion activas e inactivas, search y create*/
+/* ------------------------------------ */
 
+.mySurveysHeader{
     display: flex;
     justify-content: space-between; 
     margin-bottom: 1.4rem;
@@ -32,7 +34,8 @@
     font-weight: bold;
     font-size: 2rem;
 }
-
+/* div de Search y create juntos */
+/* ------------------------------------ */
 .searchAndCreate{
     display: flex;
     gap: 10px;
@@ -40,17 +43,18 @@
     align-items: center;
     margin-top: 10px;
 }
-
+/* input search */
 .searchAndCreate input{
     padding: 0.5rem 1rem;
     font-size: 1rem;
     border-radius: var(--border-radius);
     width: 220px;
 }
-
+/* boton create */
 .searchAndCreate button{
     padding: 0;
     border: none;
+    /*border-radius: var(--border-radius);*/
     background-color: var(--secondary-dominant);
     color: var(--neutral-light);
     cursor: pointer;
@@ -106,7 +110,59 @@
     line-height: 1;
 }
 
+
+/* Estilos para botones active surveys e inactive surveys */
+/* Div principal */
+.mySurveyOptions {
+    background-color: var(--gray-300);
+    display: flex;
+    flex-direction: row;
+    width: 70%;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: var(--border-radius);
+    padding: 5px;
+}
+
+.mySurveyOptions button{
+    background-color: var(--gray-300);
+}
+
+.surveyOption {
+    margin: 0;
+    padding: 4px 10px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    flex: 1;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.surveyOption.selectedOption {
+    background-color: var(--neutral-light);
+}
+
+.surveyOption h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--gray-800);
+}
+
+.selectedOption {
+    background-color: var(--neutral-light);
+    font-weight: bold;
+    border: none;
+    pointer-events: none;
+}
+
+
 /* Estilos para las encuestas activas */
+/* ---------------------------------------------------- */
+
+/* Estilos para las encuestas activas */
+
 
 .activeSurveys{
     display: flex;
@@ -119,6 +175,10 @@
     padding-top: 0;
     border-radius: 8px;
 }
+
+
+/* ordenmiento de las listas */
+
 .activeSurveyList{
     display: grid;
     width: 100%;
@@ -127,6 +187,12 @@
     padding: 10px;
     padding-bottom: 100px;
 }
+
+/* div que contiene desde type hasta description de cada survey */
+.principalInformation{
+    height: 200px!important;
+}
+/* cada survey de la lista */
 .survey-item{
     background: white;
     border: 1px solid #ddd;
@@ -180,8 +246,8 @@
 .dropdown a:hover {
     background-color: #f2f2f2;
 }
-/*Estilos de botones*/
-
+/*Estilos de botones actives*/
+/* ------------------------------------ */
 .surveyActive-actions{
     display: flex;
     justify-content: center;
@@ -272,6 +338,9 @@
     justify-content: center;
 }
 
+
+/*Estilos de botones inactives*/
+/* ---------------------------------------------------- */
 /*Estilos de botones*/
 .activate-btn, .delete-btn {
     padding: 0.5rem 1rem;
@@ -308,6 +377,16 @@
 
 @media screen and (max-width: 960px) {
 
+    .activeSurveyList{
+        /* grid auto reductor responsive: */
+        grid-template-columns: repeat(auto-fit, minmax(330px, 2fr));
+    }
+    .surveyInactive-item{
+        width: 350px;
+    }
+    .survey-item{
+        width: 350px;
+    }
     .principalDashboard{
         margin: 0;
         width: 100%;
@@ -349,10 +428,15 @@
 .panel.visible {
     display: block !important;
 }
+.surveyOption.selected {
+    background-color: var(--gray-200);
+    color: white; 
+=======
 
 .searchContainer {
     position: relative;
     display: inline-block;
+
 }
 
 .searchContainer input[type="text"] {
