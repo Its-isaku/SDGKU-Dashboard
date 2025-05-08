@@ -268,7 +268,7 @@
 }
 
 .results-btn:hover {
-    background-color: #0c865d;
+    background-color: var(--primary-dominant);
     transition: transform 0.2s ease-in-out;
     color: var(--neutral-light);
 }
@@ -287,8 +287,8 @@
 }
 
 .results-btn {
-    background-color: var(--success-color);
-    color:var(--neutral-dark) ;
+    background-color: var(--secondary-dominant);
+    color:var(--neutral-light);
     margin-left: 0.5rem;
 }
 
@@ -351,14 +351,7 @@
     justify-content: center;
 }
 
-.surveyInactive-item:hover{
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-.survey-item:hover{
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
+
 
 .survey-details {
     margin: 10px;;
@@ -407,7 +400,7 @@
 
 .delete-btn {
     background-color: var(--secondary-dominant);
-    color: var(--neutral-dark);
+    color: var(--neutral-light);
     margin-left: 0.5rem;
 }
 
