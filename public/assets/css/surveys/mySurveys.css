@@ -268,7 +268,7 @@
 }
 
 .results-btn:hover {
-    background-color: var(--primary-dominant);
+    background-color: #0c865d;
     transition: transform 0.2s ease-in-out;
     color: var(--neutral-light);
 }
@@ -287,7 +287,7 @@
 }
 
 .results-btn {
-    background-color: var(--secondary-dominant);
+    background-color: var(--success-color);
     color:var(--neutral-dark) ;
     margin-left: 0.5rem;
 }
