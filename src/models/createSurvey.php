@@ -63,15 +63,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     exit;
 }
 
-//? GET subjects filtered by program via surveys
+//? GET subjects filtered by program directly from subjects table
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getSubjects') {
     $programId = isset($_GET['program_id']) ? trim($_GET['program_id']) : null;
     try {
         if ($programId) {
-            $sql = "SELECT DISTINCT s.subject_id, s.subject
-                    FROM subjects s
-                    INNER JOIN surveys v ON v.subject_id = s.subject_id
-                    WHERE v.program_id = ?";
+            $sql = "SELECT subject_id, subject FROM subjects WHERE program_id = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$programId]);
         } else {

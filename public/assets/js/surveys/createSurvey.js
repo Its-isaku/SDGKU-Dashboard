@@ -351,7 +351,7 @@ document.getElementById('btnAddQuestion').addEventListener('click', () => {
     questionCounter++;
 });
 
-// Ensure at least one question form is loaded on page load
+//? Ensure at least one question form is loaded on page load
 document.addEventListener('DOMContentLoaded', function() {
     const container = document.getElementById('questionFormsContainer');
     if (container && container.children.length === 0) {
@@ -466,7 +466,7 @@ function updatePreview() {
             Likert3.forEach((labelText, i) => {
                 const label = document.createElement('label');
                 label.innerHTML = `<input type="radio" name="previewQ${idx}" value="${i + 1}"> ${labelText}`;
-                grade.appendChild(label); //! Fixed: append label, not grade
+                grade.appendChild(label);
             });
             qEl.appendChild(grade);
         }
