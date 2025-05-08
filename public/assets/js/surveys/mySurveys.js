@@ -51,6 +51,7 @@ function renderInactiveSurveys() {
         surveyItem.className = "surveyInactive-item";
 // visualizacion de cada encuesta
         surveyItem.innerHTML = ` 
+        <div class = "principalInformationInactives">    
             <div class = "inactiveTitleStatus"> 
                 <div class = "surveytitle">
                     <p>${survey.type}</p>
@@ -59,9 +60,10 @@ function renderInactiveSurveys() {
                     <p>${survey.status}</p>
                 </div>
             </div>
-
-            <h3>${survey.title}</h3>
+             <h3>${survey.title}</h3>
             <p>${survey.description}</p>
+        </div>
+           
             <div class="survey-details">
                 <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
                 <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
@@ -160,17 +162,19 @@ function renderActiveSurveys() {
     // visualizacion de cada encuesta
    
     activeSurveyItem.innerHTML = ` 
-        <div class = "activeTitleStatus">
-                <div class = "surveytitle">
-                    <p>${survey.type}</p>
-                </div>
-                <div class = "surveyStatus">
-                    <p>${survey.status}</p>
-                </div>
-                
+        <div class = "principalInformation">
+            <div class = "activeTitleStatus">
+                    <div class = "surveytitle">
+                        <p>${survey.type}</p>
+                    </div>
+                    <div class = "surveyStatus">
+                        <p>${survey.status}</p>
+                    </div>
             </div>
             <h3>${survey.title}</h3>
             <p>${survey.description}</p>
+        </div>
+            
             <div class="survey-details">
                 <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
                 <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
