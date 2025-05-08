@@ -61,3 +61,24 @@ function showOptionSelected(id) {
         fetchReports();
     }
 }
+
+async function loadAnalyticsStats() {
+    try {
+        const response = await fetch('../../../src/models/get_analytics_stats.php');
+        const result = await response.json();
+
+        if (result.status === 'success') {
+            console.log('Datos recibidos:', result.data); 
+            document.getElementById('surveyTotalId').textContent = result.data.totalSurveys;
+        }
+        else {
+            console.error('Error fetching analytics stats:', result.message);
+        }
+    } catch (error) {
+        console.error('Fetch error:', error);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadAnalyticsStats(); // llamada al cargar
+});
