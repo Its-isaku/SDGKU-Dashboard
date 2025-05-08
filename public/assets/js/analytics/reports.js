@@ -1,40 +1,22 @@
-const reportsData = [
-    {
-        title: "Introduction to Computer Science Pre-Course Assessment",
-        tag1: { label: "Pre-Course", class: "pre-course" },
-        tag2: { label: "Inactive", class: "inactive" },
-        description: "Please complete this survey before the course",
-        created: "Jan 04 2025",
-        questions: 3
-    },
-    {
-        title: "Teacher-Evaluation - Programming Fundamentals",
-        tag1: { label: "Teacher-Eval", class: "teacher-eval" },
-        tag2: { label: "Inactive", class: "inactive" },
-        description: "Please evaluate your instructor for this course",
-        created: "Jan 04 2025",
-        questions: 3
-    },
-    {
-        title: "Introduction to Computer Science Pre-Course Assessment",
-        tag1: { label: "Pre-Course", class: "pre-course" },
-        tag2: { label: "Inactive", class: "inactive" },
-        description: "Please complete this survey before the course",
-        created: "Jan 04 2025",
-        questions: 3
-    },
-    {
-        title: "Teacher-Evaluation - Programming Fundamentals",
-        tag1: { label: "Teacher-Eval", class: "teacher-eval" },
-        tag2: { label: "Inactive", class: "inactive" },
-        description: "Please evaluate your instructor for this course",
-        created: "Jan 04 2025",
-        questions: 3
-    }
-];
+async function fetchReports() {
+    try {
+        const response = await fetch('../../../src/models/get_reports.php');
+        const result = await response.json();
 
-function renderReportCards() {
+        if (result.status === 'success') {
+            renderReportCards(result.data);
+        } else {
+            console.error('Error fetching reports:', result.message);
+        }
+    } catch (error) {
+        console.error('Fetch error:', error);
+    }
+}
+
+function renderReportCards(reportsData) {
     const container = document.querySelector('.reports');
+    container.innerHTML = ''; // limpiar
+
     const cardsWrapper = document.createElement('div');
     cardsWrapper.className = 'reportCardsContainer';
 
@@ -44,24 +26,30 @@ function renderReportCards() {
 
         card.innerHTML = `
             <div class="reportTags">
-                <span class="reportTag ${report.tag1.class}">${report.tag1.label}</span>
-                <span class="reportTag ${report.tag2.class}">${report.tag2.label}</span>
+                <span class="reportTag">${report.type_name}</span>
+                <span class="reportTag inactive">Inactive</span>
             </div>
             <h4>${report.title}</h4>
             <p>${report.description}</p>
             <div class="reportCardDetails">
-                <span><i class="fa-solid fa-calendar-plus"></i> Created: ${report.created}</span>
-                <span><i class="fa-solid fa-clipboard-list"></i> ${report.questions} questions</span>
+                <span><i class="fa-solid fa-calendar-plus"></i> Created: ${report.created_at}</span>
+                <span><i class="fa-solid fa-clipboard-list"></i> ${report.question_count} questions</span>
             </div>
-            <button class="downloadBtn">Download results</button>
+            <button class="downloadBtn" data-id="${report.survey_id}">Download results</button>
         `;
 
         cardsWrapper.appendChild(card);
     });
 
     container.appendChild(cardsWrapper);
+    attachDownloadListeners();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    renderReportCards();
-});
+function attachDownloadListeners() {
+    document.querySelectorAll('.downloadBtn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const surveyId = btn.getAttribute('data-id');
+            window.location.href = `../../../src/models/export_survey_csv.php?id=${surveyId}`;
+        });
+    });
+}
