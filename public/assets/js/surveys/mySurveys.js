@@ -205,6 +205,7 @@ document.addEventListener('click', function(e) {
 });
 
 //Desactivar encuesta
+// -------------------------------------------------------------------------------
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('deactivate-survey')) {
         e.preventDefault();
