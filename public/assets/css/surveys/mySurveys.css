@@ -114,8 +114,9 @@
     line-height: 1;
 }
 
-/* Estilos para botones active surveys e inactive surveys */
+
 /* Div principal */
+/* ---------------------------------------------------- */
 .mySurveyOptions {
     background-color: var(--gray-300);
     display: flex;
@@ -193,7 +194,7 @@
 .survey-item{
     display: flex;
     flex-direction: column;
-    height: 400px;
+    height: 400px!important;
     min-width: 390px!important;
     border: 1px solid #ddd;
     padding: 1rem;
@@ -228,9 +229,9 @@
 .dropdown {
     position: fixed;
     /* posicion en y */
-    top: 38%;
+    top: 130px;
     /* posicion en x */
-    left: 49%;
+    left: 190px;
     background: white;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -241,16 +242,21 @@
     width: 120px!important;
 }
 
-.dropdown a {
+.dropdown button {
     padding: 10px 16px;
     text-decoration: none;
-    color: black;
+    color: var(--gray-800);
     font-size: 14px;
+    height: 50px;
+    border-radius: 0px;
+    background-color: transparent;
 }
 
-.dropdown a:hover {
-    background-color: #f2f2f2;
+.dropdown button:hover {
+    background-color: var(--primary-dominant);
+    color: var(--neutral-light);
 }
+
 /*Estilos de botones actives*/
 /* ------------------------------------ */
 .surveyActive-actions{
@@ -324,7 +330,7 @@
 .surveyInactive-item {
     display: flex;
     flex-direction: column;
-    height: 400px;
+    height: 400px!important;
     min-width: 390px!important;
     border: 1px solid #ddd;
     padding: 1rem;

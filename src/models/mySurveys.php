@@ -10,6 +10,7 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getSurveys') {
     try {
         $sql = "SELECT 
+            surveys.survey_id AS id,
             survey_types.type_name AS type,
             surveys.status,
             surveys.title,
@@ -17,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
             surveys.created_at AS createdDate,
             surveys.expires_at AS expires,
             program_types.program_name AS program,
-            
             cohort.cohort AS cohort,
             COUNT(questions.survey_id) AS questions
         FROM surveys
@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         INNER JOIN cohort ON cohort.cohort_id = surveys.program_id
         LEFT JOIN questions ON surveys.survey_id = questions.survey_id
         GROUP BY 
+            surveys.survey_id,
             survey_types.type_name,
             surveys.status,
             surveys.title,
@@ -49,26 +50,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'addProgram') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $input = file_get_contents('php://input');
-        $data = json_decode($input, true);
-        $programName = $data['programName'] ?? null;
-        $programTypeId = $data['programTypeId'] ?? null;
-
-        if (!$programName || !$programTypeId) {
-            error_log('Invalid data received for addProgram: ' . json_encode($data));
-            respond('error', 'Invalid data received!');
+        $input = json_decode(file_get_contents('php://input'), true);
+        // Check if the input is valid JSON
+        if (!isset($input['action']) || $input['action'] !== 'deleteSurvey') {
+            http_response_code(400);
+            echo json_encode(['error' => 'Acción no válida']);
+            exit;
         }
 
-        $sql = "INSERT INTO programs (name, program_type_id) VALUES(?, ?)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$programName, $programTypeId]);
-        respond('success', 'Program added successfully!');
-    } catch (Exception $e) {
-        error_log('Error adding program: ' . $e->getMessage());
-        respond('error', 'Database error: ' . $e->getMessage());
+        if (!isset($input['id'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'ID no proporcionado']);
+            exit;
+        }
+        // Validate the ID
+        $id = intval($input['id']);
+
+    
+        $pdo->beginTransaction();
+        // Prepare and execute the delete queries
+        $queries = [
+            "DELETE FROM true_false_options WHERE question_id IN 
+                (SELECT questions_id FROM questions WHERE survey_id = ?)",
+            
+            "DELETE FROM multiple_options WHERE id_question IN 
+                (SELECT questions_id FROM questions WHERE survey_id = ?)",
+            
+            "DELETE FROM open_options WHERE question_id IN 
+                (SELECT questions_id FROM questions WHERE survey_id = ?)",
+
+            "DELETE FROM Linkert_1_5 WHERE question_id IN 
+                (SELECT questions_id FROM questions WHERE survey_id = ?)",
+
+            "DELETE FROM Linkert_1_3 WHERE question_id IN 
+                (SELECT questions_id FROM questions WHERE survey_id = ?)",
+
+            "DELETE FROM questions WHERE survey_id = ?",
+
+            "DELETE FROM surveys WHERE survey_id = ?"
+        ];
+
+        foreach ($queries as $sql) {
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$id]);
+        }
+
+        $pdo->commit();
+        http_response_code(200);
+        echo json_encode(['success' => true, 'message' => 'Encuesta y datos relacionados eliminados correctamente']);
+
+    } catch (PDOException $e) {
+        $pdo->rollBack();
+        error_log('Error deleting survey: ' . $e->getMessage());
+        http_response_code(500);
+        echo json_encode(['success' => false, 'error' => 'Error eliminando la encuesta: ' . $e->getMessage()]);
     }
     exit;
 }
+
+
+
 ?>
