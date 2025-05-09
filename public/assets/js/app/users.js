@@ -1,4 +1,4 @@
-// just for testing purposes, remove this in production
+//? just for testing purposes, remove this in production
 if (!localStorage.getItem('users')) {
     const initialUsers = [
         {
@@ -32,7 +32,7 @@ if (!localStorage.getItem('users')) {
     ];
     localStorage.setItem('users', JSON.stringify(initialUsers));
 }
-// elems
+//? elems
 const usersTableBody = document.getElementById('users-table-body');
 const searchInput = document.getElementById('search-input');
 const addUserBtn = document.getElementById('add-user-btn');
@@ -43,22 +43,22 @@ const addUserForm = document.getElementById('add-user-form');
 const editUserForm = document.getElementById('edit-user-form');
 const notification = document.getElementById('notification');
 
-//modal elems for btns
+//?modal elems for btns
 const closeButtons = document.querySelectorAll('.close-modal');
 const cancelAddBtn = document.getElementById('cancel-add');
 const cancelEditBtn = document.getElementById('cancel-edit');
 const cancelDeleteBtn = document.getElementById('cancel-delete');
 const confirmDeleteBtn = document.getElementById('confirm-delete');
 
-// load users from ls
+//? load users from ls
 function loadUsers(){
     const users = JSON.parse(localStorage.getItem('users')) || [];
     return users;
 }
 
-//display users in table
+//? display users in table
 function displayUsers(users = loadUsers()) {
-    usersTableBody.innerHTML = ''; //clear table body
+    usersTableBody.innerHTML = ''; //*clear table body
 
     if (users.length === 0){
         usersTableBody.innerHTML = `
@@ -70,7 +70,7 @@ function displayUsers(users = loadUsers()) {
     }
     users.forEach(user => {
         const row = document.createElement('tr');
-        row.innerHTML = `
+        row.innerHTML = /* HTML*/ `
             <td>${user.name}</td>
             <td>${user.email}</td>
             <td><span class="role-badge role-${user.role}">${user.role}</span></td>
@@ -88,7 +88,7 @@ function displayUsers(users = loadUsers()) {
         usersTableBody.appendChild(row);
     });
 
-    // add event listeners to edit and delete buttons
+    //* add event listeners to edit and delete buttons
     document.querySelectorAll('.action-btn.edit').forEach(btn => {
         btn.addEventListener('click', () => openEditModal(btn.dataset.id));
     });
@@ -98,7 +98,7 @@ function displayUsers(users = loadUsers()) {
     });
 }
 
-// filter users by search input
+//? filter users by search input
 function filterUsers() {
     const searchTerm = searchInput.value.toLowerCase();
     const users = loadUsers();
@@ -108,13 +108,13 @@ function filterUsers() {
     displayUsers(filteredUsers);
 }
 
-// generate unique ID for new user
+//? generate unique ID for new user
 function generateId(){
     const users = loadUsers();
     return users.length ? Math.max(...users.map(user => user.id)) + 1 : 1;
 }
 
-// display notification
+//? display notification
 function showNotification(message, type = 'success') {
     notification.textContent = message;
     notification.className = `notification ${type}`;
@@ -125,14 +125,14 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
-//open add user modal
+//? open add user modal
 function openAddModal() {
     addUserModal.style.display = 'flex';
     document.getElementById('full-name').focus();
-    addUserForm.reset(); // reset form
+    addUserForm.reset(); //* reset form
 }
 
-//open edit user modal
+//? open edit user modal
 function openEditModal(userId) {
     const users = loadUsers();
     const user = users.find(u => u.id === parseInt(userId));
@@ -143,24 +143,24 @@ function openEditModal(userId) {
     }
 }
 
-//open delete user modal
+//? open delete user modal
 function openDeleteModal(userId) {
     document.getElementById('delete-user-id').value = userId;
     deleteUserModal.style.display = 'flex';
 }
 
-//close modals
+//?close modals
 function closeModals() {
     addUserModal.style.display = 'none';
     editUserModal.style.display = 'none';
     deleteUserModal.style.display = 'none';
     
-    // reset forms
+    //* reset forms
     addUserForm.reset();
     editUserForm.reset();
 }
 
-//function to add new user
+//? function to add new user
 function addUser(e) {
     e.preventDefault();
     const name = document.getElementById('full-name').value;
@@ -169,7 +169,7 @@ function addUser(e) {
     const password = document.getElementById('password').value;
     const users = loadUsers();
 
-    // check if email already exists
+    //* check if email already exists
     if (users.some(user => user.email === email)) {
         showNotification('A user with this email already exists.', 'error');
         return;
@@ -189,7 +189,7 @@ function addUser(e) {
     showNotification('User added successfully!');
 }
 
-//function to edit user
+//? function to edit user
 function editUser(e){
     e.preventDefault();
     const userId = parseInt(document.getElementById('edit-user-id').value);
@@ -206,12 +206,12 @@ function editUser(e){
     } 
 }
 
-//function to delete user
+//? function to delete user
 function deleteUser(){
     const userId = parseInt(document.getElementById('delete-user-id').value);
     let users = loadUsers();
 
-    //cant delete last admin user
+    //? cant delete last admin user
     const admins = users.filter(user => user.role === 'admin');
     const userToDelete = users.find(user => user.id === userId);
 
@@ -227,7 +227,7 @@ function deleteUser(){
     showNotification('User deleted successfully!');
 }
 
-// event listeners
+//? event listeners
 window.addEventListener('DOMContentLoaded', () => {
     displayUsers();
 });
@@ -237,7 +237,7 @@ addUserForm.addEventListener('submit', addUser);
 editUserForm.addEventListener('submit', editUser);
 confirmDeleteBtn.addEventListener('click', deleteUser);
 
-// close modals on buttons
+//? close modals on buttons
 closeButtons.forEach(btn => {
     btn.addEventListener('click', closeModals);
 });
@@ -245,7 +245,7 @@ cancelAddBtn.addEventListener('click', closeModals);
 cancelEditBtn.addEventListener('click', closeModals);
 cancelDeleteBtn.addEventListener('click', closeModals);
 
-// close modals on outside click
+//? close modals on outside click
 window.addEventListener('click', (e) => {
     if (e.target === addUserModal || e.target === editUserModal || e.target === deleteUserModal) {
         closeModals();

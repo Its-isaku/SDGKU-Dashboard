@@ -664,7 +664,7 @@ document.addEventListener('DOMContentLoaded', function() {
         programTypeSelect.addEventListener('change', function() {
             const programTypeId = this.value;
             const programSelect = document.getElementById('program');
-            programSelect.innerHTML = '<option value="" disabled selected hidden>Chose a program</option>';
+            programSelect.innerHTML = '<option value="" disabled selected hidden>Choose a program</option>';
             if (!programTypeId) return;
             fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getPrograms&program_type_id=' + programTypeId)
                 .then(res => res.json())
@@ -698,7 +698,7 @@ if (programSelect) {
     programSelect.addEventListener('change', function() {
         const programId = this.value;
         const subjectSelect = document.getElementById('subject');
-        subjectSelect.innerHTML = '<option value="" disabled selected hidden>Chose a Course</option>';
+        subjectSelect.innerHTML = '<option value="" disabled selected hidden>Choose a Course</option>';
         if (!programId) return;
         fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getSubjects&program_id=' + programId)
             .then(res => res.json())
@@ -754,14 +754,14 @@ document.addEventListener('DOMContentLoaded', function() {
         programSelect.addEventListener('mousedown', function() {
             if (!programTypeSelect.value) {
                 programSelect.innerHTML = `
-                    <option value="" disabled selected hidden>Chose a program</option>
+                    <option value="" disabled selected hidden>Choose a program</option>
                     <option value="" disabled>Select program type first</option>
                 `;
             }
         });
         // * Reset program select when program type changes
         programTypeSelect.addEventListener('change', function() {
-            programSelect.innerHTML = '<option value="" disabled selected hidden>Chose a program</option>';
+            programSelect.innerHTML = '<option value="" disabled selected hidden>Choose a program</option>';
         });
     }
 
@@ -770,14 +770,14 @@ document.addEventListener('DOMContentLoaded', function() {
         subjectSelect.addEventListener('mousedown', function() {
             if (!programSelect.value) {
                 subjectSelect.innerHTML = `
-                    <option value="" disabled selected hidden>Chose a Course</option>
+                    <option value="" disabled selected hidden>Choose a Course</option>
                     <option value="" disabled>Select program first</option>
                 `;
             }
         });
         // * Reset subject select when program changes
         programSelect.addEventListener('change', function() {
-            subjectSelect.innerHTML = '<option value="" disabled selected hidden>Chose a Course</option>';
+            subjectSelect.innerHTML = '<option value="" disabled selected hidden>Choose a Course</option>';
         });
     }
 });

@@ -6,6 +6,8 @@ header('Content-Type: application/json');
 
 require_once __DIR__ . '/../config/config.php'; 
 
+error_log('manageSurveyData.php loaded');
+
 function respond($status, $message, $data = null) {
     $response = ['status' => $status, 'message' => $message];
     if ($data !== null) {
@@ -15,7 +17,7 @@ function respond($status, $message, $data = null) {
     exit;
 }
 
-//! <-------------------------------- GET --------------------------------> - get program, cohort and subject
+//! <-------------------------------- GET(add) --------------------------------> - get program, cohort and subject
 //?GET programs
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getPrograms') {
     $programTypeId = isset($_GET['program_type_id']) ? trim($_GET['program_type_id']) : null;
@@ -40,12 +42,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 
 //? GET cohorts
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getCohorts') {
+    $programId = isset($_GET['program_id']) ? intval($_GET['program_id']) : null;
     try {
-        $sql = "SELECT cohort_id, cohort FROM cohort";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        $cohort = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode(['status' => 'success', 'data' => $cohort]);
+        if ($programId) {
+            $stmt = $pdo->prepare('SELECT * FROM cohort WHERE program_id = ?');
+            $stmt->execute([$programId]);
+        } else {
+            $stmt = $pdo->query('SELECT * FROM cohort');
+        }
+        $cohorts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode(['status' => 'success', 'data' => $cohorts]);
     } catch (Exception $e) {
         respond('error', 'Could not fetch cohorts.');
     }
@@ -57,10 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     $programId = isset($_GET['program_id']) ? trim($_GET['program_id']) : null;
     try {
         if ($programId) {
-            $sql = "SELECT DISTINCT s.subject_id, s.subject
-                    FROM subjects s
-                    INNER JOIN surveys v ON v.subject_id = s.subject_id
-                    WHERE v.program_id = ?";
+            $sql = "SELECT subject_id, subject FROM subjects WHERE program_id = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$programId]);
         } else {
@@ -178,6 +181,88 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
         respond('success', 'Subject added successfully!');
     } catch (Exception $e) {
         error_log('Error adding subject: ' . $e->getMessage());
+        respond('error', 'Database error: ' . $e->getMessage());
+    }
+    exit;
+}
+
+//! <-------------------------------- GET(Delete) --------------------------------> - get program, cohort and subject
+
+//? dellete Program
+if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'deleteProgram') {
+    error_log('deleteProgram block entered');
+    try {
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+        $programId = $data['programId'] ?? null;
+
+        if (!$programId) {
+            error_log('Invalid data received for deleteProgram: ' . json_encode($data));
+            respond('error', 'Invalid data received!');
+        }
+
+        //* Delete all cohorts and course associated with the program
+        $sql = "DELETE FROM cohort WHERE program_id = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$programId]);
+        
+        $sql = "DELETE FROM subjects WHERE program_id = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$programId]);
+
+        //* Delete the program
+        $sql = "DELETE FROM programs WHERE prog_id = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$programId]);
+        respond('success', 'Program deleted successfully!');
+    } catch (Exception $e) {
+        error_log('Error deleting program: ' . $e->getMessage());
+        respond('error', 'Database error: ' . $e->getMessage());
+    }
+    exit;
+}
+
+//?dellete Cohort
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'deleteCohort') {
+    try {
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+        $cohortId = $data['cohortId'] ?? null;
+
+        if (!$cohortId) {
+            error_log('Invalid data received for deleteCohort: ' . json_encode($data));
+            respond('error', 'Invalid data received!');
+        }
+
+        $sql = "DELETE FROM cohort WHERE cohort_id = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$cohortId]);
+        respond('success', 'Cohort deleted successfully!');
+    } catch (Exception $e) {
+        error_log('Error deleting cohort: ' . $e->getMessage());
+        respond('error', 'Database error: ' . $e->getMessage());
+    }
+    exit;
+}
+
+//? dellete Course
+if( $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'deleteCourse') {
+    try {
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+        $courseId = $data['courseId'] ?? null;
+
+        if (!$courseId) {
+            error_log('Invalid data received for deleteCourse: ' . json_encode($data));
+            respond('error', 'Invalid data received!');
+        }
+
+        $sql = "DELETE FROM subjects WHERE subject_id = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$courseId]);
+        respond('success', 'Course deleted successfully!');
+    } catch (Exception $e) {
+        error_log('Error deleting course: ' . $e->getMessage());
         respond('error', 'Database error: ' . $e->getMessage());
     }
     exit;

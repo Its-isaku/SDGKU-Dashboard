@@ -102,7 +102,7 @@
                     
                     <div class="settings-content">
                         <!--? Security  -->
-                        <div class="securityContent" id="securitySection" style="display: block;">
+                        <div class="securityContent" id="securitySection">
                             <div class="contentTitle">
                                 <h3>Security Settings</h3>
                                 <p>Update your password and security preferences</p>
@@ -129,67 +129,187 @@
                         </div>
 
                         <!--? Manage Data -->
-                        <div class="manageDataContent" id="manageDataSection" style="display: none;">
-                            <div class="contentTitle">
-                                <h3>Manage Data</h3>
-                                <p>Add, delete, and organize your programs, cohorts, and courses</p>
-                            </div>
-
-                            <div class="addProgramContent">
-                                <div class="manageDataInput">
-                                    <label for="ProgramType">Program Type</label>
-                                    <select id="programType" required>
-                                        <option value="" disabled selected hidden>Chose a program type</option>
-                                        <!--! options from the db -->
-                                    </select>
-                                </div>
-
-                                <div class="manageDataInput">
-                                    <div class="addProgram">
-                                        <label for="addProgram">Add Program</label>
-                                        <p>(Depends on Program Type)</p>
-                                    </div>
-                                    <div class="addProgramContainer">
-                                        <input type="text" id="newProgram" placeholder="Enter new program" required>
-                                        <button id="addProgram">Add</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="addCohortContent">
-                                <div class="manageDataInput">
-                                    <label for="program">Program</label>
-                                    <select id="program" required>
-                                        <option value="" disabled selected hidden>Chose a program</option>
-                                        <!--! options from the db -->
-                                    </select>
-                                </div>
-
-                                <div class="manageDataInput">
-                                    <div class="addCohort">
-                                        <label for="addCohort">Add Cohort/Section</label>
-                                        <p>(Depends on program)</p>
-                                    </div>
-                                    <div class="addCohortContainer">
-                                        <input type="text" id="newCohort" placeholder="Enter new cohort" required>
-                                        <button id="addCohort">Add</button>
-                                    </div>
+                        <div class="manageDataContent" id="manageDataSection">
+                            <div class="addContent">
+                                <div class="contentTitle">
+                                    <h3>Add Data</h3>
+                                    <p>Add more programs, cohorts, and courses</p>
                                 </div>
                                 
-                                <div class="manageDataInput">
-                                    <div class="addCourse">
-                                        <label for="addCourse">Add Course</label>
-                                        <p>(Depends on program)</p>
+                                <div class="addProgramContent">
+                                    <div class="manageDataInput">
+                                        <label for="ProgramType">Program Type</label>
+                                        <select id="programType" required>
+                                            <option value="" disabled selected hidden>Choose a program type</option>
+                                            <!--! options from the db -->
+                                        </select>
                                     </div>
-                                    <div class="addCourseContainer">
-                                        <input type="text" id="newCourse" placeholder="Enter new Course" required>
-                                        <button id="addCourse">Add</button>
+                                    
+                                    <div class="manageDataInput">
+                                        <div class="addProgram">
+                                            <label for="addProgram">Add Program</label>
+                                            <p>(Depends on Program Type)</p>
+                                        </div>
+                                        <div class="addProgramContainer">
+                                            <input type="text" id="newProgram" placeholder="Enter new program" required>
+                                            <button id="addProgram">Add</button>
+                                        </div>
                                     </div>
                                 </div>
-                                
+
+                                <div class="addCohortContent">
+                                    <div class="manageDataInput">
+                                        <label for="program">Program</label>
+                                        <select id="program" required>
+                                            <option value="" disabled selected hidden>Choose a program</option>
+                                            <!--! options from the db -->
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="manageDataInput">
+                                        <div class="addCohort">
+                                            <label for="addCohort">Add Cohort/Section</label>
+                                            <p>(Depends on program)</p>
+                                        </div>
+                                        <div class="addCohortContainer">
+                                            <input type="text" id="newCohort" placeholder="Enter new cohort" required>
+                                            <button id="addCohort">Add</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="manageDataInput">
+                                        <div class="addCourse">
+                                            <label for="addCourse">Add Course</label>
+                                            <p>(Depends on program)</p>
+                                        </div>
+                                        <div class="addCourseContainer">
+                                            <input type="text" id="newCourse" placeholder="Enter new Course" required>
+                                            <button id="addCourse">Add</button>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="deleteContent">
+                                <div class="contentTitle">
+                                    <h3>Delete Data</h3>
+                                    <p>delete unused programs, cohorts, and courses</p>
+                                </div>
+
+                                <div class="deleteProgramContent">
+                                    <div class="manageDataInput">
+                                        <label for="deleteProgramType">Program Type</label>
+                                        <select id="deleteProgramType" required>
+                                            <option value="" disabled selected hidden>Choose a program type</option>
+                                            <!--! options from the db -->
+                                        </select>
+                                    </div>
+
+                                    <div class="manageDataInput">
+                                        <div class="deleteProgramTitle">
+                                            <label for="deleteProgram">Program</label>
+                                            <p>(Depends on program type)</p>
+                                        </div>
+                                        <div class="deleteContainer">
+                                            <select id="deleteProgram" required>
+                                                <option value="" disabled selected hidden>Choose a program to delete</option>
+                                                <!--! options from the db -->
+                                            </select>
+                                            <button id="deleteProgramBtn">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="addCohortContent">
+                                    
+                                    <div class="manageDataInput">
+                                        <div class="deleteProgramTitle">
+                                            <label for="deleteCohort">Cohort/Section</label>
+                                            <p>(Depends on program)</p>
+                                        </div>
+                                        <div class="deleteContainer">
+                                            <select id="deleteCohort" required>
+                                                <option value="" disabled selected hidden>Choose a Cohort/Section to delete</option>
+                                                <!--! options from the db -->
+                                            </select>
+                                            <button id="deleteCohortBtn">Delete</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="manageDataInput">
+                                        <div class="deleteProgramTitle">
+                                            <label for="deleteCourse">Course</label>
+                                            <p>(Depends on program)</p>
+                                        </div>
+                                        <div class="deleteContainer">
+                                            <select id="deleteCourse" required>
+                                                <option value="" disabled selected hidden>Choose a Course to delete</option>
+                                                <!--! options from the db -->
+                                            </select>
+                                            <button id="deleteCourseBtn" data-Course="">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!--! Delete program Modal -->
+                    <div id="delete-program-modal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2>Delete program</h2>
+                                <span class="close-modal">&times;</span>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete this progam? it will erase all cohorts/sections and Courses that are related</p>
+                                <p>This action cannot be undone.</p>
+                                <input type="hidden" id="delete-Program-id">
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-cancel" id="cancel-delete">Cancel</button>
+                                    <button type="button" class="btn btn-danger" id="confirm-delete-program">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--! Delete Cohort Modal -->
+                    <div id="delete-cohort-modal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2>Delete Cohort</h2>
+                                <span class="close-modal">&times;</span>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete this Cohort? This action cannot be undone.</p>
+                                <input type="hidden" id="delete-Cohort-id">
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-cancel" id="cancel-delete">Cancel</button>
+                                    <button type="button" class="btn btn-danger" id="confirm-delete-cohort">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--! Delete Course Modal -->
+                    <div id="delete-course-modal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2>Delete Course</h2>
+                                <span class="close-modal">&times;</span>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete this Course? This action cannot be undone.</p>
+                                <input type="hidden" id="delete-Course-id">
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-cancel" id="cancel-delete">Cancel</button>
+                                    <button type="button" class="btn btn-danger" id="confirm-delete-course">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="notification" class="notification"></div>
             </div>
         </main>
