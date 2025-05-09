@@ -10,31 +10,35 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getSurveys') {
     try {
         $sql = "SELECT 
-            surveys.survey_id AS id,
-            survey_types.type_name AS type,
-            surveys.status,
-            surveys.title,
-            surveys.description,
-            surveys.created_at AS createdDate,
-            surveys.expires_at AS expires,
-            program_types.program_name AS program,
-            cohort.cohort AS cohort,
-            COUNT(questions.survey_id) AS questions
-        FROM surveys
-        INNER JOIN survey_types ON surveys.survey_type_id = survey_types.survey_type_id
-        INNER JOIN program_types ON surveys.program_type_id = program_types.program_type_id
-        INNER JOIN cohort ON cohort.cohort_id = surveys.program_id
-        LEFT JOIN questions ON surveys.survey_id = questions.survey_id
-        GROUP BY 
-            surveys.survey_id,
-            survey_types.type_name,
-            surveys.status,
-            surveys.title,
-            surveys.description,
-            surveys.created_at,
-            surveys.expires_at,
-            program_types.program_name,
-            cohort.cohort";
+    surveys.survey_id AS id,
+    survey_types.type_name AS type,
+    surveys.status,
+    surveys.title,
+    surveys.description,
+    surveys.created_at AS createdDate,
+    surveys.expires_at AS expires,
+    program_types.program_name AS program,
+    cohort.cohort AS cohort,
+    COUNT(DISTINCT questions.questions_id) AS questions
+FROM surveys
+INNER JOIN survey_types ON surveys.survey_type_id = survey_types.survey_type_id
+INNER JOIN program_types ON surveys.program_type_id = program_types.program_type_id
+LEFT JOIN (
+    SELECT program_id, MIN(cohort) AS cohort 
+    FROM cohort 
+    GROUP BY program_id
+) cohort ON cohort.program_id = surveys.program_id
+LEFT JOIN questions ON surveys.survey_id = questions.survey_id
+GROUP BY 
+    surveys.survey_id, 
+    survey_types.type_name, 
+    surveys.status, 
+    surveys.title, 
+    surveys.description, 
+    surveys.created_at, 
+    surveys.expires_at, 
+    program_types.program_name, 
+    cohort.cohort";
     
         $stmt = $pdo->query($sql);
         $surveys = $stmt->fetchAll();
@@ -51,20 +55,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Primero decodificar el input
+    $input = json_decode(file_get_contents('php://input'), true);
+    
+    // Verificar que el input es válido y tiene acción
+    if (!isset($input['action'])) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Acción no especificada']);
+        exit;
+    }
+    if($input['action'] === 'deleteSurvey'){
     try {
-        $input = json_decode(file_get_contents('php://input'), true);
-        // Check if the input is valid JSON
-        if (!isset($input['action']) || $input['action'] !== 'deleteSurvey') {
-            http_response_code(400);
-            echo json_encode(['error' => 'Acción no válida']);
-            exit;
-        }
-
-        if (!isset($input['id'])) {
-            http_response_code(400);
-            echo json_encode(['error' => 'ID no proporcionado']);
-            exit;
-        }
+            if (!isset($input['id'])) {
+                http_response_code(400);
+                echo json_encode(['error' => 'ID no proporcionado']);
+                exit;
+            }
+            
         // Validate the ID
         $id = intval($input['id']);
 
@@ -107,6 +114,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         http_response_code(500);
         echo json_encode(['success' => false, 'error' => 'Error eliminando la encuesta: ' . $e->getMessage()]);
     }
+        exit;
+    }
+    if($input['action'] === 'deactivateSurvey'){
+        try {
+            if (!isset($input['id'])) {
+                http_response_code(400);
+                echo json_encode(['error' => 'ID no proporcionado']);
+                exit;
+            }
+            $id = intval($input['id']);
+            $pdo->beginTransaction();
+            
+            $sql = "UPDATE surveys SET status = 'inactive' WHERE survey_id = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$id]);
+            
+            $pdo->commit();
+            http_response_code(200);
+            echo json_encode(['success' => true, 'message' => 'Encuesta desactivada correctamente']);
+            
+        } catch (PDOException $e) {
+            $pdo->rollBack();
+            error_log('Error deactivating survey: ' . $e->getMessage());
+            http_response_code(500);
+            echo json_encode(['success' => false, 'error' => 'Error desactivando la encuesta: ' . $e->getMessage()]);
+        }
+        exit;
+        
+    }
+
+    http_response_code(400);
+    echo json_encode(['error' => 'Acción no válida']);
     exit;
 }
 
