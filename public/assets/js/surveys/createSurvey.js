@@ -596,12 +596,23 @@ document.getElementById('btnCreateSurvey').addEventListener('click', function() 
             radios.forEach((radio, i) => {
                 if (radio.checked) question.correctAnswer = i;
             });
+            questions.push(question);
         } else if (type === '5') { //* True/False
             const tf = form.querySelector('.QuestionTrueFalse input[type="radio"]:checked');
             if (tf) question.correctAnswer = Number(tf.value) === 1 ? 1 : 0;
+            questions.push(question);
+        } else if (type === '2' || type === '3') { //* Likert
+            questions.push(question);
+        } else if (type === '4') { //* Open-ended
+            // Collect the open-ended placeholder/response (if any)
+            const openTextarea = form.querySelector('.QuestionOpen textarea');
+            if (openTextarea) {
+                question.open_option_text = openTextarea.value.trim();
+            } else {
+                question.open_option_text = '';
+            }
+            questions.push(question);
         }
-        //* For other types, you can add more logic if needed
-        questions.push(question);
     });
 
     //? Data object

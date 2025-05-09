@@ -248,10 +248,11 @@ try {
                     //* Get the last inserted question ID
                     $questionId = $pdo->lastInsertId();
 
-                    //* Insert the open ended options into the open_option_text table
-                    $sql = "INSERT INTO open_option_text (question_id) VALUES(?)";
+                    //* Insert the open ended options into the open_options table
+                    $openOptionText = isset($question['open_option_text']) ? $question['open_option_text'] : null;
+                    $sql = "INSERT INTO open_options (question_id, open_option_text) VALUES(?, ?)";
                     $stmt = $pdo->prepare($sql);
-                    $stmt->execute([$questionId]);
+                    $stmt->execute([$questionId, $openOptionText]);
                 }
                 
                 //? if question_type = 5 (True/False)
