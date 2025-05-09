@@ -203,6 +203,50 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+
+//Desactivar encuesta
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('deactivate-survey')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const id = e.target.getAttribute('data-id');
+        
+        if (confirm(`Are you sure you want to deactivate this survey?`)) {
+            fetch(`/SDGKU-Dashboard/src/models/mySurveys.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    action: 'deactivateSurvey',
+                    id: id 
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw err; });
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log('Respuesta:', data);
+                // Eliminar de la lista local
+                const index = Surveys.findIndex(s => s.id == id);
+                if (index !== -1) {
+                    Surveys.splice(index, 1);
+                }
+                // Volver a renderizar
+                document.getElementById('activeListId').innerHTML = '';
+                renderActiveSurveys();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al eliminar la encuesta: ' + (error.message || error));
+            });
+        }
+    }
+});
 });
 
 // Activate Surveys render
@@ -248,7 +292,7 @@ function renderActiveSurveys() {
                         <button class="dropdown-action">Copy Access Link</button>
                         <button class="dropdown-action">Edit Survey</button>
                         <button class="dropdown-action">Duplicate</button>
-                        <button class="dropdown-action">Deactivate</button>
+                        <button class="dropdown-action deactivate-survey" data-id="${survey.id}"">Deactivate</button>
                         <button class="dropdown-delete delete-survey" data-id="${survey.id}" style="color: red;">Delete</button>
                 </div>
             </div>
