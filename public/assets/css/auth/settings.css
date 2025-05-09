@@ -96,8 +96,9 @@
   
 }
 
-/*? <|--------------------------manage Data--------------------------|> */
+/*! <|--------------------------manage Data--------------------------|> */
 
+/*? add */
 .manageDataContent {
   display: flex;
   flex-direction: column;
@@ -276,3 +277,86 @@
   padding: 0;
   margin: 0;
 } 
+
+.addContent{
+  padding-bottom: 2rem;
+  border-bottom: 2px solid var(--gray-300);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+}
+
+/*? delete  */
+
+.deleteContent {
+  padding-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.deleteProgramTitle{
+  display: flex;
+  flex-direction:row;
+  align-items: center;
+  gap: .5rem;
+}
+
+.deleteContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  font-weight: bold;
+}
+
+.deleteContainer button {
+  padding: 0;
+  margin: 0;
+}
+
+.deleteProgramTitle p {
+  margin: 0;
+  padding: 0;
+  font-size: .8rem;
+  text-align: center;
+  color: var(--gray-500);
+}
+
+.deleteProgramContent{
+  display: flex ;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width:99%;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.btn-cancel {
+    background-color: var(--secondary-dominant);
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: var(--primary-dominant);
+}
+
+.btn-danger {
+    background-color: var(--error-color);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #a01414;
+}
