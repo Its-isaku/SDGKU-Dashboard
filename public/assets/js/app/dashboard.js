@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
         document.getElementById('totalSurveys').textContent = data.totalSurveys;
         document.getElementById('activeSurveys').textContent = data.activeSurveys;
+        document.getElementById('inactiveSurveys').textContent = data.inactiveSurveys;
         document.getElementById('responses').textContent = data.responses;
       })
       .catch(err => {
