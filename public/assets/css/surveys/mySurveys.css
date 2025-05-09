@@ -253,10 +253,19 @@
 }
 
 .dropdown button:hover {
-    background-color: var(--primary-dominant);
+    background-color: var(--gray-400);
     color: var(--neutral-light);
 }
-
+.dropdown .delete-survey:hover {
+    background-color: var(--secondary-dominant);
+    color: var(--neutral-light)!important;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+.dropdown .copy-link:hover {
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+}
 /*Estilos de botones actives*/
 /* ------------------------------------ */
 .surveyActive-actions{

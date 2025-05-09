@@ -290,7 +290,7 @@ function renderActiveSurveys() {
             <div class="actions-container" onmouseleave="closeDropdown(this)">
                 <button class = "actions-btn" onclick="toggleDropdown(this)" >Actions</button>
                 <div class="dropdown">
-                        <button class="dropdown-action">Copy Access Link</button>
+                        <button class="dropdown-copyLink copy-link">Copy Access Link</button>
                         <button class="dropdown-action">Edit Survey</button>
                         <button class="dropdown-action">Duplicate</button>
                         <button class="dropdown-action deactivate-survey" data-id="${survey.id}"">Deactivate</button>
