@@ -17,12 +17,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
             surveys.created_at AS createdDate,
             surveys.expires_at AS expires,
             program_types.program_name AS program,
+            
             cohort.cohort AS cohort,
             COUNT(questions.survey_id) AS questions
         FROM surveys
         INNER JOIN survey_types ON surveys.survey_type_id = survey_types.survey_type_id
         INNER JOIN program_types ON surveys.program_type_id = program_types.program_type_id
-        INNER JOIN cohort ON surveys.cohort_id = cohort.cohort_id
+        INNER JOIN cohort ON cohort.cohort_id = surveys.program_id
         LEFT JOIN questions ON surveys.survey_id = questions.survey_id
         GROUP BY 
             survey_types.type_name,
@@ -48,5 +49,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     }
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'addProgram') {
+    try {
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+        $programName = $data['programName'] ?? null;
+        $programTypeId = $data['programTypeId'] ?? null;
 
+        if (!$programName || !$programTypeId) {
+            error_log('Invalid data received for addProgram: ' . json_encode($data));
+            respond('error', 'Invalid data received!');
+        }
+
+        $sql = "INSERT INTO programs (name, program_type_id) VALUES(?, ?)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$programName, $programTypeId]);
+        respond('success', 'Program added successfully!');
+    } catch (Exception $e) {
+        error_log('Error adding program: ' . $e->getMessage());
+        respond('error', 'Database error: ' . $e->getMessage());
+    }
+    exit;
+}
 ?>
