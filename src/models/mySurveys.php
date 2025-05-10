@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
         exit;
     }
-    if($input['action'] === 'deactivateSurvey'){
+    if($input['action'] === 'duplicateSurvey'){
         try {
             if (!isset($input['id'])) {
                 http_response_code(400);
@@ -126,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = intval($input['id']);
             $pdo->beginTransaction();
             
-            $sql = "UPDATE surveys SET status = 'inactive' WHERE survey_id = ?";
+            $sql = "INSERT INTO surveys (title, description, program_type_id, program_id, subject_id, last_edited, created_at, expires_at, status, survey_type_id) SELECT title, description, program_type_id, program_id, subject_id, last_edited, created_at, expires_at, status, survey_type_id FROM surveys WHERE survey_id = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$id]);
             
