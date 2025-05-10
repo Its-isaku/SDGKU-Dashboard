@@ -50,66 +50,6 @@ function getInactiveSurveys() {
 }
 
 
-//render de inactivas
-// -------------------------------------------------------------------------------
-
-function renderInactiveSurveys() {
-    const inactiveList = document.getElementById('inactiveListId');
-    const inactiveSurveys = getInactiveSurveys();
-    inactiveSurveys.forEach((survey,index) => {
-        const surveyItem = document .createElement("div");
-        surveyItem.className = "surveyInactive-item";
-// visualizacion de cada encuesta
-        surveyItem.innerHTML = ` 
-        <div class = "principalInformationInactives">    
-            <div class = "inactiveTitleStatus"> 
-                <div class = "surveytitle">
-                    <p>${survey.type}</p>
-                </div>
-                <div class = "surveyInactiveStatus">
-                    <p>${survey.status}</p>
-                </div>
-            </div>
-            <h3>${survey.title}</h3>
-            <p>${survey.description}</p>
-        </div>
-            
-            <div class="survey-details">
-                <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
-                <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
-                <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
-                <span>Program: ${survey.program}</span>
-                <span>Cohort: ${survey.cohort}</span>
-            </div>
-            
-            
-            <div class="survey-actions">
-                <button class="activate-btn" data-index="${index}"><i class="fa-solid fa-circle-check"></i> Activate</button>
-                <button class="delete-btn">Delete</button>
-            </div>
-        `;
-        inactiveList.appendChild(surveyItem);
-        //Enlazar el evento al boton de activar
-        const activateBtn = surveyItem.querySelector('.activate-btn');
-        activateBtn.addEventListener('click', () => {
-            activateSurvey(survey);
-        });
-    });
-}
-
-
-function activateSurvey(surveyToActivate) {
-    // cambiar el estado de la encuesta a activa
-    surveyToActivate.status = "active";
-    //limpiar la lista de encuestas inactivas
-    document.getElementById('inactiveListId').innerHTML = '';
-    document.getElementById('activeListId').innerHTML = '';
-    // volver a renderizar las encuestas inactivas y activas
-    renderInactiveSurveys();
-    renderActiveSurveys();
-}
-
-
 //panel change logic
 // -------------------------------------------------------------------------------
 
@@ -235,7 +175,9 @@ document.addEventListener('click', function(e) {
                 // Eliminar de la lista local
                 const index = Surveys.findIndex(s => s.id == id);
                 if (index !== -1) {
-                    Surveys.splice(index, 1);
+                    
+                Surveys[index].status = 'inactive';
+
                 }
                 // Volver a renderizar
                 document.getElementById('activeListId').innerHTML = '';
@@ -248,6 +190,51 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+
+
+//Activar encuesta
+// -------------------------------------------------------------------------------
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('activate-survey')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const id = e.target.getAttribute('data-id');
+        
+
+    if (confirm(`Are you sure you want to activate this survey?`)) {
+            fetch(`/SDGKU-Dashboard/src/models/mySurveys.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    action: 'activateSurvey',
+                    id: id 
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw err; });
+                }
+                return response.text();
+            })
+            .then(data => {
+                const index = Surveys.findIndex(s => s.id == id);
+                if (index !== -1) {
+                    Surveys[index].status = 'active';
+                }
+                // Volver a renderizar
+                document.getElementById('inactiveListId').innerHTML = '';
+                renderInactiveSurveys();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al eliminar la encuesta: ' + (error.message || error));
+            });
+        }
+    }
+    });
 });
 
 // Activate Surveys render
@@ -304,7 +291,48 @@ function renderActiveSurveys() {
     });
 }
 
+//render de inactivas
+// -------------------------------------------------------------------------------
 
+function renderInactiveSurveys() {
+    const inactiveList = document.getElementById('inactiveListId');
+    const inactiveSurveys = getInactiveSurveys();
+    inactiveSurveys.forEach((survey,index) => {
+        const surveyItem = document .createElement("div");
+        surveyItem.className = "surveyInactive-item";
+// visualizacion de cada encuesta
+        surveyItem.innerHTML = ` 
+        <div class = "principalInformationInactives">    
+            <div class = "inactiveTitleStatus"> 
+                <div class = "surveytitle">
+                    <p>${survey.type}</p>
+                </div>
+                <div class = "surveyInactiveStatus">
+                    <p>${survey.status}</p>
+                </div>
+            </div>
+            <h3>${survey.title}</h3>
+            <p>${survey.description}</p>
+        </div>
+            
+            <div class="survey-details">
+                <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
+                <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
+                <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
+                <span>Program: ${survey.program}</span>
+                <span>Cohort: ${survey.cohort}</span>
+            </div>
+            
+            
+            <div class="survey-actions">
+                <button class="activate-btn activate-survey" data-id="${survey.id}"><i class="fa-solid fa-circle-check"></i> Activate</button>
+                <button class="delete-btn">Delete</button>
+            </div>
+        `;
+        inactiveList.appendChild(surveyItem);
+        //Enlazar el evento al boton de activar
+    });
+}
 //drop down logic
 // -------------------------------------------------------------------------------
 function toggleDropdown(button) {
