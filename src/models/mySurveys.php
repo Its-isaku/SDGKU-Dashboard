@@ -143,6 +143,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
         
     }
+    if($input['action'] === 'deactivateSurvey'){
+        try {
+            if (!isset($input['id'])) {
+                http_response_code(400);
+                echo json_encode(['error' => 'ID no proporcionado']);
+                exit;
+            }
+            $id = intval($input['id']);
+            $pdo->beginTransaction();
+            
+            $sql = "UPDATE surveys SET status = 'inactive' WHERE survey_id = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$id]);
+            
+            $pdo->commit();
+            http_response_code(200);
+            echo json_encode(['success' => true, 'message' => 'Encuesta desactivada correctamente']);
+            
+        } catch (PDOException $e) {
+            $pdo->rollBack();
+            error_log('Error deactivating survey: ' . $e->getMessage());
+            http_response_code(500);
+            echo json_encode(['success' => false, 'error' => 'Error desactivando la encuesta: ' . $e->getMessage()]);
+        }
+        exit;
+        
+    }
+    if($input['action'] === 'activateSurvey'){
+        try {
+            if (!isset($input['id'])) {
+                http_response_code(400);
+                echo json_encode(['error' => 'ID no proporcionado']);
+                exit;
+            }
+            $id = intval($input['id']);
+            $pdo->beginTransaction();
+            
+            $sql = "UPDATE surveys SET status = 'active' WHERE survey_id = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$id]);
+            
+            $pdo->commit();
+            http_response_code(200);
+            echo json_encode(['success' => true, 'message' => 'Encuesta desactivada correctamente']);
+            
+        } catch (PDOException $e) {
+            $pdo->rollBack();
+            error_log('Error deactivating survey: ' . $e->getMessage());
+            http_response_code(500);
+            echo json_encode(['success' => false, 'error' => 'Error desactivando la encuesta: ' . $e->getMessage()]);
+        }
+        exit;
+        
+    }
 
     http_response_code(400);
     echo json_encode(['error' => 'Acción no válida']);
