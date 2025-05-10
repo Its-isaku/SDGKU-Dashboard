@@ -143,6 +143,50 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+//Duplicar encuesta
+    // -------------------------------------------------------------------------------
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('duplicate-survey')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const id = e.target.getAttribute('data-id');
+        
+        if (confirm(`¿Estás seguro que deseas duplicar esta encuesta?`)) {
+            fetch(`/SDGKU-Dashboard/src/models/mySurveys.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    action: 'duplicateSurvey',
+                    id: id 
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw err; });
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log('Respuesta:', data);
+                // Actualiza ventana
+    
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+                // Volver a renderizar
+                document.getElementById('activeListId').innerHTML = '';
+                renderActiveSurveys();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al duplicar la encuesta: ' + (error.message || error));
+            });
+        }
+    }
+});
 
 //Desactivar encuesta
 // -------------------------------------------------------------------------------
@@ -248,7 +292,7 @@ function renderActiveSurveys() {
     const activeSurveys = getActiveSurveys();
     activeSurveys.forEach((survey) => {
     console.log('activos');
-    const activeSurveyItem = document .createElement("div");
+    const activeSurveyItem = document.createElement("div");
         activeSurveyItem.className = "survey-item";
     // visualizacion de cada encuesta
     activeSurveyItem.innerHTML = ` 
@@ -279,8 +323,8 @@ function renderActiveSurveys() {
                 <div class="dropdown">
                         <button class="dropdown-copyLink copy-link">Copy Access Link</button>
                         <button class="dropdown-action">Edit Survey</button>
-                        <button class="dropdown-action">Duplicate</button>
-                        <button class="dropdown-action deactivate-survey" data-id="${survey.id}"">Deactivate</button>
+                        <button class="dropdown-action duplicate-survey" data-id="${survey.id}">Duplicate</button>
+                        <button class="dropdown-action deactivate-survey" data-id="${survey.id}">Deactivate</button>
                         <button class="dropdown-delete delete-survey" data-id="${survey.id}" style="color: red;">Delete</button>
                 </div>
             </div>
@@ -416,7 +460,7 @@ function closeDropdown(container) {
 //                     survey.status === 'active' 
 //                     ? `<div class="actions-container">
 //                             <button class="actions-btn">Actions</button>
-//                             <div class="dropdown">
+//                             <div class="dropdown">  
 //                                 <a href="#">Copy Access Link</a>
 //                                 <a href="#">Edit Survey</a>
 //                                 <a href="#">Duplicate</a>
