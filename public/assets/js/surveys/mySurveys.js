@@ -1,10 +1,8 @@
-//lista de datos: variables: type, status, title, description, 
-// createdDate, expires, questions, program, cohort.
+//& lista de datos: variables: type, status, title, description, 
+//? createdDate, expires, questions, program, cohort.
 const Surveys = [];
 
-
-//get de las surveys
-// -------------------------------------------------------------------------------
+//! <-------------------------------- GET --------------------------------> - Get surveys 
 
 fetch('/SDGKU-Dashboard/src/models/mySurveys.php?action=getSurveys') //archivo PHP
     .then(response => {
@@ -14,7 +12,7 @@ fetch('/SDGKU-Dashboard/src/models/mySurveys.php?action=getSurveys') //archivo P
         return response.json();
     })
     .then(data => {
-        // Suponiendo que data es un array de objetos
+        //* Suponiendo que data es un array de objetos
         data.forEach(item => {
             Surveys.push({
                 id: item.id,
@@ -29,7 +27,8 @@ fetch('/SDGKU-Dashboard/src/models/mySurveys.php?action=getSurveys') //archivo P
                 cohort: item.cohort
             });
         });
-        // Renderizar encuestas
+
+        //* Renderizar encuestas
         renderInactiveSurveys();
         renderActiveSurveys();
     })
@@ -37,41 +36,39 @@ fetch('/SDGKU-Dashboard/src/models/mySurveys.php?action=getSurveys') //archivo P
         console.error("Hubo un problema al cargar las encuestas:", error);
     });
 
-//funciones para obtener las surveys correspondientes
-// -------------------------------------------------------------------------------
-//obtiene los surveys activos
+//! <----------------------- funciones para obtener las surveys correspondientes -----------------------> 
+
+//? obtiene los surveys activos
 function getActiveSurveys() {
     
     return Surveys.filter(survey => survey.status === "active");
 }
-//obtiene los inactivos
+//? obtiene los inactivos
 function getInactiveSurveys() {
     return Surveys.filter(survey => survey.status === "inactive");
 }
 
-
-//panel change logic
-// -------------------------------------------------------------------------------
+//! <----------------------- panel change logic -----------------------> 
 
 document.addEventListener("DOMContentLoaded", function() {
-    // Render inicial
+    //? Render inicial
     
     renderInactiveSurveys();
     renderActiveSurveys();
-    // Selección de botones y paneles
+    //? Selección de botones y paneles
     const btnActive = document.getElementById('activeBtnId');
     const btnInactive = document.getElementById('inactiveBtnId');
     const panel1 = document.getElementById('panel1');
     const panel2 = document.getElementById('panel2');
     
-    // Función para cambiar de pestaña
+    //? Función para cambiar de pestaña
     function switchTab(isActive) {
         if (isActive) {
             btnActive.classList.add('selectedOption');
             btnInactive.classList.remove('selectedOption');
             panel1.classList.add('visible');
             panel2.classList.remove('visible');
-            // Renderiza encuestas activas
+            //? Renderiza encuestas activas
             document.getElementById('activeListId').innerHTML = '';
             renderActiveSurveys();
         } else {
@@ -79,13 +76,13 @@ document.addEventListener("DOMContentLoaded", function() {
             btnActive.classList.remove('selectedOption');
             panel2.classList.add('visible');
             panel1.classList.remove('visible');
-            // Renderiza encuestas inactivas
+            //? Renderiza encuestas inactivas
             document.getElementById('inactiveListId').innerHTML = '';
             renderInactiveSurveys();
         }
     }
 
-    // Listeners
+    //? Listeners
     btnActive.addEventListener('click', function() {
         btnActive.classList.add('selectedOption');
         btnInactive.classList.remove('selectedOption');
@@ -95,12 +92,11 @@ document.addEventListener("DOMContentLoaded", function() {
         switchTab(false);
     });
 
-    // Estado inicial
+    //? Estado inicial
     switchTab(true);
 
+//! <----------------------- El boton delete en dropdown -----------------------> 
 
-//El boton delete en dropdown
-    // -------------------------------------------------------------------------------
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('delete-survey')) {
         e.preventDefault();
@@ -127,12 +123,12 @@ document.addEventListener('click', function(e) {
             })
             .then(data => {
                 console.log('Respuesta:', data);
-                // Eliminar de la lista local
+                //? Eliminar de la lista local
                 const index = Surveys.findIndex(s => s.id == id);
                 if (index !== -1) {
                     Surveys.splice(index, 1);
                 }
-                // Volver a renderizar
+                //? Volver a renderizar
                 document.getElementById('activeListId').innerHTML = '';
                 renderActiveSurveys();
             })
@@ -144,8 +140,8 @@ document.addEventListener('click', function(e) {
     }
 });
 
-//Desactivar encuesta
-// -------------------------------------------------------------------------------
+//! <----------------------- Desactivar encuesta -----------------------> 
+
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('deactivate-survey')) {
         e.preventDefault();
@@ -172,14 +168,14 @@ document.addEventListener('click', function(e) {
             })
             .then(data => {
                 console.log('Respuesta:', data);
-                // Eliminar de la lista local
+                //? Eliminar de la lista local
                 const index = Surveys.findIndex(s => s.id == id);
                 if (index !== -1) {
                     
                 Surveys[index].status = 'inactive';
 
                 }
-                // Volver a renderizar
+                //? Volver a renderizar
                 document.getElementById('activeListId').innerHTML = '';
                 renderActiveSurveys();
             })
@@ -191,9 +187,8 @@ document.addEventListener('click', function(e) {
     }
 });
 
+//! <----------------------- Activar encuesta -----------------------> 
 
-//Activar encuesta
-// -------------------------------------------------------------------------------
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('activate-survey')) {
         e.preventDefault();
@@ -237,8 +232,7 @@ document.addEventListener('click', function(e) {
     });
 });
 
-// Activate Surveys render
-// -------------------------------------------------------------------------------
+//! <----------------------- Activate Surveys render -----------------------> 
 
 function renderActiveSurveys() {
     
@@ -250,8 +244,9 @@ function renderActiveSurveys() {
     console.log('activos');
     const activeSurveyItem = document .createElement("div");
         activeSurveyItem.className = "survey-item";
-    // visualizacion de cada encuesta
-    activeSurveyItem.innerHTML = ` 
+
+    //* visualizacion de cada encuesta
+    activeSurveyItem.innerHTML = /* HTML */` 
         <div class = "principalInformation">
             <div class = "activeTitleStatus">
                     <div class = "surveytitle">
@@ -291,8 +286,7 @@ function renderActiveSurveys() {
     });
 }
 
-//render de inactivas
-// -------------------------------------------------------------------------------
+//! <----------------------- render de inactivas -----------------------> 
 
 function renderInactiveSurveys() {
     const inactiveList = document.getElementById('inactiveListId');
@@ -300,8 +294,8 @@ function renderInactiveSurveys() {
     inactiveSurveys.forEach((survey,index) => {
         const surveyItem = document .createElement("div");
         surveyItem.className = "surveyInactive-item";
-// visualizacion de cada encuesta
-        surveyItem.innerHTML = ` 
+        //* visualizacion de cada encuesta
+        surveyItem.innerHTML =  /* HTML */` 
         <div class = "principalInformationInactives">    
             <div class = "inactiveTitleStatus"> 
                 <div class = "surveytitle">
@@ -330,16 +324,17 @@ function renderInactiveSurveys() {
             </div>
         `;
         inactiveList.appendChild(surveyItem);
-        //Enlazar el evento al boton de activar
+        //* Enlazar el evento al boton de activar
     });
 }
-//drop down logic
-// -------------------------------------------------------------------------------
+
+//! <----------------------- drop down logic ----------------------->
+
 function toggleDropdown(button) {
     const dropdown = button.nextElementSibling;
     const isVisible = dropdown.style.display === 'flex';
 
-    // Cierra todos los dropdowns
+    //* Cierra todos los dropdowns
     document.querySelectorAll('.dropdown').forEach(menu => {
         menu.style.display = 'none';
     });
@@ -354,9 +349,7 @@ function closeDropdown(container) {
     dropdown.style.display = 'none';
 }
 
-
-//search
-// -------------------------------------------------------------------------------
+//! <----------------------- search ----------------------->
 
 // let allSurveys = [];
 
@@ -442,25 +435,25 @@ function closeDropdown(container) {
 
 // }
 
-function setupSearchBar() {
-    const searchInput = document.getElementById('searchSurveyId');
-    searchInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            const term = searchInput.value.trim().toLowerCase();
+// function setupSearchBar() {
+//     const searchInput = document.getElementById('searchSurveyId');
+//     searchInput.addEventListener('keydown', (e) => {
+//         if (e.key === 'Enter') {
+//             const term = searchInput.value.trim().toLowerCase();
 
-            if (term === '') {
-                renderSurveys(allSurveys);
-                return;
-            }
+//             if (term === '') {
+//                 renderSurveys(allSurveys);
+//                 return;
+//             }
 
-            const filtered = allSurveys.filter(s =>
-                s.title.toLowerCase().includes(term) || s.type.toLowerCase().includes(term)
-            );
+//             const filtered = allSurveys.filter(s =>
+//                 s.title.toLowerCase().includes(term) || s.type.toLowerCase().includes(term)
+//             );
 
-            renderSurveys(filtered);
-        }
-    });
-}
+//             renderSurveys(filtered);
+//         }
+//     });
+// }
 
 // document.addEventListener('DOMContentLoaded', () => {
 //     fetchSurveys();
@@ -469,7 +462,7 @@ function setupSearchBar() {
 
 
 
-// -------------------------------------------------------------------------------
+//! <----------------------- Actions ----------------------->
 
 function setupActionDropdowns() {
     document.querySelectorAll('.actions-btn').forEach(button => {

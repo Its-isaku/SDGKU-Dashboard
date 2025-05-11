@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 
     try {
         if ($programTypeId) {
-            $sql = "SELECT prog_id, name, program_type_id FROM programs WHERE program_type_id = ?";
+            $sql = "SELECT prog_id, name, program_type_id FROM programs WHERE status = 'active' AND program_type_id = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$programTypeId]);
         } else {
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     $programId = isset($_GET['program_id']) ? intval($_GET['program_id']) : null;
     try {
         if ($programId) {
-            $stmt = $pdo->prepare('SELECT * FROM cohort WHERE program_id = ?');
+            $stmt = $pdo->prepare("SELECT * FROM cohort WHERE status = 'active' AND program_id = ?");
             $stmt->execute([$programId]);
         } else {
             $stmt = $pdo->query('SELECT * FROM cohort');
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     $programId = isset($_GET['program_id']) ? trim($_GET['program_id']) : null;
     try {
         if ($programId) {
-            $sql = "SELECT subject_id, subject FROM subjects WHERE program_id = ?";
+            $sql = "SELECT subject_id, subject FROM subjects WHERE status = 'active' AND program_id = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$programId]);
         } else {
@@ -186,7 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
     exit;
 }
 
-//! <-------------------------------- GET(Delete) --------------------------------> - get program, cohort and subject
+//! <-------------------------------- GET(UPDATE) --------------------------------> - get program, cohort and subject
 
 //? dellete Program
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'deleteProgram') {
@@ -202,16 +202,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['act
         }
 
         //* Delete all cohorts and course associated with the program
-        $sql = "DELETE FROM cohort WHERE program_id = ?";
+        $sql = "UPDATE cohort SET status = 'inactive' WHERE program_id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$programId]);
         
-        $sql = "DELETE FROM subjects WHERE program_id = ?";
+        $sql = "UPDATE subjects SET status = 'inactive' WHERE program_id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$programId]);
 
         //* Delete the program
-        $sql = "DELETE FROM programs WHERE prog_id = ?";
+        $sql = "UPDATE programs SET status = 'inactive' WHERE prog_id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$programId]);
         respond('success', 'Program deleted successfully!');
@@ -234,7 +234,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
             respond('error', 'Invalid data received!');
         }
 
-        $sql = "DELETE FROM cohort WHERE cohort_id = ?";
+        $sql = "UPDATE cohort SET status = 'inactive' WHERE cohort_id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$cohortId]);
         respond('success', 'Cohort deleted successfully!');
@@ -257,7 +257,7 @@ if( $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
             respond('error', 'Invalid data received!');
         }
 
-        $sql = "DELETE FROM subjects WHERE subject_id = ?";
+        $sql = "UPDATE subjects SET status = 'inactive' WHERE subject_id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$courseId]);
         respond('success', 'Course deleted successfully!');

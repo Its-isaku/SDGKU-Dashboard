@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 
     try {
         if ($programTypeId) {
-            $sql = "SELECT prog_id, name, program_type_id FROM programs WHERE program_type_id = ?";
+            $sql = "SELECT prog_id, name, program_type_id FROM programs WHERE status = 'active' AND program_type_id = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$programTypeId]);
         } else {
@@ -49,26 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     exit;
 }
 
-//? GET cohorts
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getCohorts') {
-    try {
-        $sql = "SELECT cohort_id, cohort FROM cohort";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        $cohort = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode(['status' => 'success', 'data' => $cohort]);
-    } catch (Exception $e) {
-        respond('error', 'Could not fetch cohorts.');
-    }
-    exit;
-}
-
 //? GET subjects filtered by program directly from subjects table
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getSubjects') {
     $programId = isset($_GET['program_id']) ? trim($_GET['program_id']) : null;
     try {
         if ($programId) {
-            $sql = "SELECT subject_id, subject FROM subjects WHERE program_id = ?";
+            $sql = "SELECT subject_id, subject FROM subjects WHERE status = 'active' AND program_id = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$programId]);
         } else {
