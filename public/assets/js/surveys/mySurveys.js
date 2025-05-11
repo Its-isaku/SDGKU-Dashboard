@@ -274,6 +274,7 @@ document.addEventListener('click', function(e) {
         }
     }
     });
+    
 });
 
 //! <----------------------- Activate Surveys render -----------------------> 
@@ -317,7 +318,7 @@ function renderActiveSurveys() {
                 <button class = "actions-btn" onclick="toggleDropdown(this)" >Actions</button>
                 <div class="dropdown">
                         <button class="dropdown-copyLink copy-link">Copy Access Link</button>
-                        <button class="dropdown-action">Edit Survey</button>
+                        <button class="dropdown-action edit-survey" data-id="${survey.id}">Edit Survey</button>
                         <button class="dropdown-action duplicate-survey" data-id="${survey.id}">Duplicate</button>
                         <button class="dropdown-action deactivate-survey" data-id="${survey.id}">Deactivate</button>
                         <button class="dropdown-delete delete-survey" data-id="${survey.id}" style="color: red;">Delete</button>
