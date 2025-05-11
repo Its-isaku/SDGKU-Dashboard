@@ -1,60 +1,6 @@
-//& lista de datos: variables: type, status, title, description, 
-//? createdDate, expires, questions, program, cohort.
-const Surveys = [];
-
-//! <-------------------------------- GET --------------------------------> - Get surveys 
-
-fetch('/SDGKU-Dashboard/src/models/mySurveys.php?action=getSurveys') //archivo PHP
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Error al obtener los datos");
-        }
-        return response.json();
-    })
-    .then(data => {
-        //* Suponiendo que data es un array de objetos
-        data.forEach(item => {
-            Surveys.push({
-                id: item.id,
-                type: item.type,
-                status: item.status,
-                title: item.title,
-                description: item.description,
-                createdDate: item.createdDate,
-                expires: item.expires,
-                questions: parseInt(item.questions),
-                program: item.program,
-                cohort: item.cohort
-            });
-        });
-
-        //* Renderizar encuestas
-        renderInactiveSurveys();
-        renderActiveSurveys();
-    })
-    .catch(error => {
-        console.error("Hubo un problema al cargar las encuestas:", error);
-    });
-
-//! <----------------------- funciones para obtener las surveys correspondientes -----------------------> 
-
-//? obtiene los surveys activos
-function getActiveSurveys() {
-    
-    return Surveys.filter(survey => survey.status === "active");
-}
-//? obtiene los inactivos
-function getInactiveSurveys() {
-    return Surveys.filter(survey => survey.status === "inactive");
-}
-
 //! <----------------------- panel change logic -----------------------> 
 
 document.addEventListener("DOMContentLoaded", function() {
-    //? Render inicial
-    
-    renderInactiveSurveys();
-    renderActiveSurveys();
     //? Selección de botones y paneles
     const btnActive = document.getElementById('activeBtnId');
     const btnInactive = document.getElementById('inactiveBtnId');
@@ -95,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
     //? Estado inicial
     switchTab(true);
 
-    //! <----------------------- DELETE Survey -----------------------> 
+    //! <----------------------- DELETE Survey(Active) -----------------------> 
 
     document.addEventListener('click', function(e) {
         if (e.target.classList.contains('delete-survey')) {
@@ -109,37 +55,41 @@ document.addEventListener("DOMContentLoaded", function() {
     if (confirmDeleteBtn) {
         confirmDeleteBtn.addEventListener('click', function() {
             const id = document.getElementById('delete-survey').value;
-            fetch(`/SDGKU-Dashboard/src/models/mySurveys.php`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    action: 'deleteSurvey',
-                    id: id 
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => { throw err; });
-                }
-                return response.text();
-            })
-            .then(data => {
-                const index = Surveys.findIndex(s => s.id == id);
-                if (index !== -1) {
-                    Surveys.splice(index, 1);
-                }
-                showNotification('Encuesta eliminada correctamente');
-                document.getElementById('activeListId').innerHTML = '';
-                renderActiveSurveys();
-                closeAllModals();
-            })
-            .catch(error => {
-                showNotification('Error al eliminar la encuesta: ' + (error.message || error), 'error');
-                closeAllModals();
+            const activeList = document.getElementById('activeListId');
+            const surveyItem = Array.from(activeList.getElementsByClassName('survey-item')).find(item => {
+                return item.querySelector('.dropdown-delete.delete-survey[data-id="' + id + '"]');
             });
+            if (surveyItem) {
+                animateSurveyItemLeave(surveyItem, function() {
+                    handleSurveyAction(
+                        '/SDGKU-Dashboard/src/models/mySurveys.php',
+                        { action: 'deleteSurvey', id: id },
+                        () => {
+                            showNotification('Encuesta eliminada correctamente');
+                            renderActiveSurveys();
+                            closeAllModals();
+                        },
+                        (error) => {
+                            showNotification('Error al eliminar la encuesta: ' + (error.message || error), 'error');
+                            closeAllModals();
+                        }
+                    );
+                });
+            } else {
+                handleSurveyAction(
+                    '/SDGKU-Dashboard/src/models/mySurveys.php',
+                    { action: 'deleteSurvey', id: id },
+                    () => {
+                        showNotification('Encuesta eliminada correctamente');
+                        renderActiveSurveys();
+                        closeAllModals();
+                    },
+                    (error) => {
+                        showNotification('Error al eliminar la encuesta: ' + (error.message || error), 'error');
+                        closeAllModals();
+                    }
+                );
+            }
         });
     }
 
@@ -154,38 +104,25 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     if (confirmDuplicateBtn) {
-    confirmDuplicateBtn.addEventListener('click', function() {
-        const id = document.getElementById('duplicate-survey').value;
-        fetch(`/SDGKU-Dashboard/src/models/mySurveys.php`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({ 
-                action: 'duplicateSurvey',
-                id: id 
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(err => { throw err; });
-            }
-            return response.text();
-        })
-        .then(data => {
-            showNotification('Encuesta duplicada correctamente');
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
-            closeAllModals();
-        })
-        .catch(error => {
-            showNotification('Error al duplicar la encuesta: ' + (error.message || error), 'error');
-            closeAllModals();
+        confirmDuplicateBtn.addEventListener('click', function() {
+            const id = document.getElementById('duplicate-survey').value;
+            handleSurveyAction(
+                '/SDGKU-Dashboard/src/models/mySurveys.php',
+                { action: 'duplicateSurvey', id: id },
+                () => {
+                    showNotification('Encuesta duplicada correctamente');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                    closeAllModals();
+                },
+                (error) => {
+                    showNotification('Error al duplicar la encuesta: ' + (error.message || error), 'error');
+                    closeAllModals();
+                }
+            );
         });
-    });
-}
+    }
 
     //! <----------------------- DEACTIVATE Survey -----------------------> 
 
@@ -201,37 +138,19 @@ document.addEventListener("DOMContentLoaded", function() {
     if (confirmDeactivateBtn) {
         confirmDeactivateBtn.addEventListener('click', function() {
             const id = document.getElementById('deactivate-survey').value;
-            fetch(`/SDGKU-Dashboard/src/models/mySurveys.php`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+            handleSurveyAction(
+                '/SDGKU-Dashboard/src/models/mySurveys.php',
+                { action: 'deactivateSurvey', id: id },
+                () => {
+                    showNotification('Encuesta desactivada correctamente');
+                    renderActiveSurveys();
+                    closeAllModals();
                 },
-                body: JSON.stringify({ 
-                    action: 'deactivateSurvey',
-                    id: id 
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => { throw err; });
+                (error) => {
+                    showNotification('Error al desactivar la encuesta: ' + (error.message || error), 'error');
+                    closeAllModals();
                 }
-                return response.text();
-            })
-            .then(data => {
-                const index = Surveys.findIndex(s => s.id == id);
-                if (index !== -1) {
-                    Surveys[index].status = 'inactive';
-                }
-                showNotification('Encuesta desactivada correctamente');
-                document.getElementById('activeListId').innerHTML = '';
-                renderActiveSurveys();
-                closeAllModals();
-            })
-            .catch(error => {
-                showNotification('Error al desactivar la encuesta: ' + (error.message || error), 'error');
-                closeAllModals();
-            });
+            );
         });
     }
 
@@ -268,136 +187,210 @@ document.addEventListener("DOMContentLoaded", function() {
     if (confirmActivateBtn) {
         confirmActivateBtn.addEventListener('click', function() {
             const id = document.getElementById('activate-survey').value;
-            fetch(`/SDGKU-Dashboard/src/models/mySurveys.php`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+            handleSurveyAction(
+                '/SDGKU-Dashboard/src/models/mySurveys.php',
+                { action: 'activateSurvey', id: id },
+                () => {
+                    showNotification('Encuesta activada correctamente');
+                    renderInactiveSurveys();
+                    closeAllModals();
                 },
-                body: JSON.stringify({ 
-                    action: 'activateSurvey',
-                    id: id 
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => { throw err; });
+                (error) => {
+                    showNotification('Error al activar la encuesta: ' + (error.message || error), 'error');
+                    closeAllModals();
                 }
-                return response.text();
-            })
-            .then(data => {
-                const index = Surveys.findIndex(s => s.id == id);
-                if (index !== -1) {
-                    Surveys[index].status = 'active';
-                }
-                showNotification('Encuesta activada correctamente');
-                document.getElementById('inactiveListId').innerHTML = '';
-                renderInactiveSurveys();
-                closeAllModals();
-            })
-            .catch(error => {
-                showNotification('Error al activar la encuesta: ' + (error.message || error), 'error');
-                closeAllModals();
-            });
+            );
         });
     }
     
 });
 
-//! <----------------------- Activate Surveys render -----------------------> 
+//! <----------------------- SEARCH BAR -----------------------> 
 
-function renderActiveSurveys() {
-    
+const searchInput = document.getElementById('searchSurveyId');
+
+//? Helper to check if a panel is visible
+function isActiveTabVisible() {
+    const panel1 = document.getElementById('panel1');
+    return panel1 && panel1.classList.contains('visible');
+}
+
+//? Listener for search input
+searchInput.addEventListener('input', debounce(() => {
+    if (isActiveTabVisible()) {
+        renderActiveSurveys(searchInput.value);
+    } else {
+        renderInactiveSurveys(searchInput.value);
+    }
+}, 300));
+
+function debounce(func, timeout = 300) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+} 
+
+//! <----------------------- Active Surveys render -----------------------> 
+
+//* Animate survey item entering
+function animateSurveyItemEnter(element) {
+    element.classList.add('enter');
+    void element.offsetWidth; 
+    element.classList.add('enter-active');
+    element.addEventListener('transitionend', function handler() {
+        element.classList.remove('enter', 'enter-active');
+        element.removeEventListener('transitionend', handler);
+    });
+}
+
+//* Animate survey item leaving
+function animateSurveyItemLeave(element, callback) {
+    element.classList.add('leave');
+    void element.offsetWidth; 
+    element.classList.add('leave-active');
+    element.addEventListener('transitionend', function handler() {
+        element.removeEventListener('transitionend', handler);
+        if (element.parentNode) {
+            element.parentNode.removeChild(element);
+        }
+        if (typeof callback === 'function') callback();
+    });
+}
+
+function renderActiveSurveys(searchTerm = '') {
+    const activeList = document.getElementById('activeListId');
+    //* Animate leave for all current items before clearing
+    const currentItems = Array.from(activeList.getElementsByClassName('survey-item'));
+    if (currentItems.length > 0) {
+        let leftCount = 0;
+        currentItems.forEach(item => {
+            animateSurveyItemLeave(item, () => {
+                leftCount++;
+                if (leftCount === currentItems.length) {
+                    // After all have left, render new
+                    renderActiveSurveysAfterLeave(searchTerm);
+                }
+            });
+        });
+        return; // Wait for leave animations before rendering new
+    }
+    renderActiveSurveysAfterLeave(searchTerm);
+}
+
+function renderActiveSurveysAfterLeave(searchTerm = '') {
     const activeList = document.getElementById('activeListId');
     activeList.innerHTML = '';
-    
-    const activeSurveys = getActiveSurveys();
-    activeSurveys.forEach((survey) => {
-    console.log('activos');
-    const activeSurveyItem = document.createElement("div");
-        activeSurveyItem.className = "survey-item";
-
-    //* visualizacion de cada encuesta
-    activeSurveyItem.innerHTML = /* HTML */` 
-        <div class = "principalInformation">
-            <div class = "activeTitleStatus">
-                    <div class = "surveytitle">
-                        <p>${survey.type}</p>
+    fetch(`/SDGKU-Dashboard/src/models/mySurveys.php?action=getSurveys${searchTerm ? `&search=${encodeURIComponent(searchTerm)}` : ''}`)
+        .then(response => response.json())
+        .then(data => {
+            const activeSurveys = data.filter(survey => survey.status === "active");
+            activeSurveys.forEach((survey) => {
+                const activeSurveyItem = document.createElement("div");
+                activeSurveyItem.className = "survey-item";
+                activeSurveyItem.innerHTML = /* HTML */` 
+                    <div class = "principalInformation">
+                        <div class = "activeTitleStatus">
+                                <div class = "surveytitle">
+                                    <p>${survey.type}</p>
+                                </div>
+                                <div class = "surveyStatus">
+                                    <p>${survey.status}</p>
+                                </div>
+                            </div>
+                        <h3>${survey.title}</h3>
+                        <p>${survey.description}</p>
                     </div>
-                    <div class = "surveyStatus">
-                        <p>${survey.status}</p>
+                        <div class="survey-details">
+                            <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
+                            <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
+                            <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
+                            <span>Program: ${survey.program}</span>
+                            <span>Cohort: ${survey.cohort}</span>
+                        </div>
+                    <div class="surveyActive-actions">
+                        <div class="actions-container" onmouseleave="closeDropdown(this)">
+                            <button class = "actions-btn" onclick="toggleDropdown(this)" >Actions</button>
+                            <div class="dropdown">
+                                    <button class="dropdown-copyLink copy-link">Copy Access Link</button>
+                                    <button class="dropdown-action edit-survey" data-id="${survey.id}">Edit Survey</button>
+                                    <button class="dropdown-action duplicate-survey" data-id="${survey.id}">Duplicate</button>
+                                    <button class="dropdown-action deactivate-survey" data-id="${survey.id}">Deactivate</button>
+                                    <button class="dropdown-delete delete-survey" data-id="${survey.id}" style="color: red;">Delete</button>
+                            </div>
+                        </div>
+                        <button class="results-btn">Results</button>
                     </div>
-                    
-                </div>
-            <h3>${survey.title}</h3>
-            <p>${survey.description}</p>
-        </div>
-            <div class="survey-details">
-                <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
-                <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
-                <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
-                <span>Program: ${survey.program}</span>
-                <span>Cohort: ${survey.cohort}</span>
-            </div>
-            
-        <div class="surveyActive-actions">
-            <div class="actions-container" onmouseleave="closeDropdown(this)">
-                <button class = "actions-btn" onclick="toggleDropdown(this)" >Actions</button>
-                <div class="dropdown">
-                        <button class="dropdown-copyLink copy-link">Copy Access Link</button>
-                        <button class="dropdown-action edit-survey" data-id="${survey.id}">Edit Survey</button>
-                        <button class="dropdown-action duplicate-survey" data-id="${survey.id}">Duplicate</button>
-                        <button class="dropdown-action deactivate-survey" data-id="${survey.id}">Deactivate</button>
-                        <button class="dropdown-delete delete-survey" data-id="${survey.id}" style="color: red;">Delete</button>
-                </div>
-            </div>
-                <button class="results-btn">Results</button>
-            </div>
-        `;
-        activeList.appendChild(activeSurveyItem);
-    });
+                `;
+                activeList.appendChild(activeSurveyItem);
+                animateSurveyItemEnter(activeSurveyItem);
+            });
+        });
 }
 
 //! <----------------------- render de inactivas -----------------------> 
 
-function renderInactiveSurveys() {
+function renderInactiveSurveys(searchTerm = '') {
     const inactiveList = document.getElementById('inactiveListId');
-    const inactiveSurveys = getInactiveSurveys();
-    inactiveSurveys.forEach((survey,index) => {
-        const surveyItem = document .createElement("div");
-        surveyItem.className = "surveyInactive-item";
-        //* visualizacion de cada encuesta
-        surveyItem.innerHTML =  /* HTML */` 
-        <div class = "principalInformationInactives">    
-            <div class = "inactiveTitleStatus"> 
-                <div class = "surveytitle">
-                    <p>${survey.type}</p>
+    // Animate leave for all current items before clearing
+    const currentItems = Array.from(inactiveList.getElementsByClassName('surveyInactive-item'));
+    if (currentItems.length > 0) {
+        let leftCount = 0;
+        currentItems.forEach(item => {
+            // Add leave classes for animation
+            item.classList.add('survey-item'); // Add survey-item class for animation
+            animateSurveyItemLeave(item, () => {
+                leftCount++;
+                if (leftCount === currentItems.length) {
+                    renderInactiveSurveysAfterLeave(searchTerm);
+                }
+            });
+        });
+        return;
+    }
+    renderInactiveSurveysAfterLeave(searchTerm);
+}
+
+function renderInactiveSurveysAfterLeave(searchTerm = '') {
+    const inactiveList = document.getElementById('inactiveListId');
+    inactiveList.innerHTML = '';
+    fetch(`/SDGKU-Dashboard/src/models/mySurveys.php?action=getSurveys${searchTerm ? `&search=${encodeURIComponent(searchTerm)}` : ''}`)
+        .then(response => response.json())
+        .then(data => {
+            const inactiveSurveys = data.filter(survey => survey.status === "inactive");
+            inactiveSurveys.forEach((survey,index) => {
+                const surveyItem = document.createElement("div");
+                surveyItem.className = "surveyInactive-item survey-item"; // Add both classes for animation
+                surveyItem.innerHTML =  /* HTML */` 
+                <div class = "principalInformationInactives">    
+                    <div class = "inactiveTitleStatus"> 
+                        <div class = "surveytitle">
+                            <p>${survey.type}</p>
+                        </div>
+                        <div class = "surveyInactiveStatus">
+                            <p>${survey.status}</p>
+                        </div>
+                    </div>
+                    <h3>${survey.title}</h3>
+                    <p>${survey.description}</p>
                 </div>
-                <div class = "surveyInactiveStatus">
-                    <p>${survey.status}</p>
-                </div>
-            </div>
-            <h3>${survey.title}</h3>
-            <p>${survey.description}</p>
-        </div>
-            
-            <div class="survey-details">
-                <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
-                <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
-                <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
-                <span>Program: ${survey.program}</span>
-                <span>Cohort: ${survey.cohort}</span>
-            </div>
-            
-            
-            <div class="survey-actions">
-                <button class="activate-btn activate-survey" data-id="${survey.id}"><i class="fa-solid fa-circle-check"></i> Activate</button>
-                <button class="delete-btn">Delete</button>
-            </div>
-        `;
-        inactiveList.appendChild(surveyItem);
-        //* Enlazar el evento al boton de activar
-    });
+                    <div class="survey-details">
+                        <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
+                        <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
+                        <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
+                        <span>Program: ${survey.program}</span>
+                        <span>Cohort: ${survey.cohort}</span>
+                    </div>
+                    <div class="survey-actions">
+                        <button class="activate-btn activate-survey" data-id="${survey.id}"><i class="fa-solid fa-circle-check"></i> Activate</button>
+                        <button class="delete-btn delete-inactive-survey" data-id="${survey.id}">Delete</button>
+                    </div>
+                `;
+                inactiveList.appendChild(surveyItem);
+                animateSurveyItemEnter(surveyItem);
+            });
+        });
 }
 
 //! <----------------------- drop down logic ----------------------->
@@ -612,7 +605,59 @@ document.addEventListener('click', function(e) {
         const surveyId = e.target.getAttribute('data-id');
         openActivateModal(surveyId);
     }
+    //* Delete Inactive Survey
+    if (e.target.classList.contains('delete-inactive-survey')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const surveyId = e.target.getAttribute('data-id');
+        const surveyItem = e.target.closest('.surveyInactive-item');
+        if (surveyItem) {
+            animateSurveyItemLeave(surveyItem, function() {
+                // Call backend to delete, then refresh list
+                handleSurveyAction(
+                    '/SDGKU-Dashboard/src/models/mySurveys.php',
+                    { action: 'deleteSurvey', id: surveyId },
+                    () => {
+                        showNotification('Encuesta eliminada correctamente');
+                        renderInactiveSurveys();
+                    },
+                    (error) => {
+                        showNotification('Error al eliminar la encuesta: ' + (error.message || error), 'error');
+                    }
+                );
+            });
+        }
+    }
 });
+
+//* Improved POST fetch handler for actions (delete, activate, deactivate, etc.)
+function handleSurveyAction(url, body, onSuccess, onError) {
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(body)
+    })
+    .then(async response => {
+        const contentType = response.headers.get('content-type');
+        let data;
+        if (contentType && contentType.includes('application/json')) {
+            data = await response.json();
+        } else {
+            data = await response.text();
+            throw new Error(data);
+        }
+        if (!response.ok) {
+            throw new Error(data.message || 'Error en la acción');
+        }
+        onSuccess(data);
+    })
+    .catch(error => {
+        onError(error);
+    });
+}
 
 
 
