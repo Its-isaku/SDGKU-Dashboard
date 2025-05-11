@@ -229,9 +229,9 @@
 .dropdown {
     position: fixed;
     /* posicion en y */
-    top: 130px;
+    top: 90px;
     /* posicion en x */
-    left: 190px;
+    left: 40px;
     background: white;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -239,7 +239,8 @@
     display: none;
     flex-direction: column;
     z-index: 10;
-    width: 120px!important;
+    width: 150px!important;
+    
 }
 
 .dropdown button {

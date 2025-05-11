@@ -792,3 +792,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+function editSurvey(survey,id){
+    document.getElementById('surveyTitle').value = survey.title;
+    document.getElementById('surveyDescription').value = survey.description;
+    document.getElementById('programType').value = survey.program_type_id;
+    document.getElementById('program').value = survey.program_id;
+    document.getElementById('subject').value = survey.subject_id;
+    document.getElementById('surveyType').value = survey.survey_type_id;
+    document.getElementById('expirationDate').value = survey.expiration_date;
+    document.getElementById('studentEmail').value = survey.email;
+    
+}
