@@ -342,21 +342,3 @@
     font-weight: 500;
     transition: background-color 0.2s;
 }
-
-.btn-cancel {
-    background-color: var(--secondary-dominant);
-    color: white;
-}
-
-.btn-cancel:hover {
-    background-color: var(--primary-dominant);
-}
-
-.btn-danger {
-    background-color: var(--error-color);
-    color: white;
-}
-
-.btn-danger:hover {
-    background-color: #a01414;
-}

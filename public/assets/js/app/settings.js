@@ -79,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function() {
 //! <|--------------------------ADD--------------------------|>
 
 //? get Program Types and send them to the frontend
-// Only run this ONCE for the add section
 (function() {
     let programTypePopulated = false;
     document.addEventListener('DOMContentLoaded', function() {
