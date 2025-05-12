@@ -129,6 +129,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sql = "INSERT INTO surveys (title, description, program_type_id, program_id, subject_id, last_edited, created_at, expires_at, status, survey_type_id) SELECT title, description, program_type_id, program_id, subject_id, last_edited, created_at, expires_at, status, survey_type_id FROM surveys WHERE survey_id = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$id]);
+
+            $newSurveyId = $pdo->lastInsertId();
+
+            $sqlQuestions = "INSERT INTO questions (survey_id, question_text, question_type_id, display_order)
+                            SELECT ?, question_text, question_type_id, display_order
+                            FROM questions WHERE survey_id = ?";
+            $stmtQuestions = $pdo->prepare($sqlQuestions);
+            $stmtQuestions->execute([$newSurveyId, $id]);
             
             $pdo->commit();
             http_response_code(200);
