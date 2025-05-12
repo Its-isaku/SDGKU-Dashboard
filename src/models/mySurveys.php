@@ -150,6 +150,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     WHERE survey_id = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$id]);
+
+            $newSurveyId = $pdo->lastInsertId();
+
+            $sqlQuestions = "INSERT INTO questions (survey_id, question_text, question_type_id, display_order)
+                            SELECT ?, question_text, question_type_id, display_order
+                            FROM questions WHERE survey_id = ?";
+            $stmtQuestions = $pdo->prepare($sqlQuestions);
+            $stmtQuestions->execute([$newSurveyId, $id]);
             
             $pdo->commit();
             http_response_code(200);
