@@ -1033,34 +1033,35 @@ function editSurvey() {
 // };
 
 function editQuestions(basicQuestions) {
+    
     const questionFormsContainer = document.getElementById('questionFormsContainer');
     questionFormsContainer.innerHTML = ``; //* Clear existing questions
 
     //? Loop through the basicQuestions array and create question forms
-    basicQuestions.forEach((question, index) => {
+    basicQuestions.forEach((questions, index) => {
         //* Create a new question form
         const questionForm = createQuestionForm(index + 1);
         
         //* Set the question title
         const titleInput = questionForm.querySelector('.questionTitleInput');
-        if (titleInput) titleInput.value = question.question_text || '';
+        if (titleInput) titleInput.value = questions.question_text || '';
 
         //* Set the question type
         const typeSelect = questionForm.querySelector('.questionTypeSelect');
         if (typeSelect) {
-            typeSelect.value = question.question_type_id;
+            typeSelect.value = questions.question_type_id;
             typeSelect.dispatchEvent(new Event('change')); //* Trigger change event to show the correct section
         }
         
         //* Set the data for Multiple Choice questions
-        if (question.question_type_id === '1')  {
+        if (questions.question_type_id == '1')  {
+            console.log('datos:');
             //* Find options for this question
-            const options = multipleQuestions.filter(opt => opt.question_id === question.question_id);
+            const options = questionsInfo.multipleChoice.filter(opt => opt.question_id === questions.question_id);
             const optionsContainer = questionForm.querySelector(`#optionsContainer${index + 1}`);
             
             //* Remove default options
             optionsContainer.innerHTML = '';
-
             options.forEach((opt, i) => {
                 const optDiv = document.createElement('div');
                 optDiv.className = 'QuestionInput optionInput';
@@ -1080,8 +1081,8 @@ function editQuestions(basicQuestions) {
         }
 
         //* Set the data for True/False questions
-        if(question.question_type_id === '5') {
-            const tf = true_falseQuestions.find(opt => opt.question_id === question.question_id); //* Find the true/false question
+        if(questions.question_type_id == '5') {
+            const tf = questionsInfo.trueFalse.find(opt => opt.question_id === questions.question_id); //* Find the true/false question
             if (tf) {
                 const radio = questionForm.querySelector(`input[name="trueFalse${index + 1}"][value="${tf.correct_answer}"]`); //* Find the radio button for the correct answer
                 if (radio) radio.checked = true; //* Set the correct answer
@@ -1143,19 +1144,19 @@ const testQuestions = [
 
 
 
-window.multipleQuestions = questionsInfo.multipleChoice.map((item, index) => ({
-    question_id: item.question_id,
-    option_text: item.option_text,
-    display_order: index + 1,
-    correct_answer: item.correct_answer
-}));
+// window.multipleQuestions = questionsInfo.multipleChoice.map((item, index) => ({
+//     question_id: item.question_id,
+//     option_text: item.option_text,
+//     display_order: index + 1,
+//     correct_answer: item.correct_answer
+// }));
 
-window.true_falseQuestions = questionsInfo.trueFalse.map((item, index) => ({
-    question_id: item.question_id,
-    true_false_text: item.true_false_text,
-    type: item.type,
-    correct_answer: item.correct_answer
-}));
+// window.true_falseQuestions = questionsInfo.trueFalse.map((item, index) => ({
+//     question_id: item.question_id,
+//     true_false_text: item.true_false_text,
+//     type: item.type,
+//     correct_answer: item.correct_answer
+// }));
 
 window.openQuestions = [
     { open_id: 4, question_id: 4, open_option_text: "" }
@@ -1167,6 +1168,8 @@ window.addEventListener('load', function() {
         editSurvey();
         editQuestions(questions);
     }, 500); // Pequeño retraso por si hay carga asíncrona editSurvey();
+   
+
 
     // //* call the editQuestions function to set the initial values
     
