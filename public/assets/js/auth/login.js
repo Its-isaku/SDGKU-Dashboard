@@ -4,6 +4,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const loginError = document.getElementById("login-error");
     const loginButton = document.getElementById("form-btn");
 
+    const togglePasswordIcon = document.getElementById("toggle-password");
+    const passwordInput = document.getElementById("password");
+    
+    // Toggle password
+    togglePasswordIcon.addEventListener("click", () => {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+
+        togglePasswordIcon.classList.toggle("fa-eye");
+        togglePasswordIcon.classList.toggle("fa-eye-slash");
+        togglePasswordIcon.classList.toggle("active");
+    });
+    
     const validateFields = (email, password) => {
         const emailInput = document.getElementById("email");
         const passwordInput = document.getElementById("password");
