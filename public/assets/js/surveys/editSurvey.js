@@ -860,6 +860,7 @@ function resetSurveyData() {
     questionsInfo.Likert5 = [];
     // ... resetear todos los arrays de questionsInfo
 }
+let programType;
 // Manejador de eventos
 document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -870,8 +871,15 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     fetchSurveyData(surveyId);
+
+
 });
 
+//!---------------------PutSelectsInOrderToEdit---------------------
+
+
+
+//!---------------------GetSurveyDataToEdit---------------------
 async function fetchSurveyData(sid) {
     
     try {
@@ -883,7 +891,7 @@ async function fetchSurveyData(sid) {
         if (!surveyRes.ok) throw await surveyRes.json();
         const surveyData = await surveyRes.json();
         surveyData2.title = surveyData[0].title;
-        surveyData2.type = surveyData[0].survey_type_id;
+        surveyData2.type = surveyData[0].type;
         surveyData2.description = surveyData[0].description;
         surveyData2.programType = surveyData[0].program_name;
         surveyData2.program = surveyData[0].name;
@@ -917,12 +925,12 @@ async function fetchSurveyData(sid) {
         // Mapear preguntas
         
         questionsOb.forEach(item => {
-          questions.push({
-            question_id: item.question_id,
-            question_text: item.question_text,
-            question_type_id: item.question_type_id,
-            display_order: item.display_order
-          });
+        questions.push({
+            question_id: item.question_id,
+            question_text: item.question_text,
+            question_type_id: item.question_type_id,
+            display_order: item.display_order
+            });
         });
 
 
@@ -980,28 +988,76 @@ function editSurvey() {
     document.getElementById('surveyDescription').value = surveyData2.description;
 
     // Program Type
-    let programTypeOption = document.getElementById('editProgramType');
-    programTypeOption.value = surveyData2.programType; // Nota: Hay un typo aquí (programType vs programType)
-    programTypeOption.textContent = surveyData2.programType;
-    document.getElementById('programType').value = surveyData2.programType;
+    
+    let programTypeOption = document.getElementById('programType');
+    let found = false;
+
+    for (let option of programTypeOption.options) {
+        if (option.text === surveyData2.programType || option.value === surveyData2.programType) {
+        option.selected = true;
+        found = true;
+        break;
+        }
+    }
+
+    if (!found) {
+        // Si no se encuentra la opción, se crea una nueva
+        let newOption = new Option(surveyData2.programType, surveyData2.programType, true, true);
+        programTypeOption.add(newOption);
+    }
+    
 
     // Program
-    let programOption = document.getElementById('editProgram');
-    programOption.value = surveyData2.program;
-    programOption.textContent = surveyData2.program;
-    document.getElementById('program').value = surveyData2.program;
+    let programOption = document.getElementById('program');
+    let found2 = false;
+    for (let option of programOption.options) {
+        if (option.text === surveyData2.program || option.value === surveyData2.program) {
+        option.selected = true;
+        found2 = true;
+        break;
+        }
+    }
+
+    if (!found2) {
+        // Si no se encuentra la opción, se crea una nueva
+        let newOption = new Option(surveyData2.program, surveyData2.program, true, true);
+        programOption.add(newOption);
+    }
 
     // Course (Subject)
-    let subjectOption = document.getElementById('editCourse');
-    subjectOption.value = surveyData2.subject;
-    subjectOption.textContent = surveyData2.subject;
-    document.getElementById('subject').value = surveyData2.subject;
+    let subjectOption = document.getElementById('subject');
+    let found3 = false;
+    for (let option of subjectOption.options) {
+        if (option.text === surveyData2.subject || option.value === surveyData2.subject) {
+        option.selected = true;
+        found2 = true;
+        break;
+        }
+    }
+
+    if (!found3) {
+        // Si no se encuentra la opción, se crea una nueva
+        let newOption = new Option(surveyData2.subject, surveyData2.subject, true, true);
+        subjectOption.add(newOption);
+    }
+    
 
     // Survey Type
-    let surveyTypeOption = document.getElementById('editSurveyType');
-    surveyTypeOption.value = surveyData2.type;
-    surveyTypeOption.textContent = surveyData2.type;
-    document.getElementById('surveyType').value = surveyData2.type;
+    let surveyTypeOption = document.getElementById('surveyType');
+    let found4 = false;
+    for (let option of surveyTypeOption.options) {
+        if (option.text === surveyData2.type || option.value === surveyData2.type) {
+        option.selected = true;
+        found2 = true;
+        break;
+        }
+    }
+
+    if (!found4) {
+        // Si no se encuentra la opción, se crea una nueva
+        let newOption = new Option(surveyData2.type, surveyData2.type, true, true);
+        surveyTypeOption.add(newOption);
+    }
 
     // Expiration Date
     // Asegúrate de que surveyData2.expirationDate esté en el formato correcto (YYYY-MM-DDTHH:MM)
@@ -1070,71 +1126,6 @@ function editQuestions(basicQuestions) {
     });
 }
 
-const testQuestions = [
-    // Multiple Choice
-    {
-        question_id: 1,
-        question_text: "What is 2 + 2?",
-        question_type_id: "1",
-        display_order: 1
-    },
-    // Likert 1-5
-    {
-        question_id: 2,
-        question_text: "How satisfied are you with our service?",
-        question_type_id: "2",
-        display_order: 2
-    },
-    // Likert 1-3
-    {
-        question_id: 3,
-        question_text: "Was the course helpful?",
-        question_type_id: "3",
-        display_order: 3
-    },
-    // Open-ended
-    {
-        question_id: 4,
-        question_text: "Any additional comments?",
-        question_type_id: "4",
-        display_order: 4,
-    },
-    // True/False
-    {
-        question_id: 5,
-        question_text: "The sky is blue.",
-        type: "1",
-        correct_answer: 0,
-        question_type_id: "5",
-        display_order: 5
-    },
-    {
-        question_id: 5,
-        question_text: "The sky is green.",
-        type: "1",
-        correct_answer: 1,
-        question_type_id: "5",
-        display_order: 6
-    }
-];
-
-
-
-
-// window.multipleQuestions = questionsInfo.multipleChoice.map((item, index) => ({
-//     question_id: item.question_id,
-//     option_text: item.option_text,
-//     display_order: index + 1,
-//     correct_answer: item.correct_answer
-// }));
-
-// window.true_falseQuestions = questionsInfo.trueFalse.map((item, index) => ({
-//     question_id: item.question_id,
-//     true_false_text: item.true_false_text,
-//     type: item.type,
-//     correct_answer: item.correct_answer
-// }));
-
 window.openQuestions = [
     { open_id: 4, question_id: 4, open_option_text: "" }
 ];
@@ -1145,7 +1136,6 @@ window.addEventListener('load', function() {
         editSurvey();
         editQuestions(questions);
     }, 500); // Pequeño retraso por si hay carga asíncrona editSurvey();
-   
 
 
     // //* call the editQuestions function to set the initial values
