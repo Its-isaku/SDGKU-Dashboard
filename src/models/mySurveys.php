@@ -6,9 +6,10 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/../config/config.php';
 header('Content-Type: application/json');
 
-//el get de las surveys:
+//! <-------------------------------- GET --------------------------------> - Get surveys data
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getSurveys') {
     try {
+        $search = isset($_GET['search']) ? trim($_GET['search']) : '';
         $sql = "SELECT 
     surveys.survey_id AS id,
     survey_types.type_name AS type,
@@ -29,20 +30,29 @@ LEFT JOIN (
     GROUP BY program_id
 ) cohort ON cohort.program_id = surveys.program_id
 LEFT JOIN questions ON surveys.survey_id = questions.survey_id
-GROUP BY 
-    surveys.survey_id, 
-    survey_types.type_name, 
-    surveys.status, 
-    surveys.title, 
-    surveys.description, 
-    surveys.created_at, 
-    surveys.expires_at, 
-    program_types.program_name, 
-    cohort.cohort";
-    
-        $stmt = $pdo->query($sql);
-        $surveys = $stmt->fetchAll();
-        echo json_encode($surveys);
+";
+    $params = [];
+    if ($search !== '') {
+        $sql .= " WHERE surveys.title LIKE ? OR surveys.description LIKE ?";
+        $params[] = "%$search%";
+        $params[] = "%$search%";
+    }
+    $sql .= " GROUP BY 
+        surveys.survey_id, 
+        survey_types.type_name, 
+        surveys.status, 
+        surveys.title, 
+        surveys.description, 
+        surveys.created_at, 
+        surveys.expires_at, 
+        program_types.program_name, 
+        cohort.cohort";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    $surveys = $stmt->fetchAll();
+    echo json_encode($surveys);
+    exit;
     
     } catch (PDOException $e) {
         http_response_code(500);
@@ -54,16 +64,19 @@ GROUP BY
     }
 }
 
+//! <-------------------------------- POST --------------------------------> - Delete, duplicate, deactivate and activate surveys
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Primero decodificar el input
+    //* Primero decodificar el input
     $input = json_decode(file_get_contents('php://input'), true);
     
-    // Verificar que el input es válido y tiene acción
+    //* Verificar que el input es válido y tiene acción
     if (!isset($input['action'])) {
         http_response_code(400);
         echo json_encode(['error' => 'Acción no especificada']);
         exit;
     }
+
+    //? <-------------------------------- DELETE -------------------------------->
     if($input['action'] === 'deleteSurvey'){
     try {
             if (!isset($input['id'])) {
@@ -72,12 +85,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             }
             
-        // Validate the ID
+        //* Validate the ID
         $id = intval($input['id']);
 
     
         $pdo->beginTransaction();
-        // Prepare and execute the delete queries
+        //* Prepare and execute the delete queries
         $queries = [
             "DELETE FROM true_false_options WHERE question_id IN 
                 (SELECT questions_id FROM questions WHERE survey_id = ?)",
@@ -116,6 +129,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
         exit;
     }
+
+    //? <-------------------------------- DUPLICATE -------------------------------->
     if($input['action'] === 'duplicateSurvey'){
         try {
             if (!isset($input['id'])) {
@@ -135,6 +150,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     WHERE survey_id = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$id]);
+
+            $newSurveyId = $pdo->lastInsertId();
+
+            $sqlQuestions = "INSERT INTO questions (survey_id, question_text, question_type_id, display_order)
+                            SELECT ?, question_text, question_type_id, display_order
+                            FROM questions WHERE survey_id = ?";
+            $stmtQuestions = $pdo->prepare($sqlQuestions);
+            $stmtQuestions->execute([$newSurveyId, $id]);
             
             $pdo->commit();
             http_response_code(200);
@@ -149,6 +172,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
         
     }
+
+    //? <-------------------------------- DEACTIVATE -------------------------------->
     if($input['action'] === 'deactivateSurvey'){
         try {
             if (!isset($input['id'])) {
@@ -177,6 +202,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
         
     }
+
+    //? <-------------------------------- ACTIVATE -------------------------------->
     if($input['action'] === 'activateSurvey'){
         try {
             if (!isset($input['id'])) {

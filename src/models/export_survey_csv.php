@@ -8,6 +8,14 @@ if (!isset($_GET['id'])) {
 
 $surveyId = intval($_GET['id']);
 
+$titleQuery = "SELECT title FROM surveys WHERE survey_id = :survey_id";
+$stmt = $pdo->prepare($titleQuery);
+$stmt->execute(['survey_id' => $surveyId]);
+$survey = $stmt->fetch();
+
+$surveyTitle = $survey ? $survey['title'] : 'survey';
+$sanitizedTitle = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $surveyTitle);
+
 $sql = "
     SELECT q.questions_id, q.question_text
     FROM questions q
@@ -43,20 +51,20 @@ $rawAnswers = $stmt->fetchAll();
 
 $grouped = [];
 foreach ($rawAnswers as $row) {
-    $responseId = $row['responses_id'];
-    if (!isset($grouped[$responseId])) {
-        $grouped[$responseId] = [
-            'email' => $row['respondent_email'],
-            'timestamp' => $row['submitted_at'],
+    $email = $row['respondent_email'];
+    if (!isset($grouped[$email])) {
+        $grouped[$email] = [
+            'email' => $email,
+            'timestamp' => $row['submitted_at'], 
             'answers' => []
         ];
     }
-    $grouped[$responseId]['answers'][$row['question_id']] = $row['answer_text'];
+    $grouped[$email]['answers'][$row['question_id']] = $row['answer_text'];
 }
 
 
 header('Content-Type: text/csv');
-header('Content-Disposition: attachment; filename="survey_' . $surveyId . '_responses.csv"');
+header('Content-Disposition: attachment; filename="' . $sanitizedTitle . '-answers.csv"');
 
 $output = fopen('php://output', 'w');
 

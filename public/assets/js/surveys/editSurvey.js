@@ -15,16 +15,14 @@ const surveyData = {
     questions: [] 
 };
 
-const basicSurveyData = [];
 
-//! dont change
+
 const sections = {
     optionSurveyDetails: 'surveyDetailsSection',
     optionQuestions: 'surveyQuestionsSection',
     optionPreview: 'surveyPreviewSection',
 };
 
-//! dont change
 //? Validation for Survey Details
 function validateSurveyDetails() {
     const title = document.getElementById('surveyTitle').value.trim();
@@ -42,7 +40,6 @@ function validateSurveyDetails() {
     return true;
 }
 
-//! dont change
 //? notification Logic
 function showNotification(message, type = 'success') {
     const notification = document.getElementById('notification');
@@ -55,7 +52,7 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
-//! dont change
+
 //? Preview Logic
 function validateQuestions() {
     let isValid = true;
@@ -102,7 +99,7 @@ function validateQuestions() {
     return isValid;
 }
 
-//! dont change
+
 //? Section Navigation Logic
 function handleSectionClick(clickedId) {
     //* Prevent navigation to Questions or Preview if details are incomplete
@@ -144,7 +141,7 @@ function navButton(buttonId, targetSectionKey) {
     }
 }
 
-//! dont change
+
 //? Add click event for each navigation option
 Object.keys(sections).forEach(buttonId => {
     //* Add click event for each navigation option
@@ -154,18 +151,18 @@ Object.keys(sections).forEach(buttonId => {
     }
 });
 
-//! dont change
+
 //? navButton in createSuvery
 navButton('btnContinueToQuestions', 'optionQuestions');
 navButton('btnBackToDetails', 'optionSurveyDetails');
 navButton('btnPreviewSurvey', 'optionPreview');
 navButton('btnBackToQuestions', 'optionQuestions');
 
-//! dont change
+
 //? Set default section to display
 handleSectionClick('optionSurveyDetails');
 
-//! dont change
+
 //? Survey Details Collection
 document.getElementById('btnContinueToQuestions').addEventListener('click', () => {
     //* Collect survey details from form
@@ -186,13 +183,10 @@ document.getElementById('btnContinueToQuestions').addEventListener('click', () =
     surveyData.details.subject = subject;
 });
 
-//! dont change
+
 //? Question Form Logic
 let questionCounter = 1;
 
-
-
-//^ <----------------Editar para popular el formulario con las preguntas de la encuesta----------------?
 function createQuestionForm(id) {
     //* Create a new question form element
     const container = document.createElement('div');
@@ -358,7 +352,7 @@ function createQuestionForm(id) {
     return container;
 }
 
-//! dont change
+
 //? Add initial question form on page load
 document.getElementById('btnAddQuestion').addEventListener('click', () => {
     //* Add a new question form to the container
@@ -367,7 +361,7 @@ document.getElementById('btnAddQuestion').addEventListener('click', () => {
     questionCounter++;
 });
 
-//! dont change
+
 //? Ensure at least one question form is loaded on page load
 document.addEventListener('DOMContentLoaded', function() {
     const container = document.getElementById('questionFormsContainer');
@@ -378,7 +372,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-//! dont change
+
 //? Format Expiration Date
 function formatExpirationDate(dateString) {
     if (!dateString) return '';
@@ -388,7 +382,7 @@ function formatExpirationDate(dateString) {
     return `${date} : ${time}`;
 }
 
-//! dont change
+
 //? Helper to get local datetime string in 'YYYY-MM-DD HH:mm:ss' format
 function getLocalDateTimeString() {
     const now = new Date();
@@ -400,7 +394,7 @@ function getLocalDateTimeString() {
         String(now.getSeconds()).padStart(2, '0');
 }
 
-//! dont change
+
 //? Helper to format expiration date from input type="datetime-local" to 'YYYY-MM-DD HH:mm:ss'
 function formatExpirationDateToLocal(dateString) {
     if (!dateString) return '';
@@ -410,7 +404,7 @@ function formatExpirationDateToLocal(dateString) {
     return `${date} ${timeWithSeconds}`;
 }
 
-//! dont change
+
 function updatePreview() {
     //* Update the survey preview section with current data
     const container = document.getElementById('previewContainer');
@@ -515,7 +509,7 @@ function updatePreview() {
     });
 }
 
-//! dont change
+
 //? Add event listener for the preview button
 document.getElementById('btnPreviewSurvey').addEventListener('click', () => {
     const questionForms = document.querySelectorAll('.QuestionContent');
@@ -563,7 +557,7 @@ document.getElementById('btnPreviewSurvey').addEventListener('click', () => {
     updatePreview();
 });
 
-//! dont change
+
 //? update preview when switching to preview section
 const previewOption = document.getElementById('optionPreview');
 if (previewOption) {
@@ -580,7 +574,7 @@ if (previewOption) {
     });
 }
 
-//! dont change
+
 //? Submit Survey Logic
 document.getElementById('btnEditSurvey').addEventListener('click', function() {
     //* Collect survey details
@@ -674,7 +668,7 @@ document.getElementById('btnEditSurvey').addEventListener('click', function() {
     });
 });
 
-//! dont change
+
 //? get Program Types and send them to the frontend
 document.addEventListener('DOMContentLoaded', function() {
     fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getProgramTypes')
@@ -694,7 +688,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-//! dont change
+
 //? Add event listener to programType select to fetch programs for selected type
 document.addEventListener('DOMContentLoaded', function() {
     const programTypeSelect = document.getElementById('programType');
@@ -730,7 +724,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-//! dont change
+
 //? get subjects and send them to the frontend
 const programSelect = document.getElementById('program');
 if (programSelect) {
@@ -764,7 +758,7 @@ if (programSelect) {
     });
 }
 
-//! dont change
+
 //? get survey types and send them to the frontend
 document.addEventListener('DOMContentLoaded', function() {
     fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getSurveyTypes')
@@ -783,7 +777,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-//! dont change
+
 //? Add event listeners for programType, program, and subject selects (cleaned up)
 document.addEventListener('DOMContentLoaded', function() {
     const programTypeSelect = document.getElementById('programType');
@@ -978,17 +972,6 @@ console.log('surveyEditData:', surveyData2);
 console.log('questions:', questions);
 console.log('questionsInfo:', questionsInfo);
 
-// const surveyData2 = {
-//         // survey_id: surveyEditData.survey_id,
-//         title: surveyEditData.title.trim(),
-//         description: surveyEditData.description,
-//         type: surveyEditData.type,
-//         programType: surveyEditData.programType,
-//         program: surveyEditData.program,
-//         subject: surveyEditData.subject,
-//         expirationDate: '2025-12-31T23:59',
-//         createdAt: surveyEditData.createdAt
-// };
 
 
 function editSurvey() {
@@ -1025,12 +1008,6 @@ function editSurvey() {
     document.getElementById('expirationDate').value = surveyData2.expirationDate;
 }
 
-// const basicQuestions = {
-//     question_id: 1,
-//     question_text: '',
-//     question_type_id: '',
-//     display_order: 1
-// };
 
 function editQuestions(basicQuestions) {
     

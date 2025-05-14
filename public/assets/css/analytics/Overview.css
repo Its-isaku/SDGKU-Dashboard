@@ -1,34 +1,43 @@
-.overview{
-    height: 100%;
+.overview {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    justify-content: center;
-    align-items: center;
     gap: 2rem;
     padding: 20px;
 }
 
-.overviewCard{
+.overviewCard {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     padding: 20px;
-    height: 500px;
+    height: 380px;
+    /* antes 300px */
     width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
     border-radius: var(--border-radius);
-    background-color: var( --neutral-light);
+    background-color: var(--neutral-light);
     box-shadow: var(--box-shadow);
-
 }
 
-.overviewCard h1{
+
+
+.overviewCard h1 {
     font-size: var(--text-heading);
     color: var(--neutral-dark);
 }
 
-.overviewCard p{
+.overviewCard p {
     font-size: var(--text-subheading);
     color: var(--neutral-dark);
+    margin-bottom: 1rem;
+}
+
+.overviewCard canvas {
+    width: 85% !important;
+    height: 220px !important;
+    margin: 0 auto;
+    display: block;
+    object-fit: contain;
 }

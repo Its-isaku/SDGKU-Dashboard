@@ -201,9 +201,32 @@
     margin-bottom: 1 rem;
     border-radius: var(--border-radius);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s, transform 0.3s;
 }
+.survey-item.enter {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.survey-item.enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.survey-item.leave {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.survey-item.leave-active {
+    opacity: 0;
+    transform: translateY(-30px);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
 .survey-item h3{
     font-size: large;
 }

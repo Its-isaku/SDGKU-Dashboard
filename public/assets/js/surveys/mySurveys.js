@@ -122,6 +122,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             );
         });
+
     }
 //! <----------------------- Edit Surveys -----------------------> 
 document.addEventListener('click', function(e) {
@@ -131,6 +132,8 @@ document.addEventListener('click', function(e) {
         window.location.href = `editSurvey.html?id=${surveyId}`;
     }
 });
+
+
     //! <----------------------- DEACTIVATE Survey -----------------------> 
 
     document.addEventListener('click', function(e) {
@@ -141,6 +144,7 @@ document.addEventListener('click', function(e) {
             openDeactivateSurveyModal(id);
         }
     });
+
 
     if (confirmDeactivateBtn) {
         confirmDeactivateBtn.addEventListener('click', function() {
