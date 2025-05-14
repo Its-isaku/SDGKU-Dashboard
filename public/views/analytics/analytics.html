@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,25 +9,27 @@
     <!--? Main Style -->
     <link rel="stylesheet" href="../../assets/css/app/mainStyle.css">
     <!--? analytics Style -->
-    <link rel="stylesheet" href="../../assets/css/analytics/analytics.css"> 
+    <link rel="stylesheet" href="../../assets/css/analytics/analytics.css">
     <!--? Overview Style -->
-    <link rel="stylesheet" href="../../assets/css/analytics/Overview.css"> 
+    <link rel="stylesheet" href="../../assets/css/analytics/Overview.css">
     <!--? Response Analysis Style -->
-    <link rel="stylesheet" href="../../assets/css/analytics/ResponseAnalysis.css"> 
+    <link rel="stylesheet" href="../../assets/css/analytics/ResponseAnalysis.css">
     <!--? Comparison Style -->
-    <link rel="stylesheet" href="../../assets/css/analytics/Comparison.css"> 
+    <link rel="stylesheet" href="../../assets/css/analytics/Comparison.css">
     <!--? Reports Style -->
-    <link rel="stylesheet" href="../../assets/css/analytics/reports.css"> 
+    <link rel="stylesheet" href="../../assets/css/analytics/reports.css">
     <title>SDGKU analytics</title>
     <script src="../../assets/js/analytics/reports.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-    
+
 <!--  -->
-<body> 
+
+<body>
     <!--? Header  -->
     <header class="header">
         <div class="headerLogo">
-            
+
             <img src="../../assets/images/SDGKU_Small_Logo.png" alt="logo" class="small-logo">
             <div class="full-logo"></div>
             <h1 class="header-title">SDGKU Survey Platform</h1>
@@ -41,46 +44,46 @@
     <div class="dashboard-container">
         <aside>
             <nav>
-                <a href="../app/dashboard.html" class="sideLink" >
+                <a href="../app/dashboard.html" class="sideLink">
                     <i class="fa-solid fa-house-user"></i>
                     <p>Dashboard</p>
                 </a>
-                
+
                 <a href="../surveys/mySurveys.html" class="sideLink">
                     <i class="fa-solid fa-clipboard-list"></i>
                     <p>My Surveys</p>
                 </a>
-                
+
                 <a href="../surveys/createSurvey.html" class="sideLink">
                     <i class="fa-solid fa-circle-plus"></i>
                     <p>Create Survey</p>
                 </a>
-                
+
                 <a href="../analytics/analytics.html" class="sideLink selectLink">
                     <i class="fa-solid fa-square-poll-vertical"></i>
                     <p>Analytics</p>
                 </a>
-                
+
                 <a href="../app/users.html" class="sideLink">
                     <i class="fa-solid fa-users"></i>
                     <p>Users</p>
                 </a>
-                
+
                 <a href="../app/settings.html" class="sideLink">
                     <i class="fa-solid fa-cog"></i>
-                        <p>Settings</p> 
+                    <p>Settings</p>
                 </a>
                 <div class="asideLogOutBtn">
                     <button class="asideBtnOut">Logout</button>
                 </div>
             </nav>
-            
+
             <div class="profile">
                 <div class="profile-img">
                     <!--? Imagen del Usuario(if no image, use icon) -->
-                    <i class="fa-solid fa-circle-user" id = "userFoto"></i>
+                    <i class="fa-solid fa-circle-user" id="userFoto"></i>
                 </div>
-                
+
                 <div class="profile-info">
                     <h4>
                         <!--? Rol del Usuario -->
@@ -98,30 +101,30 @@
         <main>
             <div class="principalDashboard">
                 <!--? Empezar a trabajar aqui -->
-                
+
                 <div class="principalAnalytics">
-                    
+
                     <div class="analyticsSurveyInfo">
                         <div class="headInfo">
                             <h2>Analytics Dashboard</h2>
-                        <small>
-                            View insights and statistics  from your surveys
-                        </small>
+                            <small>
+                                View insights and statistics from your surveys
+                            </small>
                         </div>
-                        
+
                         <div class="analytics-panels-container">
                             <div class="analytics-panel">
                                 <p>Total Surveys</p>
                                 <b id="surveyTotalId">24</b>
                                 <small id="totalLastMonth">+12% from last month</small>
                             </div>
-                        
+
                             <div class="analytics-panel">
                                 <p>Response Rate</p>
                                 <b id="responseRatelId">87%</b>
                                 <small id="responseLastMonth">+15% from last month</small>
                             </div>
-                        
+
                             <div class="analytics-panel">
                                 <p>Avg. Completion Time</p>
                                 <b id="timeRatelId">4m 32s</b>
@@ -140,49 +143,49 @@
                                     <b>
                                         Program
                                     </b>
-                                </label> 
+                                </label>
                                 <select name="program" id="selectProgramId">
-                                    <option value="opcion0">All programs</option>  
-                                    <option value="opcion1">Opcion 1</option>    
-                                    <option value="opcion2">Opcion 2</option>    
-                                    <option value="opcion3">Opcion 3</option>    
-                                    <option value="opcion4">Opcion 4</option>    
+                                    <option value="opcion0">All programs</option>
+                                    <option value="opcion1">Opcion 1</option>
+                                    <option value="opcion2">Opcion 2</option>
+                                    <option value="opcion3">Opcion 3</option>
+                                    <option value="opcion4">Opcion 4</option>
                                 </select>
                             </div>
-                            
+
                             <div class="surveyTypeSelect">
                                 <label for="surveyType ">
                                     <b>
                                         Survey Type
                                     </b>
-                                </label> 
+                                </label>
                                 <select name="surveyType" id="selectTypeId">
-                                    <option value="opcion0">All Types</option>  
-                                    <option value="opcion1">Opcion 1</option>    
-                                    <option value="opcion2">Opcion 2</option>    
-                                    <option value="opcion3">Opcion 3</option>  
+                                    <option value="opcion0">All Types</option>
+                                    <option value="opcion1">Opcion 1</option>
+                                    <option value="opcion2">Opcion 2</option>
+                                    <option value="opcion3">Opcion 3</option>
                                     <option value="opcion4">Opcion 4</option>
                                 </select>
                             </div>
-                            
+
                             <div class="timePeriodSelect">
                                 <label for="timePeriod">
                                     <b>Time Period
                                     </b>
-                                </label> 
+                                </label>
                                 <select name="timePeriod" id="selectTimeId">
-                                    <option value="opcion0">Custom Range</option>  
-                                    <option value="opcion1">Opcion 1</option>    
-                                    <option value="opcion2">Opcion 2</option>    
-                                    <option value="opcion3">Opcion 3</option>    
-                                    <option value="opcion4">Opcion 4</option>  
+                                    <option value="opcion0">Custom Range</option>
+                                    <option value="opcion1">Opcion 1</option>
+                                    <option value="opcion2">Opcion 2</option>
+                                    <option value="opcion3">Opcion 3</option>
+                                    <option value="opcion4">Opcion 4</option>
                                 </select>
                             </div>
-                            
+
                         </div>
-                    <button class="applyFiltersBtn">
-                        Apply Filters
-                    </button>
+                        <button class="applyFiltersBtn">
+                            Apply Filters
+                        </button>
                     </div>
 
                     <div class="SurveyOptions tempWidth">
@@ -209,21 +212,25 @@
                                 <div class="overviewCard">
                                     <h1>Survey Completion Rate</h1>
                                     <p>Monthly completion rates for all surveys</p>
+                                    <canvas id="completionRateChart"></canvas>
                                 </div>
 
                                 <div class="overviewCard">
                                     <h1>Survey Types Distribution</h1>
                                     <p>Breakdown of surveys by type</p>
+                                    <canvas id="surveyTypesChart"></canvas>
                                 </div>
 
                                 <div class="overviewCard">
                                     <h1>Questions Types</h1>
                                     <p>Distribution of question types across all surveys</p>
+                                    <canvas id="questionTypesChart"></canvas>
                                 </div>
 
                                 <div class="overviewCard">
                                     <h1>Rating Distribution</h1>
-                                    <p>Distribution of ratings across evaluation surveys    </p>
+                                    <p>Distribution of ratings across evaluation surveys</p>
+                                    <canvas id="ratingDistributionChart"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -241,20 +248,20 @@
                                             <div class="courseSelect">
                                                 <label for="surveyChoice">
                                                     <b>Select Survey</b>
-                                                </label> 
+                                                </label>
                                                 <select name="surveyChoice" id="selectSurveyId">
-                                                    <option value="s0">CS101 - Course Evaluation</option>  
-                                                    <option value="s1">Option 1</option>    
-                                                    <option value="s2">Option 2</option>    
-                                                    <option value="s3">Option 3</option>    
-                                                    <option value="s4">Option 4</option>    
+                                                    <option value="s0">CS101 - Course Evaluation</option>
+                                                    <option value="s1">Option 1</option>
+                                                    <option value="s2">Option 2</option>
+                                                    <option value="s3">Option 3</option>
+                                                    <option value="s4">Option 4</option>
                                                 </select>
                                             </div>
-                                
+
                                             <div class="courseSelect">
                                                 <label for="dateRange">
                                                     <b>Date Range</b>
-                                                </label> 
+                                                </label>
                                                 <select name="dateRange" id="selectDateRangeId">
                                                     <option value="last7">Last 7 Days</option>
                                                     <option value="last30" selected>Last 30 Days</option>
@@ -262,28 +269,29 @@
                                                     <option value="custom">Custom Range</option>
                                                 </select>
                                             </div>
-                                
+
                                             <div class="courseSelect">
                                                 <label for="groupBy">
                                                     <b>Group By</b>
-                                                </label> 
+                                                </label>
                                                 <select name="groupBy" id="selectGroupById">
-                                                    <option value="question">Question</option>  
-                                                    <option value="user">User</option>    
-                                                    <option value="type">Type</option>    
+                                                    <option value="question">Question</option>
+                                                    <option value="user">User</option>
+                                                    <option value="type">Type</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                
+
                                     <!-- Gráfico (vacío por ahora) -->
                                     <div class="comparisonKnowledge">
                                         <h1>Question Analysis</h1>
                                         <p>Average ratings grouped by selected option</p>
+                                        <canvas id="responseAnalysisChart"></canvas>
                                     </div>
                                 </div>
-                                
-                                
+
+
                             </div>
                         </div>
 
@@ -300,41 +308,42 @@
                                                 <b>
                                                     First Survey
                                                 </b>
-                                            </label> 
+                                            </label>
                                             <select name="course" id="selectCourseId">
-                                                <option value="opcion0">CS101 - Pre-Course Assessment</option>  
-                                                <option value="opcion1">Opcion 1</option>    
-                                                <option value="opcion2">Opcion 2</option>    
-                                                <option value="opcion3">Opcion 3</option>    
-                                                <option value="opcion4">Opcion 4</option>    
+                                                <option value="opcion0">CS101 - Pre-Course Assessment</option>
+                                                <option value="opcion1">Opcion 1</option>
+                                                <option value="opcion2">Opcion 2</option>
+                                                <option value="opcion3">Opcion 3</option>
+                                                <option value="opcion4">Opcion 4</option>
                                             </select>
                                         </div>
-                                        
+
                                         <div class="courseSelect">
                                             <label for="surveyType ">
                                                 <b>
                                                     Second Survey
                                                 </b>
-                                            </label> 
+                                            </label>
                                             <select name="surveyType" id="selectTypeId">
-                                                <option value="opcion0">CS101 - Post-Course Assessment</option>  
-                                                <option value="opcion1">Opcion 1</option>    
-                                                <option value="opcion2">Opcion 2</option>    
-                                                <option value="opcion3">Opcion 3</option>  
+                                                <option value="opcion0">CS101 - Post-Course Assessment</option>
+                                                <option value="opcion1">Opcion 1</option>
+                                                <option value="opcion2">Opcion 2</option>
+                                                <option value="opcion3">Opcion 3</option>
                                                 <option value="opcion4">Opcion 4</option>
                                             </select>
                                         </div>
-                                        
+
                                     </div>
                                     <button class="applyFiltersBtn">
                                         Apply Filters
-                                    </button> 
+                                    </button>
                                 </div>
                                 <div class="comparisonKnowledge">
                                     <h1>Knowledge Improvement</h1>
                                     <p>Comparison of pre and post course assessment results</p>
+                                    <canvas id="comparisonChart"></canvas>
                                 </div>
-            
+
                             </div>
                         </div>
 
@@ -348,11 +357,13 @@
             </div>
         </main>
     </div>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../../assets/js/app/main.js"></script>
     <script src="../../assets/js/analytics/reports.js"></script>
-    <script src="../../assets/js/analytics/analytics.js"></script>    
+    <script src="../../assets/js/analytics/analytics.js"></script>
     <script src="../../assets/js/auth/logout.js"></script>
 </body>
+
 </html>
