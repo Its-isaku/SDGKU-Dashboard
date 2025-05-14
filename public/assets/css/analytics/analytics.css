@@ -1,48 +1,56 @@
 /*!  Cambier si se necesita alterar algo del main en el display */
-.principalDashboard{
+.principalDashboard {
     overflow: auto;
     margin-left: 250px;
     width: calc(100% - 250px);
     height: auto;
     overflow-x: hidden;
-    padding: 34px 53px; 
+    padding: 34px 53px;
     padding-top: 1rem;
-    margin-left: 210px; 
+    margin-left: 210px;
 }
 
 .analyticsMenu {
     background-color: var(--gray-300);
     display: flex;
-    width: 100%; /* Cambia a 100% */
+    width: 100%;
+    /* Cambia a 100% */
     gap: 0.5rem;
     border-radius: var(--border-radius);
     padding: 5px;
     justify-content: center;
 }
 
-.analyticsMenu button{
+.analyticsMenu button {
     background-color: var(--gray-300);
-    /* width: 100px; */ /* Elimina el ancho fijo */
-    flex: 1; /* Asegura que todos los botones ocupen el mismo espacio */
-    min-width: 120px; /* Opcional: asegura un ancho mínimo */
-    max-width: 220px; /* Opcional: limita el ancho máximo */
+    /* width: 100px; */
+    /* Elimina el ancho fijo */
+    flex: 1;
+    /* Asegura que todos los botones ocupen el mismo espacio */
+    min-width: 120px;
+    /* Opcional: asegura un ancho mínimo */
+    max-width: 220px;
+    /* Opcional: limita el ancho máximo */
 }
 
 .menuOption {
     margin: 0;
-    padding: 8px 16px; /* Más espacio para el texto */
+    padding: 8px 16px;
+    /* Más espacio para el texto */
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
     font-size: 1rem;
     text-align: center;
-    white-space: nowrap; /* Evita salto de línea */
+    white-space: nowrap;
+    /* Evita salto de línea */
     font-weight: bold;
-    width: 100%; /* Ocupa todo el ancho del botón padre */
+    width: 100%;
+    /* Ocupa todo el ancho del botón padre */
 }
 
 /* principal */
-.principalAnalytics{
+.principalAnalytics {
     display: flex;
     flex-direction: column;
     gap: 30px;
@@ -51,54 +59,61 @@
     /* width: 90vw; */
 }
 
-.analyticsSurveyInfo{
+.analyticsSurveyInfo {
     height: auto;
     width: 100%;
     position: relative;
 }
 
-.analyticsMenu{
+.analyticsMenu {
     height: 50px;
 
 }
-.analyticsGraphics{
+
+.analyticsGraphics {
     height: auto;
 }
+
 /* Survey top cards */
-.surveyCards{
+.surveyCards {
     position: relative;
     display: flex;
     flex-direction: row;
     gap: 30px;
 }
-.surveyCards .surveyTotal, .surveyResponse, .surveyTime{
+
+.surveyCards .surveyTotal,
+.surveyResponse,
+.surveyTime {
     display: flex;
     flex-direction: column;
     padding: 20px;
     height: 140px;
     width: 300px;
     border-radius: 10px;
-    background-color: var( --neutral-light);
+    background-color: var(--neutral-light);
     box-shadow: var(--box-shadow);
 }
-.headInfo{
+
+.headInfo {
 
     display: flex;
     flex-direction: column;
     gap: 0;
     padding: 10px;
 }
-.headInfo h2{
+
+.headInfo h2 {
     margin-bottom: 20px;
-    
+
 }
 
-.surveyCards b{
+.surveyCards b {
     font-size: 30px;
 }
 
 /* Analytics Filters  */
-.analyticsFilters{
+.analyticsFilters {
     display: flex;
     flex-direction: column;
     position: relative;
@@ -108,31 +123,40 @@
     gap: 20px;
     box-shadow: var(--box-shadow);
     width: 100%;
-    background-color: var( --neutral-light);
+    background-color: var(--neutral-light);
 }
-.programSelect, .timePeriodSelect, .surveyTypeSelect {
+
+.programSelect,
+.timePeriodSelect,
+.surveyTypeSelect {
     display: flex;
     flex-direction: column;
 }
-.analyticsSelections{
+
+.analyticsSelections {
     display: flex;
     flex-direction: row;
     gap: 25px;
 }
 
-.surveyTypeSelect, .programSelect, .timePeriodSelect{
+.surveyTypeSelect,
+.programSelect,
+.timePeriodSelect {
     width: 100%;
 }
-.analyticsSelections select{
-    min-width: 200px; 
+
+.analyticsSelections select {
+    min-width: 200px;
     width: 100%;
     height: 30px;
     border-radius: 5px;
 }
-.analyticsHeadInfo h3{
+
+.analyticsHeadInfo h3 {
     margin-bottom: 0;
 }
-.analyticsFilters button{
+
+.analyticsFilters button {
     text-align: center;
     width: 150px;
     background-color: var(--secondary-dominant);
@@ -142,23 +166,23 @@
 
 /* responseAnalysis */
 
-.responseAnalysis{
-height: 400px;
-width: 100%;
+.responseAnalysis {
+    height: 400px;
+    width: 100%;
 }
 
 /*comparison  */
 
-.comparison{
-height: 400px;
-width: 100%;
+.comparison {
+    height: 400px;
+    width: 100%;
 }
 
 /* reports */
 
-.reports{
-height: 400px;
-width: 100%;
+.reports {
+    height: 400px;
+    width: 100%;
 }
 
 
@@ -166,15 +190,17 @@ width: 100%;
 .panel {
     display: none !important;
 }
+
 .panel.visible {
     display: block !important;
 }
+
 .menuOption.selected {
     background-color: var(--gray-200);
-    color: white; 
+    color: white;
 }
 
-.tempWidth{
+.tempWidth {
     width: 55% !important;
 }
 
@@ -212,6 +238,11 @@ width: 100%;
 .analytics-panel small {
     font-size: 0.9rem;
     color: #666;
+}
+
+#questionTypesChart {
+    width: 100% !important;
+    height: 300px !important;
 }
 
 /* media */

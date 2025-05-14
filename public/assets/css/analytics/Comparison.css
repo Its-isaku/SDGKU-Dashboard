@@ -1,4 +1,3 @@
-
 .comparisonContainer {
     height: 100%;
     width: 100%;
@@ -11,7 +10,7 @@
     padding: 20px;
 }
 
-.comparisonKnowledge{
+.comparisonKnowledge {
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -19,11 +18,12 @@
     width: 100%;
     box-sizing: border-box;
     border-radius: var(--border-radius);
-    background-color: var( --neutral-light);
+    background-color: var(--neutral-light);
     box-shadow: var(--box-shadow);
 
 }
-.comparisonFilter{
+
+.comparisonFilter {
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -31,21 +31,22 @@
     width: 100%;
     box-sizing: border-box;
     border-radius: var(--border-radius);
-    background-color: var( --neutral-light);
+    background-color: var(--neutral-light);
     box-shadow: var(--box-shadow);
-   
+
 }
 
-.comparisonKnowledge h1{
+.comparisonKnowledge h1 {
     font-size: var(--text-heading);
     color: var(--neutral-dark);
 }
-.comparisonKnowledge p{
+
+.comparisonKnowledge p {
     font-size: var(--text-subheading);
     color: var(--neutral-dark);
 }
 
-.applyFiltersBtn{
+.applyFiltersBtn {
     text-align: center;
     width: 150px;
     background-color: var(--secondary-dominant);
@@ -55,25 +56,26 @@
 
 /* Comparison Filters */
 
-.surveyComparison h1{
-    margin: 0;   
+.surveyComparison h1 {
+    margin: 0;
     font-size: var(--text-heading);
     color: var(--neutral-dark);
 }
 
-.comparisonSelections{
+.comparisonSelections {
     display: flex;
     flex-direction: row;
     gap: 25px;
 }
-.courseSelect{
+
+.courseSelect {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
 .comparisonSelections select {
-    min-width: 200px; 
+    min-width: 200px;
     width: 100%;
     height: 30px;
     border-radius: 5px;
@@ -83,4 +85,12 @@
     text-align: center;
     width: 150px;
     background-color: var(--secondary-dominant);
+}
+
+.comparisonKnowledge canvas {
+    display: block;
+    margin: 0 auto;
+    width: 85% !important;
+    max-width: 700px;
+    height: 300px !important;
 }
