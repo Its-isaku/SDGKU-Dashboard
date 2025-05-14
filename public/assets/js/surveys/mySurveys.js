@@ -122,7 +122,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             );
         });
+
     }
+//! <----------------------- Edit Surveys -----------------------> 
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('edit-survey')) {
+        const surveyId = e.target.getAttribute('data-id');
+        // Redirigir a editSurvey.html con el ID como parámetro en la URL
+        window.location.href = `editSurvey.html?id=${surveyId}`;
+    }
+});
+
 
     //! <----------------------- DEACTIVATE Survey -----------------------> 
 
@@ -134,6 +144,7 @@ document.addEventListener("DOMContentLoaded", function() {
             openDeactivateSurveyModal(id);
         }
     });
+
 
     if (confirmDeactivateBtn) {
         confirmDeactivateBtn.addEventListener('click', function() {

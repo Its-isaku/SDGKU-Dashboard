@@ -15,8 +15,7 @@ const surveyData = {
     questions: [] 
 };
 
-const basicSurveyData = [];
-const basicQuestions = [];
+
 
 const sections = {
     optionSurveyDetails: 'surveyDetailsSection',
@@ -672,7 +671,7 @@ document.getElementById('btnEditSurvey').addEventListener('click', function() {
 
 //? get Program Types and send them to the frontend
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('/SDGKU-Dashboard/src/models/editSurvey.php?action=getProgramTypes')
+    fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getProgramTypes')
     .then(res => res.json())
     .then(data => {
         if (data.status === 'success') {
@@ -699,7 +698,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const programSelect = document.getElementById('program');
             programSelect.innerHTML = '<option value="" disabled selected hidden>Choose a program</option>';
             if (!programTypeId) return;
-            fetch('/SDGKU-Dashboard/src/models/editSurvey.php?action=getPrograms&program_type_id=' + programTypeId)
+            fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getPrograms&program_type_id=' + programTypeId)
                 .then(res => res.json())
                 .then(data => {
                     if (data.status === 'success') {
@@ -734,7 +733,7 @@ if (programSelect) {
         const subjectSelect = document.getElementById('subject');
         subjectSelect.innerHTML = '<option value="" disabled selected hidden>Choose a Course</option>';
         if (!programId) return;
-        fetch('/SDGKU-Dashboard/src/models/editSurvey.php?action=getSubjects&program_id=' + programId)
+        fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getSubjects&program_id=' + programId)
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'success') {
@@ -762,7 +761,7 @@ if (programSelect) {
 
 //? get survey types and send them to the frontend
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('/SDGKU-Dashboard/src/models/editSurvey.php?action=getSurveyTypes')
+    fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getSurveyTypes')
     .then(res => res.json())
     .then(data => {
         if (data.status === 'success') {
@@ -818,162 +817,228 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-    //! <----------------------- Editar encuesta -----------------------> 
+// Estructuras de datos
+const surveyData2 = {
+    title : '',
+    type : '',
+    description : '',
+    programType : '',
+    program : '',
+    subject : '',
+    expirationDate : '',
+    createdAt : ''
+};
+let questions = [
+];
 
-document.addEventListener('click', async function(e) {
-    if (e.target.classList.contains('edit-survey')) {
-        e.preventDefault();
-        e.stopPropagation();
-        const id = e.target.getAttribute('data-id');
-        
-        if (confirm(`Are you sure you want to Edit this survey?`)) {
-            try {
-                const surveyResponse = await fetch(`/SDGKU-Dashboard/src/models/mySurveys.php?action=editSurvey&id=${id}`);
-                if (!surveyResponse.ok) throw await surveyResponse.json();
-                const surveyData = await surveyResponse.json();
-                
-                basicSurveyData = surveyData.map(item => ({
-                    survey_id: item.survey_id,
-                    title: item.title,  
-                    description: item.description,
-                    type: item.survey_type_id,
-                    programType: item.program_type_id,
-                    program: item.program_id,
-                    subject: item.subject_id,
-                    expirationDate: item.expiration_date,
-                    createdAt: new Date().toISOString().slice(0, 19).replace('T', ' ')
-                }));
-                
-                const questionsResponse = await fetch(`/SDGKU-Dashboard/src/models/mySurveys.php?action=questionsSurvey&id=${id}`);
-                if (!questionsResponse.ok) throw await questionsResponse.json();
-                const questionsData = await questionsResponse.json();
-                
-                editQuestions = questionsData.map(item => ({
-                    question_id: item.question_id,
-                    survey_id: item.survey_id,
-                    question_text: item.question_text,
-                    question_type_id: item.question_type_id,
-                    display_order: item.display_order,
-                }));
-                
-                const tfResponse = await fetch(`/SDGKU-Dashboard/src/models/mySurveys.php?action=trueFalseQuestions&id=${id}`);
-                if (!tfResponse.ok) throw await tfResponse.json();
-                const tfData = await tfResponse.json();
-                
-                true_falseQuestions = tfData.map(item => ({
-                    question_id: item.question_id,
-                    true_false_text: item.true_false_text,
-                    type: item.type,
-                    correct_answer: item.correct_answer,
-                }));
-                
-                const openResponse = await fetch(`/SDGKU-Dashboard/src/models/mySurveys.php?action=openQuestions&id=${id}`);
-                if (!openResponse.ok) throw await openResponse.json();
-                const openData = await openResponse.json();
-                
-                openQuestions = openData.map(item => ({
-                    open_id: item.question_id,
-                    question_id: item.question_id,
-                    open_option_text: item.open_option_text,
-                }));
-                
-                const multipleResponse = await fetch(`/SDGKU-Dashboard/src/models/mySurveys.php?action=multipleQuestions&id=${id}`);
-                if (!multipleResponse.ok) throw await multipleResponse.json();
-                const multipleData = await multipleResponse.json();
-                
-                multipleQuestions = multipleData.map(item => ({
-                    question_id: item.id_question,
-                    option_text: item.option_text,
-                    display_order: item.display_order,
-                    correct_answer: item.correct_answer,              
-                }));
-                
-                loadEditForm();
-                
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error al cargar los datos de la encuesta: ' + (error.message || JSON.stringify(error)));
-            }
-        }
+const questionsInfo = {
+    Likert3: [],
+    Likert5: [],
+    multipleChoice: [],
+    openEnded: [],
+    trueFalse: []
+};
+// Función para resetear datos
+function resetSurveyData() {
+    surveyData2.title = '';
+    surveyData2.type = '';
+    surveyData2.description = '';
+    surveyData2.programType = '';
+    surveyData2.program = '';
+    surveyData2.subject = '';
+    surveyData2.expirationDate = '';
+    surveyData2.createdAt = '';
+
+    questions.question_id = '';
+    questions.question_text = '';
+    questions.question_type_id = '';
+    questions.display_order = '';
+    // ... resetear todas las propiedades
+
+    
+    questionsInfo.Likert3 = [];
+    questionsInfo.Likert5 = [];
+    // ... resetear todos los arrays de questionsInfo
+}
+// Manejador de eventos
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const surveyId = urlParams.get('id');
+    
+    if (!surveyId) {
+        console.error('No survey ID in URL');
+        return;
     }
+    fetchSurveyData(surveyId);
 });
 
-const surveyData2 = {
-        survey_id: 'ExampleSurveyID',
-        title: 'test Survey',
-        description: 'Test Discription',
-        type: 'Survey Type Editable',
-        programType: 'TEMPORAl',
-        program: 'test Program',
-        subject: 'course editable',
-        expirationDate: '2025-12-31T23:59',
-        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
-};
+async function fetchSurveyData(sid) {
+    
+    try {
+        resetSurveyData(); // Limpiar datos anteriores
+        
+        const id = sid; // Obtener el ID de la encuesta desde la URL
+        // 1. Cargar datos básicos de la encuesta
+        const surveyRes = await fetch(`/SDGKU-Dashboard/src/models/editSurvey.php?action=editSurvey&id=${encodeURIComponent(id)}`);
+        if (!surveyRes.ok) throw await surveyRes.json();
+        const surveyData = await surveyRes.json();
+        surveyData2.title = surveyData[0].title;
+        surveyData2.type = surveyData[0].survey_type_id;
+        surveyData2.description = surveyData[0].description;
+        surveyData2.programType = surveyData[0].program_name;
+        surveyData2.program = surveyData[0].name;
+        surveyData2.subject = surveyData[0].subject;
+        surveyData2.expirationDate = surveyData[0].expires_at;
+        surveyData2.createdAt = surveyData[0].created_At;
+
+        // 2. Cargar preguntas y sus opciones (en paralelo)
+        const [questionsRes, tfRes, openRes, multipleRes, linkert3, linkert5] = await Promise.all([
+            fetch(`/SDGKU-Dashboard/src/models/editSurvey.php?action=questionsSurvey&id=${id}`),
+            fetch(`/SDGKU-Dashboard/src/models/editSurvey.php?action=trueFalseQuestions&id=${id}`),
+            fetch(`/SDGKU-Dashboard/src/models/editSurvey.php?action=openQuestions&id=${id}`),
+            fetch(`/SDGKU-Dashboard/src/models/editSurvey.php?action=multipleQuestions&id=${id}`),
+            fetch(`/SDGKU-Dashboard/src/models/editSurvey.php?action=likert3Questions&id=${id}`),
+            fetch(`/SDGKU-Dashboard/src/models/editSurvey.php?action=likert5Questions&id=${id}`)
+        ]);
+
+        // Verificar respuestas
+        if (!questionsRes.ok || !tfRes.ok || !openRes.ok || !multipleRes.ok|| !linkert3.ok || !linkert5.ok) {
+            throw new Error('Error al cargar algunas partes de la encuesta');
+        }
+
+        // Procesar datos
+        const questionsOb = await questionsRes.json();
+        const tfData = await tfRes.json();
+        const openData = await openRes.json();
+        const multipleData = await multipleRes.json();
+        const Likert1_3 = await linkert3.json();
+        const Likert1_5 = await linkert5.json();
+
+        // Mapear preguntas
+        
+        questionsOb.forEach(item => {
+          questions.push({
+            question_id: item.question_id,
+            question_text: item.question_text,
+            question_type_id: item.question_type_id,
+            display_order: item.display_order
+          });
+        });
+
+
+        // Mapear opciones por tipo
+        questionsInfo.trueFalse = tfData.map(item => ({
+            question_id: item.question_id,
+            true_false_text: item.true_false_text,
+            type: item.type,
+            correct_answer: item.correct_answer,
+        }));
+
+        questionsInfo.openEnded = openData.map(item => ({
+            open_id: item.open_id,
+            question_id: item.question_id,
+            open_option_text: item.open_option_text
+        }));
+
+        questionsInfo.multipleChoice = multipleData.map(item => ({
+            question_id: item.question_id,
+            option_text: item.option_text,
+            display_order: item.display_order,
+            correct_answer: item.correct_answer            
+        }));
+
+            questionsInfo.Likert3 = Likert1_3.map(item => ({
+            question_id: item.question_id,
+            question_text: item.question_text,
+            question_type_id: item.question_type_id,
+            display_order: item.display_order,
+        }));
+
+        questionsInfo.Likert5 = Likert1_5.map(item => ({
+            question_id: item.question_id,
+            question_text: item.question_text,
+            question_type_id: item.question_type_id,
+            display_order: item.display_order,
+        }));
+
+    } catch (error) {
+        console.error('Error al cargar la encuesta:', error);
+        alert(`Error al cargar la encuesta: ${error.message}`);
+    }
+}
+
+// Add console logs to debug the data structures
+console.log('surveyEditData:', surveyData2);
+console.log('questions:', questions);
+console.log('questionsInfo:', questionsInfo);
+
 
 
 function editSurvey() {
+    // Establecer título y descripción
     document.getElementById('surveyTitle').value = surveyData2.title;
     document.getElementById('surveyDescription').value = surveyData2.description;
 
-    //* Program Type placeholder option
+    // Program Type
     let programTypeOption = document.getElementById('editProgramType');
-    programTypeOption.value = surveyData2.programType;
+    programTypeOption.value = surveyData2.programType; // Nota: Hay un typo aquí (programType vs programType)
     programTypeOption.textContent = surveyData2.programType;
     document.getElementById('programType').value = surveyData2.programType;
 
-    //* Program placeholder option
+    // Program
     let programOption = document.getElementById('editProgram');
     programOption.value = surveyData2.program;
     programOption.textContent = surveyData2.program;
     document.getElementById('program').value = surveyData2.program;
 
-    //* Course placeholder option
+    // Course (Subject)
     let subjectOption = document.getElementById('editCourse');
     subjectOption.value = surveyData2.subject;
     subjectOption.textContent = surveyData2.subject;
     document.getElementById('subject').value = surveyData2.subject;
 
-    //* Survey Type placeholder option
+    // Survey Type
     let surveyTypeOption = document.getElementById('editSurveyType');
     surveyTypeOption.value = surveyData2.type;
     surveyTypeOption.textContent = surveyData2.type;
     document.getElementById('surveyType').value = surveyData2.type;
 
-    //* Expiration Date
+    // Expiration Date
+    // Asegúrate de que surveyData2.expirationDate esté en el formato correcto (YYYY-MM-DDTHH:MM)
     document.getElementById('expirationDate').value = surveyData2.expirationDate;
 }
 
 
-
 function editQuestions(basicQuestions) {
+    
     const questionFormsContainer = document.getElementById('questionFormsContainer');
     questionFormsContainer.innerHTML = ``; //* Clear existing questions
 
     //? Loop through the basicQuestions array and create question forms
-    basicQuestions.forEach((question, index) => {
+    basicQuestions.forEach((questions, index) => {
         //* Create a new question form
         const questionForm = createQuestionForm(index + 1);
         
         //* Set the question title
         const titleInput = questionForm.querySelector('.questionTitleInput');
-        if (titleInput) titleInput.value = question.question_text || '';
+        if (titleInput) titleInput.value = questions.question_text || '';
 
         //* Set the question type
         const typeSelect = questionForm.querySelector('.questionTypeSelect');
         if (typeSelect) {
-            typeSelect.value = question.question_type_id;
+            typeSelect.value = questions.question_type_id;
             typeSelect.dispatchEvent(new Event('change')); //* Trigger change event to show the correct section
         }
         
         //* Set the data for Multiple Choice questions
-        if (question.question_type_id === '1')  {
+        if (questions.question_type_id == '1')  {
+            console.log('datos:');
             //* Find options for this question
-            const options = multipleQuestions.filter(opt => opt.question_id === question.question_id);
+            const options = questionsInfo.multipleChoice.filter(opt => opt.question_id === questions.question_id);
             const optionsContainer = questionForm.querySelector(`#optionsContainer${index + 1}`);
             
             //* Remove default options
             optionsContainer.innerHTML = '';
-
             options.forEach((opt, i) => {
                 const optDiv = document.createElement('div');
                 optDiv.className = 'QuestionInput optionInput';
@@ -993,8 +1058,8 @@ function editQuestions(basicQuestions) {
         }
 
         //* Set the data for True/False questions
-        if(question.question_type_id === '5') {
-            const tf = true_falseQuestions.find(opt => opt.question_id === question.question_id); //* Find the true/false question
+        if(questions.question_type_id == '5') {
+            const tf = questionsInfo.trueFalse.find(opt => opt.question_id === questions.question_id); //* Find the true/false question
             if (tf) {
                 const radio = questionForm.querySelector(`input[name="trueFalse${index + 1}"][value="${tf.correct_answer}"]`); //* Find the radio button for the correct answer
                 if (radio) radio.checked = true; //* Set the correct answer
@@ -1042,17 +1107,33 @@ const testQuestions = [
         correct_answer: 0,
         question_type_id: "5",
         display_order: 5
+    },
+    {
+        question_id: 5,
+        question_text: "The sky is green.",
+        type: "1",
+        correct_answer: 1,
+        question_type_id: "5",
+        display_order: 6
     }
 ];
 
-window.multipleQuestions = [
-    { question_id: 1, option_text: "3", display_order: 1, correct_answer: false },
-    { question_id: 1, option_text: "4", display_order: 2, correct_answer: true },
-    { question_id: 1, option_text: "5", display_order: 3, correct_answer: false }
-];
-window.true_falseQuestions = [
-    { question_id: 5, question_text: "The sky is blue.", type: "1", correct_answer: 0 }
-];
+
+
+
+// window.multipleQuestions = questionsInfo.multipleChoice.map((item, index) => ({
+//     question_id: item.question_id,
+//     option_text: item.option_text,
+//     display_order: index + 1,
+//     correct_answer: item.correct_answer
+// }));
+
+// window.true_falseQuestions = questionsInfo.trueFalse.map((item, index) => ({
+//     question_id: item.question_id,
+//     true_false_text: item.true_false_text,
+//     type: item.type,
+//     correct_answer: item.correct_answer
+// }));
 
 window.openQuestions = [
     { open_id: 4, question_id: 4, open_option_text: "" }
@@ -1060,8 +1141,13 @@ window.openQuestions = [
 
 window.addEventListener('load', function() {
     //* call the editSurvey function to set the initial values
-    editSurvey();
+    setTimeout(() => {
+        editSurvey();
+        editQuestions(questions);
+    }, 500); // Pequeño retraso por si hay carga asíncrona editSurvey();
+   
+
 
     // //* call the editQuestions function to set the initial values
-    editQuestions(testQuestions);
+    
 });
