@@ -30,7 +30,7 @@ if (isset($_GET['action']) && in_array($_GET['action'], [
             case 'editSurvey':
                 $stmt = $pdo->prepare("SELECT 
                     s.title,
-                    st.type_name,
+                    st.type_name AS 'type',
                     s.description,
                     pt.program_name,
                     p.name,
