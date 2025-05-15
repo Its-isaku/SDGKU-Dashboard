@@ -29,26 +29,32 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     //? Listeners
-    btnActive.addEventListener('click', function() {
-        btnActive.classList.add('selectedOption');
-        btnInactive.classList.remove('selectedOption');
-        switchTab(true);
-    });
-    btnInactive.addEventListener('click', function() {
-        switchTab(false);
-    });
+    if (btnActive && btnInactive) {
+        btnActive.addEventListener('click', function() {
+            btnActive.classList.add('selectedOption');
+            btnInactive.classList.remove('selectedOption');
+            switchTab(true);
+        });
+        btnInactive.addEventListener('click', function() {
+            switchTab(false);
+        });
+    }
 
     //? Estado inicial
-    switchTab(true);
+    if (btnActive && btnInactive && panel1 && panel2) {
+        switchTab(true);
+    }
 
     //! <----------------------- DELETE Survey(Active) -----------------------> 
 
     document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('delete-survey')) {
+        if (e.target.classList && e.target.classList.contains('delete-survey')) {
             e.preventDefault();
             e.stopPropagation();
             const id = e.target.getAttribute('data-id');
-            openDeleteSurveyModal(id);
+            if (typeof openDeleteSurveyModal === 'function') {
+                openDeleteSurveyModal(id);
+            }
         }
     });
 
@@ -251,13 +257,15 @@ function isActiveTabVisible() {
 }
 
 //? Listener for search input
-searchInput.addEventListener('input', debounce(() => {
-    if (isActiveTabVisible()) {
-        renderActiveSurveys(searchInput.value);
-    } else {
-        renderInactiveSurveys(searchInput.value);
-    }
-}, 300));
+if (searchInput) {
+    searchInput.addEventListener('input', debounce(() => {
+        if (isActiveTabVisible()) {
+            renderActiveSurveys(searchInput.value);
+        } else {
+            renderInactiveSurveys(searchInput.value);
+        }
+    }, 300));
+}
 
 function debounce(func, timeout = 300) {
     let timer;

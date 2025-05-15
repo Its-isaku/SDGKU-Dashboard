@@ -580,7 +580,9 @@ if (previewOption) {
 }
 
 //? Submit Survey Logic
-document.getElementById('btnCreateSurvey').addEventListener('click', function() {
+const btnCreateSurvey = document.getElementById('btnCreateSurvey');
+btnCreateSurvey.addEventListener('click', function() {
+    btnCreateSurvey.disabled = true;
     //* Collect survey details
     const surveyDetails = {
         title: document.getElementById('surveyTitle').value.trim(),
@@ -668,6 +670,7 @@ document.getElementById('btnCreateSurvey').addEventListener('click', function() 
     .catch(error => {
         console.error(error);
         if(data.status === 'error') {showNotification('Error creating survey: ' + data.message, 'error');}
+        btnCreateSurvey.disabled = false;
     });
 });
 

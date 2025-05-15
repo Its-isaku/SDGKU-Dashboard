@@ -598,7 +598,9 @@ if (previewOption) {
 
 
 //? Submit Survey Logic
-document.getElementById('btnEditSurvey').addEventListener('click', function() {
+const btnEditSurvey = document.getElementById('btnEditSurvey');
+btnEditSurvey.addEventListener('click', function() {
+    btnEditSurvey.disabled = true;
     //* Collect survey details
     const surveyDetails = {
         survey_id: surveyData.details.survey_id, //? This should be set to the ID sent from the HTML 
@@ -687,6 +689,7 @@ document.getElementById('btnEditSurvey').addEventListener('click', function() {
     .catch(error => {
         console.error(error);
         if(data.status === 'error') {showNotification('Error creating survey: ' + data.message, 'error');}
+        btnEditSurvey.disabled = false;
     });
 });
 
