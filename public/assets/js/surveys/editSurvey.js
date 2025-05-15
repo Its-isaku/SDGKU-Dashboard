@@ -570,6 +570,28 @@ if (previewOption) {
             showNotification('Please complete all questions before previewing.', 'error');
             return;
         }
+        //? Collect current questions into surveyData.questions (same as btnPreviewSurvey)
+        const questionForms = document.querySelectorAll('.QuestionContent');
+        surveyData.questions = [];
+        questionForms.forEach((form, index) => {
+            const titleInput = form.querySelector('.questionTitleInput');
+            const typeSelect = form.querySelector('.questionTypeSelect');
+            const type = typeSelect.value;
+            const question = {
+                title: titleInput.value.trim(),
+                type: type,
+                options: []
+            };
+            if (type === '1') {
+                //? Multiple Choice
+                const options = form.querySelectorAll('.optionInput input[type="text"]');
+                options.forEach(opt => {
+                    if (opt.value.trim()) question.options.push(opt.value.trim());
+                });
+            }
+            //? For other types, just push the question
+            surveyData.questions.push(question);
+        });
         updatePreview();
     });
 }

@@ -65,12 +65,12 @@ document.addEventListener("DOMContentLoaded", function() {
                         '/SDGKU-Dashboard/src/models/mySurveys.php',
                         { action: 'deleteSurvey', id: id },
                         () => {
-                            showNotification('Encuesta eliminada correctamente');
+                            showNotification('Survery deleted successfully');
                             renderActiveSurveys();
                             closeAllModals();
                         },
                         (error) => {
-                            showNotification('Error al eliminar la encuesta: ' + (error.message || error), 'error');
+                            showNotification('Error deleting the survey: ' + (error.message || error), 'error');
                             closeAllModals();
                         }
                     );
@@ -80,12 +80,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     '/SDGKU-Dashboard/src/models/mySurveys.php',
                     { action: 'deleteSurvey', id: id },
                     () => {
-                        showNotification('Encuesta eliminada correctamente');
+                        showNotification('Survey deleted successfully');
                         renderActiveSurveys();
                         closeAllModals();
                     },
                     (error) => {
-                        showNotification('Error al eliminar la encuesta: ' + (error.message || error), 'error');
+                        showNotification('Error deleting the survey: ' + (error.message || error), 'error');
                         closeAllModals();
                     }
                 );
@@ -110,29 +110,20 @@ document.addEventListener("DOMContentLoaded", function() {
                 '/SDGKU-Dashboard/src/models/mySurveys.php',
                 { action: 'duplicateSurvey', id: id },
                 () => {
-                    showNotification('Encuesta duplicada correctamente');
+                    showNotification('Survey duplicated successfully');
                     setTimeout(() => {
                         window.location.reload();
                     }, 1000);
                     closeAllModals();
                 },
                 (error) => {
-                    showNotification('Error al duplicar la encuesta: ' + (error.message || error), 'error');
+                    showNotification('Error duplicating the survey: ' + (error.message || error), 'error');
                     closeAllModals();
                 }
             );
         });
 
     }
-//! <----------------------- Edit Surveys -----------------------> 
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('edit-survey')) {
-        const surveyId = e.target.getAttribute('data-id');
-        // Redirigir a editSurvey.html con el ID como parámetro en la URL
-        window.location.href = `editSurvey.html?id=${surveyId}`;
-    }
-});
-
 
     //! <----------------------- DEACTIVATE Survey -----------------------> 
 
@@ -153,12 +144,12 @@ document.addEventListener('click', function(e) {
                 '/SDGKU-Dashboard/src/models/mySurveys.php',
                 { action: 'deactivateSurvey', id: id },
                 () => {
-                    showNotification('Encuesta desactivada correctamente');
+                    showNotification('Survey deactivated successfully');
                     renderActiveSurveys();
                     closeAllModals();
                 },
                 (error) => {
-                    showNotification('Error al desactivar la encuesta: ' + (error.message || error), 'error');
+                    showNotification('Error deactivating the survey: ' + (error.message || error), 'error');
                     closeAllModals();
                 }
             );
@@ -179,9 +170,12 @@ document.addEventListener('click', function(e) {
     const confirmEditBtn = document.getElementById('confirm-edit'); 
 
     if (confirmEditBtn) {
-        
-        //* redirect to editSUrvey with SurveyId
-    
+        confirmEditBtn.addEventListener('click', function() {
+            const id = document.getElementById('edit-survey').value;
+            if (id) {
+                window.location.href = `editSurvey.html?id=${id}`;
+            }
+        });
     }
 
     //! <----------------------- ACTIVATE encuesta -----------------------> 
@@ -202,20 +196,50 @@ document.addEventListener('click', function(e) {
                 '/SDGKU-Dashboard/src/models/mySurveys.php',
                 { action: 'activateSurvey', id: id },
                 () => {
-                    showNotification('Encuesta activada correctamente');
+                    showNotification('Survey activated successfully');
                     renderInactiveSurveys();
                     closeAllModals();
                 },
                 (error) => {
-                    showNotification('Error al activar la encuesta: ' + (error.message || error), 'error');
+                    showNotification('Error activating the survey: ' + (error.message || error), 'error');
                     closeAllModals();
                 }
             );
         });
     }
     
-});
+    
+    //! <----------------------- COPY ACCESS LINK -----------------------> 
+    
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('access-link-survey')) {
+            e.preventDefault();
+            e.stopPropagation();
+            const id = e.target.getAttribute('data-id');
+            openActivateModal(id);
+        }
+    });
 
+    //! usar cuando ya se tenga el input para el access link
+    // if (coppyAccessLinkBtn) {
+    //     confirmActivateBtn.addEventListener('click', function() {
+    //         const id = document.getElementById('access-link-survey').value;
+    //         handleSurveyAction(
+    //             '/SDGKU-Dashboard/src/models/mySurveys.php',
+    //             { action: 'accessLink', id: id },
+    //             () => {
+    //                 showNotification('Access link copied to clipboard');
+    //                 renderActiveSurveys();
+    //                 closeAllModals();
+    //             },
+    //             (error) => {
+    //                 showNotification('Error copying acces link: ' + (error.message || error), 'error');
+    //                 closeAllModals();
+    //             }
+    //         );
+    //     });
+    // }
+});
 //! <----------------------- SEARCH BAR -----------------------> 
 
 const searchInput = document.getElementById('searchSurveyId');
@@ -280,12 +304,12 @@ function renderActiveSurveys(searchTerm = '') {
             animateSurveyItemLeave(item, () => {
                 leftCount++;
                 if (leftCount === currentItems.length) {
-                    // After all have left, render new
+                    //* After all have left, render new
                     renderActiveSurveysAfterLeave(searchTerm);
                 }
             });
         });
-        return; // Wait for leave animations before rendering new
+        return; //* Wait for leave animations before rendering new
     }
     renderActiveSurveysAfterLeave(searchTerm);
 }
@@ -344,13 +368,13 @@ function renderActiveSurveysAfterLeave(searchTerm = '') {
 
 function renderInactiveSurveys(searchTerm = '') {
     const inactiveList = document.getElementById('inactiveListId');
-    // Animate leave for all current items before clearing
+    //* Animate leave for all current items before clearing
     const currentItems = Array.from(inactiveList.getElementsByClassName('surveyInactive-item'));
     if (currentItems.length > 0) {
         let leftCount = 0;
         currentItems.forEach(item => {
-            // Add leave classes for animation
-            item.classList.add('survey-item'); // Add survey-item class for animation
+            //* Add leave classes for animation
+            item.classList.add('survey-item'); //* Add survey-item class for animation
             animateSurveyItemLeave(item, () => {
                 leftCount++;
                 if (leftCount === currentItems.length) {
@@ -466,6 +490,8 @@ const deactivateSurveyModal = document.getElementById('deactivate-survey-modal')
 const duplicateSurveyModal = document.getElementById('duplicate-survey-modal');
 const editSurveyModal = document.getElementById('edit-survey-modal');
 const activateSurveyModal = document.getElementById('activate-survey-modal');
+const accessLinkSurveyModal = document.getElementById('access-link-survey-modal');
+const deleteInactiveSurveyModal = document.getElementById('delete-inactive-survey-modal');
 
 //?modal elems for btns
 const closeButtons = document.querySelectorAll('.close-modal');
@@ -474,13 +500,14 @@ const confirmDeleteBtn = document.getElementById('confirm-delete');
 const confirmDeactivateBtn = document.getElementById('confirm-deactivate');
 const confirmDuplicateBtn = document.getElementById('confirm-duplicate');
 const confirmActivateBtn = document.getElementById('confirm-activate');
+const confirmActivateSurveyBtn = document.getElementById('confirm-access-link');
+const confirmDeleteInactiveBtn = document.getElementById('confirm-delete-inactive');
 
 //? Add event listeners to open modals for delete actions in Manage Data section
 const deleteSurveyBtn = document.getElementById('deleteSurveyBtn');
 const deactivateSurveyBtn = document.getElementById('deactivateSurveyBtn');
 const duplicateSurveyBtn = document.getElementById('duplicateSurveyBtn');
 const editSurveyBtn = document.getElementById('editSurveyBtn');
-const activateSurveyBtn = document.getElementById('activateSurveyBtn');
 
 if (deleteSurveyBtn) {
     deleteSurveyBtn.addEventListener('click', function(e) {
@@ -510,14 +537,6 @@ if (editSurveyBtn) {
         e.preventDefault();
         const surveyId = document.getElementById('edit-survey').value;
         if (surveyId) { openEditSurveyModal(surveyId);}
-    });
-}
-
-if (activateSurveyBtn) {
-    editSurveyBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const surveyId = document.getElementById('activate-survey').value;
-        if (surveyId) { openActivateModal(surveyId);}
     });
 }
 
@@ -551,6 +570,24 @@ function openActivateModal(surveyId) {
     activateSurveyModal.style.display = 'flex';
 }
 
+//? open access link Survey modal
+function openAccessLinkModal(surveyId) {
+    document.getElementById('access-link-survey').value = surveyId;
+
+    var accessLink = 'https://www.youtube.com/watch?v=xvFZjo5PgG0';
+    var linkInput = document.getElementById('access-link-input');
+    if (linkInput) {
+        linkInput.value = accessLink;
+    }
+    accessLinkSurveyModal.style.display = 'flex';
+}
+
+//? open delete Inactive Survey modal
+function openDeleteInactiveSurveyModal(surveyId) {
+    document.getElementById('delete-inactive-survey').value = surveyId;
+    if (deleteInactiveSurveyModal) deleteInactiveSurveyModal.style.display = 'flex';
+}
+
 //? close modals
 function closeAllModals() {
     if (deleteSurveyModal) deleteSurveyModal.style.display = 'none';
@@ -558,6 +595,8 @@ function closeAllModals() {
     if (duplicateSurveyModal) duplicateSurveyModal.style.display = 'none';
     if (editSurveyModal) editSurveyModal.style.display = 'none';
     if (activateSurveyModal) activateSurveyModal.style.display = 'none';
+    if (accessLinkSurveyModal) accessLinkSurveyModal.style.display = 'none';
+    if (deleteInactiveSurveyModal) deleteInactiveSurveyModal.style.display = 'none';
 }
 
 //? close modals on close (X) buttons
@@ -573,7 +612,7 @@ cancelDeleteBtns.forEach(btn => {
 
 //? close modals on outside click
 window.addEventListener('click', (e) => {
-    if (e.target === deleteSurveyModal || e.target === deactivateSurveyModal || e.target === duplicateSurveyModal || e.target === editSurveyModal || e.target === activateSurveyModal) {
+    if (e.target === deleteSurveyModal || e.target === deactivateSurveyModal || e.target === duplicateSurveyModal || e.target === editSurveyModal || e.target === activateSurveyModal || e.target === accessLinkSurveyModal || e.target === deleteInactiveSurveyModal) {
         closeAllModals();
     }
 });
@@ -616,30 +655,67 @@ document.addEventListener('click', function(e) {
         const surveyId = e.target.getAttribute('data-id');
         openActivateModal(surveyId);
     }
+    //* Copy Access Link modal
+    if (e.target.classList.contains('copy-link')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const surveyItem = e.target.closest('.survey-item');
+        if (surveyItem) {
+            const surveyId = surveyItem.querySelector('.edit-survey')?.getAttribute('data-id');
+            
+            // fetch(`/SDGKU-Dashboard/src/models/mySurveys.php?action=getAccessLink&id=${surveyId}`)
+            //     .then(res => res.json())
+            //     .then(data => {
+            //         openAccessLinkModal(surveyId, data.accessLink);
+            // });
+            
+            if (surveyId) {
+                openAccessLinkModal(surveyId);
+            }
+        }
+    }
     //* Delete Inactive Survey
     if (e.target.classList.contains('delete-inactive-survey')) {
         e.preventDefault();
         e.stopPropagation();
         const surveyId = e.target.getAttribute('data-id');
-        const surveyItem = e.target.closest('.surveyInactive-item');
-        if (surveyItem) {
-            animateSurveyItemLeave(surveyItem, function() {
-                // Call backend to delete, then refresh list
-                handleSurveyAction(
-                    '/SDGKU-Dashboard/src/models/mySurveys.php',
-                    { action: 'deleteSurvey', id: surveyId },
-                    () => {
-                        showNotification('Encuesta eliminada correctamente');
-                        renderInactiveSurveys();
-                    },
-                    (error) => {
-                        showNotification('Error al eliminar la encuesta: ' + (error.message || error), 'error');
-                    }
-                );
-            });
-        }
+        openDeleteInactiveSurveyModal(surveyId);
     }
 });
+
+//* Add a listener for the Copy button in the modal
+const confirmAccessLinkBtn = document.getElementById('confirm-activate');
+if (confirmAccessLinkBtn && accessLinkSurveyModal) {
+    confirmAccessLinkBtn.addEventListener('click', function() {
+        const linkInput = document.getElementById('access-link-input');
+        if (linkInput) {
+            linkInput.select();
+            document.execCommand('copy');
+            showNotification('Access link copied to clipboard');
+            closeAllModals();
+        }
+    });
+}
+
+//* Delete Inactive Survey
+if (confirmDeleteInactiveBtn) {
+    confirmDeleteInactiveBtn.addEventListener('click', function() {
+        const surveyId = document.getElementById('delete-inactive-survey').value;
+        handleSurveyAction(
+            '/SDGKU-Dashboard/src/models/mySurveys.php',
+            { action: 'deleteSurvey', id: surveyId },
+            () => {
+                showNotification('Survey deleted successfully');
+                renderInactiveSurveys();
+                closeAllModals();
+            },
+            (error) => {
+                showNotification('Error deleting the Survey: ' + (error.message || error), 'error');
+                closeAllModals();
+            }
+        );
+    });
+}
 
 //* Improved POST fetch handler for actions (delete, activate, deactivate, etc.)
 function handleSurveyAction(url, body, onSuccess, onError) {
