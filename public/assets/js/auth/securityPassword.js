@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
         try {
-            const response = await fetch("../../../src/controllers/Password.php", {
+            const response = await fetch("../../../src/controllers/securityPassword.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

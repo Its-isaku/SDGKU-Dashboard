@@ -107,6 +107,11 @@ th {
     font-weight: 400;
 }
 
+.role-super_admin {
+    background-color: #6366f1; /* Indigo color */
+    color: white;
+}
+
 .role-admin {
     background-color: var(--secondary-dominant);
     color: white;
@@ -116,6 +121,29 @@ th {
     background-color: var(--supplementary-color);
     color: white;
 }
+
+.status-badge {
+    display: inline-block;
+    padding: 0.1rem 0.75rem;
+    border-radius: 50px;
+    font-weight: 400;
+}
+
+.status-active {
+    background-color: #24A148;
+    color: white;
+}
+
+.status-pending {
+    background-color: #f1c21b; /* Amber/orange color */
+    color: white;
+}
+
+.status-locked {
+    background-color: #6f6f6f; /* Red color */
+    color: white;
+}
+
 
 /*buttons*/
 .action-btn {
@@ -134,42 +162,6 @@ th {
 
 .action-btn #trashcan-users {
     color: var(--error-color);
-}
-
-.btn {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s;
-}
-
-.btn-primary {
-    background-color: var(--supplementary-color);
-    color: white;
-}
-
-.btn-primary:hover {
-    background-color: var(--supplementary-dark);
-}
-
-.btn-cancel {
-    background-color: var(--secondary-dominant);
-    color: white;
-}
-
-.btn-cancel:hover {
-    background-color: var(--primary-dominant);
-}
-
-.btn-danger {
-    background-color: var(--error-color);
-    color: white;
-}
-
-.btn-danger:hover {
-    background-color: #a01414;
 }
 
 /* responsive */
