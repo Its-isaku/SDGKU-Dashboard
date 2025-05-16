@@ -234,7 +234,8 @@
 .surveyStatus p{
     color: var(--success-color);
     border-style: solid;
-    border-width: 2px;
+    border-width: 1px;
+    height: 27px;
     border-color: var(--success-color);
     border-radius: 20px;
     width: 80px;
@@ -242,10 +243,38 @@
     justify-content: center;
 }
 /* type y status */
+.typeTitle p{
+    color: var(--neutral-light);
+    border-style: solid;
+    height: 27px;
+    border: 1px;
+    background-color:  rgb(99, 102, 241, 0.8);
+    /* border-color: var(--supplementary-dark); */
+    border-radius: 20px;
+    width: 67%;
+    display: flex;
+    justify-content: center;
+}
+.editableTypeTitle p{
+color: var(--neutral-light);
+    border-style: solid;
+    height: 27px;
+    border: 1px;
+    background-color: rgb(244, 151, 29, 0.8);
+
+    /* border-color: var(--supplementary-dark); */
+    border-radius: 20px;
+    width: 67%;
+    display: flex;
+    justify-content: center;
+}
+.surveytitle{
+    width: 250px;
+}
 .activeTitleStatus{   
     display: flex;
     justify-content: center;
-    gap: 40%;
+    gap: 10%;
 }
 
 /* el dropdown */
@@ -265,7 +294,9 @@
     width: 150px!important;
     
 }
-
+.dropdown3{
+    top: 190px;
+}
 .dropdown button {
     padding: 10px 16px;
     text-decoration: none;
