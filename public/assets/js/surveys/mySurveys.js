@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const id = e.target.getAttribute('data-id');
             if (typeof openDeleteSurveyModal === 'function') {
                 openDeleteSurveyModal(id);
-            }
+            } 
         }
     });
 
@@ -195,8 +195,11 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    if (confirmActivateBtn) {
-        confirmActivateBtn.addEventListener('click', function() {
+    const confirmActivateSurveyBtn = document.getElementById('confirm-activate-survey'); 
+    const confirmAccessLinkBtn = document.getElementById('confirm-activate');
+
+    if (confirmActivateSurveyBtn) {
+        confirmActivateSurveyBtn.addEventListener('click', function() {
             const id = document.getElementById('activate-survey').value;
             handleSurveyAction(
                 '/SDGKU-Dashboard/src/models/mySurveys.php',
@@ -226,25 +229,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    //! usar cuando ya se tenga el input para el access link
-    // if (coppyAccessLinkBtn) {
-    //     confirmActivateBtn.addEventListener('click', function() {
-    //         const id = document.getElementById('access-link-survey').value;
-    //         handleSurveyAction(
-    //             '/SDGKU-Dashboard/src/models/mySurveys.php',
-    //             { action: 'accessLink', id: id },
-    //             () => {
-    //                 showNotification('Access link copied to clipboard');
-    //                 renderActiveSurveys();
-    //                 closeAllModals();
-    //             },
-    //             (error) => {
-    //                 showNotification('Error copying acces link: ' + (error.message || error), 'error');
-    //                 closeAllModals();
-    //             }
-    //         );
-    //     });
-    // }
+    //* Add a listener for the Copy button in the access link modal
+    if (confirmAccessLinkBtn && accessLinkSurveyModal) {
+        confirmAccessLinkBtn.addEventListener('click', function() {
+            const linkInput = document.getElementById('access-link-input');
+            if (linkInput) {
+                linkInput.select();
+                document.execCommand('copy');
+                showNotification('Access link copied to clipboard');
+                closeAllModals();
+            }
+        });
+    }
 });
 //! <----------------------- SEARCH BAR -----------------------> 
 
@@ -507,8 +503,8 @@ const cancelDeleteBtn = document.getElementById('cancel-delete');
 const confirmDeleteBtn = document.getElementById('confirm-delete');
 const confirmDeactivateBtn = document.getElementById('confirm-deactivate');
 const confirmDuplicateBtn = document.getElementById('confirm-duplicate');
+const confirmActivateSurveyBtn = document.getElementById('confirm-activate-survey');
 const confirmActivateBtn = document.getElementById('confirm-activate');
-const confirmActivateSurveyBtn = document.getElementById('confirm-access-link');
 const confirmDeleteInactiveBtn = document.getElementById('confirm-delete-inactive');
 
 //? Add event listeners to open modals for delete actions in Manage Data section
@@ -704,20 +700,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-//* Add a listener for the Copy button in the modal
-const confirmAccessLinkBtn = document.getElementById('confirm-activate');
-if (confirmAccessLinkBtn && accessLinkSurveyModal) {
-    confirmAccessLinkBtn.addEventListener('click', function() {
-        const linkInput = document.getElementById('access-link-input');
-        if (linkInput) {
-            linkInput.select();
-            document.execCommand('copy');
-            showNotification('Access link copied to clipboard');
-            closeAllModals();
-        }
-    });
-}
-
 //* Delete Inactive Survey
 if (confirmDeleteInactiveBtn) {
     confirmDeleteInactiveBtn.addEventListener('click', function() {
@@ -726,7 +708,7 @@ if (confirmDeleteInactiveBtn) {
             '/SDGKU-Dashboard/src/models/mySurveys.php',
             { action: 'deleteSurvey', id: surveyId },
             () => {
-                showNotification('Survey deleted successfully');
+                showNotification('Survey deleted successfully');cera
                 renderInactiveSurveys();
                 closeAllModals();
             },

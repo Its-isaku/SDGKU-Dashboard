@@ -337,10 +337,20 @@ function createQuestionForm(id) {
             return;
         }
         container.remove();
-        questionCounter -= 1;
+        updateQuestionNumbers(); 
     });
 
     return container;
+}
+
+function updateQuestionNumbers() {
+    const questionForms = document.querySelectorAll('.QuestionContent');
+    questionForms.forEach((form, idx) => {
+        const title = form.querySelector('#questionNumberTitle');
+        if (title) {
+            title.textContent = `Question #${idx + 1}`;
+        }
+    });
 }
 
 //? Add initial question form on page load
@@ -349,6 +359,7 @@ document.getElementById('btnAddQuestion').addEventListener('click', () => {
     const form = createQuestionForm(questionCounter);
     document.getElementById('questionFormsContainer').appendChild(form);
     questionCounter++;
+    updateQuestionNumbers(); // Update visible numbers after add
 });
 
 //? Ensure at least one question form is loaded on page load
