@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 
                 //? edit button
-                if (currentUserRole === 'super_admin' && user.id !== currentUserId){
+                if (currentUserRole === 'super_admin' && user.id !== currentUserId && user.role !== 'super_admin'){
                     actionButtons += `<button class="action-btn edit" data-id="${user.id}" data-role="${user.role}">
                     <i class="material-icons">manage_accounts</i>
                     </button>`;
@@ -243,7 +243,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 //? delete button
                 if ((currentUserRole === 'admin' && user.role === 'faculty') || 
-                (currentUserRole === 'super_admin' && user.id !== currentUserId && user.role !== 'super_admin')) {
+                    (currentUserRole === 'super_admin' && (
+                        (user.id !== currentUserId && user.role !== 'super_admin') || //~ other non-admin users
+                        (user.id === currentUserId) //~ allow self-deletion for super_admin
+                    ))) {
                     actionButtons += `<button class="action-btn delete" data-id="${user.id}" data-role="${user.role}">
                     <span class="material-symbols-outlined" id="trashcan-users">delete</span>
                     </button>`;
