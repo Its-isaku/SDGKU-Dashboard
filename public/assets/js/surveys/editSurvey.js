@@ -335,6 +335,7 @@ function createQuestionForm(id) {
         //* Remove option input on trash icon click
         icon.addEventListener('click', () => {
             icon.parentElement.remove();
+            
         });
     });
 
@@ -347,11 +348,16 @@ function createQuestionForm(id) {
         }
         container.remove();
         questionCounter -= 1;
+        //! -------put id into delete array
+        const questions_id=questions[id - 1].question_id
+        questionToDelete.push({question_id: questions_id});
+        console.log(questionToDelete);
+        
     });
-
     return container;
 }
-
+//!---------Array to delete questions------
+let questionToDelete = [];
 
 //? Add initial question form on page load
 document.getElementById('btnAddQuestion').addEventListener('click', () => {
@@ -598,12 +604,14 @@ if (previewOption) {
 
 
 //? Submit Survey Logic
+
 const btnEditSurvey = document.getElementById('btnEditSurvey');
 btnEditSurvey.addEventListener('click', function() {
     btnEditSurvey.disabled = true;
     //* Collect survey details
+    console.log('Survey Data:',surveyData2.survey_id);
     const surveyDetails = {
-        survey_id: surveyData.details.survey_id, //? This should be set to the ID sent from the HTML 
+        survey_id: surveyData2.survey_id, //? This should be set to the ID sent from the HTML 
         title: document.getElementById('surveyTitle').value.trim(),
         description: document.getElementById('surveyDescription').value.trim(),
         programType: document.getElementById('programType').value,
@@ -655,6 +663,7 @@ btnEditSurvey.addEventListener('click', function() {
                 question.open_option_text = '';
             }
             questions.push(question);
+            console.log(questionToDelete);
         }
     });
 
@@ -663,35 +672,123 @@ btnEditSurvey.addEventListener('click', function() {
         details: surveyDetails,
         questions: questions
     };
+    const id = surveyData2.survey_id;
+// Validación del ID
+if (!id || isNaN(id)) {
+    showNotification('Invalid survey ID', 'error');
+    return;
+}
 
-    //? Send to backend
-    fetch('/SDGKU-Dashboard/src/models/editSurvey.php', {
+//!---------------Delete All Questions--------------
+
+deleteAllQuestions(surveyPayload,id);
+    console.log("deletea");
+   
+
+console.log("load: ",surveyPayload);
+//!--------------- New Questions-------------------
+
+//!---------------Delete Questions Selected-----------------
+deleteSelectedQuestions();
+});
+
+function updateEdit(surveyPayload,id){
+     fetch(`/SDGKU-Dashboard/src/models/submitEdit.php?action=SendEditSurvey&id=${id}`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(surveyPayload)
+})
+.then(response => {
+    if (!response.ok) {
+        return response.json().then(err => { throw err; });
+    }
+    return response.json();
+})
+.then(data => {
+    if (data.status === 'error') {
+        throw new Error(data.message);
+    }
+    console.log('Survey updated successfully:', data);
+    showNotification('Survey updated successfully!', 'success');
+    setTimeout(() => {
+        window.location.reload();
+    }, 1500);
+})
+.catch(error => {
+    console.error('Fetch error:', error);
+    showNotification('Error updating survey: ' + error.message, 'error');
+});
+}
+
+
+function deleteAllQuestions(surveyPayload,id){
+    fetch(`/SDGKU-Dashboard/src/models/editSurvey.php`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         },
-        body: JSON.stringify(surveyPayload)
+        body: JSON.stringify({ 
+            action: 'deleteAllQuestions',
+            id: id  // Changed to array
+        })
     })
     .then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Error creating survey: ' + response.statusText);
+        if (!response.ok) {
+            return response.json().then(err => { throw err; });
         }
+        return response.json();  // Changed to json()
     })
     .then(data => {
-        console.log('Survey created successfully:', data);
-        showNotification('Survey Update successfully!', 'success');
-        setTimeout(() => {
-            window.location.reload();
-        }, 1500);
+        console.log('Respuesta:', data);
+        // Handle question deletion in your UI
+        // You might need to update your questions list here
+        questions_id = [];
+        updateEdit(surveyPayload,id);
     })
     .catch(error => {
-        console.error(error);
-        if(data.status === 'error') {showNotification('Error creating survey: ' + data.message, 'error');}
-        btnEditSurvey.disabled = false;
+        console.error('Error:', error);
+        alert('Error al eliminar la pregunta: ' + (error.message || error));
+
     });
-});
+}
+
+
+function deleteSelectedQuestions(){
+    if (questionToDelete.length > 0) {
+    console.log("deletea");
+    fetch(`/SDGKU-Dashboard/src/models/editSurvey.php`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({ 
+            action: 'deleteQuestion',
+            questionsToDelete: questionToDelete  // Changed to array
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(err => { throw err; });
+        }
+        return response.json();  // Changed to json()
+    })
+    .then(data => {
+        console.log('Respuesta:', data);
+        // Handle question deletion in your UI
+        // You might need to update your questions list here
+        questionToDelete = [];
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al eliminar la pregunta: ' + (error.message || error));
+    });
+}
+}
+
 
 
 //? get Program Types and send them to the frontend
@@ -844,6 +941,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Estructuras de datos
 const surveyData2 = {
+    survey_id : '',
     title : '',
     type : '',
     description : '',
@@ -863,8 +961,12 @@ const questionsInfo = {
     openEnded: [],
     trueFalse: []
 };
-// Función para resetear datos
+//questions_id
+let questions_id=[];
+
+// reset Arrays
 function resetSurveyData() {
+    surveyData2.survey_id = '';
     surveyData2.title = '';
     surveyData2.type = '';
     surveyData2.description = '';
@@ -883,6 +985,8 @@ function resetSurveyData() {
     
     questionsInfo.Likert3 = [];
     questionsInfo.Likert5 = [];
+    // questions_id = [];
+    // questions = [];
     // ... resetear todos los arrays de questionsInfo
 }
 let programType;
@@ -900,7 +1004,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-//!---------------------PutSelectsInOrderToEdit---------------------
 
 
 
@@ -908,13 +1011,14 @@ document.addEventListener('DOMContentLoaded', function() {
 async function fetchSurveyData(sid) {
     
     try {
-        resetSurveyData(); // Limpiar datos anteriores
+        // resetSurveyData(); // Limpiar datos anteriores
         
         const id = sid; // Obtener el ID de la encuesta desde la URL
         // 1. Cargar datos básicos de la encuesta
         const surveyRes = await fetch(`/SDGKU-Dashboard/src/models/editSurvey.php?action=editSurvey&id=${encodeURIComponent(id)}`);
         if (!surveyRes.ok) throw await surveyRes.json();
         const surveyData = await surveyRes.json();
+        surveyData2.survey_id = surveyData[0].survey_id;
         surveyData2.title = surveyData[0].title;
         surveyData2.type = surveyData[0].type;
         surveyData2.description = surveyData[0].description;
@@ -941,6 +1045,7 @@ async function fetchSurveyData(sid) {
 
         // Procesar datos
         const questionsOb = await questionsRes.json();
+        
         const tfData = await tfRes.json();
         const openData = await openRes.json();
         const multipleData = await multipleRes.json();
@@ -957,7 +1062,11 @@ async function fetchSurveyData(sid) {
             display_order: item.display_order
             });
         });
-
+        questionsOb.forEach(item => {
+        questions_id.push({
+            question_id: item.question_id,
+            });
+        });
 
         // Mapear opciones por tipo
         questionsInfo.trueFalse = tfData.map(item => ({
@@ -1004,7 +1113,7 @@ async function fetchSurveyData(sid) {
 console.log('surveyEditData:', surveyData2);
 console.log('questions:', questions);
 console.log('questionsInfo:', questionsInfo);
-
+console.log("IDS: ", questions_id);
 
 
 function editSurvey() {
@@ -1166,3 +1275,5 @@ window.addEventListener('load', function() {
     // //* call the editQuestions function to set the initial values
     
 });
+
+console.log("log: ", questions_id);
