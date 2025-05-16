@@ -16,10 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     surveys.status,
     surveys.title,
     surveys.description,
-    surveys.created_at AS createdDate,
-    surveys.expires_at AS expires,
+    DATE_FORMAT(surveys.created_at, '%m-%d-%Y')  AS createdDate,
+    DATE_FORMAT(surveys.expires_at, '%m-%d-%Y') AS expires,
     program_types.program_name AS program,
-    cohort.cohort AS cohort,
+    DATE_FORMAT(surveys.last_edited, '%m-%d-%Y') AS last_edit,
     COUNT(DISTINCT questions.questions_id) AS questions
 FROM surveys
 INNER JOIN survey_types ON surveys.survey_type_id = survey_types.survey_type_id
@@ -46,7 +46,7 @@ LEFT JOIN questions ON surveys.survey_id = questions.survey_id
         surveys.created_at, 
         surveys.expires_at, 
         program_types.program_name, 
-        cohort.cohort";
+        surveys.last_edited";
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
@@ -291,7 +291,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = intval($input['id']);
             $pdo->beginTransaction();
             
-            $sql = "UPDATE surveys SET status = 'active' WHERE survey_id = ?";
+            $sql = "UPDATE surveys SET surveys.status = 'active' WHERE survey_id = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$id]);
             

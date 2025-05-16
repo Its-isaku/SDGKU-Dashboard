@@ -347,10 +347,10 @@ function renderActiveSurveysAfterLeave(searchTerm = '') {
                     </div>
                         <div class="survey-details">
                             <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
+                            <span><i class="fa-solid fa-calendar-plus"></i> Last Edit: ${survey.last_edit}</span>
                             <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
                             <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
                             <span>Program: ${survey.program}</span>
-                            <span>Cohort: ${survey.cohort}</span>
                         </div>
                     <div class="surveyActive-actions">
                         <div class="actions-container" onmouseleave="closeDropdown(this)">
@@ -420,10 +420,10 @@ function renderInactiveSurveysAfterLeave(searchTerm = '') {
                 </div>
                     <div class="survey-details">
                         <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
+                        <span><i class="fa-solid fa-calendar-plus"></i> Last Edit: ${survey.last_edit}</span>
                         <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
                         <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
                         <span>Program: ${survey.program}</span>
-                        <span>Cohort: ${survey.cohort}</span>
                     </div>
                     <div class="survey-actions">
                         <button class="activate-btn activate-survey" data-id="${survey.id}"><i class="fa-solid fa-circle-check"></i> Activate</button>
@@ -514,6 +514,7 @@ const confirmDeleteInactiveBtn = document.getElementById('confirm-delete-inactiv
 //? Add event listeners to open modals for delete actions in Manage Data section
 const deleteSurveyBtn = document.getElementById('deleteSurveyBtn');
 const deactivateSurveyBtn = document.getElementById('deactivateSurveyBtn');
+const activateSurveyBtn = document.getElementById('activateSurveyBtn');
 const duplicateSurveyBtn = document.getElementById('duplicateSurveyBtn');
 const editSurveyBtn = document.getElementById('editSurveyBtn');
 
@@ -529,6 +530,13 @@ if (deactivateSurveyBtn) {
         e.preventDefault();
         const surveyId = document.getElementById('duplicate-survey').value;
         if (surveyId) { openDeactivateSurveyModal(surveyId);}
+    });
+}
+if (activateSurveyBtn) {
+    activateSurveyBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const surveyId = document.getElementById('active-survey').value;
+        if (surveyId) { openActivateModal(surveyId);}
     });
 }
 
