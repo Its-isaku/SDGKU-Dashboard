@@ -578,17 +578,30 @@ function openActivateModal(surveyId) {
     activateSurveyModal.style.display = 'flex';
 }
 
+
+
 //? open access link Survey modal
 function openAccessLinkModal(surveyId) {
-    document.getElementById('access-link-survey').value = surveyId;
-
-    var accessLink = 'https://www.youtube.com/watch?v=xvFZjo5PgG0';
-    var linkInput = document.getElementById('access-link-input');
-    if (linkInput) {
-        linkInput.value = accessLink;
-    }
-    accessLinkSurveyModal.style.display = 'flex';
+    fetch(`/SDGKU-Dashboard/src/models/mySurveys.php?action=getSurveyById&id=${surveyId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.token) {
+                const accessLink = `http://localhost/SDGKU-Dashboard/public/views/surveys/survey.html?token=${data.token}`;
+                const linkInput = document.getElementById('access-link-input');
+                if (linkInput) {
+                    linkInput.value = accessLink;
+                }
+                document.getElementById('access-link-survey').value = surveyId;
+                accessLinkSurveyModal.style.display = 'flex';
+            } else {
+                showNotification('Failed to fetch survey token.', 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Error fetching survey link: ' + (error.message || error), 'error');
+        });
 }
+
 
 //? open delete Inactive Survey modal
 function openDeleteInactiveSurveyModal(surveyId) {
