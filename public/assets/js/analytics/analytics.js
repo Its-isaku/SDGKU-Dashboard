@@ -36,7 +36,7 @@ const data = [25, 18, 12, 5, 8];
 // });
 
 
-// funcion para cambiar de panel
+//? <|----------------------------------- cambiar de panel -----------------------------------|>
 
 function showOptionSelected(id) {
 
@@ -59,7 +59,7 @@ function showOptionSelected(id) {
     if (id === 'panel4' && typeof fetchReports === 'function') {
         fetchReports();
     }
-}
+}//? <|----------------------------------- async? -----------------------------------|>
 
 async function loadAnalyticsStats() {
     try {
@@ -77,6 +77,8 @@ async function loadAnalyticsStats() {
         console.error('Fetch error:', error);
     }
 }
+
+//? <|----------------------------------- Graphs -----------------------------------|>
 
 document.addEventListener("DOMContentLoaded", () => {
     loadAnalyticsStats();

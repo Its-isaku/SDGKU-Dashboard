@@ -553,12 +553,36 @@ if (previewOption) {
             showNotification('Please complete all questions before previewing.', 'error');
             return;
         }
+        //? Collect current questions into surveyData.questions (same as btnPreviewSurvey)
+        const questionForms = document.querySelectorAll('.QuestionContent');
+        surveyData.questions = [];
+        questionForms.forEach((form, index) => {
+            const titleInput = form.querySelector('.questionTitleInput');
+            const typeSelect = form.querySelector('.questionTypeSelect');
+            const type = typeSelect.value;
+            const question = {
+                title: titleInput.value.trim(),
+                type: type,
+                options: []
+            };
+            if (type === '1') {
+                //? Multiple Choice
+                const options = form.querySelectorAll('.optionInput input[type="text"]');
+                options.forEach(opt => {
+                    if (opt.value.trim()) question.options.push(opt.value.trim());
+                });
+            }
+            //? For other types, just push the question
+            surveyData.questions.push(question);
+        });
         updatePreview();
     });
 }
 
 //? Submit Survey Logic
-document.getElementById('btnCreateSurvey').addEventListener('click', function() {
+const btnCreateSurvey = document.getElementById('btnCreateSurvey');
+btnCreateSurvey.addEventListener('click', function() {
+    btnCreateSurvey.disabled = true;
     //* Collect survey details
     const surveyDetails = {
         title: document.getElementById('surveyTitle').value.trim(),
@@ -646,6 +670,7 @@ document.getElementById('btnCreateSurvey').addEventListener('click', function() 
     .catch(error => {
         console.error(error);
         if(data.status === 'error') {showNotification('Error creating survey: ' + data.message, 'error');}
+        btnCreateSurvey.disabled = false;
     });
 });
 
