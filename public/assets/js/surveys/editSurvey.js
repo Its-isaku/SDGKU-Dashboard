@@ -1,5 +1,6 @@
 //? Imports and Initial Data
 import { hideAll } from '../../js/auth/formUtils.js';
+let questionCounter = 1;
 const surveyData = {
     details: {
         survey_id: '',
@@ -185,8 +186,6 @@ document.getElementById('btnContinueToQuestions').addEventListener('click', () =
 
 
 //? Question Form Logic
-let questionCounter = 1;
-
 function createQuestionForm(id) {
     //* Create a new question form element
     const container = document.createElement('div');
@@ -347,7 +346,7 @@ function createQuestionForm(id) {
             return;
         }
         container.remove();
-        questionCounter -= 1;
+        updateQuestionNumbers()
         //! -------put id into delete array
         const questions_id=questions[id - 1].question_id
         questionToDelete.push({question_id: questions_id});
@@ -355,6 +354,16 @@ function createQuestionForm(id) {
         
     });
     return container;
+}
+
+function updateQuestionNumbers() {
+    const questionForms = document.querySelectorAll('.QuestionContent');
+    questionForms.forEach((form, idx) => {
+        const title = form.querySelector('#questionNumberTitle');
+        if (title) {
+            title.textContent = `Question #${idx + 1}`;
+        }
+    });
 }
 //!---------Array to delete questions------
 let questionToDelete = [];
@@ -364,7 +373,7 @@ document.getElementById('btnAddQuestion').addEventListener('click', () => {
     //* Add a new question form to the container
     const form = createQuestionForm(questionCounter);
     document.getElementById('questionFormsContainer').appendChild(form);
-    questionCounter++;
+    updateQuestionNumbers();
 });
 
 
