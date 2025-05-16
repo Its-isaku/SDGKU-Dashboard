@@ -224,7 +224,6 @@
             </div>
         </div>
     </div>
-    
 
     <!-- Delete User Modal -->
     <div id="delete-user-modal" class="modal">
@@ -251,5 +250,6 @@
     <script src="../../assets/js/app/main.js"></script>
     <script src="../../assets/js/app/users.js"></script>
     <script src="../../assets/js/auth/logout.js"></script>
+    <script src="../../assets/js/app/user-profile.js"></script>
 </body>
 </html>
