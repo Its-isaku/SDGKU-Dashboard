@@ -45,7 +45,7 @@ function handlePasswordResetReq(string $email): bool {
     if(!$user){return false;}
 
     $token = bin2hex(random_bytes(16));
-    $expires = date('Y-m-d H:i:s', strtotime('+2 hour'));
+    $expires = date('Y-m-d H:i:s', strtotime('+12 hour'));
 
     $stmt = $pdo->prepare("UPDATE users SET reset_token = ?, reset_token_expires = ?, failed_login_attempts = 0, status = 'active' WHERE id = ?");
     $stmt->execute([$token, $expires, $user['id']]);
