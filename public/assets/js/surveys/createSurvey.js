@@ -200,8 +200,8 @@ function createQuestionForm(id) {
                 <select id="questionType${id}" class="questionTypeSelect" required>
                     <option value="" disabled selected hidden>Select type</option>
                     <option value="1">Multiple Choice</option>
-                    <option value="2">likert scale 1-5</option>
-                    <option value="3">likert scale 1-3</option>
+                    <option value="2">Linkert Scale 1-5</option>
+                    <option value="3">Linkert Scale 1-3</option>
                     <option value="4">Open</option>
                     <option value="5">True/False</option>
                 </select>

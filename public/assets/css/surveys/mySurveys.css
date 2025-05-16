@@ -256,13 +256,12 @@
     justify-content: center;
 }
 .editableTypeTitle p{
-color: var(--neutral-light);
+    color: var(--neutral-light);
     border-style: solid;
     height: 27px;
     border: 1px;
     background-color: rgb(244, 151, 29, 0.8);
 
-    /* border-color: var(--supplementary-dark); */
     border-radius: 20px;
     width: 67%;
     display: flex;
@@ -409,7 +408,7 @@ color: var(--neutral-light);
 .inactiveTitleStatus{
     display: flex;
     justify-content: center;
-    gap: 40%;
+    gap: 10%;
 }
 
 .surveyInactiveStatus p{
