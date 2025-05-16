@@ -5,25 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const messageDiv = document.getElementById("reset-msg");
     const passwordInput = document.getElementById("password");
     const confirmPasswordInput = document.getElementById("confirm-password");
-
-    const toggleIcons = document.querySelectorAll(".toggle-password");
-
-toggleIcons.forEach(icon => {
-        icon.addEventListener("click", () => {
-            const targetId = icon.getAttribute("data-target");
-            const input = document.getElementById(targetId);
-
-            const isPassword = input.type === "password";
-            input.type = isPassword ? "text" : "password";
-
-            icon.classList.toggle("fa-eye");
-            icon.classList.toggle("fa-eye-slash");
-            icon.classList.toggle("active");
-        });
-    });
-    
     const btn = document.getElementById("form-btn");
-
+    
+    // Form submission handler
     form?.addEventListener("submit", async function (e) {
         e.preventDefault();
 
@@ -48,7 +32,7 @@ toggleIcons.forEach(icon => {
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
 
         try {
-            const response = await fetch("../../../src/controllers/password.php", {
+            const response = await fetch("../../../src/controllers/reset-password.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -60,7 +44,7 @@ toggleIcons.forEach(icon => {
 
             const result = await response.json();
 
-            if (!response.ok || !result.success) {
+            if (!result.success) {
                 showMessage(messageDiv, result.message || "Error resetting password");
                 highlightInput(passwordInput, "error");
                 highlightInput(confirmPasswordInput, "error");

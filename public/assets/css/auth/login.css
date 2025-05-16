@@ -118,24 +118,6 @@ body {
     text-decoration: underline;
 }
 
-/* Toggle password */
-.password-wrapper {
-    position: relative;
-}
-
-.toggle-password {
-    position: absolute;
-    right: 10px;
-    top: 47px;
-    cursor: pointer;
-    color: #888;
-    font-size: 1rem;
-}
-
-.toggle-password.active {
-    color: #333;
-}
-
 @media (max-width: 768px) {
     .login-form-container {
         padding: 20px;

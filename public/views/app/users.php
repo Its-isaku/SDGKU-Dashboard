@@ -15,7 +15,7 @@
 </head>
     
 <!--  -->
-<body> 
+<body data-user-id="<?= $_SESSION['user_id'] ?? 0 ?>" data-user-role="<?= $_SESSION['user_role'] ?? 'faculty' ?>">
     <!--? Header  -->
     <header class="header">
         <div class="headerLogo">
@@ -54,7 +54,7 @@
                     <p>Analytics</p>
                 </a>
                 
-                <a href="../app/users.html" class="sideLink selectLink">
+                <a href="../app/users.php" class="sideLink selectLink">
                     <i class="fa-solid fa-users"></i>
                     <p>Users</p>
                 </a>
@@ -118,11 +118,12 @@
                                 <th>NAME</th>
                                 <th>EMAIL</th>
                                 <th>ROLE</th>
+                                <th>STATUS</th>
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody id="users-table-body">
-                            <!-- User rows will be populated by JavaScript -->
+                            <!-- User rows will be populated by js -->
                         </tbody>
                     </table>
                 </div>
@@ -135,33 +136,23 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Add New User</h2>
-                <p>Create a new user account for the survey platform.</p>
+                <p>Create a new faculty account</p>
                 <span class="close-modal">&times;</span>
             </div>
             <div class="modal-body">
                 <form id="add-user-form">
+                    <input type="hidden" name="role" value="faculty">
                     <div class="form-group">
                         <label for="full-name">Full Name</label>
-                        <input type="text" id="full-name" required>
+                        <input type="text" id="full-name" name="full_name" required>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="role">Role</label>
-                        <select id="role" required>
-                            <option value="admin">Admin</option>
-                            <option value="faculty">Faculty</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Temporary Password</label>
-                        <input type="password" id="password" required>
+                        <input type="email" id="email" name="email" required>
                     </div>
                     <div class="form-actions">
-                        <button type="button" class="btn btn-cancel" id="cancel-add">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add User</button>
+                        <button type="button" class="btn btn-cancel">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Send Invitation</button>
                     </div>
                 </form>
             </div>
@@ -172,8 +163,8 @@
     <div id="edit-user-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Edit User</h2>
-                <p>Edit user information.</p>
+                <h2>Update User Role</h2>
+                <p>Change the role of this user</p>
                 <span class="close-modal">&times;</span>
             </div>
             <div class="modal-body">
@@ -182,9 +173,11 @@
                     <div class="form-group">
                         <label for="edit-role">Role</label>
                         <select id="edit-role" required>
-                            <option value="admin">Admin</option>
                             <option value="faculty">Faculty</option>
+                            <option value="admin">Admin</option>
+                            <option value="super_admin">Master Admin</option>
                         </select>
+
                     </div>
                     <div class="form-actions">
                         <button type="button" class="btn btn-cancel" id="cancel-edit">Cancel</button>
@@ -194,6 +187,44 @@
             </div>
         </div>
     </div>
+
+    <!-- Give Main Admin Role Warning -->
+    <div id="super-admin-confirm-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Warning: Main Admin Privileges</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>You are about to grant Main Admin privileges. This user will have full control over the system, including the ability to modify or delete your account.</p>
+                <p>Are you absolutely sure you want to proceed?</p>
+                <input type="hidden" id="super-admin-user-id">
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirm-super-admin">Grant Main Admin</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm resend Invitation email modal -->
+    <div id="resend-invitation-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Resend Invitation</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to resend the invitation email to this user?</p>
+                <input type="hidden" id="resend-invitation-user-id">
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel" id="cancel-resend">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirm-resend">Resend Invitation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 
     <!-- Delete User Modal -->
     <div id="delete-user-modal" class="modal">
@@ -214,7 +245,7 @@
     </div>
 
     <!-- Notification -->
-    <div id="notification" class="notification"></div>
+    <div id="notification" class="notification toast-bottom-right"></div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="../../assets/js/app/main.js"></script>
