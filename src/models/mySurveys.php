@@ -11,49 +11,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     try {
         $search = isset($_GET['search']) ? trim($_GET['search']) : '';
         $sql = "SELECT 
-    surveys.survey_id AS id,
-    survey_types.type_name AS type,
-    surveys.status,
-    surveys.title,
-    surveys.description,
-    DATE_FORMAT(surveys.created_at, '%m-%d-%Y')  AS createdDate,
-    DATE_FORMAT(surveys.expires_at, '%m-%d-%Y') AS expires,
-    program_types.program_name AS program,
-    DATE_FORMAT(surveys.last_edited, '%m-%d-%Y') AS last_edit,
-    COUNT(DISTINCT questions.questions_id) AS questions
-FROM surveys
-INNER JOIN survey_types ON surveys.survey_type_id = survey_types.survey_type_id
-INNER JOIN program_types ON surveys.program_type_id = program_types.program_type_id
-LEFT JOIN (
-    SELECT program_id, MIN(cohort) AS cohort 
-    FROM cohort 
-    GROUP BY program_id
-) cohort ON cohort.program_id = surveys.program_id
-LEFT JOIN questions ON surveys.survey_id = questions.survey_id
-";
-    $params = [];
-    if ($search !== '') {
-        $sql .= " WHERE surveys.title LIKE ? OR surveys.description LIKE ?";
-        $params[] = "%$search%";
-        $params[] = "%$search%";
-    }
-    $sql .= " GROUP BY 
-        surveys.survey_id, 
-        survey_types.type_name, 
-        surveys.status, 
-        surveys.title, 
-        surveys.description, 
-        surveys.created_at, 
-        surveys.expires_at, 
-        program_types.program_name, 
-        surveys.last_edited";
+            s.survey_id AS id,
+            st.type_name AS type,
+            s.status,
+            s.title,
+            s.description,
+            DATE_FORMAT(s.created_at, '%m-%d-%Y') AS createdDate,
+            DATE_FORMAT(s.expires_at, '%m-%d-%Y') AS expires,
+            pt.program_name AS program,
+            DATE_FORMAT(s.last_edited, '%m-%d-%Y') AS last_edit,
+            (SELECT COUNT(*) FROM questions q WHERE q.survey_id = s.survey_id) AS questions,
+            (SELECT COUNT(*) FROM responses r WHERE r.survey_id = s.survey_id) AS responses
+        FROM surveys s
+        JOIN survey_types st ON s.survey_type_id = st.survey_type_id
+        JOIN program_types pt ON s.program_type_id = pt.program_type_id";
+        
+        $params = [];
+        if ($search !== '') {
+            $sql .= " WHERE s.title LIKE ? OR s.description LIKE ?";
+            $params[] = "%$search%";
+            $params[] = "%$search%";
+        }
+        
+        $sql .= " GROUP BY 
+            s.survey_id, 
+            st.type_name, 
+            s.status, 
+            s.title,
+            s.description, 
+            s.created_at, 
+            s.expires_at, 
+            pt.program_name, 
+            s.last_edited
+        ORDER BY s.created_at DESC";
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
-    $surveys = $stmt->fetchAll();
-    echo json_encode($surveys);
-    exit;
-    
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        $surveys = $stmt->fetchAll();
+        echo json_encode($surveys);
+        exit;
+        
     } catch (PDOException $e) {
         http_response_code(500);
         echo json_encode([
@@ -63,7 +60,6 @@ LEFT JOIN questions ON surveys.survey_id = questions.survey_id
         exit;
     }
 }
-
 //? <-------------------------------- Get survey an return questions -------------------------------->
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getSurvey') {
     try {

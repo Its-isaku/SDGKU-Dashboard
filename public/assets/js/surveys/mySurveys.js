@@ -328,11 +328,50 @@ function renderActiveSurveysAfterLeave(searchTerm = '') {
             activeSurveys.forEach((survey) => {
                 const activeSurveyItem = document.createElement("div");
                 activeSurveyItem.className = "survey-item";
+                if(survey.responses>0){
                 activeSurveyItem.innerHTML = /* HTML */` 
                     <div class = "principalInformation">
                         <div class = "activeTitleStatus">
                                 <div class = "surveytitle">
-                                    <p>${survey.type}</p>
+                                    <div class = "typeTitle">
+                                        <p>${survey.type}</p>
+                                    </div>
+                                </div>
+                                <div class = "surveyStatus">
+                                    <p>${survey.status}</p>
+                                </div>
+                            </div>
+                        <h3>${survey.title}</h3>
+                        <p>${survey.description}</p>
+                    </div>
+                        <div class="survey-details">
+                            <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
+                            <span><i class="fa-solid fa-calendar-plus"></i> Last Edit: ${survey.last_edit}</span>
+                            <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
+                            <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
+                            <span>Program: ${survey.program}</span>
+                        </div>
+                    <div class="surveyActive-actions">
+                        <div class="actions-container" onmouseleave="closeDropdown(this)">
+                            <button class = "actions-btn" onclick="toggleDropdown(this)" >Actions</button>
+                            <div class="dropdown  dropdown3">
+                                    <button class="dropdown-copyLink copy-link">Copy Access Link</button>
+                                    <button class="dropdown-action duplicate-survey" data-id="${survey.id}">Duplicate</button>
+                                    <button class="dropdown-action deactivate-survey" data-id="${survey.id}">Deactivate</button>
+                            </div>
+                        </div>
+                        <button class="results-btn">Results</button>
+                    </div>
+                `;
+                }
+                else{
+                    activeSurveyItem.innerHTML = /* HTML */` 
+                    <div class = "principalInformation">
+                        <div class = "activeTitleStatus">
+                                <div class = "surveytitle">
+                                    <div class = "editableTypeTitle">
+                                        <p>${survey.type}</p>
+                                    </div>
                                 </div>
                                 <div class = "surveyStatus">
                                     <p>${survey.status}</p>
@@ -362,6 +401,7 @@ function renderActiveSurveysAfterLeave(searchTerm = '') {
                         <button class="results-btn">Results</button>
                     </div>
                 `;
+                }
                 activeList.appendChild(activeSurveyItem);
                 animateSurveyItemEnter(activeSurveyItem);
             });
@@ -401,11 +441,14 @@ function renderInactiveSurveysAfterLeave(searchTerm = '') {
             inactiveSurveys.forEach((survey,index) => {
                 const surveyItem = document.createElement("div");
                 surveyItem.className = "surveyInactive-item survey-item"; // Add both classes for animation
+                if(survey.responses>0){
                 surveyItem.innerHTML =  /* HTML */` 
                 <div class = "principalInformationInactives">    
                     <div class = "inactiveTitleStatus"> 
                         <div class = "surveytitle">
-                            <p>${survey.type}</p>
+                            <div class = "typeTitle">
+                                <p>${survey.type}</p>
+                            </div>
                         </div>
                         <div class = "surveyInactiveStatus">
                             <p>${survey.status}</p>
@@ -426,6 +469,35 @@ function renderInactiveSurveysAfterLeave(searchTerm = '') {
                         <button class="delete-btn delete-inactive-survey" data-id="${survey.id}">Delete</button>
                     </div>
                 `;
+                }else{
+                surveyItem.innerHTML =     ` 
+                <div class = "principalInformationInactives">    
+                    <div class = "inactiveTitleStatus"> 
+                        <div class = "surveytitle">
+                            <div class = "editableTypeTitle">
+                                <p>${survey.type}</p>
+                            </div>
+                        </div>
+                        <div class = "surveyInactiveStatus">
+                            <p>${survey.status}</p>
+                        </div>
+                    </div>
+                    <h3>${survey.title}</h3>
+                    <p>${survey.description}</p>
+                </div>
+                    <div class="survey-details">
+                        <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
+                        <span><i class="fa-solid fa-calendar-plus"></i> Last Edit: ${survey.last_edit}</span>
+                        <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
+                        <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
+                        <span>Program: ${survey.program}</span>
+                    </div>
+                    <div class="survey-actions">
+                        <button class="activate-btn activate-survey" data-id="${survey.id}"><i class="fa-solid fa-circle-check"></i> Activate</button>
+                        <button class="delete-btn delete-inactive-survey" data-id="${survey.id}">Delete</button>
+                    </div>
+                `;
+                }
                 inactiveList.appendChild(surveyItem);
                 animateSurveyItemEnter(surveyItem);
             });
@@ -472,6 +544,7 @@ function setupActionDropdowns() {
     });
 
 }
+//?-------------------------DropDown no Editable--------------------------
 
 //! <----------------------- Notifications & Modals ----------------------->
 
