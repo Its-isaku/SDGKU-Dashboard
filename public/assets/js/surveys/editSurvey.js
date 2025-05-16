@@ -690,6 +690,7 @@ console.log("load: ",surveyPayload);
 
 //!---------------Delete Questions Selected-----------------
 deleteSelectedQuestions();
+
 });
 
 function updateEdit(surveyPayload,id){
@@ -713,7 +714,9 @@ function updateEdit(surveyPayload,id){
     console.log('Survey updated successfully:', data);
     showNotification('Survey updated successfully!', 'success');
     setTimeout(() => {
+        deleteSelectedQuestions();
         window.location.reload();
+        window.location.href = `mySurveys.html`;
     }, 1500);
 })
 .catch(error => {
@@ -732,19 +735,17 @@ function deleteAllQuestions(surveyPayload,id){
         },
         body: JSON.stringify({ 
             action: 'deleteAllQuestions',
-            id: id  // Changed to array
+            id: id  
         })
     })
     .then(response => {
         if (!response.ok) {
             return response.json().then(err => { throw err; });
         }
-        return response.json();  // Changed to json()
+        return response.json();  
     })
     .then(data => {
         console.log('Respuesta:', data);
-        // Handle question deletion in your UI
-        // You might need to update your questions list here
         questions_id = [];
         updateEdit(surveyPayload,id);
     })
@@ -781,6 +782,7 @@ function deleteSelectedQuestions(){
         // Handle question deletion in your UI
         // You might need to update your questions list here
         questionToDelete = [];
+        
     })
     .catch(error => {
         console.error('Error:', error);

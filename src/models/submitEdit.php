@@ -49,19 +49,26 @@ if (isset($_GET['action']) && $_GET['action'] === 'SendEditSurvey') {
                     JOIN subjects sj ON s.subject_id = sj.subject_id
                     SET s.title = ?,
                         s.description = ?,
-                        s.program_id = (SELECT prog_id FROM programs WHERE name = ? LIMIT 1),
-                        s.program_type_id = (SELECT program_type_id FROM program_types WHERE program_type_id = ? OR program_name = ? LIMIT 1),
-                        s.survey_type_id = (SELECT survey_type_id FROM survey_types WHERE type_name = ? LIMIT 1),
-                        s.subject_id = (SELECT subject_id FROM subjects WHERE subject = ? LIMIT 1)
+                        s.last_edited = ?,
+                        s.expires_at = ?,
+                        s.program_id = (SELECT prog_id FROM programs WHERE name = ? OR prog_id = ? LIMIT 1),
+                        s.program_type_id = (SELECT program_type_id FROM program_types WHERE program_name = ? OR program_type_id = ? LIMIT 1),
+                        s.survey_type_id = (SELECT survey_type_id FROM survey_types WHERE type_name = ? OR survey_type_id = ? LIMIT 1),
+                        s.subject_id = (SELECT subject_id FROM subjects WHERE subject = ? OR subject_id = ? LIMIT 1)
                     WHERE s.survey_id = ?";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
                 $title,
                 $description,
+                $createdAt,
+                $expirationDate,
+                $program,
                 $program,
                 $programType,
                 $programType,
                 $type,
+                $type,
+                $subject,
                 $subject,
                 $id  // Añadido el ID para el WHERE
             ]);
@@ -187,9 +194,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'SendEditSurvey') {
                     $stmt->execute([$questionId, $questionTitle, 1, ($correctAnswer == 1 ? 1 : 0)]); //* True
                     $stmt->execute([$questionId, $questionTitle, 0, ($correctAnswer == 0 ? 1 : 0)]); //* False
                 }
-
-                // Resto de tipos de pregunta (Linkert 5, Linkert 3, Open ended, True/False)
-                // ... (mantener tu lógica actual para estos tipos)
             }
 
             $response['questions'] = [
