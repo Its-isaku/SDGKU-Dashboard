@@ -244,11 +244,21 @@ try {
 
             //* validations --------------------------------
             //~ check perms
-            if ($targetRole === 'super_admin' && $currentUserRole !== 'super_admin'){throw new Exception('Only main admin can delete main admin accounts');}
-            if ($targetRole === 'admin' && $currentUserRole !== 'super_admin'){throw new Exception('Only main admin can delete admin accounts');}
+            if ($targetRole === 'super_admin' && $currentUserRole !== 'super_admin'){throw new Exception('Only master admin can delete master admin accounts');}
+            if ($targetRole === 'admin' && $currentUserRole !== 'super_admin'){throw new Exception('Only master admin can delete admin accounts');}
             if ($targetRole === 'faculty' && $currentUserRole === 'faculty'){throw new Exception('Faculty cannot delete other users');}
 
-            if ($userId === $currentUserId){throw new Exception('Cannot delete your own account');}            //~ delete user
+            /* if ($userId === $currentUserId){throw new Exception('Cannot delete your own account');} */ 
+            //~ allow self-deletion for master admin
+            if ($userId === $currentUserId && $currentUserRole === 'super_admin'){
+                $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE role = 'super_admin'");
+                $stmt->execute();
+                $superAdminCount = $stmt->fetchColumn();
+
+                if ($superAdminCount <= 1) {throw new Exception('Cannot delete the last master admin account');}
+            } else if ($userId === $currentUserId){throw new Exception('Cannot delete your own account');}
+
+            //~ delete user
             $pdo->beginTransaction();
             $stmt = $pdo->prepare("UPDATE audit_logs SET user_id = NULL WHERE user_id = ?");
             $stmt->execute([$userId]); //? delete from foreign key table
@@ -258,7 +268,9 @@ try {
 
             //~ log action
             logAction('user_delete', "Deleted user $userId", $currentUserId);
-            $pdo->commit();            echo json_encode(['success' => true, 'message' => 'User deleted']);
+            $pdo->commit();            
+            
+            echo json_encode(['success' => true, 'message' => 'User deleted']);
             break;
         
         default:
