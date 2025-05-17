@@ -16,8 +16,12 @@
     <link rel="stylesheet" href="../../assets/css/analytics/ResponseAnalysis.css">
     <!--? Comparison Style -->
     <link rel="stylesheet" href="../../assets/css/analytics/Comparison.css">
+    <!--? Graphs Style -->
+    <link rel="stylesheet" href="../../assets/css/analytics/reports.css">
     <!--? Reports Style -->
     <link rel="stylesheet" href="../../assets/css/analytics/reports.css">
+    <!--? Chart Style -->
+    <link rel="stylesheet" href="//cdn.datatables.net/2.3.1/css/dataTables.dataTables.min.css">
     <title>SDGKU analytics</title>
     <script src="../../assets/js/analytics/reports.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -186,7 +190,7 @@
 
                     <div class="analyticsGraphics">
                         <div id="panel1" class="panel visible">
-                            <div class="overview visible">
+                            <div class="overview visible"> 
                                 <!-- canvas que dio la profe: -->
                                 <!-- <canvas id="studentChart"></canvas> -->
 
@@ -216,67 +220,70 @@
                             </div>
                         </div>
 
+                        <!--? RESPONSE ANALYSIS -->
                         <div id="panel2" class="panel">
-                            <div class="responseAnalysis">
-                                <div class="comparisonContainer">
-                                    <!-- Filtros -->
-                                    <div class="comparisonFilter">
-                                        <div class="surveyComparison">
-                                            <h1>Response Analysis</h1>
-                                            <p>View average responses grouped by question or participant</p>
-                                        </div>
-                                        <div class="comparisonSelections">
-                                            <div class="courseSelect">
-                                                <label for="surveyChoice">
-                                                    <b>Select Survey</b>
-                                                </label>
-                                                <select name="surveyChoice" id="selectSurveyId">
-                                                    <option value="s0">CS101 - Course Evaluation</option>
-                                                    <option value="s1">Option 1</option>
-                                                    <option value="s2">Option 2</option>
-                                                    <option value="s3">Option 3</option>
-                                                    <option value="s4">Option 4</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="courseSelect">
-                                                <label for="dateRange">
-                                                    <b>Date Range</b>
-                                                </label>
-                                                <select name="dateRange" id="selectDateRangeId">
-                                                    <option value="last7">Last 7 Days</option>
-                                                    <option value="last30" selected>Last 30 Days</option>
-                                                    <option value="thisMonth">This Month</option>
-                                                    <option value="custom">Custom Range</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="courseSelect">
-                                                <label for="groupBy">
-                                                    <b>Group By</b>
-                                                </label>
-                                                <select name="groupBy" id="selectGroupById">
-                                                    <option value="question">Question</option>
-                                                    <option value="user">User</option>
-                                                    <option value="type">Type</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                            <div class="responseContainer">
+                                
+                                <!--~ Filters -->
+                                <div class="responseFilter">
+                                    <div class="surveyResponseHeader">
+                                        <h1>Response Analysis</h1>
+                                        <p>View average responses grouped by question or participant</p>
                                     </div>
 
-                                    <!-- Gráfico (vacío por ahora) -->
-                                    <div class="comparisonKnowledge">
-                                        <h1>Question Analysis</h1>
-                                        <p>Average ratings grouped by selected option</p>
-                                        <canvas id="responseAnalysisChart"></canvas>
+                                    <div class="responseSelections">
+                                        <div class="surveySelect">
+                                            <label for="surveyChoice"><b>Select Survey</b></label>
+                                            <select name="surveyChoice" id="selectSurveyId">
+                                                <option value="s0">CS101 - Course Evaluation</option>
+                                                <option value="s1">Option 1</option>
+                                                <option value="s2">Option 2</option>
+                                                <option value="s3">Option 3</option>
+                                                <option value="s4">Option 4</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="surveySelect">
+                                            <label for="dateRange"><b>Date Range</b></label>
+                                            <select name="dateRange" id="selectDateRangeId">
+                                                <option value="last7">Last 7 Days</option>
+                                                <option value="last30" selected>Last 30 Days</option>
+                                                <option value="thisMonth">This Month</option>
+                                                <option value="custom">Custom Range</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="groupBySelect">
+                                            <label for="groupBy"><b>Group By</b></label>
+                                            <select name="groupBy" id="selectGroupById">
+                                                <option value="question">Question</option>
+                                                <option value="user">User</option>
+                                                <option value="type">Type</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
 
+                                <!--~ Graph -->
+                                <div class="responseChartBox">
+                                    <h2>Question Analysis</h2>
+                                    <div class="subdued">Average ratings grouped by selected option</div>
+                                    <canvas id="responseAnalysisChart"></canvas>
+                                </div>
 
+                                <!--~ Table -->
+                                <div class="responseChartBox">
+                                    <h2>Response Analysis Table</h2>
+                                    <div class="subdued">Average ratings grouped by selected option</div>
+
+                                    <!--~ Table Content -->
+
+
+                                </div>
                             </div>
                         </div>
 
-                        <div id="panel3" class="panel"><!-- COMPARISON GRAPHICS -->
+                        <div id="panel3" class="panel"> <!-- COMPARISON GRAPHICS-->
                             <div class="comparisonContainer">
                                 <!-- Filtros -->
                                 <div class="comparisonFilter">
@@ -358,6 +365,8 @@
     <script src="../../assets/js/app/main.js"></script>
     <script src="../../assets/js/analytics/reports.js"></script>
     <script src="../../assets/js/analytics/analytics.js"></script>
+    <script src="../../assets/js/analytics/Response_Analysis.js"></script>
+    <script src="//cdn.datatables.net/2.3.1/js/dataTables.min.js"></script>
     <script src="../../assets/js/analytics/filters.js"></script>
     <script src="../../assets/js/auth/logout.js"></script>
     <script src="../../assets/js/app/user-profile.js"></script>
