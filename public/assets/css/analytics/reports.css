@@ -1,74 +1,30 @@
 .reportCardsContainer {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    padding: 20px;
+    width: 100%;
+    /* grid auto reductor responsive: */
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 20px;
+    padding: 10px;
+    padding-bottom: 100px;
 }
 
 .reportCard {
-    background: var(--neutral-light);
-    border-radius: 10px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-    padding: 1.2rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    transition: box-shadow 0.2s ease-in-out;
+    height: 300px!important;
+    width: 390px;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin-bottom: 1 rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s, transform 0.3s;
 }
 
 .reportCard:hover {
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
-}
-
-.reportTags {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-}
-
-.reportTag {
-    padding: 0.25rem 0.5rem;
-    border-radius: 5px;
-    font-size: 0.75rem;
-    font-weight: bold;
-    color: white;
-}
-
-.reportTag.pre-course {
-    background-color: #3498db;
-}
-
-.reportTag.teacher-eval {
-    background-color: var(--supplementary-color);
-}
-
-.reportTag.inactive {
-    background-color: var(--error-color);
-}
-
-.reportCard h4 {
-    margin: 0.5rem 0;
-    font-size: 1rem;
-    font-weight: bold;
-}
-
-.reportCard p {
-    font-size: 0.875rem;
-    color: #666;
-    margin-bottom: 0.5rem;
-}
-
-.reportCardDetails {
-    font-size: 0.8rem;
-    color: #777;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    margin-bottom: 1rem;
-}
-
-.reportCardDetails i {
-    margin-right: 5px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
 }
 
 .downloadBtn {
@@ -90,4 +46,94 @@
     .reportCardsContainer {
         grid-template-columns: 1fr;
     }
+}
+
+
+
+/* !------------------Cards--------------- */
+
+.principalInformation{
+    height: 100px!important;
+}
+/* cada survey de la lista */
+
+.reportCard h3{
+    font-size: large;
+}
+
+.surveyStatus p{
+    color: var(--success-color);
+    border-style: solid;
+    border-width: 1px;
+    height: 27px;
+    border-color: var(--success-color);
+    border-radius: 20px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+}
+/* type y status */
+.typeTitle p{
+    color: var(--neutral-light);
+    border-style: solid;
+    height: 27px;
+    border: 1px;
+    background-color:  rgb(99, 102, 241, 0.8);
+    /* border-color: var(--supplementary-dark); */
+    border-radius: 20px;
+    width: 67%;
+    display: flex;
+    justify-content: center;
+}
+
+.surveytitle{
+    width: 250px;
+}
+.activeTitleStatus{   
+    display: flex;
+    justify-content: center;
+    gap: 10%;
+}
+
+/*Estilos de botones actives*/
+/* ------------------------------------ */
+.actions{
+    display: flex;
+    justify-content: center;
+}
+
+.results-btn {    
+    padding: 0.5rem 1rem;
+    width: 150px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.results-btn:hover {
+    background-color: var(--primary-dominant);
+    transition: transform 0.2s ease-in-out;
+    color: var(--neutral-light);
+}
+
+.results-btn {
+    background-color: var(--secondary-dominant);
+    color:var(--neutral-light);
+    margin-left: 0.5rem;
+}
+
+.survey-details {
+    margin: 10px;;
+    display: flex;
+    flex-direction: column;
+    column-gap: 2rem;
+    color: var(--gray-500);
+    font-size: 0.9rem;
+}
+
+.reportCard.inactive .surveyStatus p {
+    color: var(--secondary-dominant); /* Rojo para inactive */
+    border-color: var(--secondary-dominant);
 }

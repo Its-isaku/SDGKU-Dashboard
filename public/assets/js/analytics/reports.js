@@ -13,29 +13,44 @@ async function fetchReports() {
     }
 }
 
-function renderReportCards(reportsData) {
+function renderReportCards(surveys) {
     const container = document.querySelector('.reports');
     container.innerHTML = ''; // limpiar
-
     const cardsWrapper = document.createElement('div');
     cardsWrapper.className = 'reportCardsContainer';
-
-    reportsData.forEach(report => {
+    
+    surveys.forEach(survey => {
         const card = document.createElement('div');
         card.className = 'reportCard';
-
+        if (survey.status.toLowerCase() === 'inactive') {
+            card.classList.add('inactive');
+        }
         card.innerHTML = `
-            <div class="reportTags">
-                <span class="reportTag">${report.type_name}</span>
-                <span class="reportTag inactive">Inactive</span>
+            <div class = "principalInformation">
+                <div class = "activeTitleStatus">
+                        <div class = "surveytitle">
+                            <div class = "typeTitle">
+                                <p>${survey.type}</p>
+                            </div>
+                        </div>
+                        <div class = "surveyStatus">
+                            <p>${survey.status}</p>
+                        </div>
+                    </div>
+                <h3>${survey.title}</h3>
             </div>
-            <h4>${report.title}</h4>
-            <p>${report.description}</p>
-            <div class="reportCardDetails">
-                <span><i class="fa-solid fa-calendar-plus"></i> Created: ${report.created_at}</span>
-                <span><i class="fa-solid fa-clipboard-list"></i> ${report.question_count} questions</span>
-            </div>
-            <button class="downloadBtn" data-id="${report.survey_id}">Download results</button>
+                <div class="survey-details">
+                    <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
+                    <span><i class="fa-solid fa-clock"></i> Expired: ${survey.expires}</span>
+                    <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} Questions</span>
+                    <span><i class="fa-solid fa-clipboard-list"></i> ${survey.responses} Responses</span>
+                    <span>Program: ${survey.program}</span>
+                </div>
+                <button class="downloadBtn" data-id="${survey.id}">Download results</button>
+                
+                
+                
+            
         `;
 
         cardsWrapper.appendChild(card);
