@@ -1,96 +1,167 @@
 .comparisonContainer {
-    height: 100%;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-    padding: 20px;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 20px;
 }
 
 .comparisonKnowledge {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    height: 500px;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: var(--border-radius);
-    background-color: var(--neutral-light);
-    box-shadow: var(--box-shadow);
-
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  min-height: 700px;
+  height: auto;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: var(--border-radius);
+  background-color: var(--neutral-light);
+  box-shadow: var(--box-shadow);
 }
 
+
 .comparisonFilter {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    height: auto;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: var(--border-radius);
-    background-color: var(--neutral-light);
-    box-shadow: var(--box-shadow);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  height: auto;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: var(--border-radius);
+  background-color: var(--neutral-light);
+  box-shadow: var(--box-shadow);
 
 }
 
 .comparisonKnowledge h1 {
-    font-size: var(--text-heading);
-    color: var(--neutral-dark);
+  font-size: var(--text-heading);
+  color: var(--neutral-dark);
 }
 
 .comparisonKnowledge p {
-    font-size: var(--text-subheading);
-    color: var(--neutral-dark);
+  font-size: var(--text-subheading);
+  color: var(--neutral-dark);
 }
 
 .applyFiltersBtn {
-    text-align: center;
-    width: 150px;
-    background-color: var(--secondary-dominant);
-    margin-top: 20px;
+  text-align: center;
+  width: 150px;
+  background-color: var(--secondary-dominant);
+  margin-top: 20px;
 }
 
 
 /* Comparison Filters */
 
 .surveyComparison h1 {
-    margin: 0;
-    font-size: var(--text-heading);
-    color: var(--neutral-dark);
+  margin: 0;
+  font-size: var(--text-heading);
+  color: var(--neutral-dark);
 }
 
 .comparisonSelections {
-    display: flex;
-    flex-direction: row;
-    gap: 25px;
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
 }
 
 .courseSelect {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .comparisonSelections select {
-    min-width: 200px;
-    width: 100%;
-    height: 30px;
-    border-radius: 5px;
+  min-width: 200px;
+  width: 100%;
+  height: 30px;
+  border-radius: 5px;
 }
 
 .comparisonContainer button {
-    text-align: center;
-    width: 150px;
-    background-color: var(--secondary-dominant);
+  text-align: center;
+  width: 150px;
+  background-color: var(--secondary-dominant);
 }
 
 .comparisonKnowledge canvas {
-    display: block;
-    margin: 0 auto;
-    width: 85% !important;
-    max-width: 700px;
-    height: 300px !important;
+  display: block;
+  margin: 0 auto;
+  width: 85% !important;
+  max-width: 900px;
+  height: 500px !important;
 }
+
+.comparison-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 20px;
+  gap: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+  padding-right: 4rem;
+}
+
+.chart-container {
+  flex: 0 0 70%;
+  max-width: 70%;
+}
+
+.cards-container {
+  flex: 0 0 30%;
+  max-width: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.stat-card .label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.stat-card.red p:last-child {
+  color: #e74c3c;
+}
+
+.stat-card.yellow p:last-child {
+  color: #f39c12;
+}
+
+.stat-card.green p:last-child {
+  color: #2ecc71;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  min-height: 110px;
+  min-width: 200px;
+  width: 100%; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+@media (max-width: 900px) {
+  .comparison-layout {
+    flex-direction: column;
+  }
+
+  .chart-container,
+  .cards-container {
+    width: 100%;
+  }
+}
+
