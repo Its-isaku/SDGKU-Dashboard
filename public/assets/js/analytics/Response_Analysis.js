@@ -117,6 +117,62 @@ const programs = [
             }
         ]
     },
+    {   
+        //* Dynamic Program Name
+        name: 'FSDI',
+
+        //* Table Conttent
+        measures: [
+            { //* Row 1
+                //* Static
+                type: 'Direct Measure',
+                target: '70% of students must receive a proficient (C grade) or distinguished evaluation (A or B grade) on relevant content criteria mapped to this PLO.',
+
+                //* Dynamic
+                observed: 58,
+                met: 55,
+                percent: '95%'
+            },
+            { //* Row 2
+                //* Static
+                type: 'Indirect Measure',
+                target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
+
+                //* Dynamic
+                observed: 15,
+                met: 15,
+                percent: '100%'
+            }
+        ]
+    },
+    {   
+        //* Dynamic Program Name
+        name: 'FSDI',
+
+        //* Table Conttent
+        measures: [
+            { //* Row 1
+                //* Static
+                type: 'Direct Measure',
+                target: '70% of students must receive a proficient (C grade) or distinguished evaluation (A or B grade) on relevant content criteria mapped to this PLO.',
+
+                //* Dynamic
+                observed: 58,
+                met: 55,
+                percent: '95%'
+            },
+            { //* Row 2
+                //* Static
+                type: 'Indirect Measure',
+                target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
+
+                //* Dynamic
+                observed: 15,
+                met: 15,
+                percent: '100%'
+            }
+        ]
+    },
 ];
 
 //? function to render the program tables
@@ -166,12 +222,13 @@ function renderProgramTables() {
         const tbody = document.createElement('tbody');
         program.measures.forEach(measure => {
             const tr = document.createElement('tr');
+            tr.className = 'tbodyContainer';
             tr.innerHTML = `
                 <td>${measure.type}</td>
                 <td>${measure.target}</td>
-                <td>${measure.observed}</td>
-                <td>${measure.met}</td>
-                <td>${measure.percent}</td>
+                <td><span class="analytics-number-badge observed">${measure.observed}</span></td>
+                <td><span class="analytics-number-badge met">${measure.met}</span></td>
+                <td><span class="analytics-number-badge percent">${measure.percent}</span></td>
             `;
             tbody.appendChild(tr);
         });

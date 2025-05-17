@@ -177,16 +177,111 @@
     background-color: white;
     border-radius: 10px;
     box-shadow: var(--box-shadow);
-    /* padding: 20px; */
     border: 1px solid var(--gray-300);
+    overflow: hidden;
+}
+
+.tableContainer table {
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    background: transparent;
+}
+
+.tableContainer td {
+    border-bottom: 1px solid var(--gray-300) !important;
+}
+
+.tableContainer tr:last-child td {
+    border-bottom: none !important;
 }
 
 .theadContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
+    padding: 0.75rem 1rem;
+    background: white;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--neutral-dark);
+}
+
+.theadContainer tr th {
+    border-bottom: 1px solid var(--gray-300) !important;
+}
+
+.theadContainer th {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--neutral-dark);
+    padding: 0.5rem 0.5rem;
+    background: transparent;
+    border-bottom: 2px solid var(--gray-300);
+    text-align: center;
+}
+
+.tbodyContainer {
+    padding: 0.75rem 1rem;
+    background: white;
+    font-size: 1rem;
+}
+
+.tbodyContainer td {
+    font-size: 1rem;
+    padding: 0.5rem 0.5rem;
+    background: transparent;
+    text-align: center;
+    border-bottom: 1px solid var(--gray-300) !important;
+}
+
+.tbodyContainer tr:last-child td {
+    border-bottom: none !important;
+}
+
+.analytics-number-highlight {
+    display: inline-block;
+    min-width: 48px;
+    padding: 0.25rem 0.75rem;
+    border-radius: 8px;
+    background: #f5faff;
+    border: 2px solid #2196f3;
+    color: #1565c0;
+    font-weight: bold;
+    font-size: 1.1rem;
+    box-shadow: 0 1px 4px rgba(33,150,243,0.08);
+    text-align: center;
+    margin: 0 auto;
+}
+
+.analytics-number-badge {
+    display: inline-block;
+    width: 70px;
+    min-width: 70px;
+    max-width: 70px;
+    height: 26px;
+    line-height: 26px;
+    padding: 0;
+    border-radius: 50px;
+    font-weight: 400;
+    font-size: 0.95rem;
+    color: white;
+    background-color: #6366f1; 
+    margin: 0 auto;
+    text-align: center;
+    vertical-align: middle;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+
+.analytics-number-badge.observed {
+    background-color: #6366f1; 
+}
+.analytics-number-badge.met {
+    background-color: #24A148; 
+}
+.analytics-number-badge.percent {
+    background-color: #f1c21b; 
+    color: #222;
 }
 
 /*~ Table Styles Media */
