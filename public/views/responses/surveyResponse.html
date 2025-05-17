@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/app/mainStyle.css">
+    <link rel="stylesheet" href="../../assets/css/responses/surveyResponse.css">
+    <title>SDGKU Survey</title>
+</head>
+<body>
+    <header class="surveyInterface">
+        <div class="logoInterface"><img src="../../assets/images/SDGKU_Full_Logo.png" alt=""></div>
+        <!-- <h1 class="headerTitleInterface">SDGKU Survey Platform</h1> -->
+    </header>
+
+    <main class="main-content">
+        <div class="survey-container">
+            <!--? survey content area -->
+            <div id="surveyContent">
+                <!--? survey header with title and description -->
+                <div class="survey-header">
+                    <h2 id="surveyTitle" class="surveyTitle">Loading survey...</h2>
+                    <p id="surveyDescription" class="surveyDescription"></p>
+                    <div class="survey-meta">
+                        <span id="expiryDate" class="expiry-date">
+                            <i class="fas fa-calendar-alt"></i> 
+                            <span id="expiryDateText"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <!--? survey response form -->
+                <form id="surveyResponseForm">
+                    <section class="formSection">
+                        <h3 class="sectionTitle">Your Information</h3>
+
+                        <!--? email input field -->
+                        <div class="formGroup">
+                            <label for="respondentEmail">Educational Email <span class="required">*</span></label>
+                            <input type="email" name="respondentEmail" id="respondentEmail" placeholder="your.user@sdgku.edu" required>
+                            <small class="helper-text">Please use your institutional email (@sdgku.edu)</small>
+                        </div>
+
+                        <!--? program-specific field (Cohort/Session) -->
+                        <div class="formGroup">
+                            <label id="cohortLabel" for="cohortSelect">Your Cohort <span class="required">*</span></label>
+                            <select id="cohortSelect" name="cohort" required>
+                                <option value="" disabled selected>Select your cohort</option>
+                            </select>
+                        </div>
+                    </section>
+
+                    <!--? survey questions will be loaded here -->
+                    <section class="formSection">
+                        <h3 class="sectionTitle">Survey Questions</h3>
+                        <div id="questionsContainer">
+                            <p class="loading-text">Loading questions...</p>
+                        </div>
+                    </section>
+
+                    <!--? submit button -->
+                    <div class="form-actions">
+                        <button type="submit" id="submitSurvey">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+            <!--? survey expired notice (hidden by default) -->
+            <div id="surveyExpired" class="expired-notice" style="display:none">
+                <h2>Survey Expired</h2>
+                <p>This survey is no longer accepting responses. Please contact your administrator if you have any questions.</p>
+            </div>
+
+            <!--? notifications -->
+            <div id="notification" class="notification"></div>
+        </div>
+    </main>
+
+    <script src="../../assets/js/responses/surveyResponse.js"></script>
+</body>
+</html>

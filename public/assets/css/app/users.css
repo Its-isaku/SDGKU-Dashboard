@@ -108,8 +108,11 @@ th {
 }
 
 .role-super_admin {
-    background-color: #6366f1; /* Indigo color */
+    background-color: #6366f1; /* indigo color */
     color: white;
+    /* background: transparent;
+    color: var(--neutral-dark);
+    border: 1px solid var(--neutral-dark); */
 }
 
 .role-admin {
