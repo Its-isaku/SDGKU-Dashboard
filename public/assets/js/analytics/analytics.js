@@ -83,7 +83,6 @@ async function loadAnalyticsStats() {
 document.addEventListener("DOMContentLoaded", () => {
     loadAnalyticsStats();
     renderAllCharts();
-    renderResponseAnalysisChart();
     renderComparisonChart();
     loadComparisonTable();
 });

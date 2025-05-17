@@ -1,4 +1,4 @@
-/*!  Cambier si se necesita alterar algo del main en el display */
+/* ? Dashboard Layout */
 .principalDashboard {
     box-sizing: border-box;
     margin-left: 250px;
@@ -7,7 +7,23 @@
     padding-top: 1rem;
     margin-left: 210px;
 }
+/*~ Dashboard Layout Media */
+@media (max-width: 960px) {
+    aside {
+        display: none;
+    }
+    .principalDashboard {
+        margin-left: 0 !important;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
 
+/**<--------------------------->*/
+
+/* ? Analytics Menu */
 .analyticsMenu {
     background-color: var(--gray-300);
     display: flex;
@@ -37,8 +53,22 @@
     font-weight: bold;
     width: 100%;
 }
+/*~ Analytics Menu Media */
+@media (max-width: 960px) {
+    .SurveyOptions {
+        flex-direction: column;
+        width: 100%;
+    }
+    .surveyOption {
+        width: 100%;
+        padding: 0.8rem;
+        text-align: center;
+    }
+}
 
-/* principal */
+/**<--------------------------->*/
+
+/* ? Principal Analytics */
 .principalAnalytics {
     display: flex;
     flex-direction: column;
@@ -55,7 +85,6 @@
 
 .analyticsMenu {
     height: 50px;
-
 }
 
 .analyticsGraphics {
@@ -83,7 +112,6 @@
 }
 
 .headInfo {
-
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -92,14 +120,17 @@
 
 .headInfo h2 {
     margin-bottom: 20px;
-
 }
 
 .surveyCards b {
     font-size: 30px;
 }
+/*~ Principal Analytics Media */
 
-/* Analytics Filters  */
+
+/**<--------------------------->*/
+
+/* ? Analytics Filters */
 .analyticsFilters {
     display: flex;
     flex-direction: column;
@@ -148,37 +179,40 @@
     width: 150px;
     background-color: var(--secondary-dominant);
 }
+/*~ Analytics Filters Media */
 
-/*? Menu Options */
 
-/* responseAnalysis */
+/**<--------------------------->*/
+
+/* ? Menu Options */
+.menuOption.selected {
+    background-color: var(--gray-200);
+    color: white;
+}
+/*~ Menu Options Media */
+
+
+/**<--------------------------->*/
+
+/* ? Panels & Containers */
 .responseAnalysis {
     width: 100%;
 }
 
-/*comparison  */
 .comparison {
     width: 100%;
 }
 
-/* reports */
 .reports {
     width: 100%;
 }
 
-
-/* Show and hide panels */
 .panel {
     display: none !important;
 }
 
 .panel.visible {
     display: block !important;
-}
-
-.menuOption.selected {
-    background-color: var(--gray-200);
-    color: white;
 }
 
 .tempWidth {
@@ -225,30 +259,7 @@
     width: 100% !important;
     height: 300px !important;
 }
+/*~ Panels & Containers Media */
 
-/* media */
 
-@media (max-width: 960px) {
-    aside {
-        display: none;
-    }
-
-    .principalDashboard {
-        margin-left: 0 !important;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .SurveyOptions {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .surveyOption {
-        width: 100%;
-        padding: 0.8rem;
-        text-align: center;
-    }
-}
+/**<--------------------------->*/

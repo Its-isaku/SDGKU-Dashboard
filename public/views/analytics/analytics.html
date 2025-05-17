@@ -215,7 +215,7 @@
                                 <div class="overviewCard">
                                     <h1>Rating Distribution</h1>
                                     <p>Distribution of ratings across evaluation surveys</p>
-                                    <canvas id="ratingDistributionChart"></canvas>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -233,32 +233,16 @@
 
                                     <div class="responseSelections">
                                         <div class="surveySelect">
-                                            <label for="surveyChoice"><b>Select Survey</b></label>
-                                            <select name="surveyChoice" id="selectSurveyId">
-                                                <option value="s0">CS101 - Course Evaluation</option>
-                                                <option value="s1">Option 1</option>
-                                                <option value="s2">Option 2</option>
-                                                <option value="s3">Option 3</option>
-                                                <option value="s4">Option 4</option>
+                                            <label for="programType"><b>Program Type</b></label>
+                                            <select name="programType" id="programTypeId">
+                                                <!--* Program Types from db -->
                                             </select>
                                         </div>
 
                                         <div class="surveySelect">
                                             <label for="dateRange"><b>Date Range</b></label>
                                             <select name="dateRange" id="selectDateRangeId">
-                                                <option value="last7">Last 7 Days</option>
-                                                <option value="last30" selected>Last 30 Days</option>
-                                                <option value="thisMonth">This Month</option>
-                                                <option value="custom">Custom Range</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="groupBySelect">
-                                            <label for="groupBy"><b>Group By</b></label>
-                                            <select name="groupBy" id="selectGroupById">
-                                                <option value="question">Question</option>
-                                                <option value="user">User</option>
-                                                <option value="type">Type</option>
+                                                <!--*  Trimester from db -->
                                             </select>
                                         </div>
                                     </div>
@@ -273,12 +257,31 @@
 
                                 <!--~ Table -->
                                 <div class="responseChartBox">
-                                    <h2>Response Analysis Table</h2>
-                                    <div class="subdued">Average ratings grouped by selected option</div>
+                                    <div class="responseHeader">
+                                        <h2>Response Analysis Table</h2>
+                                        <div class="subdued">Average ratings grouped by selected option</div>
+                                    </div>
 
                                     <!--~ Table Content -->
+                                    <div class="tableMain" id="responseAnalysisTable">
+                                        <!--* Table content from db -->
 
+                                    <!--<div class="tableContainer">
+                                            <table id="responseAnalysisTable" class="display">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Question</th>
+                                                        <th>Average</th>
+                                                        <th>Standard Deviation</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    
+                                                </tbody>
+                                            </table>
+                                        </div> -->
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
