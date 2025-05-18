@@ -355,7 +355,7 @@ function renderActiveSurveysAfterLeave(searchTerm = '') {
                         <div class="actions-container" onmouseleave="closeDropdown(this)">
                             <button class = "actions-btn" onclick="toggleDropdown(this)" >Actions</button>
                             <div class="dropdown  dropdown3">
-                                    <button class="dropdown-copyLink copy-link">Copy Access Link</button>
+                                    <button class="dropdown-copyLink copy-link" data-id="${survey.id}">Copy Access Link</button>
                                     <button class="dropdown-action duplicate-survey" data-id="${survey.id}">Duplicate</button>
                                     <button class="dropdown-action deactivate-survey" data-id="${survey.id}">Deactivate</button>
                             </div>
@@ -391,7 +391,7 @@ function renderActiveSurveysAfterLeave(searchTerm = '') {
                         <div class="actions-container" onmouseleave="closeDropdown(this)">
                             <button class = "actions-btn" onclick="toggleDropdown(this)" >Actions</button>
                             <div class="dropdown">
-                                    <button class="dropdown-copyLink copy-link">Copy Access Link</button>
+                                    <button class="dropdown-copyLink copy-link" data-id="${survey.id}">Copy Access Link</button>
                                     <button class="dropdown-action edit-survey" data-id="${survey.id}">Edit Survey</button>
                                     <button class="dropdown-action duplicate-survey" data-id="${survey.id}">Duplicate</button>
                                     <button class="dropdown-action deactivate-survey" data-id="${survey.id}">Deactivate</button>
@@ -757,19 +757,9 @@ document.addEventListener('click', function(e) {
     if (e.target.classList.contains('copy-link')) {
         e.preventDefault();
         e.stopPropagation();
-        const surveyItem = e.target.closest('.survey-item');
-        if (surveyItem) {
-            const surveyId = surveyItem.querySelector('.edit-survey')?.getAttribute('data-id');
-            
-            // fetch(`/SDGKU-Dashboard/src/models/mySurveys.php?action=getAccessLink&id=${surveyId}`)
-            //     .then(res => res.json())
-            //     .then(data => {
-            //         openAccessLinkModal(surveyId, data.accessLink);
-            // });
-            
-            if (surveyId) {
-                openAccessLinkModal(surveyId);
-            }
+        const surveyId = e.target.getAttribute('data-id');
+        if (surveyId) {
+            openAccessLinkModal(surveyId);
         }
     }
     //* Delete Inactive Survey
