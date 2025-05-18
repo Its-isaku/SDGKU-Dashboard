@@ -79,7 +79,7 @@ async function getAndStorePrograms(programTypeId) {
 }
 
 //! <|-------------------------------- Filter Logic --------------------------------|>
-//? Full select with years 
+//? Fill select with years 
 document.addEventListener('DOMContentLoaded', function() {
         const select = document.getElementById('selectYearRangeId');
         
@@ -137,6 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("ID: ", programTypeId);
         renderResponseAnalysisChart();
         }else{
+            //!Notificacion
             console.warn("Please Select Year");
         }
         

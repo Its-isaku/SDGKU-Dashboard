@@ -67,14 +67,32 @@
     border-radius: 5px;
 }
 
+.dateSelect {
+    display: flex;
+    flex-direction: row;
+    padding-top: 1rem;
+    gap: 2rem;
+}
+
+.dateItem {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
 /*~ Selections Media */
 
 /*? Submit Button */
 
 .submitFilter{
-    background-color: red;
-    width: 200px;
-    margin-top: 20px;
+    background-color: var(--secondary-dominant);
+    color: var(--neutral-light);
+    width: 150px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+    padding: 0 !important;
 
 }
 /**<--------------------------->*/
@@ -289,6 +307,11 @@
 .analytics-number-badge.percent {
     background-color: #f1c21b; 
     color: #222;
+}
+
+.analytics-program-badge {
+    color: var(--secondary-dominant) !important;
+    font-size: var(--text-subheading);
 }
 
 /*~ Table Styles Media */
