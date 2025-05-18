@@ -248,7 +248,7 @@
     border-style: solid;
     height: 27px;
     border: 1px;
-    background-color:  rgb(99, 102, 241, 0.8);
+    background-color:  rgb(244, 151, 29, 0.8);
     /* border-color: var(--supplementary-dark); */
     border-radius: 20px;
     width: 67%;
@@ -260,7 +260,7 @@
     border-style: solid;
     height: 27px;
     border: 1px;
-    background-color: rgb(244, 151, 29, 0.8);
+    background-color: var(--gray-400);
 
     border-radius: 20px;
     width: 67%;
@@ -280,7 +280,7 @@
 .dropdown {
     position: fixed;
     /* posicion en y */
-    top: 90px;
+    top: 94px;
     /* posicion en x */
     left: 40px;
     background: white;
@@ -294,7 +294,7 @@
     
 }
 .dropdown3{
-    top: 190px;
+    top: 194px;
 }
 .dropdown button {
     padding: 10px 16px;
