@@ -1,26 +1,185 @@
 //! <|-------------------------------- Fetch Logic --------------------------------|>
+let totalLinkert5 = [];
+let totalPrograms = [];
+let programsList= [];
 
 
+function getByProgramType(programTypeId, startDate, endDate) {
+    const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
+    url.searchParams.append('action', 'getByProgramTypes');
+    url.searchParams.append('program_type_id', programTypeId);
+    url.searchParams.append('start_date', startDate);
+    url.searchParams.append('end_date', endDate);
 
+    return fetch(url.toString())
+        .then(res => {
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            return res.json();
+        })
+        .then(data => {
+            if (data.status === 'success') {
+                let suma = 0;
+                let total = 0;
+                let avg = 0;
 
+                if (data.data.length > 0) {
+                    suma = parseInt(data.data[0].sumaLinkert5) || 0;
+                    total = parseInt(data.data[0].total_Programa) || 1; 
+                    avg = parseFloat(suma / total); 
+                }
+                totalLinkert5.push(suma);
+                totalPrograms.push(total);
+                dbValues.push(avg); 
+                return {
+                    totalLinkert5: [...totalLinkert5],
+                    totalPrograms: [...totalPrograms],
+                    dbValues: [...dbValues] 
+                };
+            }
+            throw new Error(data.message || 'Error fetching data');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            totalLinkert5.push(0);
+            totalPrograms.push(0);
+            dbValues.push(0);
+            return {
+                totalLinkert5: [...totalLinkert5],
+                totalPrograms: [...totalPrograms],
+                dbValues: [...dbValues]
+            };
+        });
+}
+
+async function getAndStorePrograms(programTypeId) {
+    try {
+        const response = await fetch(`/SDGKU-Dashboard/src/models/Response_analysis.php?action=getPrograms&program_type_id=${programTypeId}`);
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            programsList.length = 0;
+            programsList.push(...data.data.map(item => ({
+                id: item.prog_id,
+                program: item.name
+            })));
+            
+            data.data.forEach(e=>{
+                dbLabels.push(e.name);
+            });
+
+            
+            return programsList;
+        }
+        throw new Error(data.message || 'Error en los datos');
+    } catch (error) {
+        console.error("Error:", error);
+        programsList = [];
+        throw error;
+    }
+}
 
 //! <|-------------------------------- Filter Logic --------------------------------|>
+//? Full select with years 
+document.addEventListener('DOMContentLoaded', function() {
+        const select = document.getElementById('selectYearRangeId');
+        
+        const currentYear = new Date().getFullYear();
+        const startYear = 2020;
+        for (let year = currentYear; year >= startYear; year--) {
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            select.appendChild(option);
+        }
+    });
 
+//?--submit btn listener 
+document.addEventListener('DOMContentLoaded', function () {
+    const boton = document.getElementById('submitFilterbtn');
+    boton.addEventListener('click', async function () {
+        console.log('¡Botón clickeado!');
+        const selectRange = document.getElementById('selectDateRangeId');
+        const selectYear = document.getElementById('selectYearRangeId');
+        const valorRange = selectRange.value;
+        const TypeIndex = selectYear.selectedIndex;
+        const index = selectRange.selectedIndex;
+        const valorYear = selectYear.value;
+        let programTypeId;
+        let startDateSelect;
+        let endDateSelect;
+        let startDateMonths;
+        let endDateMonths;
+        if(TypeIndex!=0){
+        programTypeId =confirmSelection();
+        if (index === 0) {
+            startDateMonths = '-01-01';
+            endDateMonths = '-12-31';
+        }else if (index === 1) {
+            startDateMonths = '-01-01';
+            endDateMonths = '-03-31';
+        } else if (index === 2) {
+            startDateMonths = '-04-01';
+            endDateMonths = '-06-30';
+        } else if (index === 3) {
+            startDateMonths = '-07-01';
+            endDateMonths = '-09-30';
+        } else if (index === 4) {
+            startDateMonths = '-10-01';
+            endDateMonths = '-12-31';
+        }
+        await getAndStorePrograms(programTypeId)
+        startDateSelect = `${valorYear}${startDateMonths}`;
+        endDateSelect = `${valorYear}${endDateMonths}`;
+            await Promise.all(
+        programsList.map(p => getByProgramType(p.id, startDateSelect, endDateSelect))
+    );
+        console.log("DATES: ", startDateSelect, endDateSelect);
+        console.log("ID: ", programTypeId);
+        renderResponseAnalysisChart();
+        }else{
+            console.warn("Please Select Year");
+        }
+        
+    });
+});
+//?--Confirmation
+function confirmSelection(){
+        const selectType = document.getElementById('programTypeId');
+        const valorType = selectType.value;
+
+        totalLinkert5 = [];
+        totalPrograms = [];
+        programsList= [];
+        dbLabels = [];
+        dbValues = [];
+            if (valorType === 'opcion1') {
+                return  1;
+            } else if (valorType === 'opcion2') {
+                return  2;
+            } else if (valorType === 'opcion3') {
+                return 3;
+            } else {
+                console.warn("No se seleccionó un tipo válido");
+                return; 
+            }
+}
 
 
 //! <|-------------------------------- Graph Logic --------------------------------|>
 //? Testing Data
-    const dbLabels = ['MSIM', 'MSCT', 'BSGM', 'FSDI', 'MSIM', 'MSCT'];
-    const dbValues = [4.37, 4.79, 4.69, 4.38, 4.37, 4.79];
+    let dbLabels= [];
+    let dbValues = [];
 
 //? Render the Response Analysis Chart
 function renderResponseAnalysisChart() {
-
+    
+    console.log("promedios actualizados: ", dbValues);
+    // const dbValues = JSON.stringify(dbValues2);
     //* Check if the canvas element exists
     const ctx = document.getElementById('responseAnalysisChart').getContext('2d');
     const labels = dbLabels;
     const values = dbValues;
-
+    console.log("Values:",values);
     
 
     //* Create a vertical red gradient for the bars
@@ -60,7 +219,7 @@ function renderResponseAnalysisChart() {
             },
             scales: {
                 y: {  //* Adjust the y-axis scale */
-                    min: 4.0,
+                    min: 1.0,
                     max: 5.0,
                     ticks: {
                         stepSize: 0.1
