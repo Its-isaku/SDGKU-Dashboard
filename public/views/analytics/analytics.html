@@ -235,14 +235,28 @@
                                         <div class="surveySelect">
                                             <label for="programType"><b>Program Type</b></label>
                                             <select name="programType" id="programTypeId">
+                                                <option value="opcion">Please select program type</option>
+                                                <option value="opcion1">Certificate Program</option>
+                                                <option value="opcion2">Bachelors</option>
+                                                <option value="opcion3">Masters</option>
                                                 <!--* Program Types from db -->
                                             </select>
+                                            <button class="submitFilter" id="submitFilterbtn">Submit</button>
                                         </div>
 
                                         <div class="surveySelect">
+                                            <label for="yearRange"><b>Year Range</b></label>
+                                            <select name="yearRange" id="selectYearRangeId">
+                                                <option value="opcion">Please select year</option>
+                                                <!--*  Trimester from db -->
+                                            </select>
                                             <label for="dateRange"><b>Date Range</b></label>
                                             <select name="dateRange" id="selectDateRangeId">
-                                                <!--*  Trimester from db -->
+                                                <option value="opcion1">Please select date range</option>
+                                                <option value="opcion2">January - March</option>
+                                                <option value="opcion3">April - June</option>
+                                                <option value="opcion4">July - September</option>
+                                                <option value="opcion5">October - December</option>
                                             </select>
                                         </div>
                                     </div>

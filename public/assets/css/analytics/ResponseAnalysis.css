@@ -69,7 +69,14 @@
 
 /*~ Selections Media */
 
+/*? Submit Button */
 
+.submitFilter{
+    background-color: red;
+    width: 200px;
+    margin-top: 20px;
+
+}
 /**<--------------------------->*/
 
 /* ? Chart Placeholder */
