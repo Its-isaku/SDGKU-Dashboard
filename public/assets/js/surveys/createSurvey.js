@@ -184,6 +184,9 @@ function createQuestionForm(id) {
     container.className = 'QuestionContent';
     container.id = `QuestionContent${id}`;
 
+    // Generate a unique identifier for this question form
+    const uniqueId = `q_${Date.now()}_${Math.floor(Math.random()*100000)}`;
+
     container.innerHTML =  /* HTML */ ` 
 
         <!--* Question title and type selection UI -->
@@ -217,7 +220,7 @@ function createQuestionForm(id) {
                     <div class="QuestionInput optionInput"> 
                         <div class="CorrectAnswerContainer correctAnswer">
                             <label>
-                                <input type="radio" name="correctAnswer${id}" class="correctAnswerRadio">
+                                <input type="radio" name="correctAnswer_${uniqueId}" class="correctAnswerRadio">
                             </label>
                         </div>
                         <input type="text" placeholder="Enter option" required>
@@ -227,7 +230,7 @@ function createQuestionForm(id) {
                     <div class="QuestionInput optionInput">
                         <div class="CorrectAnswerContainer correctAnswer">
                             <label>
-                                <input type="radio" name="correctAnswer${id}" class="correctAnswerRadio">
+                                <input type="radio" name="correctAnswer_${uniqueId}" class="correctAnswerRadio">
                             </label>
                         </div>
                         <input type="text" placeholder="Enter option" required>
@@ -242,11 +245,11 @@ function createQuestionForm(id) {
             <h4>Grade</h4>
 
             <div class="gradeContainer">
-                <label><input type="radio" name="gradeOption${id}" value="1">Strongly Disagree</label>
-                <label><input type="radio" name="gradeOption${id}" value="2">Disagree</label>
-                <label><input type="radio" name="gradeOption${id}" value="3">Neutral</label>
-                <label><input type="radio" name="gradeOption${id}" value="4">Agree</label>
-                <label><input type="radio" name="gradeOption${id}" value="5">Strongly Agree</label>
+                <label><input type="radio" name="gradeOption_${uniqueId}" value="1">Strongly Disagree</label>
+                <label><input type="radio" name="gradeOption_${uniqueId}" value="2">Disagree</label>
+                <label><input type="radio" name="gradeOption_${uniqueId}" value="3">Neutral</label>
+                <label><input type="radio" name="gradeOption_${uniqueId}" value="4">Agree</label>
+                <label><input type="radio" name="gradeOption_${uniqueId}" value="5">Strongly Agree</label>
             </div>
         </div>
 
@@ -255,9 +258,9 @@ function createQuestionForm(id) {
             <h4>Grade</h4>
 
             <div class="gradeContainer">
-                <label><input type="radio" name="gradeOption${id}" value="1">Disagree</label>
-                <label><input type="radio" name="gradeOption${id}" value="2">Neutral</label>
-                <label><input type="radio" name="gradeOption${id}" value="3">Agree</label>
+                <label><input type="radio" name="gradeOption_${uniqueId}" value="1">Disagree</label>
+                <label><input type="radio" name="gradeOption_${uniqueId}" value="2">Neutral</label>
+                <label><input type="radio" name="gradeOption_${uniqueId}" value="3">Agree</label>
             </div>
         </div>
 
@@ -275,8 +278,8 @@ function createQuestionForm(id) {
             <P class="answerDiscpription">Select the correct answer</P>
 
             <div class="TrueFalseContainer">
-                <label><input type="radio" name="trueFalse${id}" value=1>True</label>
-                <label><input type="radio" name="trueFalse${id}" value=0>False</label>
+                <label><input type="radio" name="trueFalse_${uniqueId}" value=1>True</label>
+                <label><input type="radio" name="trueFalse_${uniqueId}" value=0>False</label>
             </div>
         </div>
 
@@ -310,7 +313,7 @@ function createQuestionForm(id) {
 
             <div class="CorrectAnswerContainer correctAnswer">
                 <label>
-                    <input type="radio" name="correctAnswer${id}" class="correctAnswerRadio">
+                    <input type="radio" name="correctAnswer_${uniqueId}" class="correctAnswerRadio">
                 </label>
             </div>
             <input type="text" placeholder="Enter option" required>
