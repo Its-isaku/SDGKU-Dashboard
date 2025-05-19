@@ -1,3 +1,4 @@
+/* ? Layout Containers */
 .comparisonContainer {
   height: 100%;
   width: 100%;
@@ -10,59 +11,71 @@
   padding: 20px;
 }
 
-.comparisonKnowledge {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  min-height: 700px;
-  height: auto;
-  width: 100%;
-  box-sizing: border-box;
-  border-radius: var(--border-radius);
-  background-color: var(--neutral-light);
-  box-shadow: var(--box-shadow);
-}
+/*~ Layout Containers Media */
 
+/**<--------------------------->*/
 
+/* ? Filter Box */
 .comparisonFilter {
   display: flex;
   flex-direction: column;
   padding: 20px;
-  height: auto;
-  width: 100%;
-  box-sizing: border-box;
-  border-radius: var(--border-radius);
   background-color: var(--neutral-light);
+  border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
+  border: 1px solid var(--gray-300);
+  gap: 1rem;
 
 }
 
-.comparisonKnowledge h1 {
-  font-size: var(--text-heading);
-  color: var(--neutral-dark);
+.comparisonFilter label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
-.comparisonKnowledge p {
-  font-size: var(--text-subheading);
-  color: var(--neutral-dark);
+.comparisonFilter select {
+  min-width: 200px;
+  width: 100%;
+  height: 30px;
+  border-radius: 5px;
 }
 
-.applyFiltersBtn {
-  text-align: center;
-  width: 150px;
-  background-color: var(--secondary-dominant);
-  margin-top: 20px;
+/*~ Filter Box Media */
+@media (max-width: 900px) {
+  .comparisonFilter {
+    width: 100%;
+  }
 }
 
+/**<--------------------------->*/
 
-/* Comparison Filters */
-
-.surveyComparison h1 {
-  margin: 0;
-  font-size: var(--text-heading);
-  color: var(--neutral-dark);
+/* ? Header */
+.surveyComparisonHeader h1 {
+    font-size: var(--text-heading);
+    color: var(--neutral-dark);
+    margin: 0;
 }
 
+.surveyComparisonHeader p {
+    font-size: var(--text-subheading);
+    color: var(--neutral-dark);
+    margin: 0;
+}
+
+/*~ Header Media */
+@media (max-width: 900px) {
+  .surveyComparisonHeader h1 {
+    font-size: 1.5rem;
+  }
+
+  .surveyComparisonHeader p {
+    font-size: 1rem;
+  }
+}
+
+/**<--------------------------->*/
+
+/* ? Selections */
 .comparisonSelections {
   display: flex;
   flex-direction: row;
@@ -82,10 +95,51 @@
   border-radius: 5px;
 }
 
-.comparisonContainer button {
-  text-align: center;
-  width: 150px;
-  background-color: var(--secondary-dominant);
+.programSelect {
+    display: flex;
+    flex-direction: row;
+    padding-top: 1rem;
+    gap: 2rem;
+}
+
+.programItem {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/*~ Selections Media */
+@media (max-width: 900px) {
+  .comparisonSelections {
+    flex-direction: column;
+  }
+
+  .courseSelect {
+    width: 100%;
+  }
+}
+
+/**<--------------------------->*/
+
+/* ? Chart Box */
+.comparisonKnowledge {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  min-height: 700px;
+  height: auto;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: var(--border-radius);
+  background-color: var(--neutral-light);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--gray-300);
+}
+
+.comparisonChartBox h2 {
+    font-size: 1.2rem;
+    color: var(--neutral-dark);
+    margin-bottom: 10px;
 }
 
 .comparisonKnowledge canvas {
@@ -96,6 +150,16 @@
   height: 500px !important;
 }
 
+/*~ Chart Box Media */
+@media (max-width: 900px) {
+  .comparisonChartBox h2 {
+    font-size: 1rem;
+  }
+}
+
+/**<--------------------------->*/
+
+/* ? Stat Cards */
 .comparison-layout {
   display: flex;
   justify-content: space-between;
@@ -143,7 +207,7 @@
   background: #fff;
   border-radius: 1rem;
   padding: 1.5rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--box-shadow);
   text-align: center;
   min-height: 110px;
   min-width: 200px;
@@ -151,14 +215,22 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border: 1px solid var(--gray-300);
 }
 
+/*~ Stat Cards Media */
+@media (max-width: 900px) {
+  .stat-card {
+    min-width: 100%;
+  }
+}
+
+/**<--------------------------->*/
 
 @media (max-width: 900px) {
   .comparison-layout {
     flex-direction: column;
   }
-
   .chart-container,
   .cards-container {
     width: 100%;

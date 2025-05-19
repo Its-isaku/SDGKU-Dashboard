@@ -1,13 +1,35 @@
-document.addEventListener("DOMContentLoaded", () => {
-    if (document.getElementById('panel3')) {
-        renderComparisonChart();
-        loadComparisonTable();
-    }
-});
+//! <|-------------------------------- Global Variables --------------------------------|>
 
+//? Variables to store the data for the chart
+let dbPreSurveyId = 0
+let dbPostSurveyId = 0
+
+//! <|-------------------------------- Notification Logic --------------------------------|>
+
+//? notification Logic
+function showNotification(message, type = 'success') {
+    const notification = document.getElementById('notification');
+    if (!notification) return;
+    notification.textContent = message;
+    notification.className = `notification ${type}`;
+    notification.style.display = 'block';
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 3000);
+}
+
+//! <|-------------------------------- Filter Logic --------------------------------|>
+
+
+//! <|-------------------------------- Chart Logic --------------------------------|>
+
+
+
+//? Chart.js Initialization
 async function renderComparisonChart() {
-    const preSurveyId = document.getElementById("selectCourseId").value;
-    const postSurveyId = document.getElementById("selectTypeId").value;
+    const preSurveyId = dbPreSurveyId
+    const postSurveyId = dbPostSurveyId
+    
     const ctx = document.getElementById('comparisonChart').getContext('2d');
 
     try {
@@ -77,7 +99,6 @@ async function renderComparisonChart() {
                         }
                     }
                 }
-
             }
         });
     } catch (error) {
@@ -85,27 +106,31 @@ async function renderComparisonChart() {
     }
 }
 
+//! <|-------------------------------- Table Logic --------------------------------|>
 
+//? Table Rendering
 async function loadComparisonTable() {
-    const preSurveyId = document.getElementById("selectCourseId").value;
-    const postSurveyId = document.getElementById("selectTypeId").value;
+    const preSurveyId = dbPreSurveyId
+    const postSurveyId = dbPostSurveyId
 
     if (!preSurveyId || !postSurveyId) return;
 
     try {
-        const response = await fetch(`../../../src/models/get_survey_comparison.php?pre_survey_id=${preSurveyId}&post_survey_id=${postSurveyId}`);
+        const response = await fetch(`../../../src/models/get_comparison_chart_data.php?pre_survey_id=${preSurveyId}&post_survey_id=${postSurveyId}`);
         const result = await response.json();
 
         if (result.status === 'success') {
             const tbody = document.querySelector("#comparisonResultsTable tbody");
-            tbody.innerHTML = `
-                <tr>
-                    <td>Overall</td>
-                    <td>${result.data.pre_avg}</td>
-                    <td>${result.data.post_avg}</td>
-                    <td>${result.data.change}%</td>
-                </tr>
-            `;
+            if (tbody) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td>Overall</td>
+                        <td>${result.data.pre_avg}</td>
+                        <td>${result.data.post_avg}</td>
+                        <td>${result.data.change}%</td>
+                    </tr>
+                `;
+            }
         } else {
             console.error("Error:", result.message);
         }
@@ -114,3 +139,10 @@ async function loadComparisonTable() {
     }
 }
 
+//! <|-------------------------------- Load Logic --------------------------------|>
+document.addEventListener("DOMContentLoaded", () => {
+    if (document.getElementById('panel3')) {
+        renderComparisonChart();
+        loadComparisonTable();
+    }
+});

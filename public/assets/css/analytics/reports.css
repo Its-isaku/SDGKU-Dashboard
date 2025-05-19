@@ -1,18 +1,16 @@
 .reportCardsContainer {
     display: grid;
     width: 100%;
-    /* grid auto reductor responsive: */
-    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     padding: 10px;
     padding-bottom: 100px;
+    gap: 1rem;
 }
 
 .reportCard {
     display: flex;
     flex-direction: column;
     height: 300px!important;
-    width: 390px;
     border: 1px solid #ddd;
     padding: 1rem;
     margin-bottom: 1 rem;

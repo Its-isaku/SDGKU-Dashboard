@@ -1,6 +1,20 @@
-async function fetchReports() {
+function showNotification(message, type = 'success') {
+    const notification = document.getElementById('notification');
+    if (!notification) return;
+    notification.textContent = message;
+    notification.className = `notification ${type}`;
+    notification.style.display = 'block';
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 3000);
+}
+
+//! <|----------------------- Download Logic -----------------------|>
+
+// ? Descarga el reporte en formato CSV
+async function downloadCSV() {
     try {
-        const response = await fetch('../../../src/models/get_reports.php');
+        const response = await fetch('../../../src/models/report_Downloads.php');
         const result = await response.json();
 
         if (result.status === 'success') {
@@ -13,9 +27,18 @@ async function fetchReports() {
     }
 }
 
+// ? Descarga el reporte en formato EXCEL
+
+
+// ? Descarga el reporte en formato PDF
+
+
+//! <----------------------- Render Cards Logic ----------------------->
+
+// ? Renderiza las tarjetas de los reportes
 function renderReportCards(surveys) {
     const container = document.querySelector('.reports');
-    container.innerHTML = ''; // limpiar
+    container.innerHTML = ''; 
     const cardsWrapper = document.createElement('div');
     cardsWrapper.className = 'reportCardsContainer';
     
@@ -47,12 +70,7 @@ function renderReportCards(surveys) {
                     <span>Program: ${survey.program}</span>
                 </div>
                 <button class="downloadBtn" data-id="${survey.id}">Download results</button>
-                
-                
-                
-            
         `;
-
         cardsWrapper.appendChild(card);
     });
 
@@ -60,11 +78,69 @@ function renderReportCards(surveys) {
     attachDownloadListeners();
 }
 
+//! <----------------------- MOodal Logic ----------------------->
 function attachDownloadListeners() {
     document.querySelectorAll('.downloadBtn').forEach(btn => {
-        btn.addEventListener('click', async () => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation(); 
             const surveyId = btn.getAttribute('data-id');
-            window.location.href = `../../../src/models/export_survey_csv.php?id=${surveyId}`;
+            openReportDownloadModal(surveyId);
         });
     });
 }
+
+const reportDownloadModal = document.getElementById('report-download-modal');
+const downloadCSVBtn = document.getElementById('download-CSV');
+const downloadExelBtn = document.getElementById('download-Exel');
+const downloadPDFBtn = document.getElementById('download-PDF');
+const downloadReportIdInput = document.getElementById('downloadReportId');
+const closeDownloadModalBtns = document.querySelectorAll('#report-download-modal .close-modal, #report-download-modal .btn-cancel');
+
+function openReportDownloadModal(surveyId) {
+    if (downloadReportIdInput) downloadReportIdInput.value = surveyId;
+    if (reportDownloadModal) reportDownloadModal.style.display = 'flex';
+}
+
+function closeReportDownloadModal() {
+    if (reportDownloadModal) reportDownloadModal.style.display = 'none';
+}
+
+//? Attach close events
+function setupDownloadModalEvents() {
+    const closeDownloadModalBtns = document.querySelectorAll('#report-download-modal .close-modal, #report-download-modal .btn-cancel');
+    closeDownloadModalBtns.forEach(btn => {
+        btn.addEventListener('click', closeReportDownloadModal);
+    });
+    //? Cerrar modal al hacer click fuera
+    window.addEventListener('click', (e) => {
+        const reportDownloadModal = document.getElementById('report-download-modal');
+        if (e.target === reportDownloadModal) closeReportDownloadModal();
+    });
+    //? Descargar CSV
+    const downloadCSVBtn = document.getElementById('download-CSV');
+    if (downloadCSVBtn) {
+        downloadCSVBtn.addEventListener('click', () => {
+            const surveyId = document.getElementById('downloadReportId').value;
+            window.location.href = `../../../src/models/export_survey_csv.php?id=${surveyId}`;
+            closeReportDownloadModal();
+        });
+    }
+    //? Descargar EXEL
+    const downloadExelBtn = document.getElementById('download-Exel');
+    if (downloadExelBtn) {
+        downloadExelBtn.addEventListener('click', () => {
+            showNotification('Función de descarga de EXEL pendiente', 'error');
+        });
+    }
+    //? Descargar PDF
+    const downloadPDFBtn = document.getElementById('download-PDF');
+    if (downloadPDFBtn) {
+        downloadPDFBtn.addEventListener('click', () => {
+            showNotification('Función de descarga de PDF pendiente' , 'error');
+        });
+    }
+}
+
+//? Llama a esta función una sola vez al cargar el archivo JS
+setupDownloadModalEvents();

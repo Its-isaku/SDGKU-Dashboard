@@ -1,3 +1,17 @@
+//! <|-------------------------------- Notification Logic --------------------------------|>
+
+//? notification Logic
+function showNotification(message, type = 'success') {
+    const notification = document.getElementById('notification');
+    if (!notification) return;
+    notification.textContent = message;
+    notification.className = `notification ${type}`;
+    notification.style.display = 'block';
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 3000);
+}
+
 //! <|-------------------------------- Fetch Logic --------------------------------|>
 let totalLinkert5 = [];
 let totalPrograms = [];
@@ -72,7 +86,7 @@ async function getAndStorePrograms(programTypeId) {
         }
         throw new Error(data.message || 'Error en los datos');
     } catch (error) {
-        console.error("Error:", error);
+        showNotification("Error:", error);
         programsList = [];
         throw error;
     }
@@ -133,54 +147,52 @@ document.addEventListener('DOMContentLoaded', function () {
             await Promise.all(
         programsList.map(p => getByProgramType(p.id, startDateSelect, endDateSelect))
     );
-        console.log("DATES: ", startDateSelect, endDateSelect);
-        console.log("ID: ", programTypeId);
         renderResponseAnalysisChart();
         }else{
             //!Notificacion
-            console.warn("Please Select Year");
+            showNotification("Please select a year", "error");
         }
         
     });
 });
 //?--Confirmation
 function confirmSelection(){
-        const selectType = document.getElementById('programTypeId');
-        const valorType = selectType.value;
+    const selectType = document.getElementById('programTypeId');
+    const valorType = selectType.value;
 
-        totalLinkert5 = [];
-        totalPrograms = [];
-        programsList= [];
-        dbLabels = [];
-        dbValues = [];
-            if (valorType === 'opcion1') {
-                return  1;
-            } else if (valorType === 'opcion2') {
-                return  2;
-            } else if (valorType === 'opcion3') {
-                return 3;
-            } else {
-                console.warn("No se seleccionó un tipo válido");
-                return; 
-            }
+    totalLinkert5 = [];
+    totalPrograms = [];
+    programsList= [];
+    dbLabels = [];
+    dbValues = [];
+    if (!valorType || valorType === 'default') {
+        showNotification("Please select a program type", "error");
+        return;
+    }
+    if (valorType === 'opcion1') {
+        return  1;
+    } else if (valorType === 'opcion2') {
+        return  2;
+    } else if (valorType === 'opcion3') {
+        return 3;
+    } else {
+        showNotification("Please select a program type", "error");
+        return; 
+    }
 }
 
 
 //! <|-------------------------------- Graph Logic --------------------------------|>
-//? Testing Data
+//? Variables to store the data for the chart
     let dbLabels= [];
     let dbValues = [];
 
 //? Render the Response Analysis Chart
 function renderResponseAnalysisChart() {
-    
-    console.log("promedios actualizados: ", dbValues);
-    // const dbValues = JSON.stringify(dbValues2);
     //* Check if the canvas element exists
     const ctx = document.getElementById('responseAnalysisChart').getContext('2d');
     const labels = dbLabels;
     const values = dbValues;
-    console.log("Values:",values);
     
 
     //* Create a vertical red gradient for the bars
@@ -357,6 +369,7 @@ function renderProgramTables() {
         titleContainer.className = 'titleContainer';
         const title = document.createElement('h3');
         title.textContent = program.name;
+        title.className = 'analytics-program-badge';
         titleContainer.appendChild(title);
         tableContainer.appendChild(titleContainer);
 

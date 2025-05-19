@@ -1,4 +1,5 @@
 <?php
+//! <|-------------------------------- Config & Headers --------------------------------|>
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -6,7 +7,6 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . '/../config/config.php';
 header('Content-Type: application/json');
-
 
 //! <|-------------------------------- Filter Logic --------------------------------|>
 //?-----Get totala amount of linkert 5 per program
@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         if (!strtotime($start_date) || !strtotime($end_date)) {
             throw new Exception("Invalid date format");
         }
+        
 
         $sql = "SELECT 
                 SUM(CAST(answer_text AS DECIMAL)) AS sumaLinkert5,
