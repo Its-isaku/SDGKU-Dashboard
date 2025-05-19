@@ -135,13 +135,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         s.survey_id,
                         s.title,
                         st.type_name AS 'type',
+                        s.survey_type_id,
                         s.description,
                         pt.program_name,
+                        pt.program_type_id,
                         p.name,
+                        p.prog_id,
                         sub.subject,
+                        sub.subject_id,
                         s.expires_at,
-                        s.created_at,
-                        s.survey_type_id
+                        s.created_at
                         FROM surveys s
                         JOIN survey_types st ON st.survey_type_id = s.survey_type_id
                         JOIN program_types pt ON pt.program_type_id = s.program_type_id
