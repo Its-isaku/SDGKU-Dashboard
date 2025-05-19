@@ -1029,11 +1029,11 @@ async function fetchSurveyData(sid) {
         const surveyData = await surveyRes.json();
         surveyData2.survey_id = surveyData[0].survey_id;
         surveyData2.title = surveyData[0].title;
-        surveyData2.type = surveyData[0].type;
+        surveyData2.type = surveyData[0].survey_type_id; // Use ID
         surveyData2.description = surveyData[0].description;
-        surveyData2.programType = surveyData[0].program_name;
-        surveyData2.program = surveyData[0].name;
-        surveyData2.subject = surveyData[0].subject;
+        surveyData2.programType = surveyData[0].program_type_id; // Use ID
+        surveyData2.program = surveyData[0].prog_id; // Use ID
+        surveyData2.subject = surveyData[0].subject_id; // Use ID
         surveyData2.expirationDate = surveyData[0].expires_at;
         surveyData2.createdAt = surveyData[0].created_At;
 
@@ -1136,10 +1136,10 @@ function editSurvey() {
     let found = false;
 
     for (let option of programTypeOption.options) {
-        if (option.text === surveyData2.programType || option.value === surveyData2.programType) {
-        option.selected = true;
-        found = true;
-        break;
+        if (option.value == surveyData2.programType) {
+            option.selected = true;
+            found = true;
+            break;
         }
     }
 
@@ -1154,10 +1154,10 @@ function editSurvey() {
     let programOption = document.getElementById('program');
     let found2 = false;
     for (let option of programOption.options) {
-        if (option.text === surveyData2.program || option.value === surveyData2.program) {
-        option.selected = true;
-        found2 = true;
-        break;
+        if (option.value == surveyData2.program) {
+            option.selected = true;
+            found2 = true;
+            break;
         }
     }
 
@@ -1171,10 +1171,10 @@ function editSurvey() {
     let subjectOption = document.getElementById('subject');
     let found3 = false;
     for (let option of subjectOption.options) {
-        if (option.text === surveyData2.subject || option.value === surveyData2.subject) {
-        option.selected = true;
-        found2 = true;
-        break;
+        if (option.value == surveyData2.subject) {
+            option.selected = true;
+            found3 = true;
+            break;
         }
     }
 
@@ -1189,10 +1189,10 @@ function editSurvey() {
     let surveyTypeOption = document.getElementById('surveyType');
     let found4 = false;
     for (let option of surveyTypeOption.options) {
-        if (option.text === surveyData2.type || option.value === surveyData2.type) {
-        option.selected = true;
-        found2 = true;
-        break;
+        if (option.value == surveyData2.type) {
+            option.selected = true;
+            found4 = true;
+            break;
         }
     }
 
@@ -1275,14 +1275,45 @@ window.openQuestions = [
 
 window.addEventListener('load', function() {
     //* call the editSurvey function to set the initial values
-    setTimeout(() => {
+    setTimeout(async () => {
         editSurvey();
+        //* Ensure dropdowns are populated and select correct values
+        const programTypeSelect = document.getElementById('programType');
+        const programSelect = document.getElementById('program');
+        const subjectSelect = document.getElementById('subject');
+
+        //* 1. Set Program Type and trigger change to populate Program dropdown
+        programTypeSelect.value = surveyData2.programType;
+        programTypeSelect.dispatchEvent(new Event('change'));
+
+        //* 2. Wait for Program dropdown to populate (fetch is async, so poll until option exists)
+        await new Promise(resolve => {
+            const check = () => {
+                if ([...programSelect.options].some(opt => opt.value == surveyData2.program)) {
+                    resolve();
+                } else {
+                    setTimeout(check, 50);
+                }
+            };
+            check();
+        });
+        programSelect.value = surveyData2.program;
+        programSelect.dispatchEvent(new Event('change'));
+
+        //* 3. Wait for Subject dropdown to populate
+        await new Promise(resolve => {
+            const check = () => {
+                if ([...subjectSelect.options].some(opt => opt.value == surveyData2.subject)) {
+                    resolve();
+                } else {
+                    setTimeout(check, 50);
+                }
+            };
+            check();
+        });
+        subjectSelect.value = surveyData2.subject;
+
+        //* Now call editQuestions
         editQuestions(questions);
-    }, 500); // Pequeño retraso por si hay carga asíncrona editSurvey();
-
-
-    // //* call the editQuestions function to set the initial values
-    
+    }, 500); //* Pequeño retraso por si hay carga asíncrona editSurvey();
 });
-
-console.log("log: ", questions_id);
