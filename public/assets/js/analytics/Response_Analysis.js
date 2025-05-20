@@ -2,81 +2,273 @@
 let totalLinkert5 = [];
 let totalPrograms = [];
 let programsList= [];
+let responses = [];
 
+//?-----Get total amount of students for direct measure
+async function getStudentsPerProgram(program_id) {
+    const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
+    url.searchParams.append('action', 'programs_id');
+    url.searchParams.append('program_id', program_id);
 
-function getByProgramType(programTypeId, startDate, endDate) {
+    try {
+        const response = await fetch(url.toString());
+        if (!response.ok) throw new Error(`Error HTTP! estado: ${response.status}`);
+        
+        const data = await response.json();
+        if (data.status !== 'success') throw new Error(data.message || 'Error en los datos recibidos');
+
+        const students = parseInt(data.total_students) || 0;
+        return students; // Retorna solo el número de estudiantes (puedes ajustarlo)
+
+    } catch (error) {
+        console.error('Error en getStudentsPerProgram:', error);
+        return 0; // Retorna 0 como valor por defecto en errores
+    }
+}
+//?-----Get total amount of students for indirect measure
+async function getStudentsIndirectMeasure(program_id) {
+    const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
+    url.searchParams.append('action', 'getStudentsIndirectMeasure');
+    url.searchParams.append('program_id', program_id);
+
+    try {
+        const response = await fetch(url.toString());
+        if (!response.ok) throw new Error(`Error HTTP! estado: ${response.status}`);
+        
+        const data = await response.json();
+        if (data.status !== 'success') throw new Error(data.message || 'Error en los datos recibidos');
+
+        const students = parseInt(data.total_students) || 0;
+        return students; // Retorna solo el número de estudiantes (puedes ajustarlo)
+
+    } catch (error) {
+        console.error('Error en getStudentsPerProgram:', error);
+        return 0; // Retorna 0 como valor por defecto en errores
+    }
+}
+
+//?---------------------------------------------
+async function getByProgramType(programTypeId, startDate, endDate) {
     const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
     url.searchParams.append('action', 'getByProgramTypes');
     url.searchParams.append('program_type_id', programTypeId);
     url.searchParams.append('start_date', startDate);
     url.searchParams.append('end_date', endDate);
 
-    return fetch(url.toString())
-        .then(res => {
-            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-            return res.json();
-        })
-        .then(data => {
-            if (data.status === 'success') {
-                let suma = 0;
-                let total = 0;
-                let avg = 0;
+    try {
+        const response = await fetch(url.toString());
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-                if (data.data.length > 0) {
-                    suma = parseInt(data.data[0].sumaLinkert5) || 0;
-                    total = parseInt(data.data[0].total_Programa) || 1; 
-                    avg = parseFloat(suma / total); 
-                }
-                totalLinkert5.push(suma);
-                totalPrograms.push(total);
-                dbValues.push(avg); 
-                return {
-                    totalLinkert5: [...totalLinkert5],
-                    totalPrograms: [...totalPrograms],
-                    dbValues: [...dbValues] 
-                };
-            }
-            throw new Error(data.message || 'Error fetching data');
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            totalLinkert5.push(0);
-            totalPrograms.push(0);
-            dbValues.push(0);
-            return {
-                totalLinkert5: [...totalLinkert5],
-                totalPrograms: [...totalPrograms],
-                dbValues: [...dbValues]
-            };
-        });
+        const data = await response.json();
+        if (data.status !== 'success') throw new Error(data.message || 'Error fetching data');
+
+        // Procesamiento de datos
+        let suma = 0;
+        let total = 0;
+        let avg = 0;
+
+        if (data.data && data.data.length > 0) {
+            // Usar parseFloat y manejar total=0 correctamente
+            suma = parseFloat(data.data[0].sumaLinkert5) || 0;
+            total = parseInt(data.data[0].total_Programa) || 0;
+            avg = (total > 0) ? parseFloat((suma / total).toFixed(2)) : 0;
+        }
+
+        return avg;
+        
+
+    } catch (error) {
+        console.error('Error in getByProgramType:', error);
+        return {
+            average: 0
+        };
+    }
 }
-
-async function getAndStorePrograms(programTypeId) {
+//?---------Get and store the programs
+async function getProgramIds(programTypeId) {
     try {
         const response = await fetch(`/SDGKU-Dashboard/src/models/Response_analysis.php?action=getPrograms&program_type_id=${programTypeId}`);
         const data = await response.json();
-        
-        if (data.status === 'success') {
-            programsList.length = 0;
-            programsList.push(...data.data.map(item => ({
-                id: item.prog_id,
-                program: item.name
-            })));
-            
-            data.data.forEach(e=>{
-                dbLabels.push(e.name);
-            });
 
-            
-            return programsList;
+        if (data.status === 'success') {
+            const ids = data.data.map(item => item.prog_id);
+            return ids;
         }
+
         throw new Error(data.message || 'Error en los datos');
     } catch (error) {
-        console.error("Error:", error);
-        programsList = [];
+        console.error("Error en getProgramIds:", error);
         throw error;
     }
 }
+
+
+//?-----------Get program names
+async function getProgramNames(programTypeId) {
+    try {
+        const response = await fetch(`/SDGKU-Dashboard/src/models/Response_analysis.php?action=getPrograms&program_type_id=${programTypeId}`);
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            const names = data.data.map(item => item.name);
+            return names;
+        }
+
+        throw new Error(data.message || 'Error en los datos');
+    } catch (error) {
+        console.error("Error en getProgramNames:", error);
+        throw error;
+    }
+}
+
+
+//?-----get the results of every survey multi and true/false
+async function getsurveyResults(program_id, responses_id) {
+    const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
+    url.searchParams.append('action', 'getsurveyResults');
+    url.searchParams.append('program_id', program_id);
+    url.searchParams.append('responses_id', responses_id);
+
+    try {
+        const res = await fetch(url.toString());
+        if (!res.ok) throw new Error(`Error HTTP! estado: ${res.status}`);
+
+        const data = await res.json();
+
+        if (data.status === 'success') {
+            // Siempre retorna correct_answer como array
+            if (Array.isArray(data.data)) {
+                // Si data.data es un array de objetos con correct_answer
+                return data.data.map(item => item.correct_answer);
+            } else if (data.data && Array.isArray(data.data.correct_answer)) {
+                // Si correct_answer ya es array
+                return data.data.correct_answer;
+            } else if (data.data && data.data.correct_answer !== undefined) {
+                // Si correct_answer es un solo valor
+                return [data.data.correct_answer];
+            } else {
+                return [];
+            }
+        }
+
+        throw new Error(data.message || 'Error en los datos recibidos');
+    } catch (error) {
+        console.error('Error en getsurveyResults:', error);
+        return [];
+    }
+}
+
+//?-----get the results of every Linkert Survey Final Assisment
+async function getsurveyIndirectResults( responses_id) {
+    const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
+    url.searchParams.append('action', 'getsurveyIndirectResults');
+    url.searchParams.append('responses_id', responses_id);
+
+    try {
+        const res = await fetch(url.toString());
+        if (!res.ok) throw new Error(`Error HTTP! estado: ${res.status}`);
+
+        const data = await res.json();
+
+        if (data.status === 'success') {
+            // Siempre retorna correct_answer como array
+            if (Array.isArray(data.data)) {
+                // Si data.data es un array de objetos con correct_answer
+                return data.data.map(item => item.answer_text);
+            } else if (data.data && Array.isArray(data.data.answer_text)) {
+                // Si correct_answer ya es array
+                return data.data.answer_text;
+            } else if (data.data && data.data.answer_text !== undefined) {
+                // Si correct_answer es un solo valor
+                return [data.data.answer_text];
+            } else {
+                return [];
+            }
+        }
+
+        throw new Error(data.message || 'Error en los datos recibidos');
+    } catch (error) {
+        console.error('Error en getsurveyResults:', error);
+        return [];
+    }
+}
+
+
+//?---Get Group of answers POST TEST for Direct Analisis
+async function getAnswerPerStudentIndirect(programId) {
+    try {
+        const response = await fetch(`/SDGKU-Dashboard/src/models/Response_analysis.php?action=getAnswersPerStudentIndirect&program_id=${programId}`);
+        
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const data = await response.json();
+        console.log("Datos crudos recibidos:", data); // Depuración
+        
+        if (data.status === 'success') {
+            if (!Array.isArray(data.data)) {
+                throw new Error("data.data no es un array");
+            }
+            
+            // Procesar y devolver directamente el array
+            const studentsList = data.data.map(item => {
+                if (item.responseIds && typeof item.responseIds === 'string') {
+                    return item.responseIds.split(',').map(id => {
+                        const num = Number(id);
+                        return isNaN(num) ? id : num;
+                    });
+                }
+                return []; // Si no hay responseIds
+            });
+
+            console.log("studentsList generado:", studentsList);
+            return studentsList;
+        }
+
+        throw new Error(data.message || 'Respuesta sin éxito');
+    } catch (error) {
+        console.error("Error completo:", error);
+        return []; // Retorna array vacío en caso de error
+    }
+}
+//?-Get Group of answers FINAL ASSESSMENT for Indirect Analisis
+
+async function getAnswerPerStudent(programId) {
+    try {
+        const response = await fetch(`/SDGKU-Dashboard/src/models/Response_analysis.php?action=getAnswersPerStudent&program_id=${programId}`);
+        
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const data = await response.json();
+        console.log("Datos crudos recibidos:", data); // Depuración
+        
+        if (data.status === 'success') {
+            if (!Array.isArray(data.data)) {
+                throw new Error("data.data no es un array");
+            }
+            
+            // Procesar y devolver directamente el array
+            const studentsList = data.data.map(item => {
+                if (item.responseIds && typeof item.responseIds === 'string') {
+                    return item.responseIds.split(',').map(id => {
+                        const num = Number(id);
+                        return isNaN(num) ? id : num;
+                    });
+                }
+                return []; // Si no hay responseIds
+            });
+
+            console.log("studentsList generado:", studentsList);
+            return studentsList;
+        }
+
+        throw new Error(data.message || 'Respuesta sin éxito');
+    } catch (error) {
+        console.error("Error completo:", error);
+        return []; // Retorna array vacío en caso de error
+    }
+}
+
+
 
 //! <|-------------------------------- Filter Logic --------------------------------|>
 //? Fill select with years 
@@ -104,13 +296,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const TypeIndex = selectYear.selectedIndex;
         const index = selectRange.selectedIndex;
         const valorYear = selectYear.value;
-        let programTypeId;
         let startDateSelect;
         let endDateSelect;
         let startDateMonths;
         let endDateMonths;
         if(TypeIndex!=0){
-        programTypeId =confirmSelection();
+    
+        const programTypeId = confirmSelection()
+        
         if (index === 0) {
             startDateMonths = '-01-01';
             endDateMonths = '-12-31';
@@ -127,16 +320,141 @@ document.addEventListener('DOMContentLoaded', function () {
             startDateMonths = '-10-01';
             endDateMonths = '-12-31';
         }
-        await getAndStorePrograms(programTypeId)
+        
+
+        const ids = await getProgramIds(programTypeId);
+        console.log("dbValues: ", ids);
+        const dbLabels = await getProgramNames(programTypeId);
+        console.log("dbLabels: ", dbLabels);
         startDateSelect = `${valorYear}${startDateMonths}`;
         endDateSelect = `${valorYear}${endDateMonths}`;
-            await Promise.all(
-        programsList.map(p => getByProgramType(p.id, startDateSelect, endDateSelect))
-    );
-        console.log("DATES: ", startDateSelect, endDateSelect);
-        console.log("ID: ", programTypeId);
-        renderResponseAnalysisChart();
-        }else{
+
+        const dbValuesRaw=  await Promise.all(
+            ids.map(id => getByProgramType(id, startDateSelect, endDateSelect))
+        );  
+    
+        // Versión original: array plano
+        const totalStudents = await Promise.all(
+            ids.map(id => getStudentsPerProgram(id))
+        );
+
+        // Versión anidada por id: objeto { id: [valor] }
+        const totalStudentsById = {};
+        ids.forEach((id, idx) => {
+            totalStudentsById[id] = [totalStudents[idx]];
+        });
+        const totalStudentsIndirect = await Promise.all(
+            ids.map(id => getStudentsIndirectMeasure(id))
+        );
+
+        // Versión anidada por id: objeto { id: [valor] }
+        const totalStudentsIndirectById = {};
+        ids.forEach((id, idx) => {
+            totalStudentsIndirectById[id] = [totalStudentsIndirect[idx]];
+        });
+        // Ejemplo de uso:
+        // console.log(totalStudentsById); // {18: [3], 19: [5], ...}
+    console.log("resultsd: ", dbValuesRaw);
+    console.log("Total Students Direct: ", totalStudents);
+    console.log("Total Students Indirect: ", totalStudentsIndirect);
+    // ids.map(p => getByProgramType(p.id, startDateSelect, endDateSelect))
+    // );
+
+        const totalAnswersRaw = await Promise.all(
+            ids.map(id => getAnswerPerStudent(id))
+        );
+
+        // Anidar los resultados por id de programa
+        const totalAnswersById = {};
+        ids.forEach((id, idx) => {
+            totalAnswersById[id] = totalAnswersRaw[idx];
+        });
+        console.log("Total ANSWERS: ", totalAnswersById);
+
+        //*This is for Final ASSESSMENT analisis
+        const totalAnswersRawIndirect = await Promise.all(
+            ids.map(id => getAnswerPerStudentIndirect(id))
+        );
+
+        // Anidar los resultados por id de programa
+        const totalAnswersByIdIndirect = {};
+        ids.forEach((id, idx) => {
+            totalAnswersByIdIndirect[id] = totalAnswersRawIndirect[idx];
+        });
+        console.log("Total ANSWERS INDIRECT: ", totalAnswersByIdIndirect);
+
+// Recorrer totalAnswersById para obtener resultados anidados igual que la estructura
+        const resultPerStudent = {};
+        for (const [idProgram, studentsArrays] of Object.entries(totalAnswersById)) {
+            resultPerStudent[idProgram] = [];
+            for (const idResponsesArr of studentsArrays) {
+                // Solo procesa si hay IDs de respuesta
+                if (Array.isArray(idResponsesArr) && idResponsesArr.length > 0) {
+                    const resultsForStudent = [];
+                    for (const idResponse of idResponsesArr) {
+                        // eslint-disable-next-line no-await-in-loop
+                        const result = await getsurveyResults(idProgram, idResponse);
+                        // Siempre es array, pero por si acaso:
+                        if (Array.isArray(result)) {
+                            resultsForStudent.push(...result);
+                        } else if (result !== undefined) {
+                            resultsForStudent.push(result);
+                        }
+                    }
+                    resultPerStudent[idProgram].push(resultsForStudent);
+                }
+            }
+}      
+        const resultLinkertPerStudent = {};
+        for (const [idProgram, studentsArrays] of Object.entries(totalAnswersByIdIndirect)) {
+            resultLinkertPerStudent[idProgram] = [];
+            for (const idResponsesArr of studentsArrays) {
+                // Solo procesa si hay IDs de respuesta
+                if (Array.isArray(idResponsesArr) && idResponsesArr.length > 0) {
+                    const resultsForStudent1 = [];
+                    for (const idResponse of idResponsesArr) {
+                        // eslint-disable-next-line no-await-in-loop
+                        const result = await getsurveyIndirectResults( idResponse);
+                        // Siempre es array, pero por si acaso:
+                        if (Array.isArray(result)) {
+                            resultsForStudent1.push(...result);
+                        } else if (result !== undefined) {
+                            resultsForStudent1.push(result);
+                        }
+                    }
+                    resultLinkertPerStudent[idProgram].push(resultsForStudent1);
+                }
+            }
+}     
+
+// const resultLinkertPerStudent = {};
+// for (let idx = 0; idx < ids.length; idx++) {
+//     const id = ids[idx];
+//     const studentsArrays = totalAnswersByIdIndirect[idx] || [];
+//     resultLinkertPerStudent[id] = [];
+//     for (const idResponsesArr of studentsArrays) {
+//         if (Array.isArray(idResponsesArr) && idResponsesArr.length > 0) {
+//             const resultsLinkertForStudent = [];
+//             for (const idResponse of idResponsesArr) {
+//                 // eslint-disable-next-line no-await-in-loop
+//                 const result = await getsurveyIndirectResults(idResponse);
+//                 if (Array.isArray(result)) {
+//                     resultsLinkertForStudent.push(...result.filter(x => x !== null && x !== undefined));
+//                 } else if (result !== undefined && result !== null) {
+//                     resultsLinkertForStudent.push(result);
+//                 }
+//             }
+//             resultLinkertPerStudent[id].push(resultsLinkertForStudent);
+//         }
+//     }
+// }
+        console.log("resultPerStudent anidado: ", resultPerStudent);
+        console.log("Indirect answers L anidado: ", resultLinkertPerStudent);
+        console.log("totalStudentsById Direct anidado: ", totalStudentsById);
+        console.log("totalStudentsById Indirect anidado: ", totalStudentsIndirectById);
+        const porcentajes = calcularPorcentajeAciertos(resultPerStudent);
+        console.log("Porcentaje de aciertos por estudiante:", porcentajes);
+        renderResponseAnalysisChart(dbLabels,dbValuesRaw);        }else{
             //!Notificacion
             console.warn("Please Select Year");
         }
@@ -147,12 +465,6 @@ document.addEventListener('DOMContentLoaded', function () {
 function confirmSelection(){
         const selectType = document.getElementById('programTypeId');
         const valorType = selectType.value;
-
-        totalLinkert5 = [];
-        totalPrograms = [];
-        programsList= [];
-        dbLabels = [];
-        dbValues = [];
             if (valorType === 'opcion1') {
                 return  1;
             } else if (valorType === 'opcion2') {
@@ -168,11 +480,24 @@ function confirmSelection(){
 
 //! <|-------------------------------- Graph Logic --------------------------------|>
 //? Testing Data
-    let dbLabels= [];
-    let dbValues = [];
+
+////? --Calcula los promedios de aciertos para Disrect Measure
+function calcularPorcentajeAciertos(resultPerStudent) {
+    const porcentajesPorPrograma = {};
+    for (const [idProgram, estudiantes] of Object.entries(resultPerStudent)) {
+        porcentajesPorPrograma[idProgram] = estudiantes.map(respuestas => {
+            if (!Array.isArray(respuestas) || respuestas.length === 0) return 0;
+            const total = respuestas.length;
+            const aciertos = respuestas.filter(x => x === 1).length;
+            return total > 0 ? aciertos / total : 0;
+        });
+    }
+    return porcentajesPorPrograma;
+}
+
 
 //? Render the Response Analysis Chart
-function renderResponseAnalysisChart() {
+function renderResponseAnalysisChart(dbLabels, dbValues) {
     
     console.log("promedios actualizados: ", dbValues);
     // const dbValues = JSON.stringify(dbValues2);
