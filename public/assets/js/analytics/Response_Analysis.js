@@ -18,11 +18,11 @@ async function getStudentsPerProgram(program_id) {
         if (data.status !== 'success') throw new Error(data.message || 'Error en los datos recibidos');
 
         const students = parseInt(data.total_students) || 0;
-        return students; // Retorna solo el número de estudiantes (puedes ajustarlo)
+        return students; 
 
     } catch (error) {
         console.error('Error en getStudentsPerProgram:', error);
-        return 0; // Retorna 0 como valor por defecto en errores
+        return 0; 
     }
 }
 //?-----Get total amount of students for indirect measure
@@ -39,11 +39,11 @@ async function getStudentsIndirectMeasure(program_id) {
         if (data.status !== 'success') throw new Error(data.message || 'Error en los datos recibidos');
 
         const students = parseInt(data.total_students) || 0;
-        return students; // Retorna solo el número de estudiantes (puedes ajustarlo)
+        return students; 
 
     } catch (error) {
         console.error('Error en getStudentsPerProgram:', error);
-        return 0; // Retorna 0 como valor por defecto en errores
+        return 0;
     }
 }
 
@@ -62,13 +62,11 @@ async function getByProgramType(programTypeId, startDate, endDate) {
         const data = await response.json();
         if (data.status !== 'success') throw new Error(data.message || 'Error fetching data');
 
-        // Procesamiento de datos
         let suma = 0;
         let total = 0;
         let avg = 0;
 
         if (data.data && data.data.length > 0) {
-            // Usar parseFloat y manejar total=0 correctamente
             suma = parseFloat(data.data[0].sumaLinkert5) || 0;
             total = parseInt(data.data[0].total_Programa) || 0;
             avg = (total > 0) ? parseFloat((suma / total).toFixed(2)) : 0;
@@ -132,19 +130,13 @@ async function getsurveyResults(program_id, responses_id) {
     try {
         const res = await fetch(url.toString());
         if (!res.ok) throw new Error(`Error HTTP! estado: ${res.status}`);
-
         const data = await res.json();
-
         if (data.status === 'success') {
-            // Siempre retorna correct_answer como array
             if (Array.isArray(data.data)) {
-                // Si data.data es un array de objetos con correct_answer
                 return data.data.map(item => item.correct_answer);
             } else if (data.data && Array.isArray(data.data.correct_answer)) {
-                // Si correct_answer ya es array
                 return data.data.correct_answer;
             } else if (data.data && data.data.correct_answer !== undefined) {
-                // Si correct_answer es un solo valor
                 return [data.data.correct_answer];
             } else {
                 return [];
@@ -171,15 +163,14 @@ async function getsurveyIndirectResults( responses_id) {
         const data = await res.json();
 
         if (data.status === 'success') {
-            // Siempre retorna correct_answer como array
+
             if (Array.isArray(data.data)) {
-                // Si data.data es un array de objetos con correct_answer
+
                 return data.data.map(item => item.answer_text);
             } else if (data.data && Array.isArray(data.data.answer_text)) {
-                // Si correct_answer ya es array
                 return data.data.answer_text;
             } else if (data.data && data.data.answer_text !== undefined) {
-                // Si correct_answer es un solo valor
+
                 return [data.data.answer_text];
             } else {
                 return [];
@@ -202,14 +193,14 @@ async function getAnswerPerStudentIndirect(programId) {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const data = await response.json();
-        console.log("Datos crudos recibidos:", data); // Depuración
+        console.log("Datos crudos recibidos:", data); 
         
         if (data.status === 'success') {
             if (!Array.isArray(data.data)) {
                 throw new Error("data.data no es un array");
             }
             
-            // Procesar y devolver directamente el array
+        
             const studentsList = data.data.map(item => {
                 if (item.responseIds && typeof item.responseIds === 'string') {
                     return item.responseIds.split(',').map(id => {
@@ -217,7 +208,7 @@ async function getAnswerPerStudentIndirect(programId) {
                         return isNaN(num) ? id : num;
                     });
                 }
-                return []; // Si no hay responseIds
+                return []; 
             });
 
             console.log("studentsList generado:", studentsList);
@@ -227,7 +218,7 @@ async function getAnswerPerStudentIndirect(programId) {
         throw new Error(data.message || 'Respuesta sin éxito');
     } catch (error) {
         console.error("Error completo:", error);
-        return []; // Retorna array vacío en caso de error
+        return []; 
     }
 }
 //?-Get Group of answers FINAL ASSESSMENT for Indirect Analisis
@@ -246,7 +237,7 @@ async function getAnswerPerStudent(programId) {
                 throw new Error("data.data no es un array");
             }
             
-            // Procesar y devolver directamente el array
+            
             const studentsList = data.data.map(item => {
                 if (item.responseIds && typeof item.responseIds === 'string') {
                     return item.responseIds.split(',').map(id => {
@@ -254,7 +245,7 @@ async function getAnswerPerStudent(programId) {
                         return isNaN(num) ? id : num;
                     });
                 }
-                return []; // Si no hay responseIds
+                return []; 
             });
 
             console.log("studentsList generado:", studentsList);
@@ -264,7 +255,7 @@ async function getAnswerPerStudent(programId) {
         throw new Error(data.message || 'Respuesta sin éxito');
     } catch (error) {
         console.error("Error completo:", error);
-        return []; // Retorna array vacío en caso de error
+        return [];
     }
 }
 
@@ -332,13 +323,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const dbValuesRaw=  await Promise.all(
             ids.map(id => getByProgramType(id, startDateSelect, endDateSelect))
         );  
-    
-        // Versión original: array plano
         const totalStudents = await Promise.all(
             ids.map(id => getStudentsPerProgram(id))
         );
 
-        // Versión anidada por id: objeto { id: [valor] }
         const totalStudentsById = {};
         ids.forEach((id, idx) => {
             totalStudentsById[id] = [totalStudents[idx]];
@@ -347,24 +335,22 @@ document.addEventListener('DOMContentLoaded', function () {
             ids.map(id => getStudentsIndirectMeasure(id))
         );
 
-        // Versión anidada por id: objeto { id: [valor] }
+
         const totalStudentsIndirectById = {};
         ids.forEach((id, idx) => {
             totalStudentsIndirectById[id] = [totalStudentsIndirect[idx]];
         });
-        // Ejemplo de uso:
-        // console.log(totalStudentsById); // {18: [3], 19: [5], ...}
+
     console.log("resultsd: ", dbValuesRaw);
     console.log("Total Students Direct: ", totalStudents);
     console.log("Total Students Indirect: ", totalStudentsIndirect);
-    // ids.map(p => getByProgramType(p.id, startDateSelect, endDateSelect))
-    // );
+
 
         const totalAnswersRaw = await Promise.all(
             ids.map(id => getAnswerPerStudent(id))
         );
 
-        // Anidar los resultados por id de programa
+
         const totalAnswersById = {};
         ids.forEach((id, idx) => {
             totalAnswersById[id] = totalAnswersRaw[idx];
@@ -376,25 +362,22 @@ document.addEventListener('DOMContentLoaded', function () {
             ids.map(id => getAnswerPerStudentIndirect(id))
         );
 
-        // Anidar los resultados por id de programa
+
         const totalAnswersByIdIndirect = {};
         ids.forEach((id, idx) => {
             totalAnswersByIdIndirect[id] = totalAnswersRawIndirect[idx];
         });
         console.log("Total ANSWERS INDIRECT: ", totalAnswersByIdIndirect);
 
-// Recorrer totalAnswersById para obtener resultados anidados igual que la estructura
+
         const resultPerStudent = {};
         for (const [idProgram, studentsArrays] of Object.entries(totalAnswersById)) {
             resultPerStudent[idProgram] = [];
             for (const idResponsesArr of studentsArrays) {
-                // Solo procesa si hay IDs de respuesta
                 if (Array.isArray(idResponsesArr) && idResponsesArr.length > 0) {
                     const resultsForStudent = [];
                     for (const idResponse of idResponsesArr) {
-                        // eslint-disable-next-line no-await-in-loop
                         const result = await getsurveyResults(idProgram, idResponse);
-                        // Siempre es array, pero por si acaso:
                         if (Array.isArray(result)) {
                             resultsForStudent.push(...result);
                         } else if (result !== undefined) {
@@ -409,13 +392,11 @@ document.addEventListener('DOMContentLoaded', function () {
         for (const [idProgram, studentsArrays] of Object.entries(totalAnswersByIdIndirect)) {
             resultLinkertPerStudent[idProgram] = [];
             for (const idResponsesArr of studentsArrays) {
-                // Solo procesa si hay IDs de respuesta
                 if (Array.isArray(idResponsesArr) && idResponsesArr.length > 0) {
                     const resultsForStudent1 = [];
                     for (const idResponse of idResponsesArr) {
-                        // eslint-disable-next-line no-await-in-loop
                         const result = await getsurveyIndirectResults( idResponse);
-                        // Siempre es array, pero por si acaso:
+
                         if (Array.isArray(result)) {
                             resultsForStudent1.push(...result);
                         } else if (result !== undefined) {
@@ -427,27 +408,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 }     
 
-// const resultLinkertPerStudent = {};
-// for (let idx = 0; idx < ids.length; idx++) {
-//     const id = ids[idx];
-//     const studentsArrays = totalAnswersByIdIndirect[idx] || [];
-//     resultLinkertPerStudent[id] = [];
-//     for (const idResponsesArr of studentsArrays) {
-//         if (Array.isArray(idResponsesArr) && idResponsesArr.length > 0) {
-//             const resultsLinkertForStudent = [];
-//             for (const idResponse of idResponsesArr) {
-//                 // eslint-disable-next-line no-await-in-loop
-//                 const result = await getsurveyIndirectResults(idResponse);
-//                 if (Array.isArray(result)) {
-//                     resultsLinkertForStudent.push(...result.filter(x => x !== null && x !== undefined));
-//                 } else if (result !== undefined && result !== null) {
-//                     resultsLinkertForStudent.push(result);
-//                 }
-//             }
-//             resultLinkertPerStudent[id].push(resultsLinkertForStudent);
-//         }
-//     }
-// }
         console.log("resultPerStudent anidado: ", resultPerStudent);
         console.log("Indirect answers L anidado: ", resultLinkertPerStudent);
         console.log("totalStudentsById Direct anidado: ", totalStudentsById);

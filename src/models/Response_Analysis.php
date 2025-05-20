@@ -41,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$program_type_id, $start_date, $end_date]);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        // Asegura que siempre se devuelvan valores numéricos, aunque sean null en la BD
         $row = $results[0] ?? ['sumaLinkert5' => 0, 'total_Programa' => 0];
         $row['sumaLinkert5'] = isset($row['sumaLinkert5']) && $row['sumaLinkert5'] !== null ? (float)$row['sumaLinkert5'] : 0;
         $row['total_Programa'] = isset($row['total_Programa']) && $row['total_Programa'] !== null ? (int)$row['total_Programa'] : 0;
@@ -64,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 //?-----Get total amount of students for direct measure
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'programs_id') {
     try {
-        // Verificar solo el parámetro que realmente necesitas
+
         if (!isset($_GET['program_id'])) {
             throw new Exception("Se requiere el parámetro program_id");
         }
@@ -85,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         echo json_encode([
             'status' => 'success',
             'total_students' => (int)$result['total_students'] ?? 0,
-            'data' => $result // Para mantener compatibilidad
+            'data' => $result // 
         ]);
 
     } catch (Exception $e) {
@@ -93,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         echo json_encode([
             'status' => 'error',
             'message' => $e->getMessage(),
-            'total_students' => 0 // Para que JS siempre reciba este campo
+            'total_students' => 0 // 
         ]);
     }
     exit;
@@ -101,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 //? get total amount of stundent for indirect measure
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getStudentsIndirectMeasure') {
     try {
-        // Verificar solo el parámetro que realmente necesitas
+
         if (!isset($_GET['program_id'])) {
             throw new Exception("Se requiere el parámetro program_id");
         }
@@ -122,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         echo json_encode([
             'status' => 'success',
             'total_students' => (int)$result['total_students'] ?? 0,
-            'data' => $result // Para mantener compatibilidad
+            'data' => $result // 
         ]);
 
     } catch (Exception $e) {
@@ -130,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         echo json_encode([
             'status' => 'error',
             'message' => $e->getMessage(),
-            'total_students' => 0 // Para que JS siempre reciba este campo
+            'total_students' => 0 // 
         ]);
     }
     exit;
@@ -335,7 +334,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 
         echo json_encode([
             'status' => 'success',
-            'data' => $results // Siempre un array, aunque vacío
+            'data' => $results // 
         ]);
 
     } catch (Exception $e) {
