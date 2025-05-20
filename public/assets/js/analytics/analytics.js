@@ -1,3 +1,5 @@
+
+
 const labels = ['Tijuana', 'Mexicali', 'Ensenada', 'Tecate', 'Rosarito'];
 const data = [25, 18, 12, 5, 8];
 
@@ -56,8 +58,8 @@ function showOptionSelected(id) {
     if (selectedButton) selectedButton.classList.add('selectedOption');
 
 
-    if (id === 'panel4' && typeof fetchReports === 'function') {
-        fetchReports();
+    if (id === 'panel4' && typeof downloadCSV === 'function') {
+        downloadCSV();
     }
 }//? <|----------------------------------- async? -----------------------------------|>
 
@@ -67,7 +69,6 @@ async function loadAnalyticsStats() {
         const result = await response.json();
 
         if (result.status === 'success') {
-            console.log('Datos recibidos:', result.data);
             document.getElementById('surveyTotalId').textContent = result.data.totalSurveys;
         }
         else {

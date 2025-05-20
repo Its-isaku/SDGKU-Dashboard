@@ -211,6 +211,15 @@ document.addEventListener("DOMContentLoaded", function () {
         function renderUsers(users){
             usersTableBody.innerHTML = '';
 
+            users.sort((a, b) => {
+                const rolePriority = {
+                    'super_admin': 1,
+                    'admin': 2,
+                    'faculty': 3
+                };
+                return rolePriority[a.role] - rolePriority[b.role];
+            });
+
             users.forEach(user => {
                 const row = document.createElement('tr');
                 //~ status badges

@@ -59,15 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
             showMessage(loginError, "Login successful! Redirecting...", true);
             
             sessionStorage.setItem("user", JSON.stringify(data.user));
-            
-            localStorage.setItem('sdgkuUserData', JSON.stringify({
-                id: data.user.id,
-                full_name: data.user.full_name,
-                email: data.user.email,
-                role: data.user.role,
-                timestamp: new Date().getTime()
-            }));
-            
             setTimeout(() => window.location.href = "../app/dashboard.html", 1500);
 
         } catch (error) {
@@ -84,4 +75,3 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
-

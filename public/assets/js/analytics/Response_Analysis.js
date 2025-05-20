@@ -1,3 +1,17 @@
+//! <|-------------------------------- Notification Logic --------------------------------|>
+
+//? notification Logic
+function showNotification(message, type = 'success') {
+    const notification = document.getElementById('notification');
+    if (!notification) return;
+    notification.textContent = message;
+    notification.className = `notification ${type}`;
+    notification.style.display = 'block';
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 3000);
+}
+
 //! <|-------------------------------- Fetch Logic --------------------------------|>
 let totalLinkert5 = [];
 let totalPrograms = [];
@@ -254,8 +268,10 @@ async function getAnswerPerStudent(programId) {
 
         throw new Error(data.message || 'Respuesta sin éxito');
     } catch (error) {
+
         console.error("Error completo:", error);
         return [];
+
     }
 }
 
@@ -319,6 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("dbLabels: ", dbLabels);
         startDateSelect = `${valorYear}${startDateMonths}`;
         endDateSelect = `${valorYear}${endDateMonths}`;
+
 
         const dbValuesRaw=  await Promise.all(
             ids.map(id => getByProgramType(id, startDateSelect, endDateSelect))
@@ -415,14 +432,16 @@ document.addEventListener('DOMContentLoaded', function () {
         const porcentajes = calcularPorcentajeAciertos(resultPerStudent);
         console.log("Porcentaje de aciertos por estudiante:", porcentajes);
         renderResponseAnalysisChart(dbLabels,dbValuesRaw);        }else{
+
             //!Notificacion
-            console.warn("Please Select Year");
+            showNotification("Please select a year", "error");
         }
         
     });
 });
 //?--Confirmation
 function confirmSelection(){
+
         const selectType = document.getElementById('programTypeId');
         const valorType = selectType.value;
             if (valorType === 'opcion1') {
@@ -435,10 +454,12 @@ function confirmSelection(){
                 console.warn("No se seleccionó un tipo válido");
                 return; 
             }
+
 }
 
 
 //! <|-------------------------------- Graph Logic --------------------------------|>
+
 //? Testing Data
 
 ////? --Calcula los promedios de aciertos para Disrect Measure
@@ -465,7 +486,6 @@ function renderResponseAnalysisChart(dbLabels, dbValues) {
     const ctx = document.getElementById('responseAnalysisChart').getContext('2d');
     const labels = dbLabels;
     const values = dbValues;
-    console.log("Values:",values);
     
 
     //* Create a vertical red gradient for the bars
@@ -642,6 +662,7 @@ function renderProgramTables() {
         titleContainer.className = 'titleContainer';
         const title = document.createElement('h3');
         title.textContent = program.name;
+        title.className = 'analytics-program-badge';
         titleContainer.appendChild(title);
         tableContainer.appendChild(titleContainer);
 

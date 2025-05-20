@@ -23,7 +23,6 @@
     <!--? Chart Style -->
     <link rel="stylesheet" href="//cdn.datatables.net/2.3.1/css/dataTables.dataTables.min.css">
     <title>SDGKU analytics</title>
-    <script src="../../assets/js/analytics/reports.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -81,25 +80,6 @@
                     <button class="asideBtnOut">Logout</button>
                 </div>
             </nav>
-
-            <div class="profile">
-                <div class="profile-img">
-                    <!--? Imagen del Usuario(if no image, use icon) -->
-                    <i class="fa-solid fa-circle-user" id="userFoto"></i>
-                </div>
-
-                <div class="profile-info">
-                    <h4>
-                        <!--? Rol del Usuario -->
-                        Rol del Usuario
-                    </h4>
-
-                    <small>
-                        <!--? Nombre del Usuario -->
-                        Nombre del Usuario
-                    </small>
-                </div>
-            </div>
         </aside>
 
         <main>
@@ -117,65 +97,10 @@
                         </div>
                     </div>
 
-                    <!-- <div class="analyticsFilters">
-                        <div class="analyticsHeadInfo">
-                            <h3>Analytics Filters</h3>
-                            <small>Filter survey results by program, date, and type</small>
-                        </div>
-                        <div class="analyticsSelections">
-                            <div class="programSelect">
-                                <label for="program">
-                                    <b>
-                                        Program
-                                    </b>
-                                </label>
-                                <select name="program" id="selectProgramId">
-                                    <option value="opcion0">All programs</option>
-                                    <option value="opcion1">Opcion 1</option>
-                                    <option value="opcion2">Opcion 2</option>
-                                    <option value="opcion3">Opcion 3</option>
-                                    <option value="opcion4">Opcion 4</option>
-                                </select>
-                            </div>
-
-                            <div class="surveyTypeSelect">
-                                <label for="surveyType ">
-                                    <b>
-                                        Survey Type
-                                    </b>
-                                </label>
-                                <select name="surveyType" id="selectTypeId">
-                                    <option value="opcion0">All Types</option>
-                                    <option value="opcion1">Opcion 1</option>
-                                    <option value="opcion2">Opcion 2</option>
-                                    <option value="opcion3">Opcion 3</option>
-                                    <option value="opcion4">Opcion 4</option>
-                                </select>
-                            </div>
-
-                            <div class="timePeriodSelect">
-                                <label for="timePeriod">
-                                    <b>Time Period
-                                    </b>
-                                </label>
-                                <select name="timePeriod" id="selectTimeId">
-                                    <option value="opcion0">Custom Range</option>
-                                    <option value="opcion1">Opcion 1</option>
-                                    <option value="opcion2">Opcion 2</option>
-                                    <option value="opcion3">Opcion 3</option>
-                                    <option value="opcion4">Opcion 4</option>
-                                </select>
-                            </div>
-
-                        </div>
-                        <button class="applyFiltersBtn">
-                            Apply Filters
-                        </button>
-                    </div> -->
-
+                    <!--? Section bar -->
                     <div class="SurveyOptions tempWidth">
                         <button onclick="showOptionSelected('panel1')" class="surveyOption selectedOption">
-                            <h3>Overview</h3>
+                            <h3>Survey Details</h3>
                         </button>
                         <button onclick="showOptionSelected('panel2')" class="surveyOption">
                             <h3>Response Analysis</h3>
@@ -188,11 +113,10 @@
                         </button>
                     </div>
 
+                    <!--? Survey Details -->
                     <div class="analyticsGraphics">
                         <div id="panel1" class="panel visible">
                             <div class="overview visible"> 
-                                <!-- canvas que dio la profe: -->
-                                <!-- <canvas id="studentChart"></canvas> -->
 
                                 <div class="overviewCard">
                                     <h1>Survey Completion Rate</h1>
@@ -235,34 +159,36 @@
                                         <div class="surveySelect">
                                             <label for="programType"><b>Program Type</b></label>
                                             <select name="programType" id="programTypeId">
-                                                <option value="opcion">Please select program type</option>
+                                                <option value="opcion" disabled selected hidden>Please select program type</option>
                                                 <option value="opcion1">Certificate Program</option>
                                                 <option value="opcion2">Bachelors</option>
                                                 <option value="opcion3">Masters</option>
                                                 <!--* Program Types from db -->
                                             </select>
-                                            <button class="submitFilter" id="submitFilterbtn">Submit</button>
+                                            <button class="submitFilter" id="submitFilterbtn">Apply filters</button>
                                         </div>
 
                                         <div class="surveySelect">
                                             <label for="yearRange"><b>Year Range</b></label>
                                             <select name="yearRange" id="selectYearRangeId">
-                                                <option value="opcion">Please select year</option>
+                                                <option value="opcion" disabled selected hidden>Please select year</option>
                                                 <!--*  Trimester from db -->
                                             </select>
+
                                             <div class="dateSelect">
                                                 <div class="dateItem">
                                                     <label for="dateRange"><b>Range type</b></label>
                                                     <select name="dateRange" id="selectRangeTypeId"> 
-                                                        <option value="opcion1">Please select range type</option>
+                                                        <option value="opcion1" disabled selected hidden>Please select range type</option>
                                                         <option value="opcion2">Quarterly</option>
                                                         <option value="opcion3">Semiannual</option>
                                                     </select>
                                                 </div>
+
                                                 <div class="dateItem">
                                                     <label for="dateRange"><b>Date Range</b></label>
                                                     <select name="dateRange" id="selectDateRangeId">
-                                                        <option value="opcion1">Please select date range</option>
+                                                        <option value="opcion1" disabled selected hidden>Please select date range</option>
                                                         <option value="opcion2">January - March</option>
                                                         <option value="opcion3">April - June</option>
                                                         <option value="opcion4">July - September</option>
@@ -273,6 +199,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <!--~ Graph -->
                                 <div class="responseChartBox">
                                     <h2>Question Analysis</h2>
@@ -287,7 +214,6 @@
                                         <div class="subdued">Average ratings grouped by selected option</div>
                                     </div>
 
-                                    <!--~ Table Content -->
                                     <div class="tableMain" id="responseAnalysisTable">
                                         <!--* Table content from db -->
                                     </div>
@@ -295,48 +221,81 @@
                             </div>
                         </div>
 
-                        <div id="panel3" class="panel"> <!-- COMPARISON GRAPHICS-->
+                        <!--? COMPARISON GRAPHICS-->
+                        <div id="panel3" class="panel"> 
                             <div class="comparisonContainer">
-                                <!-- Filtros -->
+                                <!--~ Filters -->
                                 <div class="comparisonFilter">
-                                    <div class="surveyComparison">
-                                        <h1>Survey Comparison</h1>
-                                        <p>Compare results between pre and post course assessments</p>
+                                    <div class="surveyComparisonHeader">
+                                        <h1>Comparison Graph</h1>
+                                        <p>Compare student knowledge before and after the course</p>
                                     </div>
 
                                     <div class="comparisonSelections">
-                                        <div class="courseSelect">
-                                            <label for="course"><b>First Survey</b></label>
-                                            <select name="course" id="selectCourseId">
-                                                <option value="opcion0">CS101 - Pre-Course Assessment</option>
-                                                <option value="opcion1">Opción 1</option>
-                                                <option value="opcion2">Opción 2</option>
-                                                <option value="opcion3">Opción 3</option>
-                                                <option value="opcion4">Opción 4</option>
-                                            </select>
+                                        <div class="surveySelect">
+                                            <div class="programItem">
+                                                <label for="programType"><b>Program Type</b></label>
+                                                <select name="programType" id="programTypeId">
+                                                    <option value="opcion" disabled selected hidden>Please select program type</option>
+                                                    <option value="opcion1">Certificate Program</option>
+                                                    <option value="opcion2">Bachelors</option>
+                                                    <option value="opcion3">Masters</option>
+                                                    <!--* Program Types from db -->
+                                                </select>
+                                            </div>
+
+                                            <div class="programSelect">
+                                                <div class="programItem">
+                                                    <label for="programType"><b>Program</b></label>
+                                                    <select name="program" id="programeId">
+                                                        <option value="opcion" disabled selected hidden>Please select program</option>
+                                                        <!--* Program from db -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <button class="submitFilter" id="submitFilterbtn">Apply filters</button>
                                         </div>
 
-                                        <div class="courseSelect">
-                                            <label for="surveyType"><b>Second Survey</b></label>
-                                            <select name="surveyType" id="selectTypeId">
-                                                <option value="opcion0">CS101 - Post-Course Assessment</option>
-                                                <option value="opcion1">Opción 1</option>
-                                                <option value="opcion2">Opción 2</option>
-                                                <option value="opcion3">Opción 3</option>
-                                                <option value="opcion4">Opción 4</option>
+                                        <div class="surveySelect">
+                                            <label for="yearRange"><b>Year Range</b></label>
+                                            <select name="yearRange" id="selectYearRangeId">
+                                                <option value="opcion" disabled selected hidden>Please select year</option>
+                                                <!--*  Trimester from db -->
                                             </select>
+
+                                            <div class="dateSelect">
+                                                <div class="dateItem">
+                                                    <label for="dateRange"><b>Range type</b></label>
+                                                    <select name="dateRange" id="selectRangeTypeId"> 
+                                                        <option value="opcion1" disabled selected hidden>Please select range type</option>
+                                                        <option value="opcion2">Quarterly</option>
+                                                        <option value="opcion3">Semiannual</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="dateItem">
+                                                    <label for="dateRange"><b>Date Range</b></label>
+                                                    <select name="dateRange" id="selectDateRangeId">
+                                                        <option value="opcion1" disabled selected hidden>Please select date range</option>
+                                                        <option value="opcion2">January - March</option>
+                                                        <option value="opcion3">April - June</option>
+                                                        <option value="opcion4">July - September</option>
+                                                        <option value="opcion5">October - December</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <button class="applyFiltersBtn">Apply Filters</button>
                                 </div>
 
                                 <div class="comparisonKnowledge">
-                                    <h1>Knowledge Improvement</h1>
-                                    <p>Comparison of pre and post course assessment results</p>
-
+                                    <!--~ Graph -->
+                                    <div class="comparisonChartBox">
+                                        <h2>Knowledge Improvement</h2>
+                                        <div class="subdued">Comparison of pre and post course assessment results</div>
+                                    </div>
+                                        
                                     <div class="comparison-layout">
-
                                         <div class="chart-container">
                                             <canvas id="comparisonChart"></canvas>
                                         </div>
@@ -357,10 +316,10 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
 
+                        <!--? REPORTS -->
                         <div id="panel4" class="panel">
                             <div class="reports">
 
@@ -370,6 +329,29 @@
                 </div>
             </div>
         </main>
+
+        <!--! Download report Modal -->
+                <div id="report-download-modal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>Download Report</h2>
+                            <span class="close-modal">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <p>Select the format to download the report:</p>
+                            <input type="hidden" id="downloadReportId">
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-cancel">Cancel</button>
+                                <button type="button" class="btn btn-danger" id="download-Exel">Exel</button>
+                                <button type="button" class="btn btn-danger" id="download-PDF">PDF</button>
+                                <button type="button" class="btn btn-danger" id="download-CSV">CSV</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        <!--! Notificaciones -->
+        <div id="notification" class="notification" style="display:none;"></div>        
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
