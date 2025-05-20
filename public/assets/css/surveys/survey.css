@@ -15,7 +15,7 @@ body {
 
 /**--------- header ---------*/
 .surveyInterface {
-    background-color: #8B0000;
+    /* background-color: #333333; */
     color: #fff;
     padding: 1rem;
     display: flex;
@@ -256,7 +256,7 @@ textarea {
 
 .notification.error {
     background-color: #f8d7da;
-    color: #721c24;
+    color: #8B0000;
     border: 1px solid #f5c6cb;
 }
 
@@ -271,7 +271,7 @@ textarea {
 }
 
 .expired-notice h2 {
-    color: #dc3545;
+    color: #8B0000;
     margin-bottom: 1rem;
 }
 
@@ -293,7 +293,7 @@ textarea {
 
 /**--------- error messages ---------*/
 .error-message {
-    color: #dc3545;
+    color: #8B0000;
     font-size: 0.9rem;
     margin-top: 0.5rem;
 }

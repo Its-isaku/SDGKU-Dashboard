@@ -84,6 +84,7 @@ async function loadAnalyticsStats() {
 document.addEventListener("DOMContentLoaded", () => {
     loadAnalyticsStats();
     renderAllCharts();
+    renderOverviewTable();
 });
 
 function renderAllCharts() {
@@ -200,5 +201,143 @@ function renderRatingDistributionChart() {
     });
 }
 
+async function renderOverviewTable() {
+    try {
+        const response = await fetch('../../../src/models/getOverviewData.php');
+        const result = await response.json();
 
+        if (result.status !== 'success') {
+            console.warn("No overview data found.");
+            return;
+        }
 
+        const tableSelector = '#overviewTable';
+        const tbody = document.querySelector(`${tableSelector} tbody`);
+        const averageBox = document.getElementById('overallAverageDisplay');
+
+        // Limpia tabla si ya existe
+        if ($.fn.DataTable.isDataTable(tableSelector)) {
+            $(tableSelector).DataTable().destroy();
+            $(tableSelector).empty(); // Limpia la tabla completa (incluye thead/tbody)
+            $(tableSelector).html(`
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Label</th>
+                        <th>Survey Type</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            `);
+        }
+
+        // Rellenar la tabla
+        const tbodyElement = document.querySelector(`${tableSelector} tbody`);
+        result.data.forEach(row => {
+            tbodyElement.innerHTML += `
+                <tr>
+                    <td>${row.no}</td>
+                    <td>${row.label}</td>
+                    <td>${row.category}</td>
+                    <td>${row.value}</td>
+                </tr>
+            `;
+        });
+
+        // Mostrar el promedio general
+        averageBox.textContent = `Overall Average: ${result.average}`;
+
+        // Inicializar DataTable con botones
+        const table = $(tableSelector).DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            lengthMenu: [5, 10, 25, 50],
+            pageLength: 10,
+            // columnDefs: [
+            //     { className: "dt-center", targets: "_all" }
+            // ],
+            buttons: [
+                { extend: 'copy' },
+                { extend: 'csv' },
+                { extend: 'excel' },
+                {
+                    extend: 'pdf',
+                    customize: function (doc) {
+                        // Cambiar estilos de la tabla
+                        doc.styles.tableHeader.fillColor = '#1E3C5A'; // azul oscuro (como tu tabla)
+                        doc.styles.tableHeader.color = 'white';
+                        doc.styles.tableBodyEven.fillColor = '#F0F0F0';
+
+                        // Footer personalizado
+                        const pageCount = doc.pages.length;
+                        for (let i = 1; i <= pageCount; i++) {
+                            doc.pages[i].footer = function (currentPage, pageCount) {
+                                return {
+                                    columns: [
+                                        {
+                                            text: `Página ${currentPage} de ${pageCount}`,
+                                            alignment: 'center',
+                                            margin: [0, 10],
+                                            color: 'white',
+                                            fillColor: '#C81E2D' // rojo similar a cabecera
+                                        }
+                                    ]
+                                };
+                            };
+                        }
+
+                        // Para pdfmake se usa un método diferente para footer, lo siguiente es lo recomendado:
+                        doc['footer'] = function (currentPage, pageCount) {
+                            return {
+                                columns: [
+                                    {
+                                        text: `Página ${currentPage} de ${pageCount}`,
+                                        alignment: 'center',
+                                        margin: [0, 10],
+                                        color: 'white',
+                                        fillColor: '#C81E2D'
+                                    }
+                                ]
+                            };
+                        };
+                    }
+                },
+                { extend: 'print' }
+            ],
+            responsive: true,
+            // scrollY: "400px",
+            scrollCollapse: true,
+            // dom: 'Bfrtip',
+            initComplete: function () {
+                $(window).on('resize', function () {
+                    table.columns.adjust();
+                });
+            }
+        });
+
+        // Desvincular eventos antiguos (por si acaso)
+        $('#btnOverviewCopy, #btnOverviewCsv, #btnOverviewExcel, #btnOverviewPdf, #btnOverviewPrint').off('click');
+
+        // Asignar botones externos
+        $('#btnOverviewCopy').on('click', function () {
+            table.button('.buttons-copy').trigger();
+        });
+        $('#btnOverviewCsv').on('click', function () {
+            table.button('.buttons-csv').trigger();
+        });
+        $('#btnOverviewExcel').on('click', function () {
+            table.button('.buttons-excel').trigger();
+        });
+        $('#btnOverviewPDF').on('click', function () {
+            table.button('.buttons-pdf').trigger();
+        });
+        $('#btnOverviewPrint').on('click', function () {
+            table.button('.buttons-print').trigger();
+        });
+
+    } catch (error) {
+        console.error("Error fetching overview data:", error);
+    }
+}
