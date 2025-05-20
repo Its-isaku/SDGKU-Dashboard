@@ -1,43 +1,176 @@
-.overview {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    padding: 20px;
+/* Global style */
+h1 {
+    margin: 0;
 }
 
-.overviewCard {
+p {
+    margin: 0;
+}
+
+/* Export Buttons style */
+.exportButtons {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 20px;
-    height: 380px;
-    /* antes 300px */
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    border-radius: var(--border-radius);
-    background-color: var(--neutral-light);
-    box-shadow: var(--box-shadow);
-}
-
-
-
-.overviewCard h1 {
-    font-size: var(--text-heading);
-    color: var(--neutral-dark);
-}
-
-.overviewCard p {
-    font-size: var(--text-subheading);
-    color: var(--neutral-dark);
+    justify-content: flex-start;
+    gap: 0.5rem;
     margin-bottom: 1rem;
 }
 
-.overviewCard canvas {
-    width: 85% !important;
-    height: 220px !important;
-    margin: 0 auto;
-    display: block;
-    object-fit: contain;
+.btnExport {
+    background-color: var(--secondary-dominant);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.btnExport i {
+    font-size: 1.2rem;
+}
+
+.btnExport:hover {
+    background-color:  var(--primary-dominant);
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    background-color: var(--secondary-dominant) !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 6px 12px !important;
+    margin: 0 4px !important;
+    border: none !important;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: var(--primary-dominant) !important;
+    color: white !important;
+    cursor: pointer;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: var(--secondary-dominant) !important;
+    color: white !important;
+    border: none !important;
+    font-weight: bold;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: var(--secondary-dominant) !important;
+    color: white !important;
+    cursor: pointer;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background-color: var(--primary-dominant) !important;
+    color: white !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+    color: white !important;
+}
+
+/* Tabla Style */
+
+/* General Table Style */
+#overviewTable {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    font-size: 0.95rem;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Thead background and headers */
+#overviewTable thead th {
+    background-color: var(--secondary-dominant);
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 12px;
+    border: none;
+}
+
+/* Round left/right corners */
+#overviewTable thead th:first-child {
+    border-top-left-radius: 8px;
+}
+#overviewTable thead th:last-child {
+    border-top-right-radius: 8px;
+}
+
+/* Primera columna (No.) */
+#overviewTable td:first-child {
+    text-align: center;
+    font-weight: bold;
+    background-color: #f9f9f9;
+}
+
+/* General Body Row Styling */
+#overviewTable tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Row hover */
+#overviewTable tbody tr:hover {
+    background-color: #f7f7f7;
+}
+
+/* Search styling */
+.dataTables_filter label {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+.dataTables_filter input {
+    border-radius: 8px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    transition: 0.2s ease-in-out;
+    width: 200px;
+    margin-bottom: 1rem;
+}
+.dataTables_filter input:focus {
+    outline: none;
+    border-color: var(--secondary-dominant);
+    box-shadow: 0 0 5px rgba(182, 36, 10, 0.4);
+}
+
+/* Entries dropdown */
+.dataTables_length select {
+    border-radius: 8px;
+    padding: 5px 8px;
+    border: 1px solid #ccc;
+}
+
+/* Paging controls */
+.dataTables_paginate {
+    margin-top: 1rem;
+}
+.dataTables_paginate .paginate_button {
+    border-radius: 8px;
+    padding: 4px 10px;
+    margin: 0 2px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    color: #333;
+    font-weight: 500;
+    cursor: pointer;
+}
+.dataTables_paginate .paginate_button.current {
+    background-color: var(--secondary-dominant);
+    color: white !important;
+    border-color: var(--secondary-dominant);
+}
+.dataTables_paginate .paginate_button:hover:not(.current) {
+    background-color: #eee;
 }

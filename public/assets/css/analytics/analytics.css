@@ -5,7 +5,7 @@
     width: calc(100% - 250px);
     padding: 34px 53px;
     padding-top: 1rem;
-    margin-left: 210px;
+    /* margin-left: 210px; */
 }
 /*~ Dashboard Layout Media */
 @media (max-width: 960px) {
