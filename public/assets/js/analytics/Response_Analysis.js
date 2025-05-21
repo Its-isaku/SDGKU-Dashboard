@@ -291,54 +291,110 @@ document.addEventListener('DOMContentLoaded', function() {
             select.appendChild(option);
         }
     });
+let quarterlyRange=['Select quarterly range','January - March','April - June','July - September','October - December'];
+let semiannualRange=['Select semiannual range','January - June','July - December'];
+//? auto fill date range when range type is selected
+document.addEventListener('DOMContentLoaded', function () {
+    const selectElement = document.getElementById('selectRangeTypeId');
+    selectElement.addEventListener('change', async function () {
+    const selectedValue = selectElement.selectedIndex;
+    if(selectedValue=='1'){
+        const rangeOption = document.getElementById('selectDateRangeId');
+        rangeOption.innerHTML = ''; 
+        quarterlyRange.forEach(range => {
+            const option = document.createElement('option');
+            option.value = range;
+            option.textContent = range;
+            rangeOption.appendChild(option);
+        });
+    }
+    if(selectedValue=='2'){
+        const rangeOption = document.getElementById('selectDateRangeId');
+        rangeOption.innerHTML = ''; 
+        semiannualRange.forEach(range => {
+            const option = document.createElement('option');
+            option.value = range;
+            option.textContent = range;
+            rangeOption.appendChild(option);
+        });
+    }
+    });
+});
+
+//? auto fill programs when program type is selected
+document.addEventListener('DOMContentLoaded', function () {
+    const selectElement = document.getElementById('programTypeId');
+    selectElement.addEventListener('change', async function () {
+    const selectedValue = selectElement.selectedIndex;
+    const dbLabels = await getProgramNames(selectedValue);
+    const programOption = document.getElementById('selectProgramId');
+        programOption.innerHTML = ''; 
+        dbLabels.forEach(programName => {
+            const option = document.createElement('option');
+            option.value = programName;
+            option.textContent = programName;
+            programOption.appendChild(option);
+        });
+    });
+});
+
+function getDateRangeSelected(){
+        const selectRange = document.getElementById('selectDateRangeId');
+        const selectYear = document.getElementById('selectYearRangeId');
+        const TypeIndex = selectYear.selectedIndex;
+        const index = selectRange.selectedIndex;
+        const valorYear = selectYear.value;
+        const completeDateSelected =[];
+        let startDateSelect;
+        let endDateSelect;
+        let startDateMonths;
+        let endDateMonths;
+        if (index === 0) {
+            startDateMonths = '-01-01';
+            endDateMonths = '-12-31';
+        }else if (index === 1) {
+            startDateMonths = '-01-01';
+            endDateMonths = '-04-01';
+        } else if (index === 2) {
+            startDateMonths = '-04-01';
+            endDateMonths = '-07-01';
+        } else if (index === 3) {
+            startDateMonths = '-07-01';
+            endDateMonths = '-010-01';
+        } else if (index === 4) {
+            startDateMonths = '-10-01';
+            endDateMonths = '-12-31';
+        }
+        startDateSelect = `${valorYear}${startDateMonths}`;
+        endDateSelect = `${valorYear}${endDateMonths}`;
+        completeDateSelected[0] = startDateSelect;
+        completeDateSelected[1] = endDateSelect;
+
+        return  completeDateSelected;
+}
 
 //?--submit btn listener 
 document.addEventListener('DOMContentLoaded', function () {
     const boton = document.getElementById('submitFilterbtn');
     boton.addEventListener('click', async function () {
         console.log('¡Botón clickeado!');
-        const selectRange = document.getElementById('selectDateRangeId');
+        const selectProgram = document.getElementById('selectProgramId');
+        const selectType = document.getElementById('programTypeId');
         const selectYear = document.getElementById('selectYearRangeId');
-        const valorRange = selectRange.value;
         const TypeIndex = selectYear.selectedIndex;
-        const index = selectRange.selectedIndex;
-        const valorYear = selectYear.value;
-        let startDateSelect;
-        let endDateSelect;
-        let startDateMonths;
-        let endDateMonths;
-        if(TypeIndex!=0){
-    
-        const programTypeId = confirmSelection()
-        
-        if (index === 0) {
-            startDateMonths = '-01-01';
-            endDateMonths = '-12-31';
-        }else if (index === 1) {
-            startDateMonths = '-01-01';
-            endDateMonths = '-03-31';
-        } else if (index === 2) {
-            startDateMonths = '-04-01';
-            endDateMonths = '-06-30';
-        } else if (index === 3) {
-            startDateMonths = '-07-01';
-            endDateMonths = '-09-30';
-        } else if (index === 4) {
-            startDateMonths = '-10-01';
-            endDateMonths = '-12-31';
-        }
         
 
+        if(TypeIndex!=0){
+        const programTypeId = confirmSelection();
+        const completeDateSelected = getDateRangeSelected();
+        console.log("CSK: ", completeDateSelected[0],completeDateSelected[1]);
         const ids = await getProgramIds(programTypeId);
         console.log("dbValues: ", ids);
         const dbLabels = await getProgramNames(programTypeId);
         console.log("dbLabels: ", dbLabels);
-        startDateSelect = `${valorYear}${startDateMonths}`;
-        endDateSelect = `${valorYear}${endDateMonths}`;
-
 
         const dbValuesRaw=  await Promise.all(
-            ids.map(id => getByProgramType(id, startDateSelect, endDateSelect))
+            ids.map(id => getByProgramType(id, completeDateSelected[0], completeDateSelected[1]))
         );  
         const totalStudents = await Promise.all(
             ids.map(id => getStudentsPerProgram(id))
