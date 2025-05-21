@@ -62,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 }
 
 //?-----Get total amount of students for direct measure
+//! anadir tiempo
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'programs_id') {
     try {
 
@@ -99,6 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     exit;
 }
 //? get total amount of stundent for indirect measure
+//!Ajustar parametro de tiempo
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getStudentsIndirectMeasure') {
     try {
 
