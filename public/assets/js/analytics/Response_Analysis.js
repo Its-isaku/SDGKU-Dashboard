@@ -433,7 +433,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // const totalsMetDB =  getTotalMet(reorganizarArrays(datosOriginales));// Estudiantes que respondieron 4-5 por pregunta
 // const percentsDB =  getAcceptable(reorganizarArrays(datosOriginales)); // Porcentajes calculados
 
-   
+
 //*-------------------------DATOS REALES
         console.log("ESTUDIANTES: ", students[0]);
         const startDate =  completeDateSelected[0];
@@ -459,8 +459,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const questions = buildQuestionsForRender(question_textsDB, totalObservedDB, totalsMetDB, percentsDB);
         console.log("EL ARRAY QUESTIONS:",questions);
         renderProgramTables(questions); 
-        
-        // Ejemplo de uso
+        renderResponseAnalysisChart(dbLabels, dbValuesRaw);
 
         }else{
 
