@@ -616,12 +616,16 @@ function renderResponseAnalysisChart(dbLabels, dbValues) {
 
 //! <|-------------------------------- Tables Logic --------------------------------|>
 //? Variable to populate with DB
+const question_textDB = ' ';
+const totalObservedDB = 0;
+const totalMetDB = 0;
+const percentDB = 0;
 
-const programs = [
-    
+
+const questions = [
     {   
         //* Dynamic Program Name
-        name: 'FSDI',
+        question_text: question_textDB,
 
         //* Table Conttent
         measures: [
@@ -631,54 +635,72 @@ const programs = [
                 target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
 
                 //* Dynamic
-                observed: 15,
-                met: 15,
-                percent: '100%'
+                observed: totalObservedDB,
+                met: totalMetDB,
+                percent: percentDB
             }
         ]
     },
-    {   
-        //* Dynamic Program Name
-        name: 'FSDI',
+    // {   
+    //     //* Dynamic Program Name
+    //     question_text: 'FSDI',
 
-        //* Table Conttent
-        measures: [
+    //     //* Table Conttent
+    //     measures: [
+    //         { //* Row 2
+    //             //* Static
+    //             type: 'Indirect Measure',
+    //             target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
+
+    //             //* Dynamic
+    //             observed: 15,
+    //             met: 15,
+    //             percent: '100%'
+    //         }
+    //     ]
+    // },
+    // {   
+    //     //* Dynamic Program Name
+    //     question_text: 'FSDI',
+
+    //     //* Table Conttent
+    //     measures: [
         
-            { //* Row 2
-                //* Static
-                type: 'Indirect Measure',
-                target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
+    //         { //* Row 2
+    //             //* Static
+    //             type: 'Indirect Measure',
+    //             target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
 
-                //* Dynamic
-                observed: 15,
-                met: 15,
-                percent: '100%'
-            }
-        ]
-    },
-    {   
-        //* Dynamic Program Name
-        name: 'FSDI',
+    //             //* Dynamic
+    //             observed: 15,
+    //             met: 15,
+    //             percent: '100%'
+    //         }
+    //     ]
+    // },
+    // {   
+    //     //* Dynamic Program Name
+    //     question_text: 'FSDI',
 
-        //* Table Conttent
-        measures: [
+    //     //* Table Conttent
+    //     measures: [
             
-            { //* Row 2
-                //* Static
-                type: 'Indirect Measure',
-                target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
+    //         { //* Row 2
+    //             //* Static
+    //             type: 'Indirect Measure',
+    //             target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
 
-                //* Dynamic
-                observed: 15,
-                met: 15,
-                percent: '100%'
-            }
-        ]
-    },
+    //             //* Dynamic
+    //             observed: 15,
+    //             met: 15,
+    //             percent: '100%'
+    //         }
+    //     ]
+    // },
 ];
 
 //? function to render the program tables
-function renderProgramTables() {
+function renderProgramTables(questions) {
 
     //* Check if the container element exists
     const container = document.getElementById('responseAnalysisTable');
@@ -687,8 +709,8 @@ function renderProgramTables() {
     //* Clear the container before rendering
     container.innerHTML = '';
 
-    //* Loop through each program and create a table
-    programs.forEach(program => {
+    //* Loop through each question and create a table
+    questions.forEach(question => {
 
         //* Create a wrapper div for each program
         const tableContainer = document.createElement('div');
@@ -698,7 +720,7 @@ function renderProgramTables() {
         const titleContainer = document.createElement('div');   
         titleContainer.className = 'titleContainer';
         const title = document.createElement('h3');
-        title.textContent = program.name;
+        title.textContent = question.question_text;
         title.className = 'analytics-program-badge';
         titleContainer.appendChild(title);
         tableContainer.appendChild(titleContainer);
