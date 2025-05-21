@@ -265,7 +265,7 @@ function renderSurvey(data) {
 // Cambia a la sección de preguntas tras validar correo y cohort
 function handleNext() {
     const email = document.getElementById('respondentEmail').value.trim();
-    const cohort = document.getElementById('cohortSelect').value;
+    const cohort = document.getElementById('optSelect').value; // Cambiado de 'cohortSelect' a 'optSelect'
     const isValidEmail = email.endsWith('@sdgku.edu');
 
     if (!email || !isValidEmail) {
@@ -331,7 +331,7 @@ function getAnswers() {
 // Envía el cuestionario completo al backend
 function submitSurvey() {
     const email = document.getElementById('respondentEmail').value.trim();
-    const cohortId = document.getElementById('cohortSelect').value;
+    const cohortId = document.getElementById('optSelect').value; // Cambiado de 'cohortSelect' a 'optSelect'
     const surveyId = document.getElementById('surveyContent').dataset.surveyId;
     const token = new URLSearchParams(window.location.search).get('token');
     const responses = getAnswers();

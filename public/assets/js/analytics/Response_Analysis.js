@@ -372,10 +372,10 @@ function getDateRangeSelected(){
         endDateSelect = `${valorYear}${endDateMonths}`;
         completeDateSelected[0] = startDateSelect;
         completeDateSelected[1] = endDateSelect;
-
+        
         return  completeDateSelected;
-}
-
+    }
+    
 //?--submit btn listener 
 document.addEventListener('DOMContentLoaded', function () {
     const boton = document.getElementById('submitFilterbtn');
@@ -388,19 +388,20 @@ document.addEventListener('DOMContentLoaded', function () {
         const programIndex = selectProgram.selectedIndex;
         
         if(TypeIndex!=0){
-        
-        const programTypeId = confirmSelection();
-        const completeDateSelected = getDateRangeSelected();
-        const ids = await getProgramIds(programTypeId);
-        console.log("dbValues: ", ids);
-        const dbLabels = await getProgramNames(programTypeId);
-        console.log("dbLabels: ", dbLabels);
-        console.log("PROGRAMA SELECTed",ids[programIndex]);
-        
-        const dbValuesRaw=  await Promise.all(
-            ids.map(id => getByProgramType(id, completeDateSelected[0], completeDateSelected[1]))
-        );
-        const students=  await Promise.all(
+            
+            const programTypeId = confirmSelection();
+            const completeDateSelected = getDateRangeSelected();
+            const ids = await getProgramIds(programTypeId);
+            console.log("dbValues: ", ids);
+            const dbLabels = await getProgramNames(programTypeId);
+            console.log("dbLabels: ", dbLabels);
+            console.log("PROGRAMA SELECTed",ids[programIndex]);
+            
+            const dbValuesRaw=  await Promise.all(
+                ids.map(id => getByProgramType(id, completeDateSelected[0], completeDateSelected[1]))
+            );
+            renderResponseAnalysisChart(dbLabels, dbValuesRaw);
+            const students=  await Promise.all(
             ids.map(id => getStudentsIndirectMeasure(id))
         );
         
@@ -459,7 +460,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const questions = buildQuestionsForRender(question_textsDB, totalObservedDB, totalsMetDB, percentsDB);
         console.log("EL ARRAY QUESTIONS:",questions);
         renderProgramTables(questions); 
-        renderResponseAnalysisChart(dbLabels, dbValuesRaw);
 
         }else{
 
