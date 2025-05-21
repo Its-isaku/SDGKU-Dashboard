@@ -198,8 +198,7 @@ async function getsurveyIndirectResults( responses_id) {
     }
 }
 
-
-//?---Get Group of answers POST TEST for Direct Analisis
+//?-Get Group of answers FINAL ASSESSMENT for Indirect Analisis
 async function getAnswerPerStudentIndirect(programId, startDate, endDate) {
     const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
         url.searchParams.append('action', 'getAnswersPerStudentIndirect');
@@ -239,8 +238,8 @@ async function getAnswerPerStudentIndirect(programId, startDate, endDate) {
         return []; 
     }
 }
-//?-Get Group of answers FINAL ASSESSMENT for Indirect Analisis
 
+//?---Get Group of answers POST TEST for Direct Analisis
 async function getAnswerPerStudent(programId) {
     try {
         const response = await fetch(`/SDGKU-Dashboard/src/models/Response_analysis.php?action=getAnswersPerStudent&program_id=${programId}`);
@@ -386,8 +385,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectType = document.getElementById('programTypeId');
         const selectYear = document.getElementById('selectYearRangeId');
         const TypeIndex = selectYear.selectedIndex;
+        const programIndex = selectProgram.selectedIndex;
         
-
         if(TypeIndex!=0){
         const programTypeId = confirmSelection();
         const completeDateSelected = getDateRangeSelected();
@@ -396,23 +395,23 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("dbValues: ", ids);
         const dbLabels = await getProgramNames(programTypeId);
         console.log("dbLabels: ", dbLabels);
-
+        console.log("PROGRAMA SELECTed",ids[programIndex]);
         const dbValuesRaw=  await Promise.all(
             ids.map(id => getByProgramType(id, completeDateSelected[0], completeDateSelected[1]))
         );  
-        const totalStudents = await Promise.all(
-            ids.map(id => getStudentsPerProgram(id))
-        );
+        // const totalStudents = await Promise.all(
+        //     ids.map(id => getStudentsPerProgram(id))
+        // );
+        
+        // const totalStudentsById = {};
+        // ids.forEach((id, idx) => {
+        //     totalStudentsById[id] = [totalStudents[idx]];
+        // });
+        // const totalStudentsIndirect = await Promise.all(
+        //     ids.map(id => getStudentsIndirectMeasure(id))
+        // );
 
-        const totalStudentsById = {};
-        ids.forEach((id, idx) => {
-            totalStudentsById[id] = [totalStudents[idx]];
-        });
-        const totalStudentsIndirect = await Promise.all(
-            ids.map(id => getStudentsIndirectMeasure(id))
-        );
-
-
+        const totalStudentsIndirect = await getStudentsIndirectMeasure(ids[programIndex]);
         const totalStudentsIndirectById = {};
         ids.forEach((id, idx) => {
             totalStudentsIndirectById[id] = [totalStudentsIndirect[idx]];
@@ -446,7 +445,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ids.forEach((id, idx) => {
             totalAnswersByIdIndirect[id] = totalAnswersRawIndirect[idx];
         });
-        console.log("Total ANSWERS INDIRECT: ", totalAnswersByIdIndirect);
+        console.log("Array de Responses ID: ", totalAnswersRawIndirect[0]);
 
 
         const resultPerStudent = {};
@@ -467,6 +466,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 }      
+
+        
         const resultLinkertPerStudent = {};
         for (const [idProgram, studentsArrays] of Object.entries(totalAnswersByIdIndirect)) {
             resultLinkertPerStudent[idProgram] = [];
@@ -487,8 +488,35 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 }     
 
-        console.log("resultPerStudent anidado: ", resultPerStudent);
-        // console.log("Indirect answers L anidado: ", resultLinkertPerStudent);
+function calcularPorcentajes(arrays) {
+    const aceptables = ['4', '5'];
+    const porcentajes = arrays.map(subArray => {
+        const total = subArray.length;
+        const aceptados = subArray.filter(valor => aceptables.includes(valor)).length;
+        return (aceptados / total) * 100;
+    });
+    
+    return porcentajes;
+}
+function getAcceptable(arrays) {
+    let contador = 0;
+    arrays.map(subArray => {
+        if(subArray>70){
+            contador++;
+        }
+    });
+
+    return contador;
+}
+const datos = resultLinkertPerStudent[ids[programIndex]];
+
+const resultados = calcularPorcentajes(datos);
+const aprobados = getAcceptable(resultados);
+console.log("ARREGLO linkert",resultados); 
+console.log("ARREGLO aprobados",aprobados); 
+
+        // console.log("resultPerStudent anidado: ", resultPerStudent);
+        console.log("Indirect answers L anidado: ", resultLinkertPerStudent[0]);
         // console.log("totalStudentsById Direct anidado: ", totalStudentsById);
         // console.log("totalStudentsById Indirect anidado: ", totalStudentsIndirectById);
         // const porcentajes = calcularPorcentajeAciertos(resultPerStudent);
@@ -538,6 +566,7 @@ function calcularPorcentajeAciertos(resultPerStudent) {
     }
     return porcentajesPorPrograma;
 }
+
 
 
 //? Render the Response Analysis Chart
@@ -616,12 +645,16 @@ function renderResponseAnalysisChart(dbLabels, dbValues) {
 
 //! <|-------------------------------- Tables Logic --------------------------------|>
 //? Variable to populate with DB
+const question_textDB = ' ';
+const totalObservedDB = 0;
+const totalMetDB = 0;
+const percentDB = 0;
 
-const programs = [
-    
+
+const questions = [
     {   
         //* Dynamic Program Name
-        name: 'FSDI',
+        question_text: question_textDB,
 
         //* Table Conttent
         measures: [
@@ -631,54 +664,72 @@ const programs = [
                 target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
 
                 //* Dynamic
-                observed: 15,
-                met: 15,
-                percent: '100%'
+                observed: totalObservedDB,
+                met: totalMetDB,
+                percent: percentDB
             }
         ]
     },
-    {   
-        //* Dynamic Program Name
-        name: 'FSDI',
+    // {   
+    //     //* Dynamic Program Name
+    //     question_text: 'I believe this course will help me advance my career.',
 
-        //* Table Conttent
-        measures: [
+    //     //* Table Conttent
+    //     measures: [
+    //         { //* Row 2
+    //             //* Static
+    //             type: 'Indirect Measure',
+    //             target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
+
+    //             //* Dynamic
+    //             observed: 38,
+    //             met: 33,
+    //             percent: '86.84%'
+    //         }
+    //     ]
+    // },
+    // {   
+    //     //* Dynamic Program Name
+    //     question_text: 'This course met most of my expectations.',
+
+    //     //* Table Conttent
+    //     measures: [
         
-            { //* Row 2
-                //* Static
-                type: 'Indirect Measure',
-                target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
+    //         { //* Row 2
+    //             //* Static
+    //             type: 'Indirect Measure',
+    //             target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
 
-                //* Dynamic
-                observed: 15,
-                met: 15,
-                percent: '100%'
-            }
-        ]
-    },
-    {   
-        //* Dynamic Program Name
-        name: 'FSDI',
+    //             //* Dynamic
+    //             observed: 25,
+    //             met: 19,
+    //             percent: '76.00%'
+    //         }
+    //     ]
+    // },
+    // {   
+    //     //* Dynamic Program Name
+    //     question_text: 'I liked the quality of the instructional content in this course.',
 
-        //* Table Conttent
-        measures: [
+    //     //* Table Conttent
+    //     measures: [
             
-            { //* Row 2
-                //* Static
-                type: 'Indirect Measure',
-                target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
+    //         { //* Row 2
+    //             //* Static
+    //             type: 'Indirect Measure',
+    //             target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
 
-                //* Dynamic
-                observed: 15,
-                met: 15,
-                percent: '100%'
-            }
-        ]
-    },
+    //             //* Dynamic
+    //             observed: 22,
+    //             met: 20,
+    //             percent: '90.90%'
+    //         }
+    //     ]
+    // },
 ];
 
 //? function to render the program tables
-function renderProgramTables() {
+function renderProgramTables(questions) {
 
     //* Check if the container element exists
     const container = document.getElementById('responseAnalysisTable');
@@ -687,8 +738,8 @@ function renderProgramTables() {
     //* Clear the container before rendering
     container.innerHTML = '';
 
-    //* Loop through each program and create a table
-    programs.forEach(program => {
+    //* Loop through each question and create a table
+    questions.forEach(question => {
 
         //* Create a wrapper div for each program
         const tableContainer = document.createElement('div');
@@ -698,7 +749,7 @@ function renderProgramTables() {
         const titleContainer = document.createElement('div');   
         titleContainer.className = 'titleContainer';
         const title = document.createElement('h3');
-        title.textContent = program.name;
+        title.textContent = question.question_text;
         title.className = 'analytics-program-badge';
         titleContainer.appendChild(title);
         tableContainer.appendChild(titleContainer);
