@@ -90,8 +90,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 addUserForm.reset();
             })
             .catch(err => {
-                console.error(err);
-                showNotification(err.message || 'Failed to add user', 'error');
+                /* console.error(err); */
+                if (err.message && err.message.toLowerCase().includes('email already exists')) {
+                    showNotification('This email is already registered in the system', 'error');
+                } else {
+                    showNotification(err.message || 'Failed to add user', 'error');
+                }
             })
             .finally(() => {
                 toggleButtonLoading(submitBtn, false);

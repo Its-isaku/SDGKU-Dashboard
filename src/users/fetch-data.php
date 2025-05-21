@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {session_start();}
 require_once __DIR__. '/functions.php';
 require_once __DIR__. '/../config/config.php';
 
-error_log("SESSION DATA IN FETCH-DATA: " . json_encode($_SESSION));
+/* error_log("SESSION DATA IN FETCH-DATA: " . json_encode($_SESSION)); */
 $action = $_GET['action'] ?? '';
 
 try {
@@ -61,7 +61,7 @@ try {
             }
             
             //~filters based on role
-            if ($currentUserRole === 'admin') {$query .= " AND role != 'super_admin'";} 
+            /* if ($currentUserRole === 'admin') {$query .= " AND role != 'super_admin'";} */ 
             
             $stmt = $pdo->prepare($query);
             $stmt->execute($params);
