@@ -672,7 +672,7 @@ const questions = [
     },
     // {   
     //     //* Dynamic Program Name
-    //     question_text: 'FSDI',
+    //     question_text: 'I believe this course will help me advance my career.',
 
     //     //* Table Conttent
     //     measures: [
@@ -682,15 +682,15 @@ const questions = [
     //             target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
 
     //             //* Dynamic
-    //             observed: 15,
-    //             met: 15,
-    //             percent: '100%'
+    //             observed: 38,
+    //             met: 33,
+    //             percent: '86.84%'
     //         }
     //     ]
     // },
     // {   
     //     //* Dynamic Program Name
-    //     question_text: 'FSDI',
+    //     question_text: 'This course met most of my expectations.',
 
     //     //* Table Conttent
     //     measures: [
@@ -701,15 +701,15 @@ const questions = [
     //             target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
 
     //             //* Dynamic
-    //             observed: 15,
-    //             met: 15,
-    //             percent: '100%'
+    //             observed: 25,
+    //             met: 19,
+    //             percent: '76.00%'
     //         }
     //     ]
     // },
     // {   
     //     //* Dynamic Program Name
-    //     question_text: 'FSDI',
+    //     question_text: 'I liked the quality of the instructional content in this course.',
 
     //     //* Table Conttent
     //     measures: [
@@ -720,9 +720,9 @@ const questions = [
     //             target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
 
     //             //* Dynamic
-    //             observed: 15,
-    //             met: 15,
-    //             percent: '100%'
+    //             observed: 22,
+    //             met: 20,
+    //             percent: '90.90%'
     //         }
     //     ]
     // },
