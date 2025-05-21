@@ -64,7 +64,6 @@ function renderReportCards(surveys) {
             </div>
                 <div class="survey-details">
                     <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
-                    <span><i class="fa-solid fa-clock"></i> Expired: ${survey.expires}</span>
                     <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} Questions</span>
                     <span><i class="fa-solid fa-clipboard-list"></i> ${survey.responses} Responses</span>
                     <span>Program: ${survey.program}</span>

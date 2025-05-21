@@ -231,6 +231,5 @@
     <script src="../../assets/js/app/main.js"></script>
     <script src="../../assets/js/app/users.js"></script>
     <script src="../../assets/js/auth/logout.js"></script>
-    <script src="../../assets/js/app/user-profile.js"></script>
 </body>
 </html>

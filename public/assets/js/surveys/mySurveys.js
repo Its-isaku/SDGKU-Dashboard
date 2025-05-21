@@ -346,8 +346,7 @@ function renderActiveSurveysAfterLeave(searchTerm = '') {
                     </div>
                         <div class="survey-details">
                             <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
-                            <span><i class="fa-solid fa-calendar-plus"></i> Last Edit: ${survey.last_edit}</span>
-                            <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
+                            <span><i class="fa-solid fa-calendar-plus"></i> Last Edited: ${survey.last_edit}</span>
                             <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
                             <span>Program: ${survey.program}</span>
                         </div>
@@ -382,8 +381,7 @@ function renderActiveSurveysAfterLeave(searchTerm = '') {
                     </div>
                         <div class="survey-details">
                             <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
-                            <span><i class="fa-solid fa-calendar-plus"></i> Last Edit: ${survey.last_edit}</span>
-                            <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
+                            <span><i class="fa-solid fa-calendar-plus"></i> Last Edited: ${survey.last_edit}</span>
                             <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
                             <span>Program: ${survey.program}</span>
                         </div>
@@ -460,7 +458,6 @@ function renderInactiveSurveysAfterLeave(searchTerm = '') {
                     <div class="survey-details">
                         <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
                         <span><i class="fa-solid fa-calendar-plus"></i> Last Edit: ${survey.last_edit}</span>
-                        <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
                         <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
                         <span>Program: ${survey.program}</span>
                     </div>
@@ -488,7 +485,6 @@ function renderInactiveSurveysAfterLeave(searchTerm = '') {
                     <div class="survey-details">
                         <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
                         <span><i class="fa-solid fa-calendar-plus"></i> Last Edit: ${survey.last_edit}</span>
-                        <span><i class="fa-solid fa-clock"></i> Expires: ${survey.expires}</span>
                         <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
                         <span>Program: ${survey.program}</span>
                     </div>
@@ -819,6 +815,3 @@ function handleSurveyAction(url, body, onSuccess, onError) {
         onError(error);
     });
 }
-
-
-
