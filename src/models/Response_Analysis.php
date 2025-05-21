@@ -171,19 +171,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getAnswersPerStudentIndirect') {
     try {
-        if (!isset($_GET['program_id'])) {
-            throw new Exception('program_id parameter is required');
+        $required_params = ['program_id', 'start_date', 'end_date'];
+        foreach ($required_params as $param) {
+            if (!isset($_GET[$param])) {
+                throw new Exception("Missing required parameter: $param");
+            }
         }
-        $program_id = $_GET['program_id'];
-        
+        $program_id = $_GET['program_id'];  
+        $start_date = $_GET['start_date'];
+        $end_date = $_GET['end_date'];    
         $sql = "SELECT GROUP_CONCAT(responses_id) AS responseIds
                 FROM responses
+                INNER JOIN answers ON answers.response_id = responses.responses_id
                 INNER JOIN surveys ON surveys.survey_id = responses.survey_id
                 WHERE surveys.program_id = ? AND surveys.survey_type_id = 3
+                AND (responses.submitted_at BETWEEN ? AND ? ) AND (answers.question_type_id = 3 OR answers.question_type_id = 2)
                 GROUP BY respondent_email";
                 
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$program_id]);
+        $stmt->execute([$program_id, $start_date, $end_date]);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         echo json_encode([

@@ -200,14 +200,18 @@ async function getsurveyIndirectResults( responses_id) {
 
 
 //?---Get Group of answers POST TEST for Direct Analisis
-async function getAnswerPerStudentIndirect(programId) {
+async function getAnswerPerStudentIndirect(programId, startDate, endDate) {
+    const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
+        url.searchParams.append('action', 'getAnswersPerStudentIndirect');
+        url.searchParams.append('program_id', programId);
+        url.searchParams.append('start_date', startDate);
+        url.searchParams.append('end_date', endDate);
+        
     try {
-        const response = await fetch(`/SDGKU-Dashboard/src/models/Response_analysis.php?action=getAnswersPerStudentIndirect&program_id=${programId}`);
-        
+        const response = await fetch(url.toString());
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
         const data = await response.json();
-        console.log("Datos crudos recibidos:", data); 
+        
         
         if (data.status === 'success') {
             if (!Array.isArray(data.data)) {
@@ -262,7 +266,7 @@ async function getAnswerPerStudent(programId) {
                 return []; 
             });
 
-            console.log("studentsList generado:", studentsList);
+            // console.log("studentsList generado:", studentsList);
             return studentsList;
         }
 
@@ -281,7 +285,6 @@ async function getAnswerPerStudent(programId) {
 //? Fill select with years 
 document.addEventListener('DOMContentLoaded', function() {
         const select = document.getElementById('selectYearRangeId');
-        
         const currentYear = new Date().getFullYear();
         const startYear = 2020;
         for (let year = currentYear; year >= startYear; year--) {
@@ -291,6 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
             select.appendChild(option);
         }
     });
+
 let quarterlyRange=['Select quarterly range','January - March','April - June','July - September','October - December'];
 let semiannualRange=['Select semiannual range','January - June','July - December'];
 //? auto fill date range when range type is selected
@@ -414,9 +418,9 @@ document.addEventListener('DOMContentLoaded', function () {
             totalStudentsIndirectById[id] = [totalStudentsIndirect[idx]];
         });
 
-    console.log("resultsd: ", dbValuesRaw);
-    console.log("Total Students Direct: ", totalStudents);
-    console.log("Total Students Indirect: ", totalStudentsIndirect);
+        // console.log("resultsd: ", dbValuesRaw);
+        // console.log("Total Students Direct: ", totalStudents);
+        console.log("Total Students Indirect: ", totalStudentsIndirect);
 
 
         const totalAnswersRaw = await Promise.all(
@@ -428,13 +432,15 @@ document.addEventListener('DOMContentLoaded', function () {
         ids.forEach((id, idx) => {
             totalAnswersById[id] = totalAnswersRaw[idx];
         });
-        console.log("Total ANSWERS: ", totalAnswersById);
+        // console.log("Total ANSWERS: ", totalAnswersById);
 
         //*This is for Final ASSESSMENT analisis
-        const totalAnswersRawIndirect = await Promise.all(
-            ids.map(id => getAnswerPerStudentIndirect(id))
-        );
+        console.log("ids:", ids);
+        console.log("completeDateSelected:", completeDateSelected);
 
+        const totalAnswersRawIndirect = await Promise.all(
+            ids.map(id => getAnswerPerStudentIndirect(id, completeDateSelected[0], completeDateSelected[1]))
+        );
 
         const totalAnswersByIdIndirect = {};
         ids.forEach((id, idx) => {
@@ -482,12 +488,13 @@ document.addEventListener('DOMContentLoaded', function () {
 }     
 
         console.log("resultPerStudent anidado: ", resultPerStudent);
-        console.log("Indirect answers L anidado: ", resultLinkertPerStudent);
-        console.log("totalStudentsById Direct anidado: ", totalStudentsById);
-        console.log("totalStudentsById Indirect anidado: ", totalStudentsIndirectById);
-        const porcentajes = calcularPorcentajeAciertos(resultPerStudent);
-        console.log("Porcentaje de aciertos por estudiante:", porcentajes);
-        renderResponseAnalysisChart(dbLabels,dbValuesRaw);        }else{
+        // console.log("Indirect answers L anidado: ", resultLinkertPerStudent);
+        // console.log("totalStudentsById Direct anidado: ", totalStudentsById);
+        // console.log("totalStudentsById Indirect anidado: ", totalStudentsIndirectById);
+        // const porcentajes = calcularPorcentajeAciertos(resultPerStudent);
+        // console.log("Porcentaje de aciertos por estudiante:", porcentajes);
+        renderResponseAnalysisChart(dbLabels,dbValuesRaw);       
+        }else{
 
             //!Notificacion
             showNotification("Please select a year", "error");
@@ -608,24 +615,16 @@ function renderResponseAnalysisChart(dbLabels, dbValues) {
 }
 
 //! <|-------------------------------- Tables Logic --------------------------------|>
-//? Variable to populate with DB 
+//? Variable to populate with DB
+
 const programs = [
+    
     {   
         //* Dynamic Program Name
         name: 'FSDI',
 
         //* Table Conttent
         measures: [
-            { //* Row 1
-                //* Static
-                type: 'Direct Measure',
-                target: '70% of students must receive a proficient (C grade) or distinguished evaluation (A or B grade) on relevant content criteria mapped to this PLO.',
-
-                //* Dynamic
-                observed: 58,
-                met: 55,
-                percent: '95%'
-            },
             { //* Row 2
                 //* Static
                 type: 'Indirect Measure',
@@ -644,16 +643,7 @@ const programs = [
 
         //* Table Conttent
         measures: [
-            { //* Row 1
-                //* Static
-                type: 'Direct Measure',
-                target: '70% of students must receive a proficient (C grade) or distinguished evaluation (A or B grade) on relevant content criteria mapped to this PLO.',
-
-                //* Dynamic
-                observed: 58,
-                met: 55,
-                percent: '95%'
-            },
+        
             { //* Row 2
                 //* Static
                 type: 'Indirect Measure',
@@ -672,16 +662,7 @@ const programs = [
 
         //* Table Conttent
         measures: [
-            { //* Row 1
-                //* Static
-                type: 'Direct Measure',
-                target: '70% of students must receive a proficient (C grade) or distinguished evaluation (A or B grade) on relevant content criteria mapped to this PLO.',
-
-                //* Dynamic
-                observed: 58,
-                met: 55,
-                percent: '95%'
-            },
+            
             { //* Row 2
                 //* Static
                 type: 'Indirect Measure',
