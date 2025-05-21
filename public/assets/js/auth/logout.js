@@ -1,10 +1,17 @@
-document.addEventListener("DOMContentLoaded", function () {
+
+function validLogin() {
+    var user = sessionStorage.getItem('user');
+    if (!user) {
+        window.location.href = "../auth/login.html";
+    }
+}
+
+function logout() {
     const allLogoutButtons = document.querySelectorAll(".headerBtnOut, .asideBtnOut");
-    
     allLogoutButtons.forEach(button => {
         button.addEventListener("click", async () => {
             localStorage.removeItem('sdgkuUserData');
-            
+
             try {
                 const response = await fetch("../../../src/controllers/logout.php", {
                     method: "POST"
@@ -26,4 +33,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
-});
+}
+
+function init() {
+    // validLogin();
+    logout();
+}
+
+document.addEventListener('DOMContentLoaded', init);

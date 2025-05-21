@@ -116,30 +116,36 @@
                     <!--? Survey Details -->
                     <div class="analyticsGraphics">
                         <div id="panel1" class="panel visible">
-                            <div class="overview visible"> 
-
+                            <div class="overview visible">
                                 <div class="overviewCard">
-                                    <h1>Survey Completion Rate</h1>
-                                    <p>Monthly completion rates for all surveys</p>
-                                    <canvas id="completionRateChart"></canvas>
-                                </div>
-
-                                <div class="overviewCard">
-                                    <h1>Survey Types Distribution</h1>
-                                    <p>Breakdown of surveys by type</p>
-                                    <canvas id="surveyTypesChart"></canvas>
-                                </div>
-
-                                <div class="overviewCard">
-                                    <h1>Questions Types</h1>
-                                    <p>Distribution of question types across all surveys</p>
-                                    <canvas id="questionTypesChart"></canvas>
-                                </div>
-
-                                <div class="overviewCard">
-                                    <h1>Rating Distribution</h1>
-                                    <p>Distribution of ratings across evaluation surveys</p>
-                                    
+                                    <h1>Survey Overview</h1>
+                                    <p>Summary of survey completion, types, questions, and ratings</p>
+                                    <table id="overviewTable" class="display nowrap" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Label</th>
+                                                <th>Survey Type</th>
+                                                <th>Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                    <div class="exportButtons">
+                                        <button id="btnOverviewCopy" class="btnExport"><i
+                                                class="fa-solid fa-clipboard"></i></button>
+                                        <button id="btnOverviewCsv" class="btnExport"><i
+                                                class="fa-solid fa-file-csv"></i></button>
+                                        <button id="btnOverviewExcel" class="btnExport"><i
+                                                class="fa-solid fa-file-excel"></i></button>
+                                        <button id="btnOverviewPDF" class="btnExport"><i
+                                                class="fa-solid fa-file-pdf"></i></button>
+                                        <button id="btnOverviewPrint" class="btnExport"><i
+                                                class="fa-solid fa-print"></i></button>
+                                    </div>
+                                    <div id="overallAverageDisplay"
+                                        style="display: flex; justify-content: center; margin-top: 1rem; font-weight: bold;">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -147,7 +153,7 @@
                         <!--? RESPONSE ANALYSIS -->
                         <div id="panel2" class="panel">
                             <div class="responseContainer">
-                                
+
                                 <!--~ Filters -->
                                 <div class="responseFilter">
                                     <div class="surveyResponseHeader">
@@ -159,7 +165,8 @@
                                         <div class="surveySelect">
                                             <label for="programType"><b>Program Type</b></label>
                                             <select name="programType" id="programTypeId">
-                                                <option value="opcion" disabled selected hidden>Please select program type</option>
+                                                <option value="opcion" disabled selected hidden>Please select program
+                                                    type</option>
                                                 <option value="opcion1">Certificate Program</option>
                                                 <option value="opcion2">Bachelors</option>
                                                 <option value="opcion3">Masters</option>
@@ -167,7 +174,8 @@
                                             </select>
                                             <label for="selectProgram"><b>Program</b></label>
                                             <select name="selectProgram" id="selectProgramId">
-                                                <option value="opcion" disabled selected hidden>Please select program</option>
+                                                <option value="opcion" disabled selected hidden>Please select program
+                                                </option>
                                                 <!--*  Trimester from db -->
                                             </select>
                                             <button class="submitFilter" id="submitFilterbtn">Apply filters</button>
@@ -176,15 +184,17 @@
                                         <div class="surveySelect">
                                             <label for="yearRange"><b>Year Range</b></label>
                                             <select name="yearRange" id="selectYearRangeId">
-                                                <option value="opcion" disabled selected hidden>Please select year</option>
+                                                <option value="opcion" disabled selected hidden>Please select year
+                                                </option>
                                                 <!--*  Trimester from db -->
                                             </select>
 
                                             <div class="dateSelect">
                                                 <div class="dateItem">
                                                     <label for="dateRange"><b>Range type</b></label>
-                                                    <select name="dateRange" id="selectRangeTypeId"> 
-                                                        <option value="opcion1" disabled selected hidden>Please select range type</option>
+                                                    <select name="dateRange" id="selectRangeTypeId">
+                                                        <option value="opcion1" disabled selected hidden>Please select
+                                                            range type</option>
                                                         <option value="opcion2">Quarterly</option>
                                                         <option value="opcion3">Semiannual</option>
                                                     </select>
@@ -193,7 +203,8 @@
                                                 <div class="dateItem">
                                                     <label for="dateRange"><b>Date Range</b></label>
                                                     <select name="dateRange" id="selectDateRangeId">
-                                                        <option value="opcion1" disabled selected hidden>Please select date range</option>
+                                                        <option value="opcion1" disabled selected hidden>Please select
+                                                            date range</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -223,7 +234,7 @@
                         </div>
 
                         <!--? COMPARISON GRAPHICS-->
-                        <div id="panel3" class="panel"> 
+                        <div id="panel3" class="panel">
                             <div class="comparisonContainer">
                                 <!--~ Filters -->
                                 <div class="comparisonFilter">
@@ -237,7 +248,8 @@
                                             <div class="programItem">
                                                 <label for="programType"><b>Program Type</b></label>
                                                 <select name="programType" id="programTypeId">
-                                                    <option value="opcion" disabled selected hidden>Please select program type</option>
+                                                    <option value="opcion" disabled selected hidden>Please select
+                                                        program type</option>
                                                     <option value="opcion1">Certificate Program</option>
                                                     <option value="opcion2">Bachelors</option>
                                                     <option value="opcion3">Masters</option>
@@ -249,7 +261,8 @@
                                                 <div class="programItem">
                                                     <label for="programType"><b>Program</b></label>
                                                     <select name="program" id="programeId">
-                                                        <option value="opcion" disabled selected hidden>Please select program</option>
+                                                        <option value="opcion" disabled selected hidden>Please select
+                                                            program</option>
                                                         <!--* Program from db -->
                                                     </select>
                                                 </div>
@@ -260,15 +273,17 @@
                                         <div class="surveySelect">
                                             <label for="yearRange"><b>Year Range</b></label>
                                             <select name="yearRange" id="selectYearRangeId">
-                                                <option value="opcion" disabled selected hidden>Please select year</option>
+                                                <option value="opcion" disabled selected hidden>Please select year
+                                                </option>
                                                 <!--*  Trimester from db -->
                                             </select>
 
                                             <div class="dateSelect">
                                                 <div class="dateItem">
                                                     <label for="dateRange"><b>Range type</b></label>
-                                                    <select name="dateRange" id="selectRangeTypeId"> 
-                                                        <option value="opcion1" disabled selected hidden>Please select range type</option>
+                                                    <select name="dateRange" id="selectRangeTypeId">
+                                                        <option value="opcion1" disabled selected hidden>Please select
+                                                            range type</option>
                                                         <option value="opcion2">Quarterly</option>
                                                         <option value="opcion3">Semiannual</option>
                                                     </select>
@@ -277,7 +292,8 @@
                                                 <div class="dateItem">
                                                     <label for="dateRange"><b>Date Range</b></label>
                                                     <select name="dateRange" id="selectDateRangeId">
-                                                        <option value="opcion1" disabled selected hidden>Please select date range</option>
+                                                        <option value="opcion1" disabled selected hidden>Please select
+                                                            date range</option>
                                                         <option value="opcion2">January - March</option>
                                                         <option value="opcion3">April - June</option>
                                                         <option value="opcion4">July - September</option>
@@ -295,7 +311,7 @@
                                         <h2>Knowledge Improvement</h2>
                                         <div class="subdued">Comparison of pre and post course assessment results</div>
                                     </div>
-                                        
+
                                     <div class="comparison-layout">
                                         <div class="chart-container">
                                             <canvas id="comparisonChart"></canvas>
@@ -332,27 +348,27 @@
         </main>
 
         <!--! Download report Modal -->
-                <div id="report-download-modal" class="modal">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2>Download Report</h2>
-                            <span class="close-modal">&times;</span>
-                        </div>
-                        <div class="modal-body">
-                            <p>Select the format to download the report:</p>
-                            <input type="hidden" id="downloadReportId">
-                            <div class="form-actions">
-                                <button type="button" class="btn btn-cancel">Cancel</button>
-                                <button type="button" class="btn btn-danger" id="download-Exel">Exel</button>
-                                <button type="button" class="btn btn-danger" id="download-PDF">PDF</button>
-                                <button type="button" class="btn btn-danger" id="download-CSV">CSV</button>
-                            </div>
-                        </div>
+        <div id="report-download-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Download Report</h2>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>Select the format to download the report:</p>
+                    <input type="hidden" id="downloadReportId">
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="download-EXCEL">Excel</button>
+                        <button type="button" class="btn btn-danger" id="download-CSV">CSV</button>
+                        
                     </div>
                 </div>
+            </div>
+        </div>
 
         <!--! Notificaciones -->
-        <div id="notification" class="notification" style="display:none;"></div>        
+        <div id="notification" class="notification" style="display:none;"></div>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>

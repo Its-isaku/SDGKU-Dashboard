@@ -187,18 +187,31 @@ function loadCohorts(programId) {
     fetch(`/SDGKU-Dashboard/src/models/survey.php?action=getCohorts&programId=${programId}`)
         .then(response => response.json())
         .then(data => {
-            const select = document.getElementById('cohortSelect');
+            const select = document.getElementById('optSelect');
             select.innerHTML = '';
+
+            const selectLabel = document.getElementById('optLabel');
+            selectLabel.innerHTML = '';
 
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
-            defaultOption.textContent = 'Select your cohort';
+
             defaultOption.disabled = true;
             defaultOption.selected = true;
-            select.appendChild(defaultOption);
 
             if (data.success && data.cohorts.length > 0) {
                 data.cohorts.forEach(cohort => {
+                    console.log(cohort.program_type_id)
+                    if (cohort.program_type_id === 2 || cohort.program_type_id === 3) {
+                        defaultOption.textContent = 'Select your section';
+                        selectLabel.innerHTML = 'Your Section <span class="required">*</span>';
+                        select.appendChild(defaultOption);
+                    }
+                    else {
+                        defaultOption.textContent = 'Select your cohort';
+                        selectLabel.innerHTML = 'Your Cohort <span class="required">*</span>';
+                        select.appendChild(defaultOption);
+                    }
                     const option = document.createElement('option');
                     option.value = cohort.cohort_id;
                     option.textContent = cohort.cohort;
@@ -206,13 +219,13 @@ function loadCohorts(programId) {
                 });
             } else {
                 const option = document.createElement('option');
-                option.textContent = 'No cohorts available';
+                option.textContent = 'No option available';
                 option.disabled = true;
                 select.appendChild(option);
             }
         })
         .catch(() => {
-            showNotification('Error loading cohorts.', 'error');
+            showNotification('Error loading.', 'error');
         });
 }
 

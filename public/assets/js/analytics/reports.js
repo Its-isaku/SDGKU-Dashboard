@@ -9,12 +9,12 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
-//! <|----------------------- Download Logic -----------------------|>
+//! <|----------------------- Get Data Logic -----------------------|>
 
-// ? Descarga el reporte en formato CSV
-async function downloadCSV() {
+// ? Get data and load to report cards
+async function loadReports() {
     try {
-        const response = await fetch('../../../src/models/report_Downloads.php');
+        const response = await fetch('../../../src/models/getReportsData.php');
         const result = await response.json();
 
         if (result.status === 'success') {
@@ -27,21 +27,15 @@ async function downloadCSV() {
     }
 }
 
-// ? Descarga el reporte en formato EXCEL
-
-
-// ? Descarga el reporte en formato PDF
-
-
 //! <----------------------- Render Cards Logic ----------------------->
 
 // ? Renderiza las tarjetas de los reportes
 function renderReportCards(surveys) {
     const container = document.querySelector('.reports');
-    container.innerHTML = ''; 
+    container.innerHTML = '';
     const cardsWrapper = document.createElement('div');
     cardsWrapper.className = 'reportCardsContainer';
-    
+
     surveys.forEach(survey => {
         const card = document.createElement('div');
         card.className = 'reportCard';
@@ -82,7 +76,7 @@ function attachDownloadListeners() {
     document.querySelectorAll('.downloadBtn').forEach(btn => {
         btn.addEventListener('click', function (e) {
             e.preventDefault();
-            e.stopPropagation(); 
+            e.stopPropagation();
             const surveyId = btn.getAttribute('data-id');
             openReportDownloadModal(surveyId);
         });
@@ -91,8 +85,7 @@ function attachDownloadListeners() {
 
 const reportDownloadModal = document.getElementById('report-download-modal');
 const downloadCSVBtn = document.getElementById('download-CSV');
-const downloadExelBtn = document.getElementById('download-Exel');
-const downloadPDFBtn = document.getElementById('download-PDF');
+const downloadExcelBtn = document.getElementById('download-EXCEL');
 const downloadReportIdInput = document.getElementById('downloadReportId');
 const closeDownloadModalBtns = document.querySelectorAll('#report-download-modal .close-modal, #report-download-modal .btn-cancel');
 
@@ -121,22 +114,17 @@ function setupDownloadModalEvents() {
     if (downloadCSVBtn) {
         downloadCSVBtn.addEventListener('click', () => {
             const surveyId = document.getElementById('downloadReportId').value;
-            window.location.href = `../../../src/models/export_survey_csv.php?id=${surveyId}`;
+            window.location.href = `../../../src/models/exportSurvey.php?id=${surveyId}&action=csv`;
             closeReportDownloadModal();
         });
     }
-    //? Descargar EXEL
-    const downloadExelBtn = document.getElementById('download-Exel');
-    if (downloadExelBtn) {
-        downloadExelBtn.addEventListener('click', () => {
-            showNotification('Función de descarga de EXEL pendiente', 'error');
-        });
-    }
-    //? Descargar PDF
-    const downloadPDFBtn = document.getElementById('download-PDF');
-    if (downloadPDFBtn) {
-        downloadPDFBtn.addEventListener('click', () => {
-            showNotification('Función de descarga de PDF pendiente' , 'error');
+    //? Descargar EXCEL
+    const downloadExcelBtn = document.getElementById('download-EXCEL');
+    if (downloadExcelBtn) {
+        downloadExcelBtn.addEventListener('click', () => {
+            const surveyId = downloadReportIdInput.value;
+            window.location.href = `../../../src/models/exportSurvey.php?id=${surveyId}&action=excel`;
+            closeReportDownloadModal();
         });
     }
 }

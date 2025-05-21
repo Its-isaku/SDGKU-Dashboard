@@ -58,8 +58,8 @@ function showOptionSelected(id) {
     if (selectedButton) selectedButton.classList.add('selectedOption');
 
 
-    if (id === 'panel4' && typeof downloadCSV === 'function') {
-        downloadCSV();
+    if (id === 'panel4' && typeof loadReports === 'function') {
+        loadReports();
     }
 }//? <|----------------------------------- async? -----------------------------------|>
 

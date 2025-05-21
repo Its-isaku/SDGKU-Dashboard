@@ -60,7 +60,18 @@ class SurveyController
     {
         if (!$programId) jsonError('Program ID not provided');
 
-        $sql = "SELECT cohort_id, cohort FROM cohort WHERE program_id = ? AND status = 'active'";
+        $sql = "SELECT 
+                    c.cohort_id,
+                    c.cohort AS cohort,
+                    p.program_type_id
+                FROM 
+                    cohort c
+                JOIN 
+                    programs p ON c.program_id = p.prog_id
+                WHERE
+                    c.program_id = ?"; 
+
+
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$programId]);
         $cohorts = $stmt->fetchAll();
