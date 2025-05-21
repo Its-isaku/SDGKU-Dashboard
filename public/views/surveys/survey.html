@@ -1,27 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/app/mainStyle.css">
+    <link rel="stylesheet" href="../../assets/css/surveys/survey.css">
     <title>SDGKU My surveys</title>
 </head>
-<body> 
-    <header class="header">
-        <div class="headerLogo">
-            <img src="../../assets/images/SDGKU_Small_Logo.png" alt="logo" class="small-logo">
-            <div class="full-logo"></div>
-            <h1 class="header-title">SDGKU Survey</h1> 
-        </div>
+
+<body>
+    <header class="surveyInterface">
+        <!-- <div class="logoInterface">
+            <img src="../../assets/images/SDGKU_Full_Logo.png" alt="">
+        </div> -->
     </header>
 
-    <div id="survey-container" class="survey-container">
-        <p>Loading survey...</p>
-    </div>
+    <main class="main-content">
+        <div class="survey-container">
+            <!-- Survey Header -->
+            <div class="survey-header">
+                <h2 id="surveyTitle" class="surveyTitle"></h2>
+                <p id="surveyDescription" class="surveyDescription"></p>
+                <div class="survey-meta">
+                    <span id="expiryDate" class="expiry-date">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span id="expiryDateText"></span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Survey Content -->
+            <div id="surveyContent">
+
+                <!-- Section: Your Information -->
+                <section class="formSection" id="infoSection">
+                    <h3 class="sectionTitle">Your Information</h3>
+
+                    <div class="formGroup">
+                        <label for="respondentEmail">Educational Email <span class="required">*</span></label>
+                        <input type="email" id="respondentEmail" placeholder="your.user@sdgku.edu">
+                        <small class="helper-text">Please use your institutional email (@sdgku.edu)</small>
+                    </div>
+
+                    <div class="formGroup">
+                        <label id="cohortLabel" for="cohortSelect">Your Cohort <span class="required">*</span></label>
+                        <select id="cohortSelect">
+                            <option value="" disabled selected>Select your cohort</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions one-button">
+                        <button class="btn" id="nextBtn">Next</button>
+                    </div>
+                </section>
+
+                <!-- Section: Survey Questions -->
+                <section class="formSection" id="questionSection" style="display: none;">
+                    <h3 class="sectionTitle">Survey Questions</h3>
+                    <div id="questionsContainer">
+                        <p class="loading-text">Loading questions...</p>
+                    </div>
+
+                    <div class="form-actions two-buttons">
+                        <button class="btn" id="backBtn">Back</button>
+                        <button class="btn" id="submitSurvey">Submit</button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Survey expired -->
+            <div id="surveyExpired" class="expired-notice" style="display: none;">
+                <h2>Survey Expired</h2>
+                <p>This survey is no longer accepting responses. Please contact your administrator if you have any questions.</p>
+            </div>
+
+            <!-- Survey Success -->
+            <div id="surveySuccess" class="success-notice" style="display: none;">
+                <h2>Survey Success</h2>
+                <p>This survey is completed. Thank you for your answers!</p>
+            </div>
+
+            <!-- Notifications -->
+            <div id="notification" class="notification"></div>
+        </div>
+    </main>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous"></script>
     <script src="../../assets/js/app/main.js"></script>
     <script src="../../assets/js/surveys/survey.js"></script>
 </body>
+
 </html>

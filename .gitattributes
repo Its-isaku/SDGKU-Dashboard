@@ -1,0 +1,10 @@
+# Normaliza finales de línea automáticamente para todos los archivos de texto
+* text=auto
+
+*.js     text eol=lf
+*.css    text eol=lf
+*.html   text eol=lf
+*.json   text eol=lf
+*.ts     text eol=lf
+
+*.bat    text eol=crlf
