@@ -198,8 +198,7 @@ async function getsurveyIndirectResults( responses_id) {
     }
 }
 
-
-//?---Get Group of answers POST TEST for Direct Analisis
+//?-Get Group of answers FINAL ASSESSMENT for Indirect Analisis
 async function getAnswerPerStudentIndirect(programId, startDate, endDate) {
     const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
         url.searchParams.append('action', 'getAnswersPerStudentIndirect');
@@ -239,8 +238,8 @@ async function getAnswerPerStudentIndirect(programId, startDate, endDate) {
         return []; 
     }
 }
-//?-Get Group of answers FINAL ASSESSMENT for Indirect Analisis
 
+//?---Get Group of answers POST TEST for Direct Analisis
 async function getAnswerPerStudent(programId) {
     try {
         const response = await fetch(`/SDGKU-Dashboard/src/models/Response_analysis.php?action=getAnswersPerStudent&program_id=${programId}`);
@@ -386,8 +385,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectType = document.getElementById('programTypeId');
         const selectYear = document.getElementById('selectYearRangeId');
         const TypeIndex = selectYear.selectedIndex;
+        const programIndex = selectProgram.selectedIndex;
         
-
         if(TypeIndex!=0){
         const programTypeId = confirmSelection();
         const completeDateSelected = getDateRangeSelected();
@@ -396,23 +395,23 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("dbValues: ", ids);
         const dbLabels = await getProgramNames(programTypeId);
         console.log("dbLabels: ", dbLabels);
-
+        console.log("PROGRAMA SELECTed",ids[programIndex]);
         const dbValuesRaw=  await Promise.all(
             ids.map(id => getByProgramType(id, completeDateSelected[0], completeDateSelected[1]))
         );  
-        const totalStudents = await Promise.all(
-            ids.map(id => getStudentsPerProgram(id))
-        );
+        // const totalStudents = await Promise.all(
+        //     ids.map(id => getStudentsPerProgram(id))
+        // );
+        
+        // const totalStudentsById = {};
+        // ids.forEach((id, idx) => {
+        //     totalStudentsById[id] = [totalStudents[idx]];
+        // });
+        // const totalStudentsIndirect = await Promise.all(
+        //     ids.map(id => getStudentsIndirectMeasure(id))
+        // );
 
-        const totalStudentsById = {};
-        ids.forEach((id, idx) => {
-            totalStudentsById[id] = [totalStudents[idx]];
-        });
-        const totalStudentsIndirect = await Promise.all(
-            ids.map(id => getStudentsIndirectMeasure(id))
-        );
-
-
+        const totalStudentsIndirect = await getStudentsIndirectMeasure(ids[programIndex]);
         const totalStudentsIndirectById = {};
         ids.forEach((id, idx) => {
             totalStudentsIndirectById[id] = [totalStudentsIndirect[idx]];
@@ -446,7 +445,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ids.forEach((id, idx) => {
             totalAnswersByIdIndirect[id] = totalAnswersRawIndirect[idx];
         });
-        console.log("Total ANSWERS INDIRECT: ", totalAnswersByIdIndirect);
+        console.log("Array de Responses ID: ", totalAnswersRawIndirect[0]);
 
 
         const resultPerStudent = {};
@@ -467,6 +466,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 }      
+
+        
         const resultLinkertPerStudent = {};
         for (const [idProgram, studentsArrays] of Object.entries(totalAnswersByIdIndirect)) {
             resultLinkertPerStudent[idProgram] = [];
@@ -487,8 +488,35 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 }     
 
-        console.log("resultPerStudent anidado: ", resultPerStudent);
-        // console.log("Indirect answers L anidado: ", resultLinkertPerStudent);
+function calcularPorcentajes(arrays) {
+    const aceptables = ['4', '5'];
+    const porcentajes = arrays.map(subArray => {
+        const total = subArray.length;
+        const aceptados = subArray.filter(valor => aceptables.includes(valor)).length;
+        return (aceptados / total) * 100;
+    });
+    
+    return porcentajes;
+}
+function getAcceptable(arrays) {
+    let contador = 0;
+    arrays.map(subArray => {
+        if(subArray>70){
+            contador++;
+        }
+    });
+
+    return contador;
+}
+const datos = resultLinkertPerStudent[ids[programIndex]];
+
+const resultados = calcularPorcentajes(datos);
+const aprobados = getAcceptable(resultados);
+console.log("ARREGLO linkert",resultados); 
+console.log("ARREGLO aprobados",aprobados); 
+
+        // console.log("resultPerStudent anidado: ", resultPerStudent);
+        console.log("Indirect answers L anidado: ", resultLinkertPerStudent[0]);
         // console.log("totalStudentsById Direct anidado: ", totalStudentsById);
         // console.log("totalStudentsById Indirect anidado: ", totalStudentsIndirectById);
         // const porcentajes = calcularPorcentajeAciertos(resultPerStudent);
@@ -538,6 +566,7 @@ function calcularPorcentajeAciertos(resultPerStudent) {
     }
     return porcentajesPorPrograma;
 }
+
 
 
 //? Render the Response Analysis Chart
