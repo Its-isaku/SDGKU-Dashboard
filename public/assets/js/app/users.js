@@ -60,8 +60,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 300));
 
         //* forms submission --------------------------------->
+        function toggleButtonLoading(button, isLoading) {
+            if (isLoading) {
+                button.classList.add('btn-loading');
+                button.disabled = true;
+            } else {
+                button.classList.remove('btn-loading');
+                button.disabled = false;
+            }
+        }
+
         addUserForm.addEventListener('submit', function(e){
             e.preventDefault();
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            toggleButtonLoading(submitBtn, true);
 
             const formData = {
                 full_name: document.getElementById('full-name').value,
@@ -79,6 +92,9 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(err => {
                 console.error(err);
                 showNotification(err.message || 'Failed to add user', 'error');
+            })
+            .finally(() => {
+                toggleButtonLoading(submitBtn, false);
             });
         });
 
@@ -96,6 +112,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
+            const submitBtn = this.querySelector('button[type="submit"]');
+            toggleButtonLoading(submitBtn, true);
+
             const formData = {
                 user_id: document.getElementById('edit-user-id').value,
                 role: document.getElementById('edit-role').value
@@ -110,11 +129,17 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(err => {
                 console.error(err);
                 showNotification(err.message || 'Failed to update user role', 'error');
+            })
+            .finally(() => {
+                toggleButtonLoading(submitBtn, false);
             });
         });
 
         superAdminConfirmBtn.addEventListener('click', function() {
             const userId = document.getElementById('super-admin-user-id').value;
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            toggleButtonLoading(this, true);
 
             fetchData('update_user_role', { user_id: userId, role: 'super_admin' })
             .then(() => {
@@ -125,11 +150,17 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(err => {
                 console.error(err);
                 showNotification(err.message || 'Failed to update user role', 'error');
+            })
+            .finally(() => {
+                toggleButtonLoading(this, false);
             });
         });
 
         resendInvitationBtn.addEventListener('click', function() {
             const userId = document.getElementById('resend-invitation-user-id').value;
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            toggleButtonLoading(this, true);
 
             fetchData('resend_invite', { user_id: userId })
             .then(() => {
@@ -140,11 +171,17 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(err => {
                 console.error(err);
                 showNotification(err.message || 'Failed to resend invitation', 'error');
+            })
+            .finally(() => {
+                toggleButtonLoading(this, false);
             });
         });
 
         deleteUserBtn.addEventListener('click', function() {
             const userId = document.getElementById('delete-user-id').value;
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            toggleButtonLoading(this, true);
 
             fetchData('delete_user', { user_id: userId })
             .then(() => {
@@ -155,6 +192,9 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(err => {
                 console.error(err);
                 showNotification(err.message || 'Failed to delete user', 'error');
+            })
+            .finally(() => {
+                toggleButtonLoading(this, false);
             });
         });
 
@@ -399,15 +439,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         function closeModal(modalId){
-        if (modalId && modals[modalId]) {
-            modals[modalId].style.display = 'none';
-        } else {
-            Object.values(modals).forEach(modal => {
-                modal.style.display = 'none';
-            });
+            if (modalId && modals[modalId]) {
+                modals[modalId].style.display = 'none';
+            } else {
+                Object.values(modals).forEach(modal => {
+                    modal.style.display = 'none';
+                });
+            }
+            document.body.style.overflow = 'auto'; 
         }
-        document.body.style.overflow = 'auto'; 
-    }
 
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
@@ -427,6 +467,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 clearTimeout(timer);
                 timer = setTimeout(() => { func.apply(this, args); }, timeout);
             };
-        }
+        }        
     }
 })
