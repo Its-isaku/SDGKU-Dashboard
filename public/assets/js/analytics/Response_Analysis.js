@@ -133,7 +133,7 @@ async function getProgramNames(programTypeId) {
     }
 }
 
-
+//!
 //?-----get the results of every survey multi and true/false
 async function getsurveyResults(program_id, responses_id) {
     const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
@@ -212,9 +212,9 @@ async function getAnswerPerStudentIndirect(programId, startDate, endDate) {
         const data = await response.json();
         
         if (data.status === 'success') {
-            // data.data ya contiene los arrays directamente
             
-            return data.data; // Retorna los arrays directamente
+            
+            return data.data; 
         }
 
         throw new Error(data.message || 'Respuesta sin éxito');
@@ -268,7 +268,7 @@ async function getQuestionTexts(programId, startDate, endDate) {
         const data = await response.json();
         
         if (data.status === 'success') {
-            return data.data; // Array de arrays con textos de pregunta
+            return data.data; 
         } else {
             console.error('Error:', data.message);
             return [];
@@ -439,8 +439,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const startDate =  completeDateSelected[0];
         const endDate =  completeDateSelected[1];
         const studentData = await getAnswerPerStudentIndirect(ids[programIndex], startDate, endDate);
-        // const datosNumericos = studentData.map(str => str.split(',').map(Number));
-        // console.log("TOTALES: ", datosNumericos);
+
         
         const questionsTexts= await getQuestionTexts(ids[programIndex], startDate, endDate);
         console.log("QUESTIONS: ", questionsTexts[0]);
@@ -448,10 +447,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const totalObservedDB = students[0];
         const datosNumericos = studentData.map(arr => arr.map(Number));
 
-        // 2. Reorganiza la matriz para que cada subarray sea por pregunta:
+       
         const matrizReorganizada = reorganizarArrays(datosNumericos);
 
-        // 3. Calcula los totales y porcentajes:
+      
         const totalsMetDB = getTotalMet(matrizReorganizada);
         const percentsDB = getAcceptable(matrizReorganizada);
         console.log("totalMetDB: ", totalsMetDB);
@@ -460,7 +459,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("EL ARRAY QUESTIONS:",questions);
         renderProgramTables(questions); 
         
-        // Ejemplo de uso
+    
 
         }else{
 
@@ -490,15 +489,7 @@ function confirmSelection(){
 
 
 //! <|-------------------------------- Graph Logic --------------------------------|>
-// function getAcceptable(matrizReorganizada) {
-//     const totalEstudiantes = matrizReorganizada[0].length; // Total de alumnos (columnas)
-    
-//     return matrizReorganizada.map(pregunta => {
-//         const aprobados = pregunta.filter(calificacion => calificacion === 4 || calificacion === 5).length;
-//         const porcentaje = (aprobados / totalEstudiantes) * 100;
-//         return parseFloat(porcentaje.toFixed(2)); // Redondea a 2 decimales
-//     });
-// }
+
 
 function buildQuestionsForRender(question_texts, totalObserved, totalsMet, percents) {
     // Validación básica
