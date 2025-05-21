@@ -165,6 +165,11 @@
                                                 <option value="opcion3">Masters</option>
                                                 <!--* Program Types from db -->
                                             </select>
+                                            <label for="selectProgram"><b>Program</b></label>
+                                            <select name="selectProgram" id="selectProgramId">
+                                                <option value="opcion" disabled selected hidden>Please select program</option>
+                                                <!--*  Trimester from db -->
+                                            </select>
                                             <button class="submitFilter" id="submitFilterbtn">Apply filters</button>
                                         </div>
 
@@ -189,10 +194,6 @@
                                                     <label for="dateRange"><b>Date Range</b></label>
                                                     <select name="dateRange" id="selectDateRangeId">
                                                         <option value="opcion1" disabled selected hidden>Please select date range</option>
-                                                        <option value="opcion2">January - March</option>
-                                                        <option value="opcion3">April - June</option>
-                                                        <option value="opcion4">July - September</option>
-                                                        <option value="opcion5">October - December</option>
                                                     </select>
                                                 </div>
                                             </div>
