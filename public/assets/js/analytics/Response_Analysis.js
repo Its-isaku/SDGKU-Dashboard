@@ -201,35 +201,20 @@ async function getsurveyIndirectResults( responses_id) {
 //?-Get Group of answers FINAL ASSESSMENT for Indirect Analisis
 async function getAnswerPerStudentIndirect(programId, startDate, endDate) {
     const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
-        url.searchParams.append('action', 'getAnswersPerStudentIndirect');
-        url.searchParams.append('program_id', programId);
-        url.searchParams.append('start_date', startDate);
-        url.searchParams.append('end_date', endDate);
-        
+    url.searchParams.append('action', 'getAnswersPerStudentIndirect');
+    url.searchParams.append('program_id', programId);
+    url.searchParams.append('start_date', startDate);
+    url.searchParams.append('end_date', endDate);
+    
     try {
         const response = await fetch(url.toString());
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
         
-        
         if (data.status === 'success') {
-            if (!Array.isArray(data.data)) {
-                throw new Error("data.data no es un array");
-            }
+            // data.data ya contiene los arrays directamente
             
-        
-            const studentsList = data.data.map(item => {
-                if (item.responseIds && typeof item.responseIds === 'string') {
-                    return item.responseIds.split(',').map(id => {
-                        const num = Number(id);
-                        return isNaN(num) ? id : num;
-                    });
-                }
-                return []; 
-            });
-
-            console.log("studentsList generado:", studentsList);
-            return studentsList;
+            return data.data; // Retorna los arrays directamente
         }
 
         throw new Error(data.message || 'Respuesta sin éxito');
@@ -238,7 +223,6 @@ async function getAnswerPerStudentIndirect(programId, startDate, endDate) {
         return []; 
     }
 }
-
 //?---Get Group of answers POST TEST for Direct Analisis
 async function getAnswerPerStudent(programId) {
     try {
@@ -277,7 +261,23 @@ async function getAnswerPerStudent(programId) {
 
     }
 }
-
+//? get text of each question.
+async function getQuestionTexts(programId, startDate, endDate) {
+    try {
+        const response = await fetch(`/SDGKU-Dashboard/src/models/Response_analysis.php?action=getQuestionsText&program_id=${programId}&start_date=${startDate}&end_date=${endDate}`);
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            return data.data; // Array de arrays con textos de pregunta
+        } else {
+            console.error('Error:', data.message);
+            return [];
+        }
+    } catch (error) {
+        console.error('Error fetching questions:', error);
+        return [];
+    }
+}
 
 
 //! <|-------------------------------- Filter Logic --------------------------------|>
@@ -388,140 +388,80 @@ document.addEventListener('DOMContentLoaded', function () {
         const programIndex = selectProgram.selectedIndex;
         
         if(TypeIndex!=0){
+        
         const programTypeId = confirmSelection();
         const completeDateSelected = getDateRangeSelected();
-        console.log("CSK: ", completeDateSelected[0],completeDateSelected[1]);
         const ids = await getProgramIds(programTypeId);
         console.log("dbValues: ", ids);
         const dbLabels = await getProgramNames(programTypeId);
         console.log("dbLabels: ", dbLabels);
         console.log("PROGRAMA SELECTed",ids[programIndex]);
+        
         const dbValuesRaw=  await Promise.all(
             ids.map(id => getByProgramType(id, completeDateSelected[0], completeDateSelected[1]))
-        );  
-        // const totalStudents = await Promise.all(
-        //     ids.map(id => getStudentsPerProgram(id))
-        // );
-        
-        // const totalStudentsById = {};
-        // ids.forEach((id, idx) => {
-        //     totalStudentsById[id] = [totalStudents[idx]];
-        // });
-        // const totalStudentsIndirect = await Promise.all(
-        //     ids.map(id => getStudentsIndirectMeasure(id))
-        // );
-
-        const totalStudentsIndirect = await getStudentsIndirectMeasure(ids[programIndex]);
-        const totalStudentsIndirectById = {};
-        ids.forEach((id, idx) => {
-            totalStudentsIndirectById[id] = [totalStudentsIndirect[idx]];
-        });
-
-        // console.log("resultsd: ", dbValuesRaw);
-        // console.log("Total Students Direct: ", totalStudents);
-        console.log("Total Students Indirect: ", totalStudentsIndirect);
-
-
-        const totalAnswersRaw = await Promise.all(
-            ids.map(id => getAnswerPerStudent(id))
         );
-
-
-        const totalAnswersById = {};
-        ids.forEach((id, idx) => {
-            totalAnswersById[id] = totalAnswersRaw[idx];
-        });
-        // console.log("Total ANSWERS: ", totalAnswersById);
-
-        //*This is for Final ASSESSMENT analisis
-        console.log("ids:", ids);
-        console.log("completeDateSelected:", completeDateSelected);
-
-        const totalAnswersRawIndirect = await Promise.all(
-            ids.map(id => getAnswerPerStudentIndirect(id, completeDateSelected[0], completeDateSelected[1]))
+        const students=  await Promise.all(
+            ids.map(id => getStudentsIndirectMeasure(id))
         );
-
-        const totalAnswersByIdIndirect = {};
-        ids.forEach((id, idx) => {
-            totalAnswersByIdIndirect[id] = totalAnswersRawIndirect[idx];
-        });
-        console.log("Array de Responses ID: ", totalAnswersRawIndirect[0]);
-
-
-        const resultPerStudent = {};
-        for (const [idProgram, studentsArrays] of Object.entries(totalAnswersById)) {
-            resultPerStudent[idProgram] = [];
-            for (const idResponsesArr of studentsArrays) {
-                if (Array.isArray(idResponsesArr) && idResponsesArr.length > 0) {
-                    const resultsForStudent = [];
-                    for (const idResponse of idResponsesArr) {
-                        const result = await getsurveyResults(idProgram, idResponse);
-                        if (Array.isArray(result)) {
-                            resultsForStudent.push(...result);
-                        } else if (result !== undefined) {
-                            resultsForStudent.push(result);
-                        }
-                    }
-                    resultPerStudent[idProgram].push(resultsForStudent);
-                }
-            }
-}      
-
         
-        const resultLinkertPerStudent = {};
-        for (const [idProgram, studentsArrays] of Object.entries(totalAnswersByIdIndirect)) {
-            resultLinkertPerStudent[idProgram] = [];
-            for (const idResponsesArr of studentsArrays) {
-                if (Array.isArray(idResponsesArr) && idResponsesArr.length > 0) {
-                    const resultsForStudent1 = [];
-                    for (const idResponse of idResponsesArr) {
-                        const result = await getsurveyIndirectResults( idResponse);
+        //!-----------DATOS PRUEBA
+//         const datosOriginales = [
+//     ['4', '2', '5', '4', '4', '1', '3', '3'],
+//     ['4', '2', '3', '4', '5', '3', '2', '3'],
+//     ['4', '5', '4', '3', '5', '4', '5', '4'],
+//     ['4', '5', '4', '3', '5', '4', '5', '4'],
+//     ['4', '5', '4', '3', '5', '4', '5', '4'],
+//     ['4', '5', '4', '3', '5', '4', '5', '4'],
+//     ['4', '5', '4', '3', '5', '4', '5', '4'],
+//     ['3', '4', '4', '4', '5', '4', '5', '4'],
+//     ['3', '4', '4', '4', '2', '4', '4', '4'],
+//     ['3', '4', '4', '4', '1', '4', '4', '4']
+// ];
+//     const question_textsDB = [
+//         "Did the program meet your learning expectations?",
+//         "Did instructors demonstrate content mastery?",
+//         "Was the instructional material relevant and useful?",
+//         "Were the facilities adequate for learning?",
+//         "Was the program duration appropriate?",
+//         "Would you recommend this program to peers?",
+//         "Was the teaching methodology effective?",
+//         "Did the program adequately prepare you for the job market?",
+//         "Was the program cost justified by its quality?",
+//         "Did practical projects contribute to your learning?"
+//     ];
+//     const totalObservedDB = 20; // Total de estudiantes encuestados
+// const totalsMetDB =  getTotalMet(reorganizarArrays(datosOriginales));// Estudiantes que respondieron 4-5 por pregunta
+// const percentsDB =  getAcceptable(reorganizarArrays(datosOriginales)); // Porcentajes calculados
 
-                        if (Array.isArray(result)) {
-                            resultsForStudent1.push(...result);
-                        } else if (result !== undefined) {
-                            resultsForStudent1.push(result);
-                        }
-                    }
-                    resultLinkertPerStudent[idProgram].push(resultsForStudent1);
-                }
-            }
-}     
+   
+//*-------------------------DATOS REALES
+        console.log("ESTUDIANTES: ", students[0]);
+        const startDate =  completeDateSelected[0];
+        const endDate =  completeDateSelected[1];
+        const studentData = await getAnswerPerStudentIndirect(ids[programIndex], startDate, endDate);
+        // const datosNumericos = studentData.map(str => str.split(',').map(Number));
+        // console.log("TOTALES: ", datosNumericos);
+        
+        const questionsTexts= await getQuestionTexts(ids[programIndex], startDate, endDate);
+        console.log("QUESTIONS: ", questionsTexts[0]);
+        const question_textsDB = questionsTexts[0];
+        const totalObservedDB = students[0];
+        const datosNumericos = studentData.map(arr => arr.map(Number));
 
-function calcularPorcentajes(arrays) {
-    const aceptables = ['4', '5'];
-    const porcentajes = arrays.map(subArray => {
-        const total = subArray.length;
-        const aceptados = subArray.filter(valor => aceptables.includes(valor)).length;
-        return (aceptados / total) * 100;
-    });
-    
-    return porcentajes;
-}
-function getAcceptable(arrays) {
-    let contador = 0;
-    arrays.map(subArray => {
-        if(subArray>70){
-            contador++;
-        }
-    });
+        // 2. Reorganiza la matriz para que cada subarray sea por pregunta:
+        const matrizReorganizada = reorganizarArrays(datosNumericos);
 
-    return contador;
-}
-const datos = resultLinkertPerStudent[ids[programIndex]];
+        // 3. Calcula los totales y porcentajes:
+        const totalsMetDB = getTotalMet(matrizReorganizada);
+        const percentsDB = getAcceptable(matrizReorganizada);
+        console.log("totalMetDB: ", totalsMetDB);
+        console.log("percentsDB: ", percentsDB);
+        const questions = buildQuestionsForRender(question_textsDB, totalObservedDB, totalsMetDB, percentsDB);
+        console.log("EL ARRAY QUESTIONS:",questions);
+        renderProgramTables(questions); 
+        
+        // Ejemplo de uso
 
-const resultados = calcularPorcentajes(datos);
-const aprobados = getAcceptable(resultados);
-console.log("ARREGLO linkert",resultados); 
-console.log("ARREGLO aprobados",aprobados); 
-
-        // console.log("resultPerStudent anidado: ", resultPerStudent);
-        console.log("Indirect answers L anidado: ", resultLinkertPerStudent[0]);
-        // console.log("totalStudentsById Direct anidado: ", totalStudentsById);
-        // console.log("totalStudentsById Indirect anidado: ", totalStudentsIndirectById);
-        // const porcentajes = calcularPorcentajeAciertos(resultPerStudent);
-        // console.log("Porcentaje de aciertos por estudiante:", porcentajes);
-        renderResponseAnalysisChart(dbLabels,dbValuesRaw);       
         }else{
 
             //!Notificacion
@@ -550,7 +490,89 @@ function confirmSelection(){
 
 
 //! <|-------------------------------- Graph Logic --------------------------------|>
+// function getAcceptable(matrizReorganizada) {
+//     const totalEstudiantes = matrizReorganizada[0].length; // Total de alumnos (columnas)
+    
+//     return matrizReorganizada.map(pregunta => {
+//         const aprobados = pregunta.filter(calificacion => calificacion === 4 || calificacion === 5).length;
+//         const porcentaje = (aprobados / totalEstudiantes) * 100;
+//         return parseFloat(porcentaje.toFixed(2)); // Redondea a 2 decimales
+//     });
+// }
 
+function buildQuestionsForRender(question_texts, totalObserved, totalsMet, percents) {
+    // Validación básica
+    if (!Array.isArray(question_texts) || !Array.isArray(totalsMet) || !Array.isArray(percents)) {
+        console.error("Todos los parámetros deben ser arrays.");
+        return [];
+    }
+    if (question_texts.length !== totalsMet.length || question_texts.length !== percents.length) {
+        console.error("Los arrays deben tener la misma longitud.");
+        return [];
+    }
+
+    // Construcción del array esperado por renderProgramTables
+    return question_texts.map((text, i) => ({
+        question_text: text,
+        measures: [
+            {
+                type: 'Indirect Measure',
+                target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
+                observed: totalObserved,
+                met: totalsMet[i],
+                percent: percents[i] + '%'
+            }
+        ]
+    }));
+}
+
+function reorganizarArrays(arrays) {
+ 
+    const length = arrays[0].length;
+    if (!arrays.every(arr => arr.length === length)) {
+        throw new Error("Todos los arrays deben tener la misma longitud");
+    }
+
+
+    return arrays[0].map((_, colIndex) => {
+        return arrays.map(row => Number(row[colIndex]));
+    });
+}
+function getTotalMet(matrizReorganizada) {
+    return matrizReorganizada.map(renglon => {
+    
+        return renglon.filter(num => num == 4 || num == 5).length;
+    });
+}
+
+function getAcceptable(matrizReorganizada) {
+    return matrizReorganizada.map(renglon => {
+        const aceptables = renglon.filter(num => num == 4 || num == 5).length;
+        const porcentaje = (aceptables / renglon.length) * 100;
+        return parseFloat(porcentaje.toFixed(2));
+    });
+}
+
+function calcularPorcentajes(arrays) {
+    const aceptables = ['4', '5'];
+    const porcentajes = arrays.map(subArray => {
+        const total = subArray.length;
+        const aceptados = subArray.filter(valor => aceptables.includes(valor)).length;
+        return (aceptados / total) * 100;
+    });
+    
+    return porcentajes;
+}
+// function getAcceptable(arrays) {
+//     let contador = 0;
+//     arrays.map(subArray => {
+//         if(subArray>70){
+//             contador++;
+//         }
+//     });
+
+//     return contador;
+// }
 //? Testing Data
 
 ////? --Calcula los promedios de aciertos para Disrect Measure
@@ -645,11 +667,20 @@ function renderResponseAnalysisChart(dbLabels, dbValues) {
 
 //! <|-------------------------------- Tables Logic --------------------------------|>
 //? Variable to populate with DB
+function setDataInOrden(){
+    
+}
 const question_textDB = ' ';
 const totalObservedDB = 0;
 const totalMetDB = 0;
 const percentDB = 0;
 
+function buildInformation(question_text, total_observed,totalMet,percent){
+    //question_text es un array
+    //total_observed es un int
+    // total met es un array
+    //percent es un array
+}
 
 const questions = [
     {   
@@ -670,6 +701,7 @@ const questions = [
             }
         ]
     },
+    //etc..
     // {   
     //     //* Dynamic Program Name
     //     question_text: 'I believe this course will help me advance my career.',
@@ -774,22 +806,22 @@ function renderProgramTables(questions) {
 
         //* Table body
         const tbody = document.createElement('tbody');
-        program.measures.forEach(measure => {
-            const tr = document.createElement('tr');
-            tr.className = 'tbodyContainer';
-            tr.innerHTML = `
-                <td>${measure.type}</td>
-                <td>${measure.target}</td>
-                <td><span class="analytics-number-badge observed">${measure.observed}</span></td>
-                <td><span class="analytics-number-badge met">${measure.met}</span></td>
-                <td><span class="analytics-number-badge percent">${measure.percent}</span></td>
-            `;
-            tbody.appendChild(tr);
-        });
-        table.appendChild(tbody);
-        tableContainer.appendChild(table);
-        container.appendChild(tableContainer);
+    question.measures.forEach(measure => {
+        const tr = document.createElement('tr');
+        tr.className = 'tbodyContainer';
+        tr.innerHTML = `
+            <td>${measure.type}</td>
+            <td>${measure.target}</td>
+            <td><span class="analytics-number-badge observed">${measure.observed}</span></td>
+            <td><span class="analytics-number-badge met">${measure.met}</span></td>
+            <td><span class="analytics-number-badge percent">${measure.percent}</span></td>
+        `;
+        tbody.appendChild(tr);
     });
+    table.appendChild(tbody);
+    tableContainer.appendChild(table);
+    container.appendChild(tableContainer);
+});
 }
 
 //! <|-------------------------------- Load Logic --------------------------------|>

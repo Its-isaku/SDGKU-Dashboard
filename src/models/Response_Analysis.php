@@ -169,8 +169,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     }
     exit;
 }
-//?---Get Group of answers FINAL ASSESSMENT for Indirect Analisis
+//?Get question Text from every Linkerts 
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getQuestionsText') {
+    try {
+        $required_params = ['program_id', 'start_date', 'end_date'];
+        foreach ($required_params as $param) {
+            if (!isset($_GET[$param])) {
+                throw new Exception("Missing required parameter: $param");
+            }
+        }
+        
+        $program_id = $_GET['program_id'];  
+        $start_date = $_GET['start_date'];
+        $end_date = $_GET['end_date'];    
+        
+        // Consulta para obtener los textos de pregunta agrupados
+        $sql = "SELECT 
+                GROUP_CONCAT(
+                    DISTINCT q.question_text
+                    ORDER BY q.questions_id
+                    SEPARATOR ','
+                ) AS question_texts
+            FROM 
+                responses r
+                INNER JOIN answers a ON a.response_id = r.responses_id
+                INNER JOIN surveys s ON s.survey_id = r.survey_id
+                INNER JOIN questions q ON r.questions_id = q.questions_id
+            WHERE 
+                s.program_id = ? 
+                AND s.survey_type_id = 3
+                AND (r.submitted_at BETWEEN ? AND ?)
+                AND (a.question_type_id IN (2, 3))
+            GROUP BY 
+                r.respondent_email";
+                
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$program_id, $start_date, $end_date]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Procesar para obtener arrays de textos de pregunta
+        $questionArrays = array_map(function($item) {
+            return isset($item['question_texts']) ? explode(',', $item['question_texts']) : [];
+        }, $results);
+        
+        echo json_encode([
+            'status' => 'success',
+            'data' => $questionArrays
+        ]);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Error al obtener preguntas: ' . $e->getMessage()
+        ]);
+    }
+    exit;
+}
 
+
+//?---Get Group of answers FINAL ASSESSMENT for Indirect Analisis
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getAnswersPerStudentIndirect') {
     try {
         $required_params = ['program_id', 'start_date', 'end_date'];
@@ -179,24 +236,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
                 throw new Exception("Missing required parameter: $param");
             }
         }
+        
         $program_id = $_GET['program_id'];  
         $start_date = $_GET['start_date'];
         $end_date = $_GET['end_date'];    
-        $sql = "SELECT GROUP_CONCAT(responses_id) AS responseIds
-                FROM responses
-                INNER JOIN answers ON answers.response_id = responses.responses_id
-                INNER JOIN surveys ON surveys.survey_id = responses.survey_id
-                WHERE surveys.program_id = ? AND surveys.survey_type_id = 3
-                AND (responses.submitted_at BETWEEN ? AND ? ) AND (answers.question_type_id = 3 OR answers.question_type_id = 2)
-                GROUP BY respondent_email";
+        
+        // Consulta directa para obtener los answer_text agrupados
+        $sql = "SELECT GROUP_CONCAT(a.answer_text) AS answers
+                FROM responses r
+                INNER JOIN answers a ON a.response_id = r.responses_id
+                INNER JOIN surveys s ON s.survey_id = r.survey_id
+                WHERE s.program_id = ? AND s.survey_type_id = 3
+                AND (r.submitted_at BETWEEN ? AND ?)
+                AND (a.question_type_id IN (2, 3))
+                GROUP BY r.respondent_email";
                 
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$program_id, $start_date, $end_date]);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
+        // Procesar para obtener solo los arrays de números
+        $answerArrays = array_map(function($item) {
+            return explode(',', $item['answers'] ?? '');
+        }, $results);
+        
         echo json_encode([
             'status' => 'success',
-            'data' => $results
+            'data' => $answerArrays
         ]);
     } catch (Exception $e) {
         http_response_code(500);
