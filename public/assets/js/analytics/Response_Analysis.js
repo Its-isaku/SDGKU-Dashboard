@@ -588,8 +588,8 @@ function renderResponseAnalysisChart(dbLabels, dbValues) {
             },
             scales: {
                 y: {  //* Adjust the y-axis scale */
-                    min: 0.0,
-                    max: 100.0,
+                    min: 5,
+                    max: 100,
                     ticks: {
                         stepSize: 0.1
                     }

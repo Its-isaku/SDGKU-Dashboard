@@ -258,8 +258,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = intval($input['id']);
             $pdo->beginTransaction();
             
-            $sql = "CALL setInactive(?);
-";
+            $sql = " UPDATE surveys 
+                SET status = 'inactive' 
+                WHERE survey_id = ? ";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$id]);
             
