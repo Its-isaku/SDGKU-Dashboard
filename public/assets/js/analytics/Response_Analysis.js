@@ -13,53 +13,50 @@ function showNotification(message, type = 'success') {
 }
 
 //! <|-------------------------------- Fetch Logic --------------------------------|>
-let totalLinkert5 = [];
-let totalPrograms = [];
-let programsList= [];
-let responses = [];
+
 
 //?-----Get total amount of students for direct measure
-async function getStudentsPerProgram(program_id) {
-    const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
-    url.searchParams.append('action', 'programs_id');
-    url.searchParams.append('program_id', program_id);
+//! async function getStudentsPerProgram(program_id) {
+//     const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
+//     url.searchParams.append('action', 'programs_id');
+//     url.searchParams.append('program_id', program_id);
 
-    try {
-        const response = await fetch(url.toString());
-        if (!response.ok) throw new Error(`Error HTTP! estado: ${response.status}`);
+//     try {
+//         const response = await fetch(url.toString());
+//         if (!response.ok) throw new Error(`Error HTTP! estado: ${response.status}`);
         
-        const data = await response.json();
-        if (data.status !== 'success') throw new Error(data.message || 'Error en los datos recibidos');
+//         const data = await response.json();
+//         if (data.status !== 'success') throw new Error(data.message || 'Error en los datos recibidos');
 
-        const students = parseInt(data.total_students) || 0;
-        return students; 
+//         const students = parseInt(data.total_students) || 0;
+//         return students; 
 
-    } catch (error) {
-        console.error('Error en getStudentsPerProgram:', error);
-        return 0; 
-    }
-}
+//     } catch (error) {
+//         console.error('Error en getStudentsPerProgram:', error);
+//         return 0; 
+//     }
+// }
 //?-----Get total amount of students for indirect measure
-async function getStudentsIndirectMeasure(program_id) {
-    const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
-    url.searchParams.append('action', 'getStudentsIndirectMeasure');
-    url.searchParams.append('program_id', program_id);
+//! async function getStudentsIndirectMeasure(program_id) {
+//     const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
+//     url.searchParams.append('action', 'getStudentsIndirectMeasure');
+//     url.searchParams.append('program_id', program_id);
 
-    try {
-        const response = await fetch(url.toString());
-        if (!response.ok) throw new Error(`Error HTTP! estado: ${response.status}`);
+//     try {
+//         const response = await fetch(url.toString());
+//         if (!response.ok) throw new Error(`Error HTTP! estado: ${response.status}`);
         
-        const data = await response.json();
-        if (data.status !== 'success') throw new Error(data.message || 'Error en los datos recibidos');
+//         const data = await response.json();
+//         if (data.status !== 'success') throw new Error(data.message || 'Error en los datos recibidos');
 
-        const students = parseInt(data.total_students) || 0;
-        return students; 
+//         const students = parseInt(data.total_students) || 0;
+//         return students; 
 
-    } catch (error) {
-        console.error('Error en getStudentsPerProgram:', error);
-        return 0;
-    }
-}
+//     } catch (error) {
+//         console.error('Error en getStudentsPerProgram:', error);
+//         return 0;
+//     }
+// }
 
 //?---------------------------------------------
 async function getByProgramType(programTypeId, startDate, endDate) {
@@ -76,30 +73,43 @@ async function getByProgramType(programTypeId, startDate, endDate) {
         const data = await response.json();
         if (data.status !== 'success') throw new Error(data.message || 'Error fetching data');
 
-        let suma = 0;
-        let total = 0;
-        let avg = 0;
-
         if (data.data && data.data.length > 0) {
-            suma = parseFloat(data.data[0].sumaLinkert5) || 0;
-            total = parseInt(data.data[0].total_Programa) || 0;
-            avg = (total > 0) ? parseFloat((suma / total).toFixed(2)) : 0;
+            
+            if (data.data[0].average) {
+                return parseFloat(data.data[0].average.replace('%', ''));
+            }
+
+            if (data.data[0].sumaLinkert5 !== undefined && data.data[0].total_Programa > 0) {
+                return parseFloat((data.data[0].sumaLinkert5 / data.data[0].total_Programa).toFixed(2));
+            }
         }
-
-        return avg;
-        
-
+        return 0;
     } catch (error) {
         console.error('Error in getByProgramType:', error);
-        return {
-            average: 0
-        };
+        return 0;
     }
 }
 //?---------Get and store the programs
 async function getProgramIds(programTypeId) {
     try {
         const response = await fetch(`/SDGKU-Dashboard/src/models/Response_analysis.php?action=getPrograms&program_type_id=${programTypeId}`);
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            const ids = data.data.map(item => item.prog_id);
+            return ids;
+        }
+
+        throw new Error(data.message || 'Error en los datos');
+    } catch (error) {
+        console.error("Error en getProgramIds:", error);
+        throw error;
+    }
+}
+//?---Get programs averages
+async function getProgramAvg(programTypeId) {
+    try {
+        const response = await fetch(`/SDGKU-Dashboard/src/models/Response_analysis.php?action=getProgramsAverages&program_type_id=${programTypeId}`);
         const data = await response.json();
 
         if (data.status === 'success') {
@@ -135,153 +145,173 @@ async function getProgramNames(programTypeId) {
 
 
 //?-----get the results of every survey multi and true/false
-async function getsurveyResults(program_id, responses_id) {
-    const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
-    url.searchParams.append('action', 'getsurveyResults');
-    url.searchParams.append('program_id', program_id);
-    url.searchParams.append('responses_id', responses_id);
+//! async function getsurveyResults(program_id, responses_id) {
+//     const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
+//     url.searchParams.append('action', 'getsurveyResults');
+//     url.searchParams.append('program_id', program_id);
+//     url.searchParams.append('responses_id', responses_id);
 
-    try {
-        const res = await fetch(url.toString());
-        if (!res.ok) throw new Error(`Error HTTP! estado: ${res.status}`);
-        const data = await res.json();
-        if (data.status === 'success') {
-            if (Array.isArray(data.data)) {
-                return data.data.map(item => item.correct_answer);
-            } else if (data.data && Array.isArray(data.data.correct_answer)) {
-                return data.data.correct_answer;
-            } else if (data.data && data.data.correct_answer !== undefined) {
-                return [data.data.correct_answer];
-            } else {
-                return [];
-            }
-        }
+//     try {
+//         const res = await fetch(url.toString());
+//         if (!res.ok) throw new Error(`Error HTTP! estado: ${res.status}`);
+//         const data = await res.json();
+//         if (data.status === 'success') {
+//             if (Array.isArray(data.data)) {
+//                 return data.data.map(item => item.correct_answer);
+//             } else if (data.data && Array.isArray(data.data.correct_answer)) {
+//                 return data.data.correct_answer;
+//             } else if (data.data && data.data.correct_answer !== undefined) {
+//                 return [data.data.correct_answer];
+//             } else {
+//                 return [];
+//             }
+//         }
 
-        throw new Error(data.message || 'Error en los datos recibidos');
-    } catch (error) {
-        console.error('Error en getsurveyResults:', error);
-        return [];
-    }
-}
+//         throw new Error(data.message || 'Error en los datos recibidos');
+//     } catch (error) {
+//         console.error('Error en getsurveyResults:', error);
+//         return [];
+//     }
+// }
 
 //?-----get the results of every Linkert Survey Final Assisment
-async function getsurveyIndirectResults( responses_id) {
-    const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
-    url.searchParams.append('action', 'getsurveyIndirectResults');
-    url.searchParams.append('responses_id', responses_id);
+//! async function getsurveyIndirectResults( responses_id) {
+//     const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
+//     url.searchParams.append('action', 'getsurveyIndirectResults');
+//     url.searchParams.append('responses_id', responses_id);
 
-    try {
-        const res = await fetch(url.toString());
-        if (!res.ok) throw new Error(`Error HTTP! estado: ${res.status}`);
+//     try {
+//         const res = await fetch(url.toString());
+//         if (!res.ok) throw new Error(`Error HTTP! estado: ${res.status}`);
 
-        const data = await res.json();
+//         const data = await res.json();
 
-        if (data.status === 'success') {
+//         if (data.status === 'success') {
 
-            if (Array.isArray(data.data)) {
+//             if (Array.isArray(data.data)) {
 
-                return data.data.map(item => item.answer_text);
-            } else if (data.data && Array.isArray(data.data.answer_text)) {
-                return data.data.answer_text;
-            } else if (data.data && data.data.answer_text !== undefined) {
+//                 return data.data.map(item => item.answer_text);
+//             } else if (data.data && Array.isArray(data.data.answer_text)) {
+//                 return data.data.answer_text;
+//             } else if (data.data && data.data.answer_text !== undefined) {
 
-                return [data.data.answer_text];
-            } else {
-                return [];
-            }
-        }
+//                 return [data.data.answer_text];
+//             } else {
+//                 return [];
+//             }
+//         }
 
-        throw new Error(data.message || 'Error en los datos recibidos');
-    } catch (error) {
-        console.error('Error en getsurveyResults:', error);
-        return [];
-    }
-}
+//         throw new Error(data.message || 'Error en los datos recibidos');
+//     } catch (error) {
+//         console.error('Error en getsurveyResults:', error);
+//         return [];
+//     }
+// }
 
 //?-Get Group of answers FINAL ASSESSMENT for Indirect Analisis
-async function getAnswerPerStudentIndirect(programId, startDate, endDate) {
-    const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
-    url.searchParams.append('action', 'getAnswersPerStudentIndirect');
-    url.searchParams.append('program_id', programId);
-    url.searchParams.append('start_date', startDate);
-    url.searchParams.append('end_date', endDate);
+//! async function getAnswerPerStudentIndirect(programId, startDate, endDate) {
+//     const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
+//     url.searchParams.append('action', 'getAnswersPerStudentIndirect');
+//     url.searchParams.append('program_id', programId);
+//     url.searchParams.append('start_date', startDate);
+//     url.searchParams.append('end_date', endDate);
     
-    try {
-        const response = await fetch(url.toString());
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const data = await response.json();
+//     try {
+//         const response = await fetch(url.toString());
+//         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+//         const data = await response.json();
         
-        if (data.status === 'success') {
-            // data.data ya contiene los arrays directamente
+//         if (data.status === 'success') {
+//             // data.data ya contiene los arrays directamente
             
-            return data.data; // Retorna los arrays directamente
-        }
+//             return data.data; // Retorna los arrays directamente
+//         }
 
-        throw new Error(data.message || 'Respuesta sin éxito');
-    } catch (error) {
-        console.error("Error completo:", error);
-        return []; 
-    }
-}
+//         throw new Error(data.message || 'Respuesta sin éxito');
+//     } catch (error) {
+//         console.error("Error completo:", error);
+//         return []; 
+//     }
+// }
 //?---Get Group of answers POST TEST for Direct Analisis
-async function getAnswerPerStudent(programId) {
-    try {
-        const response = await fetch(`/SDGKU-Dashboard/src/models/Response_analysis.php?action=getAnswersPerStudent&program_id=${programId}`);
+//! async function getAnswerPerStudent(programId) {
+//     try {
+//         const response = await fetch(`/SDGKU-Dashboard/src/models/Response_analysis.php?action=getAnswersPerStudent&program_id=${programId}`);
         
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+//         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
-        const data = await response.json();
-        console.log("Datos crudos recibidos:", data); // Depuración
+//         const data = await response.json();
+//         console.log("Datos crudos recibidos:", data); // Depuración
         
-        if (data.status === 'success') {
-            if (!Array.isArray(data.data)) {
-                throw new Error("data.data no es un array");
-            }
+//         if (data.status === 'success') {
+//             if (!Array.isArray(data.data)) {
+//                 throw new Error("data.data no es un array");
+//             }
             
             
-            const studentsList = data.data.map(item => {
-                if (item.responseIds && typeof item.responseIds === 'string') {
-                    return item.responseIds.split(',').map(id => {
-                        const num = Number(id);
-                        return isNaN(num) ? id : num;
-                    });
-                }
-                return []; 
-            });
+//             const studentsList = data.data.map(item => {
+//                 if (item.responseIds && typeof item.responseIds === 'string') {
+//                     return item.responseIds.split(',').map(id => {
+//                         const num = Number(id);
+//                         return isNaN(num) ? id : num;
+//                     });
+//                 }
+//                 return []; 
+//             });
 
-            // console.log("studentsList generado:", studentsList);
-            return studentsList;
-        }
+//             // console.log("studentsList generado:", studentsList);
+//             return studentsList;
+//         }
 
-        throw new Error(data.message || 'Respuesta sin éxito');
-    } catch (error) {
+//         throw new Error(data.message || 'Respuesta sin éxito');
+//     } catch (error) {
 
-        console.error("Error completo:", error);
-        return [];
+//         console.error("Error completo:", error);
+//         return [];
 
-    }
-}
-//? get text of each question.
-async function getQuestionTexts(programId, startDate, endDate) {
+//     }
+// }
+//? get the information questions texts and average
+async function getProgramData(programId, startDate, endDate) {
     try {
-        const response = await fetch(`/SDGKU-Dashboard/src/models/Response_analysis.php?action=getQuestionsText&program_id=${programId}&start_date=${startDate}&end_date=${endDate}`);
-        const data = await response.json();
+        const params = new URLSearchParams({
+            action: 'getProgramInfo',
+            program_id: programId,
+            start_date: startDate,
+            end_date: endDate
+        });
+
+        const response = await fetch(`/SDGKU-Dashboard/src/models/Response_analysis.php?${params}`);
         
-        if (data.status === 'success') {
-            return data.data; // Array de arrays con textos de pregunta
-        } else {
-            console.error('Error:', data.message);
-            return [];
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.error || 'Error desconocido');
+        }
+
+        return data.data.map(q => ({
+    question_text: q.texts,
+    measures: [{
+        type: 'Indirect Measure',
+        target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
+        observed: q.total_students,
+        met: q.acceptable,
+        percent: (typeof q.average !== 'undefined' && q.average !== null) ? q.average : ''
+    }]
+}));
+                
     } catch (error) {
-        console.error('Error fetching questions:', error);
-        return [];
+        console.error('Error fetching program data:', error);
+        throw error; 
     }
 }
-
-
 //! <|-------------------------------- Filter Logic --------------------------------|>
 //? Fill select with years 
+let dateRangeOption = ['Annual', 'Semiannual','Quarterly'];
 document.addEventListener('DOMContentLoaded', function() {
         const select = document.getElementById('selectYearRangeId');
         const currentYear = new Date().getFullYear();
@@ -292,7 +322,40 @@ document.addEventListener('DOMContentLoaded', function() {
             option.textContent = year;
             select.appendChild(option);
         }
+        select.addEventListener('change', async function () {
+        const dateRange = document.getElementById('selectRangeTypeId');
+        const selectedRange = dateRange.selectedIndex;
+        dateRange.innerHTML = '';
+            dateRangeOption.forEach(range => {
+            const option = document.createElement('option');
+            option.value = range;
+            option.textContent = range;
+            dateRange.appendChild(option);
+        });
+        });
+       
     });
+    
+document.addEventListener('DOMContentLoaded', function () {
+    const selectElement = document.getElementById('programTypeId');
+    selectElement.addEventListener('change', async function () {
+    const selectedValue = selectElement.selectedIndex;
+    const dbLabels = await getProgramNames(selectedValue);
+    const programOption = document.getElementById('selectProgramId');
+        programOption.innerHTML = '';
+            const allOption = document.createElement('option');
+            allOption.value = 'all'; 
+            allOption.textContent = 'All Programs';
+            programOption.appendChild(allOption);
+            dbLabels.forEach(programName => {
+            const option = document.createElement('option');
+            option.value = programName;
+            option.textContent = programName;
+            programOption.appendChild(option);
+        });
+        
+    });
+});       
 
 let quarterlyRange=['Select quarterly range','January - March','April - June','July - September','October - December'];
 let semiannualRange=['Select semiannual range','January - June','July - December'];
@@ -301,6 +364,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const selectElement = document.getElementById('selectRangeTypeId');
     selectElement.addEventListener('change', async function () {
     const selectedValue = selectElement.selectedIndex;
+    console.log("select",selectedValue);
+    if(selectedValue== '0'){
+        const rangeOption = document.getElementById('selectDateRangeId');
+        rangeOption.innerHTML = ''; 
+    }
     if(selectedValue=='1'){
         const rangeOption = document.getElementById('selectDateRangeId');
         rangeOption.innerHTML = ''; 
@@ -331,51 +399,100 @@ document.addEventListener('DOMContentLoaded', function () {
     const selectedValue = selectElement.selectedIndex;
     const dbLabels = await getProgramNames(selectedValue);
     const programOption = document.getElementById('selectProgramId');
-        programOption.innerHTML = ''; 
-        dbLabels.forEach(programName => {
+        programOption.innerHTML = '';
+            const allOption = document.createElement('option');
+            allOption.value = 'all'; 
+            allOption.textContent = 'All Programs';
+            programOption.appendChild(allOption);
+            dbLabels.forEach(programName => {
             const option = document.createElement('option');
             option.value = programName;
             option.textContent = programName;
             programOption.appendChild(option);
         });
+        
     });
 });
 
 function getDateRangeSelected(){
         const selectRange = document.getElementById('selectDateRangeId');
         const selectYear = document.getElementById('selectYearRangeId');
+        const SelectRangeSemi = document.getElementById('selectRangeTypeId');
         const TypeIndex = selectYear.selectedIndex;
         const index = selectRange.selectedIndex;
         const valorYear = selectYear.value;
         const completeDateSelected =[];
+        const semiOrQuarterly = SelectRangeSemi.selectedIndex;
         let startDateSelect;
         let endDateSelect;
         let startDateMonths;
         let endDateMonths;
-        if (index === 0) {
+        if(semiOrQuarterly === 0 || semiOrQuarterly === 1 ){
             startDateMonths = '-01-01';
             endDateMonths = '-12-31';
-        }else if (index === 1) {
-            startDateMonths = '-01-01';
-            endDateMonths = '-04-01';
-        } else if (index === 2) {
-            startDateMonths = '-04-01';
-            endDateMonths = '-07-01';
-        } else if (index === 3) {
-            startDateMonths = '-07-01';
-            endDateMonths = '-010-01';
-        } else if (index === 4) {
-            startDateMonths = '-10-01';
-            endDateMonths = '-12-31';
+            startDateSelect = `${valorYear}${startDateMonths}`;
+            endDateSelect = `${valorYear}${endDateMonths}`;
+            completeDateSelected[0] = startDateSelect;
+            completeDateSelected[1] = endDateSelect;
+            return  completeDateSelected;
+        }else if(semiOrQuarterly===2){
+            if(index === 0){
+                startDateMonths = '-01-01';
+                endDateMonths = '-12-31';
+            }else if (index === 1) {
+                startDateMonths = '-01-01';
+                endDateMonths = '-04-01';
+            } else if (index === 2) {
+                startDateMonths = '-04-01';
+                endDateMonths = '-07-01';
+            } else if (index === 3) {
+                startDateMonths = '-07-01';
+                endDateMonths = '-010-01';
+            } else if (index === 4) {
+                startDateMonths = '-10-01';
+                endDateMonths = '-12-31';
+            }
+                startDateSelect = `${valorYear}${startDateMonths}`;
+                endDateSelect = `${valorYear}${endDateMonths}`;
+                completeDateSelected[0] = startDateSelect;
+                completeDateSelected[1] = endDateSelect;
+                return  completeDateSelected;
+        }else if(semiOrQuarterly === 3){
+            if(index === 0){
+                startDateMonths = '-01-01';
+                endDateMonths = '-12-31';
+            }else if(index === 1){
+                startDateMonths = '-01-01';
+                endDateMonths = '-07-01';
+            }else if(index === 2){
+                startDateMonths = '-07-01';
+                endDateMonths = '-12-31';
         }
-        startDateSelect = `${valorYear}${startDateMonths}`;
-        endDateSelect = `${valorYear}${endDateMonths}`;
-        completeDateSelected[0] = startDateSelect;
-        completeDateSelected[1] = endDateSelect;
-        
-        return  completeDateSelected;
+            startDateSelect = `${valorYear}${startDateMonths}`;
+            endDateSelect = `${valorYear}${endDateMonths}`;
+            completeDateSelected[0] = startDateSelect;
+            completeDateSelected[1] = endDateSelect;
+            return  completeDateSelected;
+            }    
     }
-    
+
+    function confirmSelection(){
+
+        const selectType = document.getElementById('programTypeId');
+        const valorType = selectType.value;
+            if (valorType === 'opcion1') {
+                return  1;
+            } else if (valorType === 'opcion2') {
+                return  2;
+            } else if (valorType === 'opcion3') {
+                return 3;
+            } else {
+                console.warn("No se seleccionó un tipo válido");
+                return; 
+            }
+
+}
+
 //?--submit btn listener 
 document.addEventListener('DOMContentLoaded', function () {
     const boton = document.getElementById('submitFilterbtn');
@@ -395,72 +512,21 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("dbValues: ", ids);
             const dbLabels = await getProgramNames(programTypeId);
             console.log("dbLabels: ", dbLabels);
-            console.log("PROGRAMA SELECTed",ids[programIndex]);
-            
+            console.log("PROGRAMA date",completeDateSelected);
+            const from = completeDateSelected[0];
+            const to = completeDateSelected[1];
             const dbValuesRaw=  await Promise.all(
                 ids.map(id => getByProgramType(id, completeDateSelected[0], completeDateSelected[1]))
             );
+
+            const id = programIndex-1;
+            const program = ids[id];
+            const programData = await getProgramData(program,from,to);
+            console.log("PROGRAMS: ",dbValuesRaw);
+
+            renderProgramTables(programData);
             renderResponseAnalysisChart(dbLabels, dbValuesRaw);
-            const students=  await Promise.all(
-            ids.map(id => getStudentsIndirectMeasure(id))
-        );
-        
-        //!-----------DATOS PRUEBA
-//         const datosOriginales = [
-//     ['4', '2', '5', '4', '4', '1', '3', '3'],
-//     ['4', '2', '3', '4', '5', '3', '2', '3'],
-//     ['4', '5', '4', '3', '5', '4', '5', '4'],
-//     ['4', '5', '4', '3', '5', '4', '5', '4'],
-//     ['4', '5', '4', '3', '5', '4', '5', '4'],
-//     ['4', '5', '4', '3', '5', '4', '5', '4'],
-//     ['4', '5', '4', '3', '5', '4', '5', '4'],
-//     ['3', '4', '4', '4', '5', '4', '5', '4'],
-//     ['3', '4', '4', '4', '2', '4', '4', '4'],
-//     ['3', '4', '4', '4', '1', '4', '4', '4']
-// ];
-//     const question_textsDB = [
-//         "Did the program meet your learning expectations?",
-//         "Did instructors demonstrate content mastery?",
-//         "Was the instructional material relevant and useful?",
-//         "Were the facilities adequate for learning?",
-//         "Was the program duration appropriate?",
-//         "Would you recommend this program to peers?",
-//         "Was the teaching methodology effective?",
-//         "Did the program adequately prepare you for the job market?",
-//         "Was the program cost justified by its quality?",
-//         "Did practical projects contribute to your learning?"
-//     ];
-//     const totalObservedDB = 20; // Total de estudiantes encuestados
-// const totalsMetDB =  getTotalMet(reorganizarArrays(datosOriginales));// Estudiantes que respondieron 4-5 por pregunta
-// const percentsDB =  getAcceptable(reorganizarArrays(datosOriginales)); // Porcentajes calculados
-
-
-//*-------------------------DATOS REALES
-        console.log("ESTUDIANTES: ", students[0]);
-        const startDate =  completeDateSelected[0];
-        const endDate =  completeDateSelected[1];
-        const studentData = await getAnswerPerStudentIndirect(ids[programIndex], startDate, endDate);
-        // const datosNumericos = studentData.map(str => str.split(',').map(Number));
-        // console.log("TOTALES: ", datosNumericos);
-        
-        const questionsTexts= await getQuestionTexts(ids[programIndex], startDate, endDate);
-        console.log("QUESTIONS: ", questionsTexts[0]);
-        const question_textsDB = questionsTexts[0];
-        const totalObservedDB = students[0];
-        const datosNumericos = studentData.map(arr => arr.map(Number));
-
-        // 2. Reorganiza la matriz para que cada subarray sea por pregunta:
-        const matrizReorganizada = reorganizarArrays(datosNumericos);
-
-        // 3. Calcula los totales y porcentajes:
-        const totalsMetDB = getTotalMet(matrizReorganizada);
-        const percentsDB = getAcceptable(matrizReorganizada);
-        console.log("totalMetDB: ", totalsMetDB);
-        console.log("percentsDB: ", percentsDB);
-        const questions = buildQuestionsForRender(question_textsDB, totalObservedDB, totalsMetDB, percentsDB);
-        console.log("EL ARRAY QUESTIONS:",questions);
-        renderProgramTables(questions); 
-
+            
         }else{
 
             //!Notificacion
@@ -470,125 +536,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 //?--Confirmation
-function confirmSelection(){
-
-        const selectType = document.getElementById('programTypeId');
-        const valorType = selectType.value;
-            if (valorType === 'opcion1') {
-                return  1;
-            } else if (valorType === 'opcion2') {
-                return  2;
-            } else if (valorType === 'opcion3') {
-                return 3;
-            } else {
-                console.warn("No se seleccionó un tipo válido");
-                return; 
-            }
-
-}
 
 
 //! <|-------------------------------- Graph Logic --------------------------------|>
-// function getAcceptable(matrizReorganizada) {
-//     const totalEstudiantes = matrizReorganizada[0].length; // Total de alumnos (columnas)
-    
-//     return matrizReorganizada.map(pregunta => {
-//         const aprobados = pregunta.filter(calificacion => calificacion === 4 || calificacion === 5).length;
-//         const porcentaje = (aprobados / totalEstudiantes) * 100;
-//         return parseFloat(porcentaje.toFixed(2)); // Redondea a 2 decimales
-//     });
-// }
-
-function buildQuestionsForRender(question_texts, totalObserved, totalsMet, percents) {
-    // Validación básica
-    if (!Array.isArray(question_texts) || !Array.isArray(totalsMet) || !Array.isArray(percents)) {
-        console.error("Todos los parámetros deben ser arrays.");
-        return [];
-    }
-    if (question_texts.length !== totalsMet.length || question_texts.length !== percents.length) {
-        console.error("Los arrays deben tener la misma longitud.");
-        return [];
-    }
-
-    // Construcción del array esperado por renderProgramTables
-    return question_texts.map((text, i) => ({
-        question_text: text,
-        measures: [
-            {
-                type: 'Indirect Measure',
-                target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
-                observed: totalObserved,
-                met: totalsMet[i],
-                percent: percents[i] + '%'
-            }
-        ]
-    }));
-}
-
-function reorganizarArrays(arrays) {
- 
-    const length = arrays[0].length;
-    if (!arrays.every(arr => arr.length === length)) {
-        throw new Error("Todos los arrays deben tener la misma longitud");
-    }
-
-
-    return arrays[0].map((_, colIndex) => {
-        return arrays.map(row => Number(row[colIndex]));
-    });
-}
-function getTotalMet(matrizReorganizada) {
-    return matrizReorganizada.map(renglon => {
-    
-        return renglon.filter(num => num == 4 || num == 5).length;
-    });
-}
-
-function getAcceptable(matrizReorganizada) {
-    return matrizReorganizada.map(renglon => {
-        const aceptables = renglon.filter(num => num == 4 || num == 5).length;
-        const porcentaje = (aceptables / renglon.length) * 100;
-        return parseFloat(porcentaje.toFixed(2));
-    });
-}
-
-function calcularPorcentajes(arrays) {
-    const aceptables = ['4', '5'];
-    const porcentajes = arrays.map(subArray => {
-        const total = subArray.length;
-        const aceptados = subArray.filter(valor => aceptables.includes(valor)).length;
-        return (aceptados / total) * 100;
-    });
-    
-    return porcentajes;
-}
-// function getAcceptable(arrays) {
-//     let contador = 0;
-//     arrays.map(subArray => {
-//         if(subArray>70){
-//             contador++;
-//         }
-//     });
-
-//     return contador;
-// }
-//? Testing Data
-
-////? --Calcula los promedios de aciertos para Disrect Measure
-function calcularPorcentajeAciertos(resultPerStudent) {
-    const porcentajesPorPrograma = {};
-    for (const [idProgram, estudiantes] of Object.entries(resultPerStudent)) {
-        porcentajesPorPrograma[idProgram] = estudiantes.map(respuestas => {
-            if (!Array.isArray(respuestas) || respuestas.length === 0) return 0;
-            const total = respuestas.length;
-            const aciertos = respuestas.filter(x => x === 1).length;
-            return total > 0 ? aciertos / total : 0;
-        });
-    }
-    return porcentajesPorPrograma;
-}
-
-
 
 //? Render the Response Analysis Chart
 function renderResponseAnalysisChart(dbLabels, dbValues) {
@@ -638,8 +588,8 @@ function renderResponseAnalysisChart(dbLabels, dbValues) {
             },
             scales: {
                 y: {  //* Adjust the y-axis scale */
-                    min: 1.0,
-                    max: 5.0,
+                    min: 0.0,
+                    max: 100.0,
                     ticks: {
                         stepSize: 0.1
                     }
@@ -665,99 +615,6 @@ function renderResponseAnalysisChart(dbLabels, dbValues) {
 }
 
 //! <|-------------------------------- Tables Logic --------------------------------|>
-//? Variable to populate with DB
-function setDataInOrden(){
-    
-}
-const question_textDB = ' ';
-const totalObservedDB = 0;
-const totalMetDB = 0;
-const percentDB = 0;
-
-function buildInformation(question_text, total_observed,totalMet,percent){
-    //question_text es un array
-    //total_observed es un int
-    // total met es un array
-    //percent es un array
-}
-
-const questions = [
-    {   
-        //* Dynamic Program Name
-        question_text: question_textDB,
-
-        //* Table Conttent
-        measures: [
-            { //* Row 2
-                //* Static
-                type: 'Indirect Measure',
-                target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
-
-                //* Dynamic
-                observed: totalObservedDB,
-                met: totalMetDB,
-                percent: percentDB
-            }
-        ]
-    },
-    //etc..
-    // {   
-    //     //* Dynamic Program Name
-    //     question_text: 'I believe this course will help me advance my career.',
-
-    //     //* Table Conttent
-    //     measures: [
-    //         { //* Row 2
-    //             //* Static
-    //             type: 'Indirect Measure',
-    //             target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
-
-    //             //* Dynamic
-    //             observed: 38,
-    //             met: 33,
-    //             percent: '86.84%'
-    //         }
-    //     ]
-    // },
-    // {   
-    //     //* Dynamic Program Name
-    //     question_text: 'This course met most of my expectations.',
-
-    //     //* Table Conttent
-    //     measures: [
-        
-    //         { //* Row 2
-    //             //* Static
-    //             type: 'Indirect Measure',
-    //             target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
-
-    //             //* Dynamic
-    //             observed: 25,
-    //             met: 19,
-    //             percent: '76.00%'
-    //         }
-    //     ]
-    // },
-    // {   
-    //     //* Dynamic Program Name
-    //     question_text: 'I liked the quality of the instructional content in this course.',
-
-    //     //* Table Conttent
-    //     measures: [
-            
-    //         { //* Row 2
-    //             //* Static
-    //             type: 'Indirect Measure',
-    //             target: '70% or more of students completing the program will express satisfaction on the Final Program Survey by indicating either “Agree” or “Strongly Agree”',
-
-    //             //* Dynamic
-    //             observed: 22,
-    //             met: 20,
-    //             percent: '90.90%'
-    //         }
-    //     ]
-    // },
-];
 
 //? function to render the program tables
 function renderProgramTables(questions) {
