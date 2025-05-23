@@ -276,6 +276,39 @@
     gap: 10%;
 }
 
+/* Link copy container and date */
+
+.link-container {
+    width: 100%;
+}
+
+.linkToken {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.btn-link {
+    margin-left: 10px;
+    padding: 0.25rem 0.1rem;
+    font-size: 0.9rem;
+}
+
+.dateToken {
+    display: flex;
+}
+
+.dateToken label {
+    color: var(--gray-500);
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+}
+
+.dateToken input {
+    width: 5.5%;
+    padding: 0.1rem 0.1rem;
+    justify-content: center;
+}
 /* el dropdown */
 .dropdown {
     position: fixed;

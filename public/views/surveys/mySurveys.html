@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,17 +11,18 @@
     <!--? My surveys Style -->
     <link rel="stylesheet" href="../../assets/css/surveys/mySurveys.css">
     <title>SDGKU My surveys</title>
-    
+
 </head>
-    
+
 <!--  -->
-<body> 
+
+<body>
     <!--? Header  -->
     <header class="header">
         <div class="headerLogo">
             <img src="../../assets/images/SDGKU_Small_Logo.png" alt="logo" class="small-logo">
             <div class="full-logo"></div>
-            <h1 class="header-title">SDGKU Survey Platform</h1> 
+            <h1 class="header-title">SDGKU Survey Platform</h1>
         </div>
         <div class="hamburger" id="hamburger">
             <i class="fas fa-bars"></i>
@@ -36,30 +38,30 @@
                     <i class="fa-solid fa-house-user"></i>
                     <p>Dashboard</p>
                 </a>
-                
+
                 <a href="../surveys/mySurveys.html" class="sideLink selectLink">
                     <i class="fa-solid fa-clipboard-list"></i>
                     <p>My Surveys</p>
                 </a>
-                
+
                 <a href="../surveys/createSurvey.html" class="sideLink">
                     <i class="fa-solid fa-circle-plus"></i>
                     <p>Create Survey</p>
                 </a>
-                
+
                 <a href="../analytics/analytics.html" class="sideLink">
                     <i class="fa-solid fa-square-poll-vertical"></i>
                     <p>Analytics</p>
                 </a>
-                
+
                 <a href="../app/users.php" class="sideLink">
                     <i class="fa-solid fa-users"></i>
                     <p>Users</p>
                 </a>
-                
+
                 <a href="../app/settings.html" class="sideLink">
                     <i class="fa-solid fa-cog"></i>
-                        <p>Settings</p> 
+                    <p>Settings</p>
                 </a>
 
                 <div class="asideLogOutBtn">
@@ -74,10 +76,10 @@
                 <div class="mySurveysHeader">
                     <!-- Mini Header -->
                     <div class="dashboardDescription">
-                        
+
                         <h2>My Surveys</h2>
                         <p>Manage your created surveys</p>
-                        
+
                         <div class="mySurveyOptions">
                             <button id="activeBtnId" class="surveyOption">
                                 <h3>Active Surveys</h3>
@@ -87,14 +89,14 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="searchAndCreate">
 
                         <div class="searchContainer">
                             <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                            <input type="text" id="searchSurveyId" placeholder="Search Surveys...." >
+                            <input type="text" id="searchSurveyId" placeholder="Search Surveys....">
                         </div>
-            
+
                         <a href="../surveys/createSurvey.html" class="createSurveyBtn">
                             <i class="fa-solid fa-calendar-plus"></i>
                             <p>Create Survey</p>
@@ -103,11 +105,11 @@
                 </div>
                 <div class="mySurveyButtons">
                     <!-- active/Invective Surveys buttons -->
-                    
+
                 </div>
                 <div id="panel1" class="panel visible">
                     <div id="activeSectionId" class="activeSurveysId">
-                        <!-- active Surveys -->    
+                        <!-- active Surveys -->
                         <ul class="activeSurveyList" id="activeListId">
                             <!-- Las encuestas activas se agregaran aqui -->
                         </ul>
@@ -199,6 +201,7 @@
                 </div>
 
                 <!--! Copy acces Link Survey Modal -->
+
                 <div id="access-link-survey-modal" class="modal">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -206,9 +209,21 @@
                             <span class="close-modal">&times;</span>
                         </div>
                         <div class="modal-body">
-                            <p>Here is your access link. Be careful with who you share it with.</p>
-                            <input type="hidden" id="access-link-survey">
-                            <input type="text" id="access-link-input"/>
+                            <div class="linkToken-container">
+                                <p>Here is your access link. Be careful with who you share it with.</p>
+                                <div class="dateToken">
+                                    <label>Survey expire date:</label>
+                                    <input type="datetime-local" id="expirationDate" required>
+                                </div>
+                                <div class="linkToken">
+                                    <input type="hidden" id="access-link-survey">
+                                    <input type="text" id="access-link-input" />
+                                    <button type="button" class="btn btn-primary btn-link" id="confirm-newData">Generate new link</button>
+                                </div>
+                                <div class="dateToken" style="margin-top: 0.5rem;">
+                                    <label id="expire-date-label"></label>
+                                </div>
+                            </div>
                             <div class="form-actions">
                                 <button type="button" class="btn btn-cancel">Cancel</button>
                                 <button type="button" class="btn btn-danger" id="confirm-activate">Copy</button>
@@ -229,7 +244,8 @@
                             <input type="hidden" id="activate-survey">
                             <div class="form-actions">
                                 <button type="button" class="btn btn-cancel">Cancel</button>
-                                <button type="button" class="btn btn-danger" id="confirm-activate-survey">Activate</button>
+                                <button type="button" class="btn btn-danger"
+                                    id="confirm-activate-survey">Activate</button>
                             </div>
                         </div>
                     </div>
@@ -247,7 +263,8 @@
                             <input type="hidden" id="delete-inactive-survey">
                             <div class="form-actions">
                                 <button type="button" class="btn btn-cancel">Cancel</button>
-                                <button type="button" class="btn btn-danger" id="confirm-delete-inactive">Delete</button>
+                                <button type="button" class="btn btn-danger"
+                                    id="confirm-delete-inactive">Delete</button>
                             </div>
                         </div>
                     </div>
@@ -255,9 +272,11 @@
             </div>
         </main>
     </div>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="../../assets/js/app/main.js"></script>
     <script src="../../assets/js/surveys/mySurveys.js"></script>
     <script src="../../assets/js/auth/logout.js"></script>
 </body>
+
 </html>
