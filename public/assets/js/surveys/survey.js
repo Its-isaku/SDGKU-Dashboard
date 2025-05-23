@@ -331,14 +331,42 @@ function getAnswers() {
 // Envía el cuestionario completo al backend
 function submitSurvey() {
     const email = document.getElementById('respondentEmail').value.trim();
-    const cohortId = document.getElementById('optSelect').value; // Cambiado de 'cohortSelect' a 'optSelect'
+    const cohortId = document.getElementById('optSelect').value;
     const surveyId = document.getElementById('surveyContent').dataset.surveyId;
     const token = new URLSearchParams(window.location.search).get('token');
     const responses = getAnswers();
 
-    if (!email || !cohortId || !surveyId || !token || responses.length === 0) {
-        showNotification('Missing required data or unanswered questions.', 'error');
+    // Validaciones iniciales
+    if (!email || !cohortId || !surveyId || !token) {
+        showNotification('Missing required data.', 'error');
         return;
+    }
+
+    // Verifica que TODAS las preguntas estén contestadas
+    const questionItems = document.querySelectorAll('.question-item');
+    for (const item of questionItems) {
+        const questionId = item.dataset.questionId;
+        const questionType = parseInt(item.dataset.questionType);
+        let answered = false;
+
+        switch (questionType) {
+            case 1: case 2: case 3: case 5:
+                answered = !!item.querySelector('input[type="radio"]:checked');
+                break;
+            case 4:
+                const textarea = item.querySelector('textarea');
+                answered = textarea && textarea.value.trim() !== '';
+                break;
+        }
+
+        if (!answered) {
+            item.classList.add('missing-answer');
+            item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showNotification('Please answer all required questions.', 'error');
+            return;
+        } else {
+            item.classList.remove('missing-answer');
+        }
     }
 
     const completionTime = surveyStartTime ? Math.floor((Date.now() - surveyStartTime) / 1000) : null;
@@ -370,6 +398,7 @@ function submitSurvey() {
             showNotification('Network error while submitting.', 'error');
         });
 }
+
 
 // Inicializa el sistema al cargar la página
 function init() {

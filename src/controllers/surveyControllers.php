@@ -128,13 +128,30 @@ class SurveyController
             if (!isset($data[$field])) jsonError("Missing parameter: $field");
         }
 
+        // Validar que responses sea un array con al menos una respuesta
+        if (!is_array($data['responses']) || count($data['responses']) === 0) {
+            jsonError('No responses provided.');
+        }
+
+        // Validar que cada respuesta tenga questionId, questionType y answer válidos
+        foreach ($data['responses'] as $index => $response) {
+            if (
+                empty($response['questionId']) ||
+                !isset($response['questionType']) ||
+                !isset($response['answer']) || $response['answer'] === ''
+            ) {
+                jsonError("Incomplete answer at question " . ($index + 1) . ". Please answer all questions.");
+            }
+        }
+
+
         $this->db->beginTransaction();
 
         try {
             // Verifica que la encuesta exista, esté activa y no haya expirado
             $sqlSurvey = "SELECT survey_id, expires_at, status 
-                          FROM surveys 
-                          WHERE survey_id = ? AND token = ?";
+                        FROM surveys 
+                        WHERE survey_id = ? AND token = ?";
             $stmtSurvey = $this->db->prepare($sqlSurvey);
             $stmtSurvey->execute([$data['surveyId'], $data['token']]);
             $survey = $stmtSurvey->fetch();
@@ -147,8 +164,8 @@ class SurveyController
 
             // Verifica si el usuario ya respondió esta encuesta
             $checkSql = "SELECT responses_id 
-                         FROM responses 
-                         WHERE survey_id = ? AND respondent_email = ?";
+                        FROM responses 
+                        WHERE survey_id = ? AND respondent_email = ?";
             $stmtCheck = $this->db->prepare($checkSql);
             $stmtCheck->execute([$data['surveyId'], $data['email']]);
             if ($stmtCheck->fetch()) jsonError('You have already submitted this survey.');
@@ -158,12 +175,11 @@ class SurveyController
 
             // Inserta entrada principal en `responses`
             $stmtResp = $this->db->prepare("
-                INSERT INTO responses (survey_id, questions_id, respondent_email, submitted_at, completion_time)
-                VALUES (?, ?, ?, NOW(), ?)
+                INSERT INTO responses (survey_id, respondent_email, submitted_at, completion_time)
+                VALUES (?, ?, NOW(), ?)
             ");
             $stmtResp->execute([
                 $data['surveyId'],
-                $firstQuestionId,
                 $data['email'],
                 $data['completionTime']
             ]);

@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 //? <-------------------------------- Get token to survey by id -------------------------------->
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && $_GET['action'] === 'getSurveyById') {
     $id = intval($_GET['id']);
-    $stmt = $pdo->prepare("SELECT token FROM surveys WHERE survey_id = ?");
+    $stmt = $pdo->prepare("SELECT token, expires_at FROM surveys WHERE survey_id = ?");
     $stmt->execute([$id]);
     $survey = $stmt->fetch(PDO::FETCH_ASSOC);
     echo json_encode($survey);
@@ -138,6 +138,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    //? <-------------------------------- Switch for generate new token and update data -------------------------------->
+    switch ($input['action']) {
+        case 'updateTokenData':
+            $id = $input['id'];
+            $newToken = bin2hex(random_bytes(16));
+            $expiresAt = $input['expires_at'];
+            $stmt = $pdo->prepare("UPDATE surveys SET token = ?, expires_at = ? WHERE survey_id = ?");
+            $stmt->execute([$newToken, $expiresAt, $id]);
+            echo json_encode(['token' => $newToken]);
+            exit;
+    }
+    
     //? <-------------------------------- DELETE -------------------------------->
     if($input['action'] === 'deleteSurvey'){
     try {
