@@ -63,7 +63,7 @@ function createMultipleChoiceInput(questionId, container) {
                     const input = document.createElement('input');
                     input.type = 'radio';
                     input.name = `question_${questionId}`;
-                    input.value = opt.question_opt_id;
+                    input.value = opt.option_text;
                     input.required = true;
 
                     const label = document.createElement('label');
