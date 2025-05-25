@@ -247,7 +247,7 @@
                                         <div class="surveySelect">
                                             <div class="programItem">
                                                 <label for="programType">Program Type</label>
-                                                <select name="programType" id="programTypeId">
+                                                <select name="programType" id="programTypeIdComparison">
                                                     <option value="opcion" disabled selected hidden>Please select
                                                         program type</option>
                                                     <option value="opcion1">Certificate Program</option>
@@ -260,19 +260,19 @@
                                             <div class="programSelect">
                                                 <div class="programItem">
                                                     <label for="programType">Program</label>
-                                                    <select name="program" id="programeId">
+                                                    <select name="program" id="programIdComparison">
                                                         <option value="opcion" disabled selected hidden>Please select
                                                             program</option>
                                                         <!--* Program from db -->
                                                     </select>
                                                 </div>
                                             </div>
-                                            <button class="submitFilter" id="submitFilterbtn">Apply filters</button>
+                                            <button class="submitFilter" id="submitFilterbtnComparison">Apply filters</button>
                                         </div>
 
                                         <div class="surveySelect">
                                             <label for="yearRange">Year Range</label>
-                                            <select name="yearRange" id="selectYearRangeId">
+                                            <select name="yearRange" id="selectYearRangeIdComparison">
                                                 <option value="opcion" disabled selected hidden>Please select year
                                                 </option>
                                                 <!--*  Trimester from db -->
@@ -281,17 +281,14 @@
                                             <div class="dateSelect">
                                                 <div class="dateItem">
                                                     <label for="dateRange">Range type</label>
-                                                    <select name="dateRange" id="selectRangeTypeId"> 
+                                                    <select name="dateRange" id="selectRangeTypeIdComparison"> 
                                                         <option value="opcion1" disabled selected hidden>Please select range type</option>
-                                                        <option value="opcion2">Annual</option>
-                                                        <option value="opcion3">Quarterly</option>
-                                                        <option value="opcion4">Semiannual</option>
                                                     </select>
                                                 </div>
 
                                                 <div class="dateItem">
                                                     <label for="dateRange">Date Range</label>
-                                                    <select name="dateRange" id="selectDateRangeId">
+                                                    <select name="dateRange" id="selectDateRangeIdComparison">
                                                         <option value="opcion1" disabled selected hidden>Please select
                                                             date range</option>
                                                      
@@ -304,16 +301,6 @@
 
                                 <div class="comparisonKnowledge">
                                     <!--~ Graph -->
-                                    <div class="comparisonChartBox">
-                                        <h2>Knowledge Improvement</h2>
-                                        <div class="subdued">Comparison of pre and post course assessment results</div>
-                                    </div>
-
-                                    <div class="comparison-layout">
-                                        <div class="chart-container">
-                                            <canvas id="comparisonChart"></canvas>
-                                        </div>
-
                                         <div class="cards-container">
                                             <div class="stat-card red">
                                                 <p class="label">Pre Avg</p>
@@ -328,6 +315,12 @@
                                                 <p id="changeValue">--%</p>
                                             </div>
                                         </div>
+                                    <div class="comparison-layout">
+                                        <div class="chart-container">
+                                            <canvas id="comparisonChart"></canvas>
+                                        </div>
+
+
                                     </div>
                                 </div>
                             </div>

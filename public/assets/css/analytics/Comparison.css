@@ -134,19 +134,19 @@
   background-color: var(--neutral-light);
   box-shadow: var(--box-shadow);
   border: 1px solid var(--gray-300);
+
 }
 
-.comparisonChartBox h2 {
+.comparisonChartBox{
     font-size: 1.2rem;
-    color: var(--neutral-dark);
+    display: flex;
     margin-bottom: 10px;
 }
 
 .comparisonKnowledge canvas {
   display: block;
   margin: 0 auto;
-  width: 85% !important;
-  max-width: 900px;
+  width: 100% !important;
   height: 500px !important;
 }
 
@@ -171,16 +171,10 @@
   padding-right: 4rem;
 }
 
-.chart-container {
-  flex: 0 0 70%;
-  max-width: 70%;
-}
+
 
 .cards-container {
-  flex: 0 0 30%;
-  max-width: 30%;
   display: flex;
-  flex-direction: column;
   gap: 1rem;
   justify-content: center;
   align-items: center;
