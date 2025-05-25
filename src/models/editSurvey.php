@@ -143,7 +143,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         p.prog_id,
                         sub.subject,
                         sub.subject_id,
-                        s.expires_at,
                         s.created_at
                         FROM surveys s
                         JOIN survey_types st ON st.survey_type_id = s.survey_type_id

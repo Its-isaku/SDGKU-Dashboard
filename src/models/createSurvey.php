@@ -102,15 +102,14 @@ try {
         $programType = $details['programType'] ?? null;
         $program = $details['program'] ?? null;
         $subject = $details['subject'] ?? null; 
-        $expirationDate = $details['expirationDate'] ?? null;
         $createdAt = $details['createdAt'] ?? null;
         $status = "active";
 
         $token = bin2hex(random_bytes(16));
 
         try {
-            $sql = "INSERT INTO surveys (title, description, program_type_id, program_id, subject_id, last_edited, created_at, expires_at, status, token, survey_type_id)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO surveys (title, description, program_type_id, program_id, subject_id, last_edited, created_at, status, token, survey_type_id)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
                 $title,
@@ -120,7 +119,6 @@ try {
                 $subject,
                 $createdAt,
                 $createdAt,
-                $expirationDate,
                 $status,
                 $token,
                 $type

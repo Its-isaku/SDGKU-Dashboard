@@ -135,7 +135,7 @@
 
                         <div class="infoInput">
                             <label for="surveyDescription">Description</label>
-                            <textarea id="surveyDescription" placeholder="Enter survey description" required></textarea>
+                            <textarea id="surveyDescription" placeholder="Enter survey description" required maxlength="120"></textarea>
                         </div>
                         
                         <div class="infoTypeDate">
@@ -145,11 +145,6 @@
                                     <option id="editSurveyType" value="" disabled selected hidden></option>
                                     <!--! options from the db -->
                                 </select>
-                            </div>
-    
-                            <div class="infoInput">
-                                <label for="expirationDate">Survey Expire Date</label>
-                                <input type="datetime-local" id="expirationDate" required>
                             </div>
                         </div>
 
@@ -208,6 +203,18 @@
                         <div class="QuestionEndBtn">
                             <button class="backBtn" id="btnBackToQuestions">Back to Questions</button>
                             <button class="nextBtn" id="btnEditSurvey">Update Survey</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--? Loading Modal  -->
+                <div id="loading-modal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>Loading...</h2>
+                        </div>
+                        <div class="modal-body">
+                            <img src="../../assets/images/loading.svg" alt="">
                         </div>
                     </div>
                 </div>

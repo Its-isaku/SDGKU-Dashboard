@@ -135,7 +135,7 @@
 
                         <div class="infoInput">
                             <label for="surveyDescription">Description</label>
-                            <textarea id="surveyDescription" placeholder="Enter survey description" required></textarea>
+                            <textarea id="surveyDescription" placeholder="Enter survey description" required maxlength="120"></textarea>
                         </div>
                         
                         <div class="infoTypeDate">
@@ -145,12 +145,11 @@
                                     <option value="" disabled selected hidden>Enter survey type</option>
                                     <!--! options from the db -->
                                 </select>
-                            </div>
-    
-                            <div class="infoInput">
+                            </div>    
+                            <!-- <div class="infoInput">
                                 <label for="expirationDate">Survey Expire Date</label>
                                 <input type="datetime-local" id="expirationDate" required>
-                            </div>
+                            </div> -->
                         </div>
 
                         <button id="btnContinueToQuestions">Continue to Questions</button>
@@ -191,12 +190,6 @@
                                 <label for="studentEmail">Enter Your email</label>
                                 <input type="text" id="studentEmail" placeholder="e.g., student@sdgku.com" required>
                             </div>
-                            <div>
-                                <label for="studentEmail">Expiration Date</label>
-                                <div class="expirationDate" id="expirationDatePreview">
-                                    <!-- Expiration Date info will appear here -->
-                                </div>
-                            </div>
                         </div>
 
                         <div class="previewContainer" id="previewContainer">
@@ -212,7 +205,19 @@
                     </div>
                 </div>
 
-                <!-- Notification -->
+                <!--? Loading Modal  -->
+                <div id="loading-modal" class="modal" style="display:none;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>Loading...</h2>
+                        </div>
+                        <div class="modal-body">
+                            <img src="../../assets/images/loading.svg" alt="Loading...">
+                        </div>
+                    </div>
+                </div>
+
+                <!--? Notification -->
                 <div id="notification" class="notification"></div>
 
             </div>
@@ -224,4 +229,4 @@
     <script src="../../assets/js/app/main.js"></script>
     <script src="../../assets/js/auth/logout.js"></script>
 </body>
-</html> 
+</html>
