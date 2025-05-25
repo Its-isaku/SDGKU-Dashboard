@@ -152,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
         }
         
         //* validar si ya existe el cohort/section
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM cohort WHERE cohort = ? AND program_id = ? AND status = 'active'");
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM cohort WHERE cohort = ? AND program_id = ? AND status = 'active' ");
         $stmt->execute([$cohortName, $programId]);
         if ($stmt->fetchColumn() > 0) {
             echo json_encode(['status' => 'error', 'message' => 'already exists!.']);
