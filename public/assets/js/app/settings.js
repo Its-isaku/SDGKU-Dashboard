@@ -244,16 +244,49 @@ if (addProgramBtn) {
 
 //? Add Cohort
 const addCohortBtn = document.getElementById('addCohort');
+const newCohortInput = document.getElementById('newCohort');
+
+//? Input validation 
+if (newCohortInput) {
+    newCohortInput.addEventListener('input', function() {
+        const value = this.value;
+        //* clear the input if not numeric
+        if (value && !/^\d+$/.test(value)) {
+            this.value = '';
+        }
+    });
+    
+    //* Show notification when button is clicked and input is invalid
+    if (addCohortBtn) {
+        addCohortBtn.addEventListener('click', function() {
+            const value = newCohortInput.value.trim();
+            if (value && !/^\d+$/.test(value)) {
+                showNotification('Only add the Cohort Number.', 'error');
+                newCohortInput.value = '';
+                return;
+            }
+        });
+    }
+}
+
 if (addCohortBtn) {
     addCohortBtn.addEventListener('click', function() {
-        const cohortName = document.getElementById('newCohort').value.trim();
+
+        //* Validación: Solo Certificate (1) puede agregar Cohorts
+        const programTypeId = document.getElementById('programType').value;
+        if (programTypeId !== "1") {
+            showNotification('You can only add Cohorts to Certificate programs.', 'error');
+            return;
+        }
+        const rawCohort = newCohortInput.value.trim();
+        const cohortName = rawCohort.startsWith('CH-') ? rawCohort : `CH-${rawCohort}`; //* add CH- prefix
         const programId = document.getElementById('program').value;
         if (!programId) {
             showNotification('Please select a program before adding a cohort.', 'error');
             return;
         }
-        if (!cohortName) {
-            showNotification('Please enter a cohort name.', 'error');
+        if (!rawCohort) {
+            showNotification('Please enter a cohort number.', 'error');
             return;
         }
         fetch('/SDGKU-Dashboard/src/models/manageSurveyData.php?action=addCohort', {
@@ -283,6 +316,87 @@ if (addCohortBtn) {
                     });
             } else {
                 showNotification('Error adding cohort: ' + data.message, 'error');
+            }
+        });
+    });
+}
+
+//? Add Section
+const addSectionBtn = document.getElementById('addSection');
+const newSectionInput = document.getElementById('newSection');
+
+//? Input validation 
+if (newSectionInput) {
+    newSectionInput.addEventListener('input', function() {
+        const value = this.value;
+        //* clear the input if not numeric
+        if (value && !/^\d+$/.test(value)) {
+            this.value = '';
+        }
+    });
+    
+    //* Show notification when button is clicked and input is invalid
+    if (addSectionBtn) {
+        addSectionBtn.addEventListener('click', function() {
+            const value = newSectionInput.value.trim();
+            if (value && !/^\d+$/.test(value)) {
+                showNotification('Only add the Section Number.', 'error');
+                newSectionInput.value = '';
+                return;
+            }
+        });
+    }
+}
+
+if (addSectionBtn) {
+    addSectionBtn.addEventListener('click', function() {
+        
+        //* Validación: Solo Bachelors (2) o Masters (3) pueden agregar Sections
+        const programTypeId = document.getElementById('programType').value;
+        if (programTypeId !== "2" && programTypeId !== "3") {
+            showNotification('You can only add Sections to Bachelors or Masters programs.', 'error');
+            return;
+        }
+        const rawSection = newSectionInput.value.trim();
+        const sectionName = rawSection.startsWith('SC-') ? rawSection : `SC-${rawSection}`; //* add SC- prefix
+        const programId = document.getElementById('program').value;
+        if (!programId) {
+            showNotification('Please select a program before adding a section.', 'error');
+            return;
+        }
+        if (!rawSection) {
+            showNotification('Please enter a section number.', 'error');
+            return;
+        }
+        fetch('/SDGKU-Dashboard/src/models/manageSurveyData.php?action=addCohort', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cohortName: sectionName, programId }) 
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                showNotification('Section added successfully!', 'success');
+                //* Refresh the section list (solo SC-)
+                fetch('/SDGKU-Dashboard/src/models/manageSurveyData.php?action=getCohorts')
+                    .then(res => res.json())
+                    .then(data => {
+                        const sectionSelect = document.getElementById('section');
+                        if (!sectionSelect) return;
+                        sectionSelect.innerHTML = '<option value="" disabled selected hidden>Choose a Section</option>';
+                        if (data.status === 'success') {
+                            data.data
+                                .filter(section => section.cohort.startsWith('SC-'))
+                                .forEach(section => {
+                                    const option = document.createElement('option');
+                                    option.value = section.cohort_id;
+                                    option.textContent = section.cohort;
+                                    sectionSelect.appendChild(option);
+                                });
+                        }
+                    });
+            } else {
+                showNotification('Error adding section: ' + data.message, 'error');
             }
         });
     });
