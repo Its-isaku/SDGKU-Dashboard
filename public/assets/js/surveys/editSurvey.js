@@ -10,7 +10,6 @@ const surveyData = {
         programType: '',
         program: '',
         subject: '',
-        expirationDate: '',
         createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
     },
     questions: [] 
@@ -32,9 +31,8 @@ function validateSurveyDetails() {
     const programType = document.getElementById('programType').value;
     const program = document.getElementById('program').value;
     const subject = document.getElementById('subject').value;
-    const expirationDate = document.getElementById('expirationDate').value.trim();
 
-    if (!title || !description || !type || !programType || !program || !subject || !expirationDate) {
+    if (!title || !description || !type || !programType || !program || !subject) {
         showNotification('Please fill in all required survey details before continuing.', 'error'); 
         return false;
     }
@@ -53,6 +51,21 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
+//? Modal Logic
+const loadingModal = document.getElementById('loading-modal');
+const closeModalBtn = document.querySelector('#loading-modal .close-modal');
+
+function showLoadingModal() {
+    if (loadingModal) loadingModal.style.display = 'flex';
+}
+
+function hideLoadingModal() {
+    if (loadingModal) loadingModal.style.display = 'none';
+}
+
+if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', hideLoadingModal);
+}
 
 //? Preview Logic
 function validateQuestions() {
@@ -173,14 +186,12 @@ document.getElementById('btnContinueToQuestions').addEventListener('click', () =
     const programType = document.getElementById('programType').value;
     const program = document.getElementById('program').value;
     const subject = document.getElementById('subject').value;
-    const expirationDate = document.getElementById('expirationDate').value.trim();
 
     surveyData.details.title = title;
     surveyData.details.description = description;
     surveyData.details.type = type;
     surveyData.details.programType = programType;
     surveyData.details.program = program;
-    surveyData.details.expirationDate = expirationDate; 
     surveyData.details.subject = subject;
 });
 
@@ -387,17 +398,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-
-//? Format Expiration Date
-function formatExpirationDate(dateString) {
-    if (!dateString) return '';
-    //* Format: YYYY-MM-DDTHH:mm (from input type="datetime-local")
-    const [date, time] = dateString.split('T');
-    if (!date || !time) return dateString;
-    return `${date} : ${time}`;
-}
-
-
 //? Helper to get local datetime string in 'YYYY-MM-DD HH:mm:ss' format
 function getLocalDateTimeString() {
     const now = new Date();
@@ -408,17 +408,6 @@ function getLocalDateTimeString() {
         String(now.getMinutes()).padStart(2, '0') + ':' +
         String(now.getSeconds()).padStart(2, '0');
 }
-
-
-//? Helper to format expiration date from input type="datetime-local" to 'YYYY-MM-DD HH:mm:ss'
-function formatExpirationDateToLocal(dateString) {
-    if (!dateString) return '';
-    const [date, time] = dateString.split('T');
-    if (!date || !time) return dateString;
-    const timeWithSeconds = time.length === 5 ? time + ':00' : time;
-    return `${date} ${timeWithSeconds}`;
-}
-
 
 function updatePreview() {
     //* Update the survey preview section with current data
@@ -432,15 +421,6 @@ function updatePreview() {
     const descEl = document.createElement('p');
     descEl.textContent = surveyData.details.description || 'No description provided.';
     container.appendChild(descEl);
-
-    //* Always get the expiration date directly from the input
-    const expirationInput = document.getElementById('expirationDate');
-    const expirationDateValue = expirationInput ? expirationInput.value : '';
-    const formattedExpiration = formatExpirationDate(expirationDateValue);
-    const expirationDatePreview = document.getElementById('expirationDatePreview');
-    if (expirationDatePreview) {
-        expirationDatePreview.textContent = formattedExpiration || 'No expiration date set.';
-    }
 
     const Likert5 = [
         "Strongly Disagree",
@@ -617,6 +597,7 @@ if (previewOption) {
 const btnEditSurvey = document.getElementById('btnEditSurvey');
 btnEditSurvey.addEventListener('click', function() {
     btnEditSurvey.disabled = true;
+    showLoadingModal(); // Mostrar modal de carga al enviar
     //* Collect survey details
     console.log('Survey Data:',surveyData2.survey_id);
     const surveyDetails = {
@@ -628,7 +609,6 @@ btnEditSurvey.addEventListener('click', function() {
         subject: document.getElementById('subject').value,
         surveyType: document.getElementById('surveyType').value,
         createdAt: getLocalDateTimeString(),
-        expirationDate: formatExpirationDateToLocal(document.getElementById('expirationDate').value.trim()),
         email: document.getElementById('studentEmail').value.trim()
     };
 
@@ -684,6 +664,7 @@ btnEditSurvey.addEventListener('click', function() {
     const id = surveyData2.survey_id;
 // Validación del ID
 if (!id || isNaN(id)) {
+    hideLoadingModal(); // Ocultar modal si hay error
     showNotification('Invalid survey ID', 'error');
     return;
 }
@@ -698,6 +679,10 @@ console.log("load: ",surveyPayload);
 //!---------------Delete Questions Selected-----------------
 deleteSelectedQuestions();
 
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    hideLoadingModal();
 });
 
 function updateEdit(surveyPayload,id){
@@ -715,6 +700,7 @@ function updateEdit(surveyPayload,id){
     return response.json();
 })
 .then(data => {
+    hideLoadingModal(); // Ocultar modal al terminar
     if (data.status === 'error') {
         throw new Error(data.message);
     }
@@ -727,6 +713,7 @@ function updateEdit(surveyPayload,id){
     }, 1500);
 })
 .catch(error => {
+    hideLoadingModal(); // Ocultar modal si hay error
     console.error('Fetch error:', error);
     showNotification('Error updating survey: ' + error.message, 'error');
 });
@@ -804,7 +791,7 @@ function deleteSelectedQuestions(){
 document.addEventListener('DOMContentLoaded', function() {
     fetch('/SDGKU-Dashboard/src/models/createSurvey.php?action=getProgramTypes')
     .then(res => res.json())
-    .then(data => {
+    .then (data => {
         if (data.status === 'success') {
             const select = document.getElementById('programType');
             data.data.forEach(programType => {
@@ -957,7 +944,6 @@ const surveyData2 = {
     programType : '',
     program : '',
     subject : '',
-    expirationDate : '',
     createdAt : ''
 };
 let questions = [
@@ -982,9 +968,7 @@ function resetSurveyData() {
     surveyData2.programType = '';
     surveyData2.program = '';
     surveyData2.subject = '';
-    surveyData2.expirationDate = '';
     surveyData2.createdAt = '';
-
     questions.question_id = '';
     questions.question_text = '';
     questions.question_type_id = '';
@@ -1034,7 +1018,6 @@ async function fetchSurveyData(sid) {
         surveyData2.programType = surveyData[0].program_type_id; // Use ID
         surveyData2.program = surveyData[0].prog_id; // Use ID
         surveyData2.subject = surveyData[0].subject_id; // Use ID
-        surveyData2.expirationDate = surveyData[0].expires_at;
         surveyData2.createdAt = surveyData[0].created_At;
 
         // 2. Cargar preguntas y sus opciones (en paralelo)
@@ -1201,10 +1184,6 @@ function editSurvey() {
         let newOption = new Option(surveyData2.type, surveyData2.type, true, true);
         surveyTypeOption.add(newOption);
     }
-
-    // Expiration Date
-    // Asegúrate de que surveyData2.expirationDate esté en el formato correcto (YYYY-MM-DDTHH:MM)
-    document.getElementById('expirationDate').value = surveyData2.expirationDate;
 }
 
 

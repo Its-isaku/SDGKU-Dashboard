@@ -580,6 +580,13 @@ input:focus {
     padding: 1.25rem;
 }
 
+#loading-modal .modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .btn {
     padding: 0.5rem 1rem;
     border: none;
@@ -680,7 +687,7 @@ input:focus {
     }
     
     .full-logo {
-        background-image: url(../images/SDGKU_Full_Logo.png);
+        background-image: url(../../images/SDGKU_Full_Logo.png);
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;

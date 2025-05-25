@@ -9,7 +9,6 @@ const surveyData = {
         programType: '',
         program: '',
         subject: '',
-        expirationDate: '',
         createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
     },
     questions: [] 
@@ -29,9 +28,8 @@ function validateSurveyDetails() {
     const programType = document.getElementById('programType').value;
     const program = document.getElementById('program').value;
     const subject = document.getElementById('subject').value;
-    const expirationDate = document.getElementById('expirationDate').value.trim();
 
-    if (!title || !description || !type || !programType || !program || !subject || !expirationDate) {
+    if (!title || !description || !type || !programType || !program || !subject) {
         showNotification('Please fill in all required survey details before continuing.', 'error'); 
         return false;
     }
@@ -48,6 +46,22 @@ function showNotification(message, type = 'success') {
     setTimeout(() => {
         notification.style.display = 'none';
     }, 3000);
+}
+
+//? Modal Logic
+const loadingModal = document.getElementById('loading-modal');
+const closeModalBtn = document.querySelector('#loading-modal .close-modal');
+
+function showLoadingModal() {
+    if (loadingModal) loadingModal.style.display = 'flex';
+}
+
+function hideLoadingModal() {
+    if (loadingModal) loadingModal.style.display = 'none';
+}
+
+if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', hideLoadingModal);
 }
 
 //? Preview Logic
@@ -164,14 +178,12 @@ document.getElementById('btnContinueToQuestions').addEventListener('click', () =
     const programType = document.getElementById('programType').value;
     const program = document.getElementById('program').value;
     const subject = document.getElementById('subject').value;
-    const expirationDate = document.getElementById('expirationDate').value.trim();
 
     surveyData.details.title = title;
     surveyData.details.description = description;
     surveyData.details.type = type;
     surveyData.details.programType = programType;
     surveyData.details.program = program;
-    surveyData.details.expirationDate = expirationDate; 
     surveyData.details.subject = subject;
 });
 
@@ -375,15 +387,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-//? Format Expiration Date
-function formatExpirationDate(dateString) {
-    if (!dateString) return '';
-    //* Format: YYYY-MM-DDTHH:mm (from input type="datetime-local")
-    const [date, time] = dateString.split('T');
-    if (!date || !time) return dateString;
-    return `${date} : ${time}`;
-}
-
 //? Helper to get local datetime string in 'YYYY-MM-DD HH:mm:ss' format
 function getLocalDateTimeString() {
     const now = new Date();
@@ -393,15 +396,6 @@ function getLocalDateTimeString() {
         String(now.getHours()).padStart(2, '0') + ':' +
         String(now.getMinutes()).padStart(2, '0') + ':' +
         String(now.getSeconds()).padStart(2, '0');
-}
-
-//? Helper to format expiration date from input type="datetime-local" to 'YYYY-MM-DD HH:mm:ss'
-function formatExpirationDateToLocal(dateString) {
-    if (!dateString) return '';
-    const [date, time] = dateString.split('T');
-    if (!date || !time) return dateString;
-    const timeWithSeconds = time.length === 5 ? time + ':00' : time;
-    return `${date} ${timeWithSeconds}`;
 }
 
 function updatePreview() {
@@ -416,15 +410,6 @@ function updatePreview() {
     const descEl = document.createElement('p');
     descEl.textContent = surveyData.details.description || 'No description provided.';
     container.appendChild(descEl);
-
-    //* Always get the expiration date directly from the input
-    const expirationInput = document.getElementById('expirationDate');
-    const expirationDateValue = expirationInput ? expirationInput.value : '';
-    const formattedExpiration = formatExpirationDate(expirationDateValue);
-    const expirationDatePreview = document.getElementById('expirationDatePreview');
-    if (expirationDatePreview) {
-        expirationDatePreview.textContent = formattedExpiration || 'No expiration date set.';
-    }
 
     const Likert5 = [
         "Strongly Disagree",
@@ -597,6 +582,7 @@ if (previewOption) {
 const btnCreateSurvey = document.getElementById('btnCreateSurvey');
 btnCreateSurvey.addEventListener('click', function() {
     btnCreateSurvey.disabled = true;
+    showLoadingModal(); // Mostrar modal de carga al enviar
     //* Collect survey details
     const surveyDetails = {
         title: document.getElementById('surveyTitle').value.trim(),
@@ -606,7 +592,6 @@ btnCreateSurvey.addEventListener('click', function() {
         subject: document.getElementById('subject').value,
         surveyType: document.getElementById('surveyType').value,
         createdAt: getLocalDateTimeString(),
-        expirationDate: formatExpirationDateToLocal(document.getElementById('expirationDate').value.trim()),
         email: document.getElementById('studentEmail').value.trim()
     };
 
@@ -675,6 +660,7 @@ btnCreateSurvey.addEventListener('click', function() {
         }
     })
     .then(data => {
+        hideLoadingModal(); // Ocultar modal al terminar
         console.log('Survey created successfully:', data);
         showNotification('Survey created successfully!', 'success');
         setTimeout(() => {
@@ -682,10 +668,21 @@ btnCreateSurvey.addEventListener('click', function() {
         }, 1500);
     })
     .catch(error => {
+        hideLoadingModal(); // Ocultar modal si hay error
         console.error(error);
-        if(data.status === 'error') {showNotification('Error creating survey: ' + data.message, 'error');}
+        if(typeof data !== 'undefined' && data.status === 'error') {
+            showNotification('Error creating survey: ' + data.message, 'error');
+        } else {
+            showNotification('Error creating survey', 'error');
+        }
         btnCreateSurvey.disabled = false;
     });
+});
+
+//? Ocultar el modal de carga al cargar la página
+
+document.addEventListener('DOMContentLoaded', function() {
+    hideLoadingModal();
 });
 
 //? get Program Types and send them to the frontend
@@ -839,7 +836,6 @@ function editSurvey(survey,id){
     document.getElementById('program').value = survey.program_id;
     document.getElementById('subject').value = survey.subject_id;
     document.getElementById('surveyType').value = survey.survey_type_id;
-    document.getElementById('expirationDate').value = survey.expiration_date;
     document.getElementById('studentEmail').value = survey.email;
     
 }
