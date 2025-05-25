@@ -103,10 +103,10 @@
                             <h3>Survey Details</h3>
                         </button>
                         <button onclick="showOptionSelected('panel2')" class="surveyOption">
-                            <h3>Response Analysis</h3>
+                            <h3>Mission Reviews</h3>
                         </button>
                         <button onclick="showOptionSelected('panel3')" class="surveyOption">
-                            <h3>Comparison</h3>
+                            <h3>Pre-Post Analysis</h3>
                         </button>
                         <button onclick="showOptionSelected('panel4')" class="surveyOption">
                             <h3>Reports</h3>
@@ -157,8 +157,8 @@
                                 <!--~ Filters -->
                                 <div class="responseFilter">
                                     <div class="surveyResponseHeader">
-                                        <h1>Response Analysis</h1>
-                                        <p>View average responses grouped by question or participant</p>
+                                        <h1>Mission Analysis</h1>
+                                        <p>View average responses grouped by question</p>
                                     </div>
 
                                     <div class="responseSelections">
@@ -191,7 +191,6 @@
                                                 </option>
                                                 <!--*  Trimester from db -->
                                             </select>
-
                                             <div class="dateSelect">
                                                 <div class="dateItem">
                                                     <label for="dateRange">Range type</label>
@@ -199,7 +198,6 @@
                                                         <option value="opcion1" disabled selected hidden>Please select range type</option>
                                                     </select>
                                                 </div>
-
                                                 <div class="dateItem">
                                                     <label for="dateRange">Date Range</label>
                                                     <select name="dateRange" id="selectDateRangeId">
@@ -214,15 +212,15 @@
 
                                 <!--~ Graph -->
                                 <div class="responseChartBox">
-                                    <h2>Question Analysis</h2>
-                                    <div class="subdued">Average ratings grouped by selected option</div>
+                                    <h2>All Programs Analysis</h2>
+                                    <div class="subdued">Average ratings grouped by program</div>
                                     <canvas id="responseAnalysisChart"></canvas>
                                 </div>
 
                                 <!--~ Table -->
                                 <div class="responseChartBox">
                                     <div class="responseHeader">
-                                        <h2>Response Analysis Table</h2>
+                                        <h2>Mission Review Table</h2>
                                         <div class="subdued">Average ratings grouped by selected option</div>
                                     </div>
 
@@ -328,7 +326,17 @@
                                 </div>
                             </div>
                         </div>
-
+                         <!--? Loading Modal  -->
+                        <div id="loading-modal" class="modal" style="display:none;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2>Loading...</h2>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="../../assets/images/loading.svg" alt="Loading...">
+                                </div>
+                            </div>
+                        </div>
                         <!--? REPORTS -->
                         <div id="panel4" class="panel">
                             <div class="reports">

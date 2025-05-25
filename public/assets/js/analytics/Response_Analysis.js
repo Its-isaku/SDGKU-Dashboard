@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const programIndex = selectProgram.selectedIndex;
         
         if(TypeIndex!=0){
-            
+            showLoadingModal();
             const programTypeId = confirmSelection();
             const completeDateSelected = getDateRangeSelected();
             const ids = await getProgramIds(programTypeId);
@@ -528,7 +528,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const programData = await getProgramData(program,from,to);
             const matrizPrograms = [];
             renderResponseAnalysisChart(dbLabels, dbValuesRaw);
-           console.log("INDEX: ",programIndex);
+            console.log("INDEX: ",programIndex);
             if(programIndex>0){
                     renderProgramTables(programData);
             }else if(programIndex===0){
@@ -539,7 +539,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 renderAllProgramTables(matrizPrograms, dbLabels);
             }
 
-          
+          hideLoadingModal();
         }else{
             //!Notificacion
             showNotification("Please select a year", "error");
@@ -634,7 +634,7 @@ function renderResponseAnalysisChart(dbLabels, dbValues) {
 function renderProgramTables(questions) {
 
     //* Check if the container element exists
-    const container = document.getElementById('responseAnalysisTable');
+    const container = document.getElementById('AllProgramsTable');
     if (!container) return;
 
     //* Clear the container before rendering
@@ -736,7 +736,7 @@ function renderAllProgramTables(questionsList, programNames) {
             const titleContainer = document.createElement('div');   
             titleContainer.className = 'titleContainer';
             const title = document.createElement('h3');
-            title.textContent = question.question_text;
+            title.textContent = question.question_text ;
             title.className = 'analytics-program-badge';
             titleContainer.appendChild(title);
             tableContainer.appendChild(titleContainer);
@@ -788,3 +788,11 @@ document.addEventListener('DOMContentLoaded', () => {
     renderResponseAnalysisChart();
     renderProgramTables();
 });
+
+function cleanContainer(container) {
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
+    // Opcional: Eliminar cualquier listener pendiente
+    container.replaceWith(container.cloneNode(false));
+}
