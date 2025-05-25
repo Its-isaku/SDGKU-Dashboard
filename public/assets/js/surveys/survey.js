@@ -310,9 +310,21 @@ function getAnswers() {
         let answer = null;
 
         switch (questionType) {
-            case 1: case 2: case 3: case 5:
+            case 1: case 2: case 3:
                 const selected = item.querySelector('input[type="radio"]:checked');
-                if (selected) answer = selected.value;
+                if (selected) {
+                    const options = item.querySelectorAll('input[type="radio"]');
+                    const index = Array.from(options).indexOf(selected);
+                    answer = (index + 1).toString();
+                }
+                break;
+            case 5: // True/False
+                const selectedTF = item.querySelector('input[type="radio"]:checked');
+                if (selectedTF) {
+                    const options = item.querySelectorAll('input[type="radio"]');
+                    const index = Array.from(options).indexOf(selectedTF);
+                    answer = index.toString(); // No sumamos 1 para True/False
+                }
                 break;
             case 4:
                 const textarea = item.querySelector('textarea');
