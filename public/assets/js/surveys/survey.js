@@ -323,7 +323,7 @@ function getAnswers() {
                 if (selectedTF) {
                     const options = item.querySelectorAll('input[type="radio"]');
                     const index = Array.from(options).indexOf(selectedTF);
-                    answer = index.toString(); // No sumamos 1 para True/False
+                    answer = index.toString(); 
                 }
                 break;
             case 4:

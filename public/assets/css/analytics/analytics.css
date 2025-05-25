@@ -7,19 +7,8 @@
     padding-top: 1rem;
     /* margin-left: 210px; */
 }
-/*~ Dashboard Layout Media */
-@media (max-width: 960px) {
-    aside {
-        display: none;
-    }
-    .principalDashboard {
-        margin-left: 0 !important;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-        width: 100%;
-        box-sizing: border-box;
-    }
-}
+
+
 
 /**<--------------------------->*/
 
@@ -263,3 +252,16 @@
 
 
 /**<--------------------------->*/
+/*~ Dashboard Layout Media */
+@media (max-width: 960px) {
+    aside {
+        display: none;
+    }
+    .principalDashboard {
+        margin-left: 0 !important;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+}

@@ -526,8 +526,20 @@ document.addEventListener('DOMContentLoaded', function () {
             const id = programIndex-1;
             const program = ids[id];
             const programData = await getProgramData(program,from,to);
-            renderProgramTables(programData);
+            const matrizPrograms = [];
             renderResponseAnalysisChart(dbLabels, dbValuesRaw);
+           console.log("INDEX: ",programIndex);
+            if(programIndex>0){
+                    renderProgramTables(programData);
+            }else if(programIndex===0){
+                for(let i = 0; i < ids.length; i++){
+                    matrizPrograms[i] = await getProgramData(ids[i], from, to);
+                }
+            
+                renderAllProgramTables(matrizPrograms, dbLabels);
+            }
+
+          
         }else{
             //!Notificacion
             showNotification("Please select a year", "error");
@@ -681,7 +693,95 @@ function renderProgramTables(questions) {
     container.appendChild(tableContainer);
 });
 }
+//?Render para all Programs
 
+function renderAllProgramTables(questionsList, programNames) {
+    //* Check if the container element exists
+    const container = document.getElementById('AllProgramsTable');
+    if (!container) return;
+
+    //* Clear the container before rendering
+    container.innerHTML = '';
+
+    //* Verify programNames has enough items
+    if (!programNames || programNames.length < questionsList.length) {
+        console.warn('Program names array is missing or shorter than questions list. Using default names.');
+        programNames = questionsList.map((_, i) => `Program ${i + 1}`);
+    }
+
+    //* Loop through each questions array in the list
+    questionsList.forEach((questions, index) => {
+        //* Create a section for each program
+        const programSection = document.createElement('div');
+        programSection.className = 'program-section';
+        programSection.id = `program-${index}`;
+
+        //* Add the custom program name as title
+        const programTitle = document.createElement('h2');
+        programTitle.textContent = programNames[index] || `Program ${index + 1}`; 
+        programTitle.className = 'program-title';
+        programSection.appendChild(programTitle);
+
+        //* Create a container for this program's tables
+        const tablesContainer = document.createElement('div');
+        tablesContainer.className = 'tables-container';
+
+        //* Render each question as a table
+        questions.forEach(question => {
+            //* Create a wrapper div for each program
+            const tableContainer = document.createElement('div');
+            tableContainer.className = 'tableContainer';
+
+            //* Create a title for the specific question
+            const titleContainer = document.createElement('div');   
+            titleContainer.className = 'titleContainer';
+            const title = document.createElement('h3');
+            title.textContent = question.question_text;
+            title.className = 'analytics-program-badge';
+            titleContainer.appendChild(title);
+            tableContainer.appendChild(titleContainer);
+
+            //* Create the table
+            const table = document.createElement('table');
+            table.className = 'display';
+
+            //* Table head
+            const thead = document.createElement('thead');
+            thead.className = 'theadContainer';
+            thead.innerHTML = /*HTML */ `
+                <tr>
+                    <th>Measure</th>
+                    <th>Acceptable Target</th>
+                    <th>Total Number of student records observed</th>
+                    <th>Total number of students records meeting acceptable target</th>
+                    <th>Assessment results: Percentage of student records meeting acceptable target</th>
+                </tr>
+            `;
+            table.appendChild(thead);
+
+            //* Table body
+            const tbody = document.createElement('tbody');
+            question.measures.forEach(measure => {
+                const tr = document.createElement('tr');
+                tr.className = 'tbodyContainer';
+                tr.innerHTML = `
+                    <td>${measure.type}</td>
+                    <td>${measure.target}</td>
+                    <td><span class="analytics-number-badge observed">${measure.observed}</span></td>
+                    <td><span class="analytics-number-badge met">${measure.met}</span></td>
+                    <td><span class="analytics-number-badge percent">${measure.percent}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+            tableContainer.appendChild(table);
+            tablesContainer.appendChild(tableContainer);
+        });
+
+        programSection.appendChild(tablesContainer);
+        container.appendChild(programSection);
+    });
+}
 //! <|-------------------------------- Load Logic --------------------------------|>
 //? Load the the Respoinse Analysis Chart 
 document.addEventListener('DOMContentLoaded', () => {
