@@ -13,7 +13,7 @@ function respond($status, $message, $data = null) {
     if ($data !== null) {
         $response['data'] = $data;
     }
-    echo json_encode($response);
+    echo json_encode($response); 
     exit;
 }
 
@@ -150,7 +150,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
             error_log('Invalid data received for addCohort: ' . json_encode($data));
             respond('error', 'Invalid data received!');
         }
+        
+        //* validar si ya existe el cohort/section
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM cohort WHERE cohort = ? AND program_id = ?");
+        $stmt->execute([$cohortName, $programId]);
+        if ($stmt->fetchColumn() > 0) {
+            echo json_encode(['status' => 'error', 'message' => 'already exists!.']);
+            exit;
+        }
 
+        //* Insertar el nuevo cohort/section
         $sql = "INSERT INTO cohort (cohort, program_id) VALUES(?, ?)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$cohortName, $programId]);
