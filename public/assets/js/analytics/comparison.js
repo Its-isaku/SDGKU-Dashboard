@@ -302,8 +302,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log("allPreResponses: ", allPreResponses);
                 const allPostResponses = await getAllProgramsPostResponses(ids, from, to); // Corregido: llamar a PostResponses en lugar de PreResponses
                 console.log("allPostResponses: ", allPostResponses);
-                processAllProgramsResponses(ids, from, to, pre, allPreResponses);
-                console.log("ARRAYS ",processAllProgramsResponses);
+                const r1 = getResults(21,from,to,pre,920);
+                const r2 = getResults(21,from,to,pre,919);
+                const r3 = getResults(20,from,to,pre,918);
+                const r4 = getResults(20,from,to,pre,917);
+                const r5 = getResults(19,from,to,pre,903);  
+                console.log("R: ",r1);
+                console.log("R: ",r2);
+                console.log("R: ",r3);
+                console.log("R: ",r4);
+                console.log("R: ",r5);             
             }
         }catch(err){
             console.error("Fetch error:", err);

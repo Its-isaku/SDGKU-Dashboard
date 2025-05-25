@@ -312,7 +312,11 @@ function getAnswers() {
         switch (questionType) {
             case 1: case 2: case 3: case 5:
                 const selected = item.querySelector('input[type="radio"]:checked');
-                if (selected) answer = selected.value;
+                if (selected) {
+                    const options = item.querySelectorAll('input[type="radio"]');
+                    const index = Array.from(options).indexOf(selected);
+                    answer = (index + 1).toString();
+                }
                 break;
             case 4:
                 const textarea = item.querySelector('textarea');
