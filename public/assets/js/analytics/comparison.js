@@ -36,7 +36,6 @@ function filterLogic(){
             select.appendChild(option);
         }
         select.addEventListener('change', async function () {
-            console.log("event1");
         const dateRange = document.getElementById('selectRangeTypeIdComparison');
         const selectedRange = dateRange.selectedIndex;
         dateRange.innerHTML = '';
@@ -88,7 +87,6 @@ let semiannualRange=['Select semiannual range','January - June','July - December
 
     const selectElementType = document.getElementById('programTypeIdComparison');
     selectElementType.addEventListener('change', async function () {
-        console.log("event4");
     const selectedValue = selectElementType.selectedIndex;
     const dbLabels = await getProgramNamesComparison(selectedValue);
     const programOption = document.getElementById('programIdComparison');
@@ -244,8 +242,6 @@ function getAvgGap(pre, post){
 
     return gap;
 }
-// comparisonChart
-
 
 
 //! <|-------------------------------- Table Logic --------------------------------|>
@@ -260,115 +256,175 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectYear = document.getElementById('selectYearRangeIdComparison');
         const TypeIndex = selectYear.selectedIndex;
         const programIndex = selectProgram.selectedIndex;
+        const preAvgValue = document.getElementById('preAvgValue');
+        const postAvgValue = document.getElementById('postAvgValue');
+        const changeValue = document.getElementById('changeValue');
+        const completeDateSelected = getDateRangeSelectedComparison();
+        const programTypeId = confirmSelectionComparison();
+        const ids = await getProgramIdsComparison(programTypeId);
+        const labels = await getProgramNamesComparison(programTypeId);
+        const from = completeDateSelected[0];
+        const to = completeDateSelected[1];
+
         try{
-            if(TypeIndex!=0){
-                const completeDateSelected = getDateRangeSelectedComparison();
-                const programTypeId = confirmSelectionComparison();
-                const ids = await getProgramIdsComparison(programTypeId);
-                const labels = await getProgramNamesComparison(programTypeId);
-                console.log("IDS: ",ids);
-                console.log("LABELS: ",labels);
+            if(TypeIndex===0){
+
+            }
+            else if(programIndex!=0 && TypeIndex>0){
                 const indexProgramId = programIndex-1;
                 const programId = ids[indexProgramId];
-                //Fechas
-                const from = completeDateSelected[0];
-                const to = completeDateSelected[1];
-                console.log("DATE: ",completeDateSelected);
-                console.log("programId: ",programId);
-                console.log("Responses: ",from);
-                console.log("Responses: ",to);
                 const preResponses_id = await getResponses(programId,pre,from, to);
-                console.log("Responses: ",preResponses_id);
                 const postResponses_id = await getResponses(programId,post,from, to);
-                console.log("Responses: ",postResponses_id);
                 const preValues =  await Promise.all(
                     preResponses_id.map(responses => getResults(programId, from,to,pre,responses))
                 );
                 const postValues =  await Promise.all(
                     postResponses_id.map(responses => getResults(programId, from, to,post,responses))
                 );
-                console.log("preValues: ",preValues);
-                console.log("postValues: ",postValues);
                 const averagePre = getAverage(preValues);
-                console.log("Pre AVG: ", averagePre);
                 const averagePost = getAverage(postValues);
-                console.log("Post AVG: ",averagePost);
                 const gap = getGap(preValues,postValues);
-                console.log("GAP: ", gap);
-                const avgGap = getAvgGap(averagePre,averagePost);
-                console.log("AVGGAP: ",avgGap);
-                analisisTable(labels,preValues,postValues,gap);
-                const allPreResponses = await getAllProgramsPreResponses(ids, from, to);
-                console.log("allPreResponses: ", allPreResponses);
-                const allPostResponses = await getAllProgramsPostResponses(ids, from, to); // Corregido: llamar a PostResponses en lugar de PreResponses
-                console.log("allPostResponses: ", allPostResponses);
-                const r1 = getResults(21,from,to,pre,920);
-                const r2 = getResults(21,from,to,pre,919);
-                const r3 = getResults(20,from,to,pre,918);
-                const r4 = getResults(20,from,to,pre,917);
-                const r5 = getResults(19,from,to,pre,903);  
-                console.log("R: ",r1);
-                console.log("R: ",r2);
-                console.log("R: ",r3);
-                console.log("R: ",r4);
-                console.log("R: ",r5);             
+                const avgGap = getAvgGap(averagePre,averagePost);           
+                preAvgValue.textContent = averagePre + "%";
+                postAvgValue.textContent = averagePost + "%";
+                changeValue.textContent = avgGap + "%";
+                if(avgGap<0){
+                    changeValue.style.color = "red";
+                }else{
+                    changeValue.style.color = "green";
+                }
+                const preToSend = buildArrayIdsNulls(ids, indexProgramId, averagePre);
+                const postToSend = buildArrayIdsNulls(ids, indexProgramId, averagePost);
+                const avgToSend = buildArrayIdsNulls(ids, indexProgramId, avgGap);
+                analisisTable(labels,preToSend,postToSend,avgToSend);
+                }else if(programIndex===0 && TypeIndex>0){
+
+                    const allPreResponses = await getAllProgramsPreResponses(ids, from, to);
+                    const allPostResponses = await getAllProgramsPostResponses(ids, from, to); // Corregido: llamar a PostResponses en lugar de PreResponses
+                    const allAveragesPre = await getAllAverages(ids, from, to, pre, allPreResponses);
+                    const allAveragesPost = await getAllAverages(ids, from, to, post, allPostResponses);
+                    const resultAvgPre=getAllAveragesByProgram(allAveragesPre);
+                    const resultAvgPost=getAllAveragesByProgram(allAveragesPost);
+                    const resultGat = getGap(resultAvgPre,resultAvgPost);
+                    const getPreGlobalAverages=getAverage(resultAvgPre);
+                    const getPostGlobalAverages=getAverage(resultAvgPost);
+                    const getGlobalAverage = getAvgGap(getPreGlobalAverages,getPostGlobalAverages);
+                    preAvgValue.textContent = getPreGlobalAverages + "%";
+                    postAvgValue.textContent = getPostGlobalAverages + "%";
+                    changeValue.textContent = getGlobalAverage + "%";
+                    if(getGlobalAverage<0){
+                        changeValue.style.color = "red";
+                    }else{
+                        changeValue.style.color = "green";
+                    }
+                    analisisTable(labels,resultAvgPre,resultAvgPost,resultGat);
+                    
             }
+
         }catch(err){
             console.error("Fetch error:", err);
         }
     });
 
 });
+//?calculate the complete Avergages of each program
+function getAllAveragesByProgram(programAvg){
+    const result = [];
+    for(let i = 0; i < programAvg.length; i++){
+        let sum = 0;
+        let count = 0;
+        
+        if (!Array.isArray(programAvg[i]) || programAvg[i].length === 0) {
+            result[i] = 0;
+            continue;
+        }
 
 
-async function processAllProgramsResponses(programIds, from, to, surveyType, allResponses) {
-    try {
-        // Validación de parámetros
-        if (!Array.isArray(programIds)) throw new Error('programIds debe ser un array');
-        if (!Array.isArray(allResponses)) throw new Error('allResponses debe ser un array de arrays');
+        const flatValues = programAvg[i].flat();
         
-        // Asegurar que ambos arrays tengan la misma longitud
-        const length = Math.min(programIds.length, allResponses.length);
-        
-        // Procesar todos los programas
-        const results = [];
-        
-        for (let i = 0; i < length; i++) {
-            const programId = programIds[i];
-            const responseGroup = allResponses[i];
-            
-            // Validar el grupo actual
-            if (!programId || !Array.isArray(responseGroup)) {
-                console.warn(`Datos inválidos en índice ${i}`);
-                results.push([0]);
-                continue;
+        for(let j = 0; j < flatValues.length; j++){
+            const value = Number(flatValues[j]);
+    
+            if (!isNaN(value)) {
+                sum += value;
+                count++;
             }
-            
-            // Procesar cada respuesta del grupo actual
-            const groupResults = [];
-            
-            for (const responseId of responseGroup) {
-                try {
-                    const response = await getResults(programId, from, to, surveyType, responseId);
-                    // Extraer el primer valor de grade o usar 0 como fallback
-                    const grade = response?.[0]?.grade ?? 0;
-                    groupResults.push(grade);
-                } catch (error) {
-                    console.error(`Error procesando programa ${programId}, respuesta ${responseId}:`, error);
-                    groupResults.push(0);
-                }
-            }
-            
-            results.push(groupResults.length > 0 ? groupResults : [0]);
         }
         
-        return results;
+    
+        result[i] = count > 0 ? Number((sum / count).toFixed(2)) : 0;
         
-    } catch (error) {
-        console.error('Error en processAllProgramsResponses:', error);
-        // Devolver estructura consistente en caso de error
-        return allResponses.map(() => [0]);
+        console.log(`Program ${i}: sum=${sum}, count=${count}, avg=${result[i]}`);
     }
+    
+
+    return result;
+}
+
+//? build the array needed when a specific program has been chosen
+function buildArrayIdsNulls(ids, indexProgramId, programId){
+    const toSend = [];
+    for(let i = 0; i < ids.length; i++) {
+        if(i === indexProgramId) {
+            toSend[i] = programId;
+        } else {
+            toSend[i] = 0;
+        }
+    }
+    return toSend;
+}
+//? get all averages when of all programs availables
+async function getAllAverages(programId, from, to, type, allPreResponses) {
+
+    if (!Array.isArray(programId) || !Array.isArray(allPreResponses)) {
+        return [];
+    }
+
+    const maxLength = Math.max(programId.length, allPreResponses.length);
+    
+    const normalizedProgramIds = Array(maxLength).fill(0).map((_, i) => programId[i] || 0);
+    const normalizedResponses = Array(maxLength).fill(0).map((_, i) => allPreResponses[i] || []);
+
+    const allAverages = [];
+
+    for (let i = 0; i < maxLength; i++) {
+        const currentProgramId = normalizedProgramIds[i];
+        const currentResponses = normalizedResponses[i];
+
+        if (!currentProgramId || !currentResponses || currentResponses.length === 0) {
+            allAverages.push([0]);
+            continue;
+        }
+
+        const programResults = [];
+        
+        for (const responseId of currentResponses) {
+            try {
+                const results = await getResults(
+                    currentProgramId, 
+                    from, 
+                    to, 
+                    type, 
+                    responseId
+                );
+                
+        
+                if (results && results.length > 0) {
+                    programResults.push(...results);
+                } else {
+                    programResults.push(0);
+                }
+            } catch (error) {
+                console.error(`Error obteniendo resultados para programa ${currentProgramId}, respuesta ${responseId}:`, error);
+                programResults.push(0); // Agregar 0 en caso de error
+            }
+        }
+
+
+        allAverages.push(programResults.length > 0 ? programResults : [0]);
+    }
+
+    return allAverages;
 }
 
 //? Get all programs pre responses
@@ -377,7 +433,6 @@ async function getAllProgramsPreResponses(allProgramId,from,to){
     const pre = 1;
     
     for(let i = 0; i < allProgramId.length; i++){
-        // Obtener respuestas pre
         const preResponses = await getResponses(allProgramId[i], pre, from, to);
         if (preResponses && preResponses.length > 0) {
             allPrograms.push(preResponses); 
@@ -387,15 +442,12 @@ async function getAllProgramsPreResponses(allProgramId,from,to){
     console.log("Program responses:", allPrograms);
     return allPrograms;
 }
-
-
 //? Get all programs post responses
 async function getAllProgramsPostResponses(allProgramId,from,to){
     const allPrograms = []; 
     const post = 2;
     
     for(let i = 0; i < allProgramId.length; i++){
-        // Obtener respuestas pre
         const preResponses = await getResponses(allProgramId[i], post, from, to);
         if (preResponses && preResponses.length > 0) {
             allPrograms.push(preResponses); 
@@ -438,14 +490,14 @@ function analisisTable(labels, preValues = [], postValues = [], gapValues = []) 
         console.error(`No se encontró el canvas con ID`);
         return;
     }
-// Obtener la instancia del gráfico existente
+// Obtener la instancia del grafico existente
     const chartInstance = Chart.getChart(canvas);
     
-    // Destruir el gráfico anterior si existe
+    // Destruir el grfico anterior si existe
     if (chartInstance) {
         chartInstance.destroy();
     }
-    // Configuración de la gráfica
+    // Configuracio de la grafica
     const config = {
         type: 'bar',
         data: {
@@ -501,7 +553,7 @@ function analisisTable(labels, preValues = [], postValues = [], gapValues = []) 
                         drawOnChartArea: true,
                         drawTicks: false,
                         color: function(context) {
-                            // Dibujar línea divisoria solo entre diferentes grupos
+                        
                             return context.index === labels.length - 1 ? 'transparent' : 'rgba(0, 0, 0, 0.1)';
                         },
                         lineWidth: 1,
