@@ -51,16 +51,13 @@ let quarterlyRange=['Select quarterly range','January - March','April - June','J
 let semiannualRange=['Select semiannual range','January - June','July - December'];
  const selectElement = document.getElementById('selectRangeTypeIdComparison');
     selectElement.addEventListener('change', async function () {
-        console.log("event3");
     const selectedValue = selectElement.selectedIndex;
-    console.log("select",selectedValue);
     
     if(selectedValue== '0'){
         const rangeOption = document.getElementById('selectDateRangeIdComparison');
         rangeOption.innerHTML = ''; 
     }
     if(selectedValue=='1'){
-        console.log("Semiannual");
         const rangeOption = document.getElementById('selectDateRangeIdComparison');
         rangeOption.innerHTML = ''; 
         semiannualRange.forEach(range => {
@@ -77,7 +74,6 @@ let semiannualRange=['Select semiannual range','January - June','July - December
         rangeOption.innerHTML = ''; 
         quarterlyRange.forEach(range => {
             const option = document.createElement('option');
-            console.log("Range",range);
             option.value = range;
             option.textContent = range;
             rangeOption.appendChild(option);
@@ -186,7 +182,6 @@ function getDateRangeSelectedComparison(){
             } else if (valorType === 'opcion3') {
                 return 3;
             } else {
-                console.warn("No se seleccionó un tipo válido");
                 return; 
             }
 
@@ -213,7 +208,6 @@ function getGap(preValues, postValues){
         
         gap.push(difference);
     }
-    console.log("GAP values:", gap);
     return gap;
 }
 function getAverage(results) {
@@ -227,7 +221,6 @@ function getAverage(results) {
         });
         
         const promedio = Number((sum / results.length).toFixed(2));
-        console.log("Average calculated:", promedio);
         return promedio;
 }
 
@@ -266,11 +259,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const from = completeDateSelected[0];
         const to = completeDateSelected[1];
 
-        try{
-            if(TypeIndex===0){
-
-            }
-            else if(programIndex!=0 && TypeIndex>0){
+       
+            if(TypeIndex!=0){
+                showLoadingModal();
+            
+            if(programIndex!=0){
+                
                 const indexProgramId = programIndex-1;
                 const programId = ids[indexProgramId];
                 const preResponses_id = await getResponses(programId,pre,from, to);
@@ -297,7 +291,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 const postToSend = buildArrayIdsNulls(ids, indexProgramId, averagePost);
                 const avgToSend = buildArrayIdsNulls(ids, indexProgramId, avgGap);
                 analisisTable(labels,preToSend,postToSend,avgToSend);
-                }else if(programIndex===0 && TypeIndex>0){
+                
+                
+                }else if(programIndex===0){
 
                     const allPreResponses = await getAllProgramsPreResponses(ids, from, to);
                     const allPostResponses = await getAllProgramsPostResponses(ids, from, to); // Corregido: llamar a PostResponses en lugar de PreResponses
@@ -317,12 +313,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     }else{
                         changeValue.style.color = "green";
                     }
-                    analisisTable(labels,resultAvgPre,resultAvgPost,resultGat);
-                    
-            }
+                    analisisTable(labels,resultAvgPre,resultAvgPost,resultGat);     
 
-        }catch(err){
-            console.error("Fetch error:", err);
+            }
+            hideLoadingModal();
+        }else{
+            //!Notificacion
+            showNotification("Please select a year", "error");
         }
     });
 
@@ -354,7 +351,7 @@ function getAllAveragesByProgram(programAvg){
     
         result[i] = count > 0 ? Number((sum / count).toFixed(2)) : 0;
         
-        console.log(`Program ${i}: sum=${sum}, count=${count}, avg=${result[i]}`);
+
     }
     
 
@@ -415,7 +412,7 @@ async function getAllAverages(programId, from, to, type, allPreResponses) {
                     programResults.push(0);
                 }
             } catch (error) {
-                console.error(`Error obteniendo resultados para programa ${currentProgramId}, respuesta ${responseId}:`, error);
+                console.error(`Error getting data from ${currentProgramId}, and ${responseId}:`, error);
                 programResults.push(0); // Agregar 0 en caso de error
             }
         }
@@ -439,7 +436,6 @@ async function getAllProgramsPreResponses(allProgramId,from,to){
         }
     }
     
-    console.log("Program responses:", allPrograms);
     return allPrograms;
 }
 //? Get all programs post responses
@@ -454,7 +450,6 @@ async function getAllProgramsPostResponses(allProgramId,from,to){
         }
     }
     
-    console.log("Program responses:", allPrograms);
     return allPrograms;
 }
 async function loadComparisonTable() {
@@ -487,7 +482,7 @@ function analisisTable(labels, preValues = [], postValues = [], gapValues = []) 
     // Verificar que el canvas exista
     const canvas = document.getElementById('comparisonChart');
     if (!canvas) {
-        console.error(`No se encontró el canvas con ID`);
+        console.error(`Canvas Error`);
         return;
     }
 // Obtener la instancia del grafico existente
@@ -508,7 +503,7 @@ function analisisTable(labels, preValues = [], postValues = [], gapValues = []) 
                     backgroundColor: '#BB2626',
                     data: preValues,
                     hidden: !preValues || preValues.length === 0 || preValues.every(val => val === null || val === undefined),
-                    barPercentage: 0.50,
+                    barPercentage: 0.80,
                     categoryPercentage: 0.8
                 },
                 {
@@ -516,7 +511,7 @@ function analisisTable(labels, preValues = [], postValues = [], gapValues = []) 
                     backgroundColor: '#F4971D',
                     data: postValues,
                     hidden: !postValues || postValues.length === 0 || postValues.every(val => val === null || val === undefined),
-                    barPercentage: 0.50,
+                    barPercentage: 0.80,
                     categoryPercentage: 0.8
                 },
                 {
@@ -524,7 +519,7 @@ function analisisTable(labels, preValues = [], postValues = [], gapValues = []) 
                     backgroundColor: '#10b981',
                     data: gapValues,
                     hidden: !gapValues || gapValues.length === 0 || gapValues.every(val => val === null || val === undefined),
-                    barPercentage: 0.50,
+                    barPercentage: 0.80,
                     categoryPercentage: 0.8
                 }
             ]
@@ -609,7 +604,7 @@ async function getProgramNamesComparison(programTypeId) {
 
         throw new Error(data.message || 'Error en los datos');
     } catch (error) {
-        console.error("Error en getProgramNames:", error);
+        console.error("Error in getProgramNames:", error);
         throw error;
     }
 }
@@ -624,21 +619,14 @@ async function getProgramIdsComparison(programTypeId) {
             return ids;
         }
 
-        throw new Error(data.message || 'Error en los datos');
+        throw new Error(data.message || 'Error with data');
     } catch (error) {
-        console.error("Error en getProgramIds:", error);
+        console.error("Error in getProgramIds:", error);
         throw error;
     }
 }
 //?-----get the PRE results of every survey multi and true/false
 async function getResults(program_id, from, to, surveyType, responses_id) {
-    console.log('getResults called with:', {
-        program_id,
-        from,
-        to,
-        surveyType,
-        responses_id
-    });
 
     const url = new URL('/SDGKU-Dashboard/src/models/get_comparison_chart_data.php', window.location.origin);
     url.searchParams.append('action', 'getResults');
@@ -664,7 +652,7 @@ async function getResults(program_id, from, to, surveyType, responses_id) {
             }
         }
 
-        throw new Error(data.message || 'Error en los datos recibidos');
+        throw new Error(data.message || 'Error with data');
     } catch (error) {
         console.error('Error en getsurveyResults:', error);
         return [];
@@ -694,9 +682,25 @@ async function getResponses(program_id, surveyType,from, to) {
             }
         }
 
-        throw new Error(data.message || 'Error en los datos recibidos');
+        throw new Error(data.message || 'Error in data');
     } catch (error) {
-        console.error('Error en getsurveyResults:', error);
+        console.error('Error in getsurveyResults:', error);
         return [];
     }
+}
+
+//? Modal Logic
+const loadingModal = document.getElementById('loading-modal');
+const closeModalBtn = document.querySelector('#loading-modal .close-modal');
+
+function showLoadingModal() {
+    if (loadingModal) loadingModal.style.display = 'flex';
+}
+
+function hideLoadingModal() {
+    if (loadingModal) loadingModal.style.display = 'none';
+}
+
+if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', hideLoadingModal);
 }

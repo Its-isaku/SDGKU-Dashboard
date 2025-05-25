@@ -162,7 +162,7 @@
 /* ? Stat Cards */
 .comparison-layout {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: flex-start;
   margin-top: 20px;
   gap: 2rem;
@@ -170,8 +170,18 @@
   box-sizing: border-box;
   padding-right: 4rem;
 }
-
-
+h3.analytics-program-badge{
+  font-size: 1.3rem;
+  color: var(--gray-500)!important;
+  
+}
+h2.program-title{
+  font-size: 1.5rem;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: var(--secondary-dominant) !important;
+  margin-left: 10px;
+}
 
 .cards-container {
   display: flex;

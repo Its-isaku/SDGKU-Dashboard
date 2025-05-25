@@ -1,10 +1,15 @@
 .reportCardsContainer {
-    display: grid;
-    width: 100%;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    padding: 10px;
-    padding-bottom: 100px;
+    display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
+    justify-content: flex-start;
+    align-items: stretch;
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
+    padding: 10px 10px 100px;
+    margin: 0px;
+    font-family: Inter, sans-serif;
+    box-sizing: border-box;
 }
 
 .reportCard {
@@ -12,6 +17,7 @@
     flex-direction: column;
     height: 300px!important;
     border: 1px solid #ddd;
+    width: 400px;
     padding: 1rem;
     margin-bottom: 1 rem;
     border-radius: var(--border-radius);
