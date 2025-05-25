@@ -336,26 +336,26 @@ document.addEventListener('DOMContentLoaded', function() {
        
     });
     
-document.addEventListener('DOMContentLoaded', function () {
-    const selectElement = document.getElementById('programTypeId');
-    selectElement.addEventListener('change', async function () {
-    const selectedValue = selectElement.selectedIndex;
-    const dbLabels = await getProgramNames(selectedValue);
-    const programOption = document.getElementById('selectProgramId');
-        programOption.innerHTML = '';
-            const allOption = document.createElement('option');
-            allOption.value = 'all'; 
-            allOption.textContent = 'All Programs';
-            programOption.appendChild(allOption);
-            dbLabels.forEach(programName => {
-            const option = document.createElement('option');
-            option.value = programName;
-            option.textContent = programName;
-            programOption.appendChild(option);
-        });
+// document.addEventListener('DOMContentLoaded', function () {
+//     const selectElement = document.getElementById('programTypeId');
+//     selectElement.addEventListener('change', async function () {
+//     const selectedValue = selectElement.selectedIndex;
+//     const dbLabels = await getProgramNames(selectedValue);
+//     const programOption = document.getElementById('selectProgramId');
+//         programOption.innerHTML = '';
+//             const allOption = document.createElement('option');
+//             allOption.value = 'all'; 
+//             allOption.textContent = 'All Programs';
+//             programOption.appendChild(allOption);
+//             dbLabels.forEach(programName => {
+//             const option = document.createElement('option');
+//             option.value = programName;
+//             option.textContent = programName;
+//             programOption.appendChild(option);
+//         });       
         
-    });
-});       
+//     });
+// });
 
 let quarterlyRange=['Select quarterly range','January - March','April - June','July - September','October - December'];
 let semiannualRange=['Select semiannual range','January - June','July - December'];
@@ -372,7 +372,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if(selectedValue=='1'){
         const rangeOption = document.getElementById('selectDateRangeId');
         rangeOption.innerHTML = ''; 
-        quarterlyRange.forEach(range => {
+        semiannualRange.forEach(range => {
             const option = document.createElement('option');
             option.value = range;
             option.textContent = range;
@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if(selectedValue=='2'){
         const rangeOption = document.getElementById('selectDateRangeId');
         rangeOption.innerHTML = ''; 
-        semiannualRange.forEach(range => {
+        quarterlyRange.forEach(range => {
             const option = document.createElement('option');
             option.value = range;
             option.textContent = range;
@@ -423,11 +423,12 @@ function getDateRangeSelected(){
         const valorYear = selectYear.value;
         const completeDateSelected =[];
         const semiOrQuarterly = SelectRangeSemi.selectedIndex;
+        console.log("YEAR: ", valorYear);
         let startDateSelect;
         let endDateSelect;
         let startDateMonths;
         let endDateMonths;
-        if(semiOrQuarterly === 0 || semiOrQuarterly === 1 ){
+        if(semiOrQuarterly === 0 ){
             startDateMonths = '-01-01';
             endDateMonths = '-12-31';
             startDateSelect = `${valorYear}${startDateMonths}`;
@@ -436,44 +437,52 @@ function getDateRangeSelected(){
             completeDateSelected[1] = endDateSelect;
             return  completeDateSelected;
         }else if(semiOrQuarterly===2){
-            if(index === 0){
-                startDateMonths = '-01-01';
-                endDateMonths = '-12-31';
-            }else if (index === 1) {
-                startDateMonths = '-01-01';
+                switch (index) {
+                    case 1:
+                    startDateMonths = '-01-01';
                 endDateMonths = '-04-01';
-            } else if (index === 2) {
-                startDateMonths = '-04-01';
+                    break;
+                    case 2:
+                    startDateMonths = '-04-01';
                 endDateMonths = '-07-01';
-            } else if (index === 3) {
-                startDateMonths = '-07-01';
+                    break;
+                    case 3:
+                    startDateMonths = '-07-01';
                 endDateMonths = '-010-01';
-            } else if (index === 4) {
-                startDateMonths = '-10-01';
+                    break;
+                    case 4:
+                    startDateMonths = '-10-01';
                 endDateMonths = '-12-31';
-            }
+                    break;
+                default:
+                    startDateMonths = '-01-01';
+                endDateMonths = '-12-31';
+                }
                 startDateSelect = `${valorYear}${startDateMonths}`;
                 endDateSelect = `${valorYear}${endDateMonths}`;
                 completeDateSelected[0] = startDateSelect;
                 completeDateSelected[1] = endDateSelect;
                 return  completeDateSelected;
-        }else if(semiOrQuarterly === 3){
-            if(index === 0){
-                startDateMonths = '-01-01';
-                endDateMonths = '-12-31';
-            }else if(index === 1){
-                startDateMonths = '-01-01';
+        }else if(semiOrQuarterly === 1){
+            switch (index) {
+                    case 1:
+                    startDateMonths = '-01-01';
                 endDateMonths = '-07-01';
-            }else if(index === 2){
-                startDateMonths = '-07-01';
+                    break;
+                    case 2:
+                    startDateMonths = '-07-01';
                 endDateMonths = '-12-31';
-        }
+                    break;
+                default:
+                    startDateMonths = '-01-01';
+                endDateMonths = '-12-31';
+                }
             startDateSelect = `${valorYear}${startDateMonths}`;
             endDateSelect = `${valorYear}${endDateMonths}`;
             completeDateSelected[0] = startDateSelect;
             completeDateSelected[1] = endDateSelect;
             return  completeDateSelected;
-            }    
+            }   
     }
 
     function confirmSelection(){
@@ -497,7 +506,6 @@ function getDateRangeSelected(){
 document.addEventListener('DOMContentLoaded', function () {
     const boton = document.getElementById('submitFilterbtn');
     boton.addEventListener('click', async function () {
-        console.log('¡Botón clickeado!');
         const selectProgram = document.getElementById('selectProgramId');
         const selectType = document.getElementById('programTypeId');
         const selectYear = document.getElementById('selectYearRangeId');
@@ -509,26 +517,18 @@ document.addEventListener('DOMContentLoaded', function () {
             const programTypeId = confirmSelection();
             const completeDateSelected = getDateRangeSelected();
             const ids = await getProgramIds(programTypeId);
-            console.log("dbValues: ", ids);
             const dbLabels = await getProgramNames(programTypeId);
-            console.log("dbLabels: ", dbLabels);
-            console.log("PROGRAMA date",completeDateSelected);
             const from = completeDateSelected[0];
             const to = completeDateSelected[1];
             const dbValuesRaw=  await Promise.all(
                 ids.map(id => getByProgramType(id, completeDateSelected[0], completeDateSelected[1]))
             );
-
             const id = programIndex-1;
             const program = ids[id];
             const programData = await getProgramData(program,from,to);
-            console.log("PROGRAMS: ",dbValuesRaw);
-
             renderProgramTables(programData);
             renderResponseAnalysisChart(dbLabels, dbValuesRaw);
-            
         }else{
-
             //!Notificacion
             showNotification("Please select a year", "error");
         }
@@ -559,14 +559,16 @@ function renderResponseAnalysisChart(dbLabels, dbValues) {
     //*  Data for the chart
     const data = {
         labels: labels,
-        datasets: [{
+        datasets: [
+            {
             label: 'Average',
             data: values,
             backgroundColor: gradient,
             borderColor: '#660000',
             borderWidth: 1,
             borderRadius: 5,
-        }]
+        }
+    ]
     };
 
     //* Chart configuration
@@ -591,7 +593,7 @@ function renderResponseAnalysisChart(dbLabels, dbValues) {
                     min: 0.0,
                     max: 100.0,
                     ticks: {
-                        stepSize: 0.1
+                        stepSize: 0
                     }
                 },
                 x: { //* Adjust the x-axis scale */
