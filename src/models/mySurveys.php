@@ -238,6 +238,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         FROM questions WHERE survey_id = ?";
             $stmtQuestions = $pdo->prepare($sqlQuestions);
             $stmtQuestions->execute([$newSurveyId, $id]);
+            
+            //* Obtener IDs de preguntas originales y nuevas
+            $sqlGetOldQuestions = "SELECT questions_id, question_type_id FROM questions WHERE survey_id = ? ORDER BY display_order";
+            $stmtOldQ = $pdo->prepare($sqlGetOldQuestions);
+            $stmtOldQ->execute([$id]);
+            $oldQuestions = $stmtOldQ->fetchAll(PDO::FETCH_ASSOC);
+
+            $sqlGetNewQuestions = "SELECT questions_id, question_type_id FROM questions WHERE survey_id = ? ORDER BY display_order";
+            $stmtNewQ = $pdo->prepare($sqlGetNewQuestions);
+            $stmtNewQ->execute([$newSurveyId]);
+            $newQuestions = $stmtNewQ->fetchAll(PDO::FETCH_ASSOC);
+
+            //* Mapear old->new question_id por orden
+            $questionIdMap = [];
+            foreach ($oldQuestions as $idx => $oq) {
+                if (isset($newQuestions[$idx])) {
+                    $questionIdMap[$oq['questions_id']] = $newQuestions[$idx]['questions_id'];
+                }
+            }
+
+            //* Duplicar opciones Multiple Choice
+            foreach ($questionIdMap as $oldQid => $newQid) {
+                //* Multiple Choice
+                $sqlGetOptions = "SELECT option_text, correct_answer, display_order FROM multiple_options WHERE id_question = ?";
+                $stmtOpt = $pdo->prepare($sqlGetOptions);
+                $stmtOpt->execute([$oldQid]);
+                $options = $stmtOpt->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($options as $opt) {
+                    $sqlInsertOpt = "INSERT INTO multiple_options (id_question, option_text, correct_answer, display_order) VALUES (?, ?, ?, ?)";
+                    $stmtInsertOpt = $pdo->prepare($sqlInsertOpt);
+                    $stmtInsertOpt->execute([$newQid, $opt['option_text'], $opt['correct_answer'], $opt['display_order']]);
+                }
+                //* True/False
+                $sqlGetTF = "SELECT true_false_text, type, correct_answer FROM true_false_options WHERE question_id = ?";
+                $stmtTF = $pdo->prepare($sqlGetTF);
+                $stmtTF->execute([$oldQid]);
+                $tfOptions = $stmtTF->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($tfOptions as $tf) {
+                    $sqlInsertTF = "INSERT INTO true_false_options (question_id, true_false_text, type, correct_answer) VALUES (?, ?, ?, ?)";
+                    $stmtInsertTF = $pdo->prepare($sqlInsertTF);
+                    $stmtInsertTF->execute([$newQid, $tf['true_false_text'], $tf['type'], $tf['correct_answer']]);
+                }
+            }
 
             $pdo->commit();
             http_response_code(200);

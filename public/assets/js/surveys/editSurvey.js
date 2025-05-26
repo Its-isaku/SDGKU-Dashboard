@@ -220,7 +220,6 @@ function createQuestionForm(id) {
                     <option value="" disabled selected hidden>Select type</option>
                     <option value="1">Multiple Choice</option>
                     <option value="2">Linkert Scale 1-5</option>
-                    <option value="3">Linkert Scale 1-3</option>
                     <option value="4">Open</option>
                     <option value="5">True/False</option>
                 </select>
@@ -269,17 +268,6 @@ function createQuestionForm(id) {
             </div>
         </div>
 
-        <!--* Likert scale 1-3 section -->
-        <div class="QuestionGrade questionOptions" id="questionGradeSection3${id}" style="display: none;">
-            <h4>Grade</h4>
-
-            <div class="gradeContainer">
-                <label><input type="radio" name="gradeOption${id}" value="1">Disagree</label>
-                <label><input type="radio" name="gradeOption${id}" value="2">Neutral</label>
-                <label><input type="radio" name="gradeOption${id}" value="3">Agree</label>
-            </div>
-        </div>
-
         <!--* Open text section -->
         <div class="QuestionOpen questionOptions" id="questionOpenSection${id}" style="display: none;">
             <h4>Open text</h4>
@@ -312,7 +300,6 @@ function createQuestionForm(id) {
         const type = select.value;
         if (type === '1') container.querySelector(`#questionMultipleSection${id}`).style.display = 'block';
         if (type === '2') container.querySelector(`#questionGradeSection5${id}`).style.display = 'block';
-        if (type === '3') container.querySelector(`#questionGradeSection3${id}`).style.display = 'block';
         if (type === '4') container.querySelector(`#questionOpenSection${id}`).style.display = 'block';
         if (type === '5') container.querySelector(`#questionTrueFalseSection${id}`).style.display = 'block';
     });
@@ -430,12 +417,6 @@ function updatePreview() {
         "Strongly Agree"
     ];
 
-    const Likert3 = [
-        "Disagree",
-        "Neutral",
-        "Agree"
-    ];
-
     surveyData.questions.forEach((q, idx) => {
         //* Render each question in the preview
         const qEl = document.createElement('div');
@@ -462,18 +443,6 @@ function updatePreview() {
             const grade = document.createElement('div');
             grade.className = 'previewGrade5';
             Likert5.forEach((labelText, i) => {
-                const label = document.createElement('label');
-                label.innerHTML = `<input type="radio" name="previewQ${idx}" value="${i + 1}"> ${labelText}`;
-                grade.appendChild(label);
-            });
-            qEl.appendChild(grade);
-        }
-
-        if (q.type === '3') {
-            //* Likert scale 1-3 preview
-            const grade = document.createElement('div');
-            grade.className = 'previewGrade3';
-            Likert3.forEach((labelText, i) => {
                 const label = document.createElement('label');
                 label.innerHTML = `<input type="radio" name="previewQ${idx}" value="${i + 1}"> ${labelText}`;
                 grade.appendChild(label);
@@ -536,9 +505,6 @@ document.getElementById('btnPreviewSurvey').addEventListener('click', () => {
             });
         } else if (type === '2') {
             //* Likert 1-5
-            //* No options needed, just type
-        } else if (type === '3') {
-            //* Likert 1-3
             //* No options needed, just type
         } else if (type === '4') {
             //* Open text
@@ -641,18 +607,8 @@ btnEditSurvey.addEventListener('click', function() {
             const tf = form.querySelector('.QuestionTrueFalse input[type="radio"]:checked');
             if (tf) question.correctAnswer = Number(tf.value) === 1 ? 1 : 0;
             questions.push(question);
-        } else if (type === '2' || type === '3') { //* Likert
+        } else if (type === '2' || type === '4') { //* Likert / Open
             questions.push(question);
-        } else if (type === '4') { //* Open-ended
-            //* Collect the open-ended placeholder/response (if any)
-            const openTextarea = form.querySelector('.QuestionOpen textarea');
-            if (openTextarea) {
-                question.open_option_text = openTextarea.value.trim();
-            } else {
-                question.open_option_text = '';
-            }
-            questions.push(question);
-            console.log(questionToDelete);
         }
     });
 
