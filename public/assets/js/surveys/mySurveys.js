@@ -1,12 +1,12 @@
 //! <----------------------- panel change logic -----------------------> 
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     //? Selección de botones y paneles
     const btnActive = document.getElementById('activeBtnId');
     const btnInactive = document.getElementById('inactiveBtnId');
     const panel1 = document.getElementById('panel1');
     const panel2 = document.getElementById('panel2');
-    
+
     //? Función para cambiar de pestaña
     function switchTab(isActive) {
         if (isActive) {
@@ -30,12 +30,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //? Listeners
     if (btnActive && btnInactive) {
-        btnActive.addEventListener('click', function() {
+        btnActive.addEventListener('click', function () {
             btnActive.classList.add('selectedOption');
             btnInactive.classList.remove('selectedOption');
             switchTab(true);
         });
-        btnInactive.addEventListener('click', function() {
+        btnInactive.addEventListener('click', function () {
             switchTab(false);
         });
     }
@@ -47,26 +47,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //! <----------------------- DELETE Survey(Active) -----------------------> 
 
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (e.target.classList && e.target.classList.contains('delete-survey')) {
             e.preventDefault();
             e.stopPropagation();
             const id = e.target.getAttribute('data-id');
             if (typeof openDeleteSurveyModal === 'function') {
                 openDeleteSurveyModal(id);
-            } 
+            }
         }
     });
 
     if (confirmDeleteBtn) {
-        confirmDeleteBtn.addEventListener('click', function() {
+        confirmDeleteBtn.addEventListener('click', function () {
             const id = document.getElementById('delete-survey').value;
             const activeList = document.getElementById('activeListId');
             const surveyItem = Array.from(activeList.getElementsByClassName('survey-item')).find(item => {
                 return item.querySelector('.dropdown-delete.delete-survey[data-id="' + id + '"]');
             });
             if (surveyItem) {
-                animateSurveyItemLeave(surveyItem, function() {
+                animateSurveyItemLeave(surveyItem, function () {
                     handleSurveyAction(
                         '/SDGKU-Dashboard/src/models/mySurveys.php',
                         { action: 'deleteSurvey', id: id },
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     //! <----------------------- DUPLICATE Survey-----------------------> 
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (e.target.classList.contains('duplicate-survey')) {
             e.preventDefault();
             e.stopPropagation();
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     if (confirmDuplicateBtn) {
-        confirmDuplicateBtn.addEventListener('click', function() {
+        confirmDuplicateBtn.addEventListener('click', function () {
             const id = document.getElementById('duplicate-survey').value;
             handleSurveyAction(
                 '/SDGKU-Dashboard/src/models/mySurveys.php',
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //! <----------------------- DEACTIVATE Survey -----------------------> 
 
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (e.target.classList.contains('deactivate-survey')) {
             e.preventDefault();
             e.stopPropagation();
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     if (confirmDeactivateBtn) {
-        confirmDeactivateBtn.addEventListener('click', function() {
+        confirmDeactivateBtn.addEventListener('click', function () {
             const id = document.getElementById('deactivate-survey').value;
             handleSurveyAction(
                 '/SDGKU-Dashboard/src/models/mySurveys.php',
@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //! <----------------------- EDIT Survey -----------------------> 
 
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (e.target.classList.contains('edit-survey')) {
             e.preventDefault();
             e.stopPropagation();
@@ -173,10 +173,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    const confirmEditBtn = document.getElementById('confirm-edit'); 
+    const confirmEditBtn = document.getElementById('confirm-edit');
 
     if (confirmEditBtn) {
-        confirmEditBtn.addEventListener('click', function() {
+        confirmEditBtn.addEventListener('click', function () {
             const id = document.getElementById('edit-survey').value;
             if (id) {
                 window.location.href = `editSurvey.html?id=${id}`;
@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //! <----------------------- ACTIVATE encuesta -----------------------> 
 
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (e.target.classList.contains('activate-survey')) {
             e.preventDefault();
             e.stopPropagation();
@@ -195,11 +195,11 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    const confirmActivateSurveyBtn = document.getElementById('confirm-activate-survey'); 
+    const confirmActivateSurveyBtn = document.getElementById('confirm-activate-survey');
     const confirmAccessLinkBtn = document.getElementById('confirm-activate');
 
     if (confirmActivateSurveyBtn) {
-        confirmActivateSurveyBtn.addEventListener('click', function() {
+        confirmActivateSurveyBtn.addEventListener('click', function () {
             const id = document.getElementById('activate-survey').value;
             handleSurveyAction(
                 '/SDGKU-Dashboard/src/models/mySurveys.php',
@@ -216,11 +216,11 @@ document.addEventListener("DOMContentLoaded", function() {
             );
         });
     }
-    
-    
+
+
     //! <----------------------- COPY ACCESS LINK -----------------------> 
-    
-    document.addEventListener('click', function(e) {
+
+    document.addEventListener('click', function (e) {
         if (e.target.classList.contains('access-link-survey')) {
             e.preventDefault();
             e.stopPropagation();
@@ -231,8 +231,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //* Add a listener for the Copy button in the access link modal
     if (confirmAccessLinkBtn && accessLinkSurveyModal) {
-        confirmAccessLinkBtn.addEventListener('click', function() {
+        confirmAccessLinkBtn.addEventListener('click', function () {
             const linkInput = document.getElementById('access-link-input');
+            const expirationInput = document.getElementById('expirationDate');
+
+            if (!expirationInput.value) {
+                showNotification('Please set an expiration date before copying the link.', 'error');
+                return;
+            }
+
             if (linkInput) {
                 linkInput.select();
                 document.execCommand('copy');
@@ -269,14 +276,14 @@ function debounce(func, timeout = 300) {
         clearTimeout(timer);
         timer = setTimeout(() => { func.apply(this, args); }, timeout);
     };
-} 
+}
 
 //! <----------------------- Active Surveys render -----------------------> 
 
 //* Animate survey item entering
 function animateSurveyItemEnter(element) {
     element.classList.add('enter');
-    void element.offsetWidth; 
+    void element.offsetWidth;
     element.classList.add('enter-active');
     element.addEventListener('transitionend', function handler() {
         element.classList.remove('enter', 'enter-active');
@@ -287,7 +294,7 @@ function animateSurveyItemEnter(element) {
 //* Animate survey item leaving
 function animateSurveyItemLeave(element, callback) {
     element.classList.add('leave');
-    void element.offsetWidth; 
+    void element.offsetWidth;
     element.classList.add('leave-active');
     element.addEventListener('transitionend', function handler() {
         element.removeEventListener('transitionend', handler);
@@ -328,8 +335,8 @@ function renderActiveSurveysAfterLeave(searchTerm = '') {
             activeSurveys.forEach((survey) => {
                 const activeSurveyItem = document.createElement("div");
                 activeSurveyItem.className = "survey-item";
-                if(survey.responses>0){
-                activeSurveyItem.innerHTML = /* HTML */` 
+                if (survey.responses > 0) {
+                    activeSurveyItem.innerHTML = /* HTML */` 
                     <div class = "principalInformation">
                         <div class = "activeTitleStatus">
                                 <div class = "surveytitle">
@@ -363,7 +370,7 @@ function renderActiveSurveysAfterLeave(searchTerm = '') {
                     </div>
                 `;
                 }
-                else{
+                else {
                     activeSurveyItem.innerHTML = /* HTML */` 
                     <div class = "principalInformation">
                         <div class = "activeTitleStatus">
@@ -436,11 +443,11 @@ function renderInactiveSurveysAfterLeave(searchTerm = '') {
         .then(response => response.json())
         .then(data => {
             const inactiveSurveys = data.filter(survey => survey.status === "inactive");
-            inactiveSurveys.forEach((survey,index) => {
+            inactiveSurveys.forEach((survey, index) => {
                 const surveyItem = document.createElement("div");
                 surveyItem.className = "surveyInactive-item survey-item"; // Add both classes for animation
-                if(survey.responses>0){
-                surveyItem.innerHTML =  /* HTML */` 
+                if (survey.responses > 0) {
+                    surveyItem.innerHTML =  /* HTML */` 
                 <div class = "principalInformationInactives">    
                     <div class = "inactiveTitleStatus"> 
                         <div class = "surveytitle">
@@ -466,8 +473,8 @@ function renderInactiveSurveysAfterLeave(searchTerm = '') {
                         <button class="delete-btn delete-inactive-survey" data-id="${survey.id}">Delete</button>
                     </div>
                 `;
-                }else{
-                surveyItem.innerHTML =     ` 
+                } else {
+                    surveyItem.innerHTML = ` 
                 <div class = "principalInformationInactives">    
                     <div class = "inactiveTitleStatus"> 
                         <div class = "surveytitle">
@@ -584,40 +591,40 @@ const duplicateSurveyBtn = document.getElementById('duplicateSurveyBtn');
 const editSurveyBtn = document.getElementById('editSurveyBtn');
 
 if (deleteSurveyBtn) {
-    deleteSurveyBtn.addEventListener('click', function(e) {
+    deleteSurveyBtn.addEventListener('click', function (e) {
         e.preventDefault();
         const surveyId = document.getElementById('delete-survey').value;
-        if (surveyId) {openDeleteSurveyModal(surveyId);}
+        if (surveyId) { openDeleteSurveyModal(surveyId); }
     });
 }
 if (deactivateSurveyBtn) {
-    deactivateSurveyBtn.addEventListener('click', function(e) {
+    deactivateSurveyBtn.addEventListener('click', function (e) {
         e.preventDefault();
         const surveyId = document.getElementById('duplicate-survey').value;
-        if (surveyId) { openDeactivateSurveyModal(surveyId);}
+        if (surveyId) { openDeactivateSurveyModal(surveyId); }
     });
 }
 if (activateSurveyBtn) {
-    activateSurveyBtn.addEventListener('click', function(e) {
+    activateSurveyBtn.addEventListener('click', function (e) {
         e.preventDefault();
         const surveyId = document.getElementById('active-survey').value;
-        if (surveyId) { openActivateModal(surveyId);}
+        if (surveyId) { openActivateModal(surveyId); }
     });
 }
 
 if (duplicateSurveyBtn) {
-    duplicateSurveyBtn.addEventListener('click', function(e) {
+    duplicateSurveyBtn.addEventListener('click', function (e) {
         e.preventDefault();
         const surveyId = document.getElementById('deactivate-survey').value;
-        if (surveyId) { openDuplicateModal(surveyId);}
+        if (surveyId) { openDuplicateModal(surveyId); }
     });
 }
 
 if (editSurveyBtn) {
-    editSurveyBtn.addEventListener('click', function(e) {
+    editSurveyBtn.addEventListener('click', function (e) {
         e.preventDefault();
         const surveyId = document.getElementById('edit-survey').value;
-        if (surveyId) { openEditSurveyModal(surveyId);}
+        if (surveyId) { openEditSurveyModal(surveyId); }
     });
 }
 
@@ -658,7 +665,7 @@ function openAccessLinkModal(surveyId) {
     fetch(`/SDGKU-Dashboard/src/models/mySurveys.php?action=getSurveyById&id=${surveyId}`)
         .then(response => response.json())
         .then(data => {
-            if (data && data.token && data.expires_at) {
+            if (data && data.token) {
                 const accessLink = `http://localhost/SDGKU-Dashboard/public/views/surveys/survey.html?token=${data.token}`;
                 const linkInput = document.getElementById('access-link-input');
                 const expirationInput = document.getElementById('expirationDate');
@@ -667,14 +674,22 @@ function openAccessLinkModal(surveyId) {
                     linkInput.value = accessLink;
                 }
 
-                const expiresAt = new Date(data.expires_at);
-                const formattedDate = expiresAt.toISOString().slice(0, 16);
-
                 if (expirationInput) {
-                    expirationInput.value = formattedDate;
+                    if (data.expires_at) {
+                        const expiresAt = new Date(data.expires_at);
+                        if (!isNaN(expiresAt.getTime())) {
+                            const formattedDate = expiresAt.toISOString().slice(0, 16);
+                            expirationInput.value = formattedDate;
+                            document.getElementById('expire-date-label').textContent = expiresAt.toLocaleString();
+                            expirationInput.dataset.original = formattedDate;
+                        }
+                    } else {
+                        expirationInput.value = '';
+                        document.getElementById('expire-date-label').textContent = 'No expiration set';
+                        expirationInput.dataset.original = '';
+                    }
                 }
-                
-                document.getElementById('expire-date-label').textContent = expiresAt.toLocaleString();
+
                 document.getElementById('access-link-survey').value = surveyId;
                 accessLinkSurveyModal.style.display = 'flex';
 
@@ -770,7 +785,7 @@ window.addEventListener('click', (e) => {
 
 //! <----------------------- Event delegation for survey action buttons ----------------------->
 
-document.addEventListener('click', function(e) {
+document.addEventListener('click', function (e) {
     //* Delete Survey modal
     if (e.target.classList.contains('delete-survey')) {
         e.preventDefault();
@@ -826,13 +841,13 @@ document.addEventListener('click', function(e) {
 
 //* Delete Inactive Survey
 if (confirmDeleteInactiveBtn) {
-    confirmDeleteInactiveBtn.addEventListener('click', function() {
+    confirmDeleteInactiveBtn.addEventListener('click', function () {
         const surveyId = document.getElementById('delete-inactive-survey').value;
         handleSurveyAction(
             '/SDGKU-Dashboard/src/models/mySurveys.php',
             { action: 'deleteSurvey', id: surveyId },
             () => {
-                showNotification('Survey deleted successfully');cera
+                showNotification('Survey deleted successfully'); cera
                 renderInactiveSurveys();
                 closeAllModals();
             },
@@ -854,21 +869,21 @@ function handleSurveyAction(url, body, onSuccess, onError) {
         },
         body: JSON.stringify(body)
     })
-    .then(async response => {
-        const contentType = response.headers.get('content-type');
-        let data;
-        if (contentType && contentType.includes('application/json')) {
-            data = await response.json();
-        } else {
-            data = await response.text();
-            throw new Error(data);
-        }
-        if (!response.ok) {
-            throw new Error(data.message || 'Error en la acción');
-        }
-        onSuccess(data);
-    })
-    .catch(error => {
-        onError(error);
-    });
+        .then(async response => {
+            const contentType = response.headers.get('content-type');
+            let data;
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json();
+            } else {
+                data = await response.text();
+                throw new Error(data);
+            }
+            if (!response.ok) {
+                throw new Error(data.message || 'Error en la acción');
+            }
+            onSuccess(data);
+        })
+        .catch(error => {
+            onError(error);
+        });
 }

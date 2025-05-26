@@ -18,6 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         case 'getCohorts':
             $controller->getCohorts($_GET['programId'] ?? null);
             break;
+        case 'getResponses':
+            $controller->getResponses($_GET['surveyId'] ?? null);
+            break;    
         case 'getQuestionOptions':
             $controller->getQuestionOptions($_GET['questionId'] ?? null, $_GET['type'] ?? null);
             break;
@@ -25,6 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             jsonError('Invalid action', 404);
     }
 }
+
+
+
 
 // Manejo de POST (envío de respuestas)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

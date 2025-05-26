@@ -199,24 +199,34 @@ function loadCohorts(programId) {
             defaultOption.disabled = true;
             defaultOption.selected = true;
 
-            if (data.success && data.cohorts.length > 0) {
-                data.cohorts.forEach(cohort => {
-                    console.log(cohort.program_type_id)
-                    if (cohort.program_type_id === 2 || cohort.program_type_id === 3) {
+        if (data.success && data.cohorts.length > 0) {
+                const activeCohorts = data.cohorts.filter(cohort => cohort.status === 'active');
+
+                if (activeCohorts.length > 0) {
+                    const programType = activeCohorts[0].program_type_id;
+
+                    if (programType === 2 || programType === 3) {
                         defaultOption.textContent = 'Select your section';
                         selectLabel.innerHTML = 'Your Section <span class="required">*</span>';
-                        select.appendChild(defaultOption);
-                    }
-                    else {
+                    } else {
                         defaultOption.textContent = 'Select your cohort';
                         selectLabel.innerHTML = 'Your Cohort <span class="required">*</span>';
-                        select.appendChild(defaultOption);
                     }
+
+                    select.appendChild(defaultOption);
+
+                    activeCohorts.forEach(cohort => {
+                        const option = document.createElement('option');
+                        option.value = cohort.cohort_id;
+                        option.textContent = cohort.cohort;
+                        select.appendChild(option);
+                    });
+                } else {
                     const option = document.createElement('option');
-                    option.value = cohort.cohort_id;
-                    option.textContent = cohort.cohort;
+                    option.textContent = 'No active cohorts available';
+                    option.disabled = true;
                     select.appendChild(option);
-                });
+                }
             } else {
                 const option = document.createElement('option');
                 option.textContent = 'No option available';
@@ -263,7 +273,7 @@ function renderSurvey(data) {
 }
 
 // Cambia a la sección de preguntas tras validar correo y cohort
-function handleNext() {
+function handleNext(token) {
     const email = document.getElementById('respondentEmail').value.trim();
     const cohort = document.getElementById('optSelect').value; // Cambiado de 'cohortSelect' a 'optSelect'
     const isValidEmail = email.endsWith('@sdgku.edu');
@@ -278,12 +288,44 @@ function handleNext() {
         return;
     }
 
-    surveyStartTime = Date.now(); // Marca tiempo de inicio
+    fetch(`/SDGKU-Dashboard/src/models/survey.php?action=getSurvey&token=${token}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                fetch(`/SDGKU-Dashboard/src/models/survey.php?action=getResponses&surveyId=${data.survey_id}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const alreadyResponded = data.responses.some(resp =>
+                                resp.respondent_email.toLowerCase() === email.toLowerCase()
+                            );
 
-    document.getElementById('infoSection').style.display = 'none';
-    document.getElementById('questionSection').style.display = 'block';
-    document.querySelector('.survey-meta').style.display = 'block';
-    showNotification('Your information has been validated.', 'success');
+                            if (alreadyResponded) {
+                                showNotification('You already answered the survey.', 'error');
+                                return;
+                            }
+
+                            // Si no ha respondido
+                            surveyStartTime = Date.now();
+                            document.getElementById('infoSection').style.display = 'none';
+                            document.getElementById('questionSection').style.display = 'block';
+                            document.querySelector('.survey-meta').style.display = 'block';
+                            showNotification('Your information has been validated.', 'success');
+                        } else {
+                            showNotification(data.message || 'Could not validate responses.', 'error');
+                            return;
+                        }
+                    })
+                    .catch(() => {
+                        showNotification('An error occurred validating the token.', 'error');
+                    });
+            } else {
+                showNotification(data.message || 'Invalid or expired survey token.', 'error');
+            }
+        })
+        .catch(() => {
+            showNotification('An error occurred validating the token.', 'error');
+        });
 }
 
 // Regresa a la sección de información
@@ -429,7 +471,7 @@ function init() {
     // Configura los botones
     document.getElementById('nextBtn').addEventListener('click', function (e) {
         e.preventDefault();
-        handleNext();
+        handleNext(token);
     });
 
     document.getElementById('backBtn').addEventListener('click', function () {

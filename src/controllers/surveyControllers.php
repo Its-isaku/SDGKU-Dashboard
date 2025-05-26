@@ -63,6 +63,7 @@ class SurveyController
         $sql = "SELECT 
                     c.cohort_id,
                     c.cohort AS cohort,
+                    c.status AS status,
                     p.program_type_id
                 FROM 
                     cohort c
@@ -77,6 +78,25 @@ class SurveyController
         $cohorts = $stmt->fetchAll();
 
         jsonSuccess(['cohorts' => $cohorts]);
+    }
+
+    public function getResponses($surveyId)
+    {
+        if (!$surveyId) jsonError('Program ID not provided');
+
+        $sql = "SELECT 
+                    r.respondent_email 
+                FROM 
+                    responses r
+                WHERE
+                    r.survey_id = ?"; 
+
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$surveyId]);
+        $responses = $stmt->fetchAll();
+
+        jsonSuccess(['responses' => $responses]);
     }
 
     // Devuelve las opciones disponibles para una pregunta
