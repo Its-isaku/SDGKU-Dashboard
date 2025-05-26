@@ -663,12 +663,13 @@ input:focus {
     }
 
     .header {
+        min-height: 70px;
+        height: 70px;
         padding: 0.5rem 1rem;
         position: fixed;
         top: 0;
         left: 0;
-        right: 0;
-        height: 70px; 
+        right: 0; 
     }
 
     .header-title {

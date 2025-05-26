@@ -88,6 +88,12 @@ function validateQuestions() {
         }
         if (type === '1') { //* Multiple Choice
             const options = form.querySelectorAll('.optionInput input[type="text"]');
+            
+            if (options.length < 2) {
+                isValid = false;
+                showNotification(`Question ${index + 1}: Multiple choice questions must have at least 2 options.`, 'error');
+            }
+            
             let allFilled = true;
             options.forEach(opt => {
                 if (!opt.value.trim()) allFilled = false;
@@ -323,7 +329,17 @@ function createQuestionForm(id) {
             <i class="fa-solid fa-trash"></i>
 
         `;
-        opt.querySelector('i').addEventListener('click', () => opt.remove());
+        opt.querySelector('i').addEventListener('click', () => {
+            const optionsContainer = container.querySelector(`#optionsContainer${id}`);
+            const currentOptions = optionsContainer.querySelectorAll('.optionInput');
+            
+            if (currentOptions.length <= 2) {
+                showNotification('Multiple choice questions must have at least 2 options.', 'error');
+                return;
+            }
+            
+            opt.remove();
+        });
         optionsContainer.appendChild(opt);
     });
 
@@ -331,8 +347,15 @@ function createQuestionForm(id) {
     container.querySelectorAll('.optionInput i').forEach(icon => {
         //* Remove option input on trash icon click
         icon.addEventListener('click', () => {
-            icon.parentElement.remove();
+            const optionsContainer = container.querySelector(`#optionsContainer${id}`);
+            const currentOptions = optionsContainer.querySelectorAll('.optionInput');
             
+            if (currentOptions.length <= 2) {
+                showNotification('Multiple choice questions must have at least 2 options.', 'error');
+                return;
+            }
+            
+            icon.parentElement.remove();
         });
     });
 
@@ -1186,7 +1209,16 @@ function editQuestions(basicQuestions) {
                     <i class="fa-solid fa-trash"></i>
                 `;
                 //* Add delete event
-                optDiv.querySelector('i').addEventListener('click', () => optDiv.remove()); //* Remove option input on trash icon click
+                optDiv.querySelector('i').addEventListener('click', () => {
+                    const currentOptions = optionsContainer.querySelectorAll('.optionInput');
+                    
+                    if (currentOptions.length <= 2) {
+                        showNotification('Multiple choice questions must have at least 2 options.', 'error');
+                        return;
+                    }
+                    
+                    optDiv.remove();
+                }); //* Remove option input on trash icon click
                 optionsContainer.appendChild(optDiv);
             });
         }
