@@ -230,7 +230,7 @@ switch ($input['action']) {
                 SELECT 
                     CONCAT(title, ' (copy)'), 
                     description, program_type_id, program_id, subject_id, 
-                    last_edited, created_at, expires_at, status, survey_type_id, ?
+                    last_edited, created_at, expires_at, status, survey_type_id
                 FROM surveys
                 WHERE survey_id = ?";
             $stmt = $pdo->prepare($sql);

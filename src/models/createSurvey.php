@@ -119,7 +119,6 @@ try {
                 $createdAt,
                 $createdAt,
                 $status,
-                $token,
                 $type
             ]);
 
