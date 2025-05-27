@@ -665,89 +665,113 @@ function openAccessLinkModal(surveyId) {
     fetch(`/SDGKU-Dashboard/src/models/mySurveys.php?action=getSurveyById&id=${surveyId}`)
         .then(response => response.json())
         .then(data => {
-            if (data && data.token) {
-                const accessLink = `http://localhost/SDGKU-Dashboard/public/views/surveys/survey.html?token=${data.token}`;
-                const linkInput = document.getElementById('access-link-input');
-                const expirationInput = document.getElementById('expirationDate');
+            const linkInput = document.getElementById('access-link-input');
+            const expirationInput = document.getElementById('expirationDate');
+            const copyBtn = document.getElementById('confirm-activate');
+            const generateBtn = document.getElementById('confirm-newData');
 
-                if (linkInput) {
-                    linkInput.value = accessLink;
+            const hasValidToken = data.token && data.expires_at;
+
+            if (linkInput) {
+                linkInput.value = hasValidToken
+                    ? `http://localhost/SDGKU-Dashboard/public/views/surveys/survey.html?token=${data.token}`
+                    : '';
+            }
+
+            if (copyBtn) {
+                copyBtn.disabled = !hasValidToken;
+            }
+
+            if (expirationInput) {
+                if (data.expires_at) {
+                    const expiresAt = new Date(data.expires_at);
+                    if (!isNaN(expiresAt.getTime())) {
+                        const formattedDate = expiresAt.toISOString().slice(0, 16);
+                        expirationInput.value = formattedDate;
+                        document.getElementById('expire-date-label').textContent = expiresAt.toLocaleString();
+                        expirationInput.dataset.original = formattedDate;
+                    }
+                } else {
+                    expirationInput.value = '';
+                    document.getElementById('expire-date-label').textContent = 'Put expiration date to get a link';
+                    expirationInput.dataset.original = '';
+                }
+            }
+
+            document.getElementById('access-link-survey').value = surveyId;
+            accessLinkSurveyModal.style.display = 'flex';
+
+            const newGenerateBtn = generateBtn.cloneNode(true);
+            generateBtn.parentNode.replaceChild(newGenerateBtn, generateBtn);
+            newGenerateBtn.disabled = true;
+
+            expirationInput.dataset.original = expirationInput.value;
+
+            expirationInput.addEventListener('input', () => {
+                newGenerateBtn.disabled = expirationInput.value === expirationInput.dataset.original;
+            });
+
+            newGenerateBtn.addEventListener('click', () => {
+                if (expirationInput.value === expirationInput.dataset.original) {
+                    showNotification('You need to modify the expiration date before generating a new link.', 'error');
+                    return;
                 }
 
-                if (expirationInput) {
-                    if (data.expires_at) {
-                        const expiresAt = new Date(data.expires_at);
-                        if (!isNaN(expiresAt.getTime())) {
-                            const formattedDate = expiresAt.toISOString().slice(0, 16);
-                            expirationInput.value = formattedDate;
-                            document.getElementById('expire-date-label').textContent = expiresAt.toLocaleString();
-                            expirationInput.dataset.original = formattedDate;
-                        }
-                    } else {
-                        expirationInput.value = '';
-                        document.getElementById('expire-date-label').textContent = 'No expiration set';
-                        expirationInput.dataset.original = '';
-                    }
-                }
+                const token = (linkInput.value.split('token=')[1] || '');
+                const expiresAt = expirationInput.value;
 
-                document.getElementById('access-link-survey').value = surveyId;
-                accessLinkSurveyModal.style.display = 'flex';
-
-                const generateBtn = document.getElementById('confirm-newData');
-                const newBtn = generateBtn.cloneNode(true);
-                generateBtn.parentNode.replaceChild(newBtn, generateBtn);
-
-                expirationInput.dataset.original = expirationInput.value;
-                // newBtn.disabled = true;
-
-                expirationInput.addEventListener('input', () => {
-                    newBtn.disabled = expirationInput.value === expirationInput.dataset.original;
-                });
-
-                newBtn.addEventListener('click', () => {
-                    if (expirationInput.value === expirationInput.dataset.original) {
-                        showNotification('You need to modify the expiration date before generating a new link.', 'error');
-                        return;
-                    }
-
-                    const token = document.getElementById('access-link-input').value.split('token=')[1];
-                    const surveyId = document.getElementById('access-link-survey').value;
-                    const expiresAt = expirationInput.value;
-
-                    fetch('/SDGKU-Dashboard/src/models/mySurveys.php', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            action: 'updateTokenData',
-                            id: surveyId,
-                            token: token,
-                            expires_at: expiresAt
-                        })
+                fetch('/SDGKU-Dashboard/src/models/mySurveys.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'updateTokenData',
+                        id: surveyId,
+                        token: token,
+                        expires_at: expiresAt
                     })
-                        .then(response => response.json())
-                        .then(data => {
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.token) {
+                            linkInput.value = '';
+                            copyBtn.disabled = true;
+                            document.getElementById('expire-date-label').textContent = 'Put expiration date to get a link';
+                            expirationInput.value = '';
+                            expirationInput.dataset.original = '';
+                            showNotification('Link and date deleted!');
+                        } else {
                             showNotification('Expiration date and token saved successfully!');
                             expirationInput.dataset.original = expirationInput.value;
-                            // newBtn.disabled = true;
-                            const accessLink = `http://localhost/SDGKU-Dashboard/public/views/surveys/survey.html?token=${data.token}`;
-                            if (linkInput) {
-                                linkInput.value = accessLink;
-                            }
+                            const newAccessLink = `http://localhost/SDGKU-Dashboard/public/views/surveys/survey.html?token=${data.token}`;
+                            linkInput.value = newAccessLink;
                             document.getElementById('access-link-survey').value = data.id;
-                            document.getElementById('expire-date-label').textContent = expiresAt.toLocaleString();
-                        })
-                        .catch(err => {
-                            showNotification('Error saving token: ' + err.message, 'error');
-                        });
-                });
-            } else {
-                showNotification('Failed to fetch survey token.', 'error');
-            }
+                            document.getElementById('expire-date-label').textContent = new Date(expirationInput.value).toLocaleString();
+                            copyBtn.disabled = false;
+                        }
+                        newGenerateBtn.disabled = true;
+                    })
+                    .catch(err => {
+                        showNotification('Error saving token: ' + err.message, 'error');
+                    });
+            });
+
+            copyBtn.addEventListener('click', () => {
+                if (copyBtn.disabled) {
+                    showNotification('You must generate a new link before copying it.', 'error');
+                    return;
+                }
+
+                linkInput.select();
+                document.execCommand('copy');
+                showNotification('Link copied!', 'success');
+            });
         })
         .catch(error => {
             showNotification('Error fetching survey link: ' + (error.message || error), 'error');
         });
 }
+
+
 //? open delete Inactive Survey modal
 function openDeleteInactiveSurveyModal(surveyId) {
     document.getElementById('delete-inactive-survey').value = surveyId;

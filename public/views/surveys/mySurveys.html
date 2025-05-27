@@ -211,22 +211,28 @@
                         <div class="modal-body">
                             <div class="linkToken-container">
                                 <p>Here is your access link. Be careful with who you share it with.</p>
+
                                 <div class="dateToken">
                                     <label>Survey expire date:</label>
                                     <input type="datetime-local" id="expirationDate" required>
                                 </div>
-                                <div class="linkToken">
-                                    <input type="hidden" id="access-link-survey">
-                                    <input type="text" id="access-link-input" />
-                                    <button type="button" class="btn btn-primary btn-link" id="confirm-newData">Generate new link</button>
-                                </div>
+
                                 <div class="dateToken" style="margin-top: 0.5rem;">
                                     <label id="expire-date-label"></label>
                                 </div>
+
+                                <div class="linkToken">
+                                    <input type="hidden" id="access-link-survey">
+                                    <input type="text" id="access-link-input">
+                                    <button type="button" class="btn btn-danger btn-link"
+                                        id="confirm-activate">Copy</button>
+                                </div>
+
                             </div>
                             <div class="form-actions">
                                 <button type="button" class="btn btn-cancel">Cancel</button>
-                                <button type="button" class="btn btn-danger" id="confirm-activate">Copy</button>
+                                <button type="button" class="btn btn-primary" id="confirm-newData">Generate new
+                                    link</button>
                             </div>
                         </div>
                     </div>
