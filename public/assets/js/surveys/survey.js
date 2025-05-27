@@ -364,7 +364,15 @@ function getAnswers() {
                 const selectedTF = item.querySelector('input[type="radio"]:checked');
                 if (selectedTF) {
                     const options = item.querySelectorAll('input[type="radio"]');
-                    const index = Array.from(options).indexOf(selectedTF);
+                    let index = Array.from(options).indexOf(selectedTF);
+                    console.log("INDEX: ", index);
+                    if (index == 0) {
+                        index =  1;
+                        console.log("INDEX: ", index);
+                    }else {
+                        console.log("INDEX: ", index);
+                        index = 0;
+                    }
                     answer = index.toString(); 
                 }
                 break;
