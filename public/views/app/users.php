@@ -177,7 +177,7 @@
                 <span class="close-modal">&times;</span>
             </div>
             <div class="modal-body">
-                <p>You are about to grant Main Admin privileges. This user will have full control over the system, including the ability to modify or delete your account.</p>
+                <p>You are about to grant Master Admin privileges. This user will have full control over the system, including the ability to modify most accounts.</p>
                 <p>Are you absolutely sure you want to proceed?</p>
                 <input type="hidden" id="super-admin-user-id">
                 <div class="form-actions">

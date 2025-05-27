@@ -23,10 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
 
     handleForgotPassword($email);
-
+    
     echo json_encode([
         'success' => true,
-        'message' => 'Password reset email sent successfully.'
+        'message' => 'If your email is registered with our system, you will receive reset instructions shortly.'
     ]);
 
     exit;
