@@ -535,11 +535,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 for(let i = 0; i < ids.length; i++){
                     matrizPrograms[i] = await getProgramData(ids[i], from, to);
                 }
-            
                 renderAllProgramTables(matrizPrograms, dbLabels);
             }
 
-          hideLoadingModal();
+                hideLoadingModal();
         }else{
             //!Notificacion
             showNotification("Please select a year", "error");
