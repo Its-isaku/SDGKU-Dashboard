@@ -1,6 +1,24 @@
 document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.querySelector('.hamburger');
     const sidebar = document.querySelector('aside');
+    const isLoginPage = window.location.pathname.includes('auth/login.html') || window.location.pathname.includes('auth/forgot-password.html') || window.location.pathname.includes('auth/reset-password.html');
+
+    if (!isLoginPage){
+        fetch('/SDGKU-Dashboard/src/users/check-session.php', {
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(!data.authenticated) {
+                console.warn('User not authenticated, redirecting to login page.');
+                window.location.href = '/SDGKU-Dashboard/public/views/auth/login.html';
+            }
+        })
+        .catch(error => {
+            console.error('Error checking session:', error);
+            window.location.href = '/SDGKU-Dashboard/public/views/auth/login.html';
+        });
+    }
     
     if (hamburger && sidebar) {
         hamburger.addEventListener('click', function() {

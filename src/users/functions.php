@@ -43,16 +43,16 @@ function requireRole(string $role){
     }
 }
 
-/* function hasRole(string $requiredRole): bool {
-    if(!isAuthenticated()) return false;
-    $userRole = $_SESSION['user_role'] ?? 'faculty';
+function addNewUser($fullName, $email, $role = 'faculty'){
+    global $pdo;
 
-    $hierarchy = [
-        'super_admin' => 3,
-        'admin' => 2,
-        'faculty' => 1
-    ]; return ($hierarchy[$userRole] ?? 0) >= ($hierarchy[$requiredRole] ?? 0);
-} */
+    if(!preg_match('/@sdgku\.edu$/i', $email)){
+        return [
+            'success' => false,
+            'message' => 'Only @sdgku.edu email domains are allowed'
+        ];
+    }
+}
 
 //? security -------------------------
 function hashPassword($password): string {return password_hash($password, PASSWORD_BCRYPT);}
@@ -106,5 +106,4 @@ function handleFailedLogin(string $email): void {
         $mailer->sendLockedAcc($email, $user['full_name'], $token);
     }
 }
-
 ?>

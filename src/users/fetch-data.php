@@ -9,7 +9,6 @@ if (session_status() === PHP_SESSION_NONE) {session_start();}
 require_once __DIR__. '/functions.php';
 require_once __DIR__. '/../config/config.php';
 
-/* error_log("SESSION DATA IN FETCH-DATA: " . json_encode($_SESSION)); */
 $action = $_GET['action'] ?? '';
 
 try {
@@ -17,7 +16,7 @@ try {
     $currentUserRole = $_SESSION['user_role'] ?? 'faculty';
 
     if ($currentUserId) {
-        error_log("Validating session for user ID: $currentUserId");
+        /* error_log("Validating session for user ID: $currentUserId"); */
         $checkStmt = $pdo->prepare("SELECT id, role FROM users WHERE id = ?");
         $checkStmt->execute([$currentUserId]);
         $dbUser = $checkStmt->fetch(PDO::FETCH_ASSOC);
@@ -36,15 +35,9 @@ try {
 
     error_log("User ID from session: $currentUserId");
     error_log("User role from session: $currentUserRole");
-    
-    //TODO: Force super_admin role for testing - REMOVE THIS IN PRODUCTION
-    /* $currentUserRole = $_SESSION['user_role'] ?? 'super_admin'; */
-    //$currentUserRole = 'super_admin';
-    //error_log("Action: $action, Role: $currentUserRole, ID: $currentUserId");
 
     if ($currentUserRole === 'master admin') {$currentUserRole = 'super_admin';}
 
-    //! comment this for testing
     if (!isAuthenticated()){throw new Exception('Unauthorized', 401);} // verify auth
 
     switch ($action){
@@ -60,9 +53,6 @@ try {
                 $params[] = "%$search%"; //! DO NOT delete this line 
             }
             
-            //~filters based on role
-            /* if ($currentUserRole === 'admin') {$query .= " AND role != 'super_admin'";} */ 
-            
             $stmt = $pdo->prepare($query);
             $stmt->execute($params);
             $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -75,9 +65,9 @@ try {
             if ($currentUserRole === 'faculty') {throw new Exception('Forbidden', 403);}
             
             //TODO: REMOVE THIS IN PRODUCTION (this was removed)
-            error_log("add_user: Starting to process request");
+            /* error_log("add_user: Starting to process request");
             $rawInput = file_get_contents('php://input');
-            $data = json_decode($rawInput, true);
+            $data = json_decode($rawInput, true);*/
 
             $fullName = $data['full_name'] ?? '';
             $email = $data['email'] ?? '';
@@ -86,20 +76,30 @@ try {
             error_log("fullName: $fullName, email: $email, role: $role");
             
             //~validation
-            if (empty($fullName) || empty($email)) {
-                error_log("Validation failed: name or email empty");
-                throw new Exception('Name and email are required');
+            if (!$fullName || !$email) {
+                http_response_code(400);
+                echo json_encode([
+                    'success' => false, 
+                    'message' => 'Full name and email are required.'
+                ]);
+                exit;
             }
             
             //~check if email exists in db
             $stmt = $pdo->prepare("SELECT email FROM users WHERE email = ?");
             $stmt->execute([$email]);
             if ($stmt->rowCount() > 0) {
-                throw new Exception('Email already exists');
+                http_response_code(409);
+                echo json_encode([
+                    'success' => false, 
+                    'message' => 'Email already exists.',
+                    'error_type' => 'email_exists'
+                ]);
+                exit;
             }
             
             //~invitation token
-            $token = bin2hex(random_bytes(16));
+            $token = generateCSRFToken();
             $expires = date('Y-m-d H:i:s', strtotime('+12 hours'));
             
             //~adding user to db ------------------------>
@@ -139,7 +139,17 @@ try {
                 $message = 'User added successfully';
                 if (!$emailSent) {$message .= ', but invitation email could not be sent';} else {$message .= ' and invitation sent';}
                 
-                echo json_encode(['success' => true, 'message' => $message]);
+                echo json_encode([
+                    'success' => true, 
+                    'message' => $message,
+                    'newUser' => [
+                        'id' => $userId,
+                        'full_name' => $fullName,
+                        'email' => $email,
+                        'role' => $role,
+                        'status' => 'pending'
+                    ]
+                ]);
                 
             } catch (Exception $e) {
                 $pdo->rollBack();
@@ -177,7 +187,17 @@ try {
             //~ log action
             logAction('user_role_update', "Updated user $userId role from $currentRole to $newRole", $currentUserId);
 
-            echo json_encode(['success' => true, 'message' => 'User role updated']);
+            echo json_encode([
+                'success' => true, 
+                'message' => 'User role updated',
+                'updatedUser' => [
+                    'id' => $userId,
+                    'full_name' => $user['full_name'],
+                    'email' => $user['email'], 
+                    'role' => $newRole,
+                    'status' => $user['status']
+                ]
+            ]);
             break;        
         
         case 'resend_invite':
@@ -193,7 +213,7 @@ try {
             if (!$user) {throw new Exception('User not found or already accepted');}
 
             //~ generate new token
-            $token = bin2hex(random_bytes(16));
+            $token = generateCSRFToken();
             $expires = date('Y-m-d H:i:s', strtotime('+12 hours'));            
             
             $pdo->beginTransaction();
@@ -249,6 +269,7 @@ try {
             if ($targetRole === 'faculty' && $currentUserRole === 'faculty'){throw new Exception('Faculty cannot delete other users');}
 
             /* if ($userId === $currentUserId){throw new Exception('Cannot delete your own account');} */ 
+
             //~ allow self-deletion for master admin
             if ($userId === $currentUserId && $currentUserRole === 'super_admin'){
                 $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE role = 'super_admin'");
