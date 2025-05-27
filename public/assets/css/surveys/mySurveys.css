@@ -290,7 +290,7 @@
 
 .btn-link {
     margin-left: 10px;
-    padding: 0.25rem 0.1rem;
+    /* padding: 0.25rem 0.1rem; */
     font-size: 0.9rem;
 }
 
@@ -309,7 +309,17 @@
     padding: 0.1rem 0.1rem;
     justify-content: center;
 }
+
+#access-link-input {
+ user-select: none;
+ pointer-events: none;
+ background-color: #f0f0f0;
+ color: #333;
+}
+
+
 /* el dropdown */
+
 .dropdown {
     position: fixed;
     /* posicion en y */

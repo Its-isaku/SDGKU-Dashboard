@@ -139,16 +139,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     //? <-------------------------------- Switch for generate new token and update data -------------------------------->
-    switch ($input['action']) {
+switch ($input['action']) {
         case 'updateTokenData':
             $id = $input['id'];
             $newToken = bin2hex(random_bytes(16));
             $expiresAt = $input['expires_at'];
-            $stmt = $pdo->prepare("UPDATE surveys SET token = ?, expires_at = ? WHERE survey_id = ?");
-            $stmt->execute([$newToken, $expiresAt, $id]);
-            echo json_encode(['token' => $newToken]);
-            exit;
-    }
+            if($expiresAt === '0000-00-00 00:00:00' || empty($expiresAt)){
+                $stmt = $pdo->prepare("UPDATE surveys SET token = null, expires_at = null WHERE survey_id = ?");
+                $stmt->execute([$id]);
+                echo json_encode(['success' => true, 'message' => 'Link and date were deleted']);
+            }else{
+                $stmt = $pdo->prepare("UPDATE surveys SET token = ?, expires_at = ? WHERE survey_id = ?");
+                $stmt->execute([$newToken, $expiresAt, $id]);
+                echo json_encode(['token' => $newToken]);
+            }
+            exit; 
+        }
     
     //? <-------------------------------- DELETE -------------------------------->
     if($input['action'] === 'deleteSurvey'){
@@ -216,11 +222,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = intval($input['id']);
             $pdo->beginTransaction();
 
-            $newToken = bin2hex(random_bytes(16));
 
             $sql = "INSERT INTO surveys (
                     title, description, program_type_id, program_id, subject_id, 
-                    last_edited, created_at, expires_at, status, survey_type_id, token
+                    last_edited, created_at, expires_at, status, survey_type_id 
                 )
                 SELECT 
                     CONCAT(title, ' (copy)'), 
@@ -229,7 +234,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 FROM surveys
                 WHERE survey_id = ?";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([$newToken, $id]);
+            $stmt->execute([ $id]);
 
             $newSurveyId = $pdo->lastInsertId();
 
@@ -288,7 +293,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'success' => true,
                 'message' => 'Survey duplicated successfully',
                 'new_survey_id' => $newSurveyId,
-                'new_token' => $newToken
             ]);
         } catch (PDOException $e) {
             $pdo->rollBack();
