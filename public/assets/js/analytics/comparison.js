@@ -216,14 +216,45 @@ function getAverage(results) {
         }
         
         let sum = 0;
-        results.forEach(r => {
-            sum += Number(r);
-        });
-        
-        const promedio = Number((sum / results.length).toFixed(2));
+        let count = 0;
+
+        for(let i = 0; i < results.length; i++) {
+            const value = Number(results[i]); 
+            if (results[i]!== null && !isNaN(value)) {
+                sum += value;
+                count++;
+            }
+        }
+        console.log("Sum:", sum);
+        console.log("Count:", count);
+        if (count === 0) return 0;
+        const promedio = Number((sum / count).toFixed(2));
         return promedio;
 }
+function getAverageAll(results,indexs) {
+        if (!results || results.length === 0) {
+            return 0;
+        }
+        
+        let sum = 0;
+        let count = 0;
 
+        for(let i = 0; i < results.length; i++) {
+            const value = Number(results[i]); 
+            if (results[i]!== null && !isNaN(value)) {
+                if(indexs[i] != null){
+                sum += value;
+                count++;
+            }
+        }
+    }
+        console.log("Sum:", sum);
+        console.log("Count:", count);
+        if (count === 0) return 0;
+        const promedio = Number((sum / count).toFixed(2));
+        return promedio;
+
+}
 function getAvgGap(pre, post){
     let gap = Number((pre - post).toFixed(2));
     if(gap == pre){
@@ -289,9 +320,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log("All Pre Results:", allResultPre);
                     console.log("All Post Results:", allResultPost);
                     const resultGat = getGap(allResultPre,allResultPost);
-                    const getPreGlobalAverages=getAverage(allResultPre);
-                    const getPostGlobalAverages=getAverage(allResultPost);
+                    const getPreGlobalAverages=getAverageAll(allResultPre,allResultPost);
+                    const getPostGlobalAverages=getAverageAll(allResultPost,allResultPre);
                     const getGlobalAverage = getAvgGap(getPreGlobalAverages,getPostGlobalAverages);
+                    
                     preAvgValue.textContent = getPreGlobalAverages + "%";
                     postAvgValue.textContent = getPostGlobalAverages + "%";
                     changeValue.textContent = getGlobalAverage + "%";
@@ -588,7 +620,6 @@ async function getProgramNamesComparison(programTypeId) {
             const names = data.data.map(item => item.name);
             return names;
         }
-
         throw new Error(data.message || 'Error en los datos');
     } catch (error) {
         console.error("Error in getProgramNames:", error);
