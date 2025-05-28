@@ -106,7 +106,7 @@ class Mailer {
         }
     }
 
-    public function sendForgotPasswordEMail($email, $name, $token){
+    public function sendForgotPasswordEmail($email, $name, $token){
         try {
             $this->mailer->clearAddresses();
             $this->mailer->addAddress($email);
@@ -114,7 +114,7 @@ class Mailer {
             $this->mailer->Subject = "Password Recovery - {$this->config['app_name']}";
             $this->mailer->Body = $this->generateForgotPasswordEmail($name, $token);
 
-            error_log("Sending forgot password email to: $email");
+            error_log("Attempting to send password recovery email to: $email with token: $token");
 
             $result = $this->mailer->send();
 

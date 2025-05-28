@@ -65,9 +65,9 @@ try {
             if ($currentUserRole === 'faculty') {throw new Exception('Forbidden', 403);}
             
             //TODO: REMOVE THIS IN PRODUCTION (this was removed)
-            /* error_log("add_user: Starting to process request");
+            /* error_log("add_user: Starting to process request"); */
             $rawInput = file_get_contents('php://input');
-            $data = json_decode($rawInput, true);*/
+            $data = json_decode($rawInput, true);
 
             $fullName = $data['full_name'] ?? '';
             $email = $data['email'] ?? '';
