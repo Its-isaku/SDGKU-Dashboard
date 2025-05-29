@@ -24,7 +24,7 @@ try {
         JOIN 
             responses r ON a.response_id = r.responses_id
         WHERE 
-            q.question_type_id = 2 AND (st.survey_type_id = 3 OR st.survey_type_id = 4)
+            q.question_type_id = 2 AND (st.survey_type_id = 4 OR st.survey_type_id = 5)
         GROUP BY 
             q.questions_id, q.question_text, st.type_name
         ORDER BY 
