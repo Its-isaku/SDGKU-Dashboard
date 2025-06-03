@@ -161,6 +161,38 @@ function renderRatingDistributionChart() {
     });
 }
 
+//?Btn FILTERS
+//!Filters
+document.addEventListener('DOMContentLoaded', function () {
+    overviewFilterLogic();
+    const boton = document.getElementById('submitFilterbtnOverview');
+    const selectProgram = document.getElementById('programIdComparison');
+    const programIndex = selectProgram.selectedIndex;
+    const selectYear = document.getElementById('selectYearRangeIdComparison');
+    const TypeIndex = selectYear.selectedIndex;
+    boton.addEventListener('click', async function (){
+        const completeDateSelected = getDateRangeSelectedOverview();
+        const getProgramIds = await getAllProgramIds();
+        const from = completeDateSelected[0];
+        const to = completeDateSelected[1];
+        
+        console.log("DATE:", from,to); 
+        console.log("Programs:", getProgramIds); 
+        if(TypeIndex!=0){
+            showLoadingModal();
+            if(programIndex!=0){
+                //*para el programa Seleccionado
+            }else if(programIndex===0){
+                //*para TODOS los programas
+            }
+            hideLoadingModal();
+        }else{
+             //!Notificacion
+            showNotification("Please select a year", "error");
+        }
+    });
+});
+
 async function renderOverviewTable() {
     try {
         const response = await fetch('../../../src/models/getOverviewData.php');
