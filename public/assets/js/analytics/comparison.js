@@ -289,10 +289,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const labels = await getProgramNamesComparison(programTypeId);
         const from = completeDateSelected[0];
         const to = completeDateSelected[1];
-
             if(TypeIndex!=0){
                 showLoadingModal();
-            
             if(programIndex!=0){
                 const indexProgramId = programIndex-1;
                 const allResultPre= await getResultsPerProgram(ids, from, to, pre);

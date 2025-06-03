@@ -177,4 +177,6 @@ async function getAllProgramIds() {
         console.error("Error in getProgramIds:", error);
         throw error;
     }
-}//? <|----------------------------------- Filters -----------------------------------|>
+
+}
+
