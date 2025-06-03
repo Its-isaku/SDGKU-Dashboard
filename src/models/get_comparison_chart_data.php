@@ -194,24 +194,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         INNER JOIN surveys ON surveys.survey_id = responses.survey_id
         WHERE surveys.program_id = ?
         AND surveys.survey_type_id = ?
+        AND surveys.status = 'active'
         AND responses.respondent_email IN (
             SELECT DISTINCT r2.respondent_email
             FROM responses r2
             INNER JOIN surveys s2 ON s2.survey_id = r2.survey_id
-            WHERE s2.program_id = ? AND s2.survey_type_id = ? AND r2.submitted_at BETWEEN ? AND ?  )
-        AND responses.submitted_at BETWEEN ? AND ?
+            WHERE s2.program_id = ? AND s2.survey_type_id = ? AND s2.status = 'active' AND r2.submitted_at BETWEEN ? AND ?  )
+        AND responses.submitted_at BETWEEN ? AND ? 
         UNION
         SELECT responses.responses_id
         FROM responses
         INNER JOIN surveys ON surveys.survey_id = responses.survey_id
         WHERE surveys.program_id = ?
         AND surveys.survey_type_id = ?
+        AND surveys.status = 'active'
         AND responses.submitted_at BETWEEN ? AND ?
         AND NOT EXISTS (
             SELECT ?
             FROM responses r2
             INNER JOIN surveys s2 ON s2.survey_id = r2.survey_id
-            WHERE s2.program_id = ? AND s2.survey_type_id = ? AND r2.submitted_at BETWEEN ? AND ?
+            WHERE s2.program_id = ? AND s2.survey_type_id = ? AND s2.status = 'active' AND r2.submitted_at BETWEEN ? AND ?
         )";
             $stmt1 = $pdo->prepare($sql1);
             // Parámetros en el orden CORRECTO para todos los ?
