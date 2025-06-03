@@ -203,14 +203,14 @@ document.addEventListener("DOMContentLoaded", function () {
             toggleButtonLoading(this, true);
 
             fetchData('update_user_role', { user_id: userId, role: 'super_admin' })
-            .then(() => {
+            .then((data) => {
                 /* console.log('Super admin update response:', data); */
-                showNotification('User role updated to Main Admin!', 'success');
+                showNotification('User role updated to Master Admin!', 'success');
                 closeModal('superAdminConfirm');
 
                 const updatedUser = data.updatedUser || {
                     id: String(userId),
-                    role: selectedRole
+                    role: 'super_admin'
                 };
 
                 const updated = updateUserInTable(updatedUser);
@@ -392,9 +392,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 //? delete button
                 if ((currentUserRole === 'admin' && user.role === 'faculty') || 
                     (currentUserRole === 'super_admin' && (
-                        (user.id !== currentUserId && user.role !== 'super_admin') || //~ other non-admin users
-                        (user.id === currentUserId) //~ allow self-deletion for super_admin
-                    ))) {
+                        user.id !== currentUserId ))) {
                     actionButtons += `<button class="action-btn delete" data-id="${user.id}" data-role="${user.role}">
                     <span class="material-symbols-outlined" id="trashcan-users">delete</span>
                     </button>`;
@@ -461,13 +459,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
             document.querySelectorAll('.delete').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    if (this.dataset.processing === 'true') {
-                        return;
-                    }
+                    if (this.dataset.processing === 'true') {return;}
+
                     this.dataset.processing = 'true';
                     
                     const userId = this.dataset.id;
+                    const userName = this.closest('tr').querySelector('td:nth-child(1)').textContent;
+                    const userRole = this.dataset.role;
+
                     document.getElementById('delete-user-id').value = userId;
+                    
+                    const modalText = document.querySelector('#delete-user-modal .modal-body p');
+
+                    if (modalText) {
+                        if (userRole === 'super_admin'){
+                            modalText.textContent = 'WARNING: You are about to delete a Master Admin account. This action cannot be undone.';
+                            modalText.classList.add('warning-text');
+                        } else {
+                            modalText.textContent = `Are you sure you want to delete ${userName}? This action cannot be undone.`;
+                            modalText.classList.remove('warning-text');
+                        }
+                    }
+                    
                     openModal('delete');
                     
                     setTimeout(() => {
