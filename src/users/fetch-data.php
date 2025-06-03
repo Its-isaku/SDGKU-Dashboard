@@ -38,7 +38,7 @@ try {
 
     if ($currentUserRole === 'master admin') {$currentUserRole = 'super_admin';}
 
-    if (!isAuthenticated()){throw new Exception('Unauthorized', 401);} // verify auth
+    if (!isAuthenticated()){throw new Exception('Unauthorized', 401);} //~ verify auth
 
     switch ($action){
         case 'fetch_users':
@@ -64,8 +64,6 @@ try {
             //~check permissions
             if ($currentUserRole === 'faculty') {throw new Exception('Forbidden', 403);}
             
-            //TODO: REMOVE THIS IN PRODUCTION (this was removed)
-            /* error_log("add_user: Starting to process request"); */
             $rawInput = file_get_contents('php://input');
             $data = json_decode($rawInput, true);
 
@@ -270,14 +268,19 @@ try {
 
             /* if ($userId === $currentUserId){throw new Exception('Cannot delete your own account');} */ 
 
-            //~ allow self-deletion for master admin
-            if ($userId === $currentUserId && $currentUserRole === 'super_admin'){
+            //~ prevent deletion of last super admin
+            if ($targetRole === 'super_admin') {
                 $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE role = 'super_admin'");
                 $stmt->execute();
                 $superAdminCount = $stmt->fetchColumn();
+                
+                if ($superAdminCount <= 1) {
+                    throw new Exception('Cannot delete the last master admin account');
+                }
+            }
 
-                if ($superAdminCount <= 1) {throw new Exception('Cannot delete the last master admin account');}
-            } else if ($userId === $currentUserId){throw new Exception('Cannot delete your own account');}
+            //~ prevent self-deletion
+            if ($userId === $currentUserId) {throw new Exception('Cannot delete your own account');}
 
             //~ delete user
             $pdo->beginTransaction();
