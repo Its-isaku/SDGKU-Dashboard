@@ -298,6 +298,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     }
     exit;
 }
+//?To get all programs for Overview
+//!Survey Overview  panel
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getAllPrograms') {
+    try {        $sql = "SELECT programs.prog_id, programs.name
+                FROM programs";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode([
+            'status' => 'success',
+            'data' => $results
+        ]);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Error al obtener programas: ' . $e->getMessage()
+        ]);
+    }
+    exit;
+}
 
 //?---Get programs averages
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getProgramsAverages') {
