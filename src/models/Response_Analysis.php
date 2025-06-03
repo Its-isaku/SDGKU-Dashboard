@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
                     INNER JOIN surveys ON surveys.survey_id = questions.survey_id
                     INNER JOIN responses ON responses.responses_id = answers.response_id
                     WHERE surveys.program_id = ?  AND (responses.submitted_at 
-                    BETWEEN ? AND ?) 
+                    BETWEEN ? AND ?) AND surveys.status = 'active' 
                     AND (questions.question_type_id IN (2, 3))";
 
         $stmt = $pdo->prepare($sql);
@@ -79,7 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
                 INNER JOIN questions ON questions.questions_id = responses.questions_id
                 INNER JOIN surveys ON surveys.survey_id = responses.survey_id
                 WHERE (questions.question_type_id = 1 OR questions.question_type_id = 5)
-                AND surveys.program_id = ? AND surveys.survey_type_id = 2";
+                AND surveys.program_id = ? AND surveys.survey_type_id = 2 AND surveys.status = 'active' AND (responses.submitted_at 
+                    BETWEEN ? AND ?) ";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$program_id]);
@@ -196,7 +197,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
                 INNER JOIN questions ON questions.questions_id = answers.question_id
                 INNER JOIN surveys ON surveys.survey_id = questions.survey_id
                 INNER JOIN responses ON responses.responses_id = answers.response_id
-                WHERE surveys.program_id = ? AND (responses.submitted_at BETWEEN ? AND ?)
+                WHERE surveys.program_id = ? AND surveys.status='active' AND (responses.submitted_at BETWEEN ? AND ?)
                 AND (questions.question_type_id IN (2, 3)) AND surveys.survey_type_id = 3
                 GROUP BY answers.question_id";
                 
@@ -281,7 +282,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
         $program_type_id = $_GET['program_type_id'];
         $sql = "SELECT programs.prog_id, programs.name
                 FROM programs 
-                WHERE programs.program_type_id = ?";
+                WHERE programs.program_type_id = ? AND programs.status='active'";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$program_type_id]);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -302,7 +303,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 //!Survey Overview  panel
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getAllPrograms') {
     try {        $sql = "SELECT programs.prog_id, programs.name
-                FROM programs";
+                FROM programs
+                WHERE  programs.status='active'";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -321,12 +323,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 }
 
 //?---Get programs averages
+//!AGREGAR BETWEEN RANGE
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getProgramsAverages') {
     try {
-        if (!isset($_GET['program_type_id'])) {
-            throw new Exception('program_type_id parameter is required');
+        $required_params = ['program_id', 'start_date', 'end_date'];
+        foreach ($required_params as $param) {
+            if (!isset($_GET[$param])) {
+                throw new Exception("Missing required parameter: $param");
+            }
         }
-        $program_type_id = $_GET['program_type_id'];
+        
+        $program_id = $_GET['program_id'];  
+        $start_date = $_GET['start_date'];
+        $end_date = $_GET['end_date'];    
+        
         $sql = "SELECT          
                 CONCAT(
                     ROUND(SUM(CASE WHEN answers.answer_text IN ('4', '5') THEN 1 ELSE 0 END) * 100.0 / COUNT(*)), 
@@ -335,12 +345,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
                     INNER JOIN questions ON questions.questions_id = answers.question_id
                     INNER JOIN surveys ON surveys.survey_id = questions.survey_id
                     INNER JOIN responses ON responses.responses_id = answers.response_id
-                    WHERE surveys.program_id = ?  AND (responses.submitted_at 
-                    BETWEEN '2025-01-01' AND '2025-12-31') 
+                    WHERE surveys.program_id = ? AND surveys.status ='active'  AND (responses.submitted_at 
+                    BETWEEN ? AND ?)
                     AND (questions.question_type_id IN (2, 3))
                 ";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$program_type_id]);
+        $stmt->execute([$program_id, $start_date, $end_date]);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode([
             'status' => 'success',

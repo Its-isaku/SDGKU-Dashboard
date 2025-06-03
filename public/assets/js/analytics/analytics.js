@@ -182,8 +182,12 @@ document.addEventListener('DOMContentLoaded', function () {
             showLoadingModal();
             if(programIndex!=0){
                 //*para el programa Seleccionado
+                // getProgramIds[programIndex]
+
             }else if(programIndex===0){
                 //*para TODOS los programas
+
+                
             }
             hideLoadingModal();
         }else{
