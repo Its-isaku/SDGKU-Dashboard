@@ -1,12 +1,11 @@
 /* ? Dashboard */
 .principalDashboard {
-    overflow-y: auto; 
-    overflow-x: hidden;
+    overflow: auto;
     margin-left: 250px;
-    padding-left: 40px;
-    padding-bottom: 20px; 
-    width: calc(100% - 250px);
-    min-height: calc(100vh - 70px);
+    width: calc(100% - 250px); 
+    height: auto;
+    overflow-x: hidden;
+    padding: 30px 48px;
 }
 /** Dashboard Media*/
 
@@ -28,10 +27,8 @@
 }
 
 .titulo {
-    padding-top: 1rem;
-    margin-bottom: 0px;
     font-size: 2rem;
-    font-weight: bold;
+    margin-bottom: 20px;
 }
 
 .infoTitle h3 {

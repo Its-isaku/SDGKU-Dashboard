@@ -1,49 +1,51 @@
 .reportCardsContainer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: flex-start;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
     width: 100%;
-    grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
-    padding: 10px 10px 100px;
-    margin: 0px;
-    font-family: Inter, sans-serif;
+    padding: 0.5rem 0 3rem;
     box-sizing: border-box;
 }
 
 .reportCard {
     display: flex;
     flex-direction: column;
-    height: 300px!important;
-    border: 1px solid #ddd;
-    width: 400px;
-    padding: 1rem;
-    margin-bottom: 1 rem;
+    height: auto !important;
+    min-height: 280px;
+    max-height: none;
+    border: 1px solid var(--gray-200);
+    width: 100%;
+    max-width: 400px;
+    padding: 1.5rem 1.5rem 1.5rem;
+    margin-bottom: 1.5rem;
     border-radius: var(--border-radius);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--box-shadow);
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 0.3s, transform 0.3s;
-}
-
-.reportCard:hover {
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    background-color: white;
 }
 
 .downloadBtn {
     background-color: var(--primary-dominant);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 0.6rem;
-    font-size: 0.9rem;
+    border-radius: var(--border-radius);
+    transition: all 0.2s ease;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    border: none;
+    font-size: 0.9rem;
+    color: white;
+    padding: 0.6rem;
 }
 
 .downloadBtn:hover {
     background-color: var(--secondary-dominant);
+}
+
+.downloadBtn, [class*="Results"] {
+    width: 100%;
+    margin: 0;
+    padding: 0.6rem 1rem;
+    border-radius: var(--border-radius);
 }
 
 @media (max-width: 768px) {
@@ -52,18 +54,13 @@
     }
 }
 
-
-
 /* !------------------Cards--------------- */
 
-.principalInformation{
-    height: 100px!important;
+.principalInformation {
+    flex: 1 0 auto;
+    margin-bottom: 1rem;
 }
 /* cada survey de la lista */
-
-.reportCard h3{
-    font-size: large;
-}
 
 .surveyStatus p{
     color: var(--success-color);
@@ -76,23 +73,34 @@
     display: flex;
     justify-content: center;
 }
+
 /* type y status */
-.typeTitle p{
+.typeTitle p {
+    font-size: 0.8rem;
+    font-weight: 500;
     color: var(--neutral-light);
-    border-style: solid;
-    height: 27px;
-    border: 1px;
-    background-color: rgb(244, 151, 29, 0.8);
-    /* border-color: var(--supplementary-dark); */
-    border-radius: 20px;
-    width: 67%;
-    display: flex;
+    background-color: rgb(244, 151, 29);
+    border: none;
+    height: auto;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    width: auto;
+    display: inline-flex;
     justify-content: center;
+    align-items: center;
 }
 
-.surveytitle{
-    width: 250px;
+.surveytitle {
+    width: 100%;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--gray-800);
+    margin-bottom: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
 .activeTitleStatus{   
     display: flex;
     justify-content: center;
@@ -101,40 +109,32 @@
 
 /*Estilos de botones actives*/
 /* ------------------------------------ */
-.actions{
+.actions {
     display: flex;
     justify-content: center;
-}
-
-.results-btn {    
-    padding: 0.5rem 1rem;
-    width: 150px;
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-}
-
-.results-btn:hover {
-    background-color: var(--primary-dominant);
-    transition: transform 0.2s ease-in-out;
-    color: var(--neutral-light);
-}
-
-.results-btn {
-    background-color: var(--secondary-dominant);
-    color:var(--neutral-light);
-    margin-left: 0.5rem;
+    margin-top: auto;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .survey-details {
-    margin: 10px;;
+    margin: 0.5rem 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    color: var(--gray-600);
+    font-size: 0.85rem;
+}
+
+.survey-detail-item {
     display: flex;
-    flex-direction: column;
-    column-gap: 2rem;
-    color: var(--gray-500);
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.survey-detail-item i {
     font-size: 0.9rem;
+    color: var(--gray-500);
 }
 
 .reportCard.inactive .surveyStatus p {
