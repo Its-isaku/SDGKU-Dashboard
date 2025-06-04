@@ -3,8 +3,9 @@
     overflow: auto;
     margin-left: 250px;
     width: calc(100% - 250px); 
-    height: 100vh;
+    height: auto;
     overflow-x: hidden;
+    padding: 30px 48px;
 }
 
 main {
@@ -15,7 +16,6 @@ main {
         "summary"
         "accesos";
     grid-template-rows: auto auto 1fr;
-    padding-left: 40px;
     box-sizing: border-box;
 }
 
@@ -23,7 +23,11 @@ main {
 .titulo {
     grid-area: title;
     display: inline-block; 
-    margin-top: 2rem;
+    margin-bottom: 20px;
+}
+
+.titulo small {
+    font-size: 0.9rem;
 }
 
 .contenedorSummary {
@@ -65,7 +69,7 @@ main {
     font-size: 0.9rem;
     color: var(--gray-600);
     display: block;
-    margin-top: 0.25rem;
+    /* margin-top: 0.25rem; */
 }
 
 .contenedorAccesos {
@@ -109,6 +113,7 @@ main {
 
 .accesosDashboard small {
     color: var(--gray-800);
+    font-size: 0.9rem;
 }
 
 .accesosDashboard button:hover {
@@ -176,7 +181,7 @@ main {
     }
     
     .summaryAccesos small {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
     }
 
     .contenedorAccesos {
@@ -239,5 +244,4 @@ main {
       display: none;
     }
   }
-  
   
