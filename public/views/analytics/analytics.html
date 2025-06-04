@@ -20,8 +20,12 @@
     <link rel="stylesheet" href="../../assets/css/analytics/reports.css">
     <!--? Reports Style -->
     <link rel="stylesheet" href="../../assets/css/analytics/reports.css">
-    <!--? Chart Style -->
-    <link rel="stylesheet" href="//cdn.datatables.net/2.3.1/css/dataTables.dataTables.min.css">
+    <!--? datatable Style -->
+    <link rel="stylesheet" href="../../assets/css/analytics/datatable/datatables.css">
+    <!--? datatable buttons Style -->
+    <link rel="stylesheet" href="../../assets/css/analytics/datatable/datatableButtons.css">
+    <!--? datatable responsive Style -->
+    <link rel="stylesheet" href="../../assets/css/analytics/datatable/datatableResponsive.css">
     <title>SDGKU analytics</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -119,19 +123,20 @@
                                 <div class="overviewCard">
                                     <h1>Survey Overview</h1>
                                     <p>Summary of survey completion, types, questions, and ratings</p>
-                                        <div class="comparisonSelections">
+                                    <div class="comparisonSelections">
                                         <div class="surveySelect">
                                             <div class="programSelect">
                                                 <div class="programItem">
-                                                    <label for="programType">Program</label>
+                                                    <label for="programType">Survey type</label>
                                                     <select name="program" id="programIdOverview">
                                                         <option value="opcion" disabled selected hidden>Please select
-                                                            program</option>
+                                                            survey type</option>
                                                         <!--* Program from db -->
                                                     </select>
                                                 </div>
                                             </div>
-                                            <button class="submitFilter" id="submitFilterbtnOverview">Apply filters</button>
+                                            <button class="submitFilter" id="submitFilterbtnOverview">Apply
+                                                filters</button>
                                         </div>
 
                                         <div class="surveySelect">
@@ -145,8 +150,9 @@
                                             <div class="dateSelect">
                                                 <div class="dateItem">
                                                     <label for="dateRange">Range type</label>
-                                                    <select name="dateRange" id="selectRangeTypeIdOverview"> 
-                                                        <option value="opcion1" disabled selected hidden>Please select range type</option>
+                                                    <select name="dateRange" id="selectRangeTypeIdOverview">
+                                                        <option value="opcion1" disabled selected hidden>Please select
+                                                            range type</option>
                                                     </select>
                                                 </div>
 
@@ -234,8 +240,9 @@
                                             <div class="dateSelect">
                                                 <div class="dateItem">
                                                     <label for="dateRange">Range type</label>
-                                                    <select name="dateRange" id="selectRangeTypeId"> 
-                                                        <option value="opcion1" disabled selected hidden>Please select range type</option>
+                                                    <select name="dateRange" id="selectRangeTypeId">
+                                                        <option value="opcion1" disabled selected hidden>Please select
+                                                            range type</option>
                                                     </select>
                                                 </div>
                                                 <div class="dateItem">
@@ -283,7 +290,7 @@
                                         <h1>Comparison Graph</h1>
                                         <p>Compare student knowledge before and after the course</p>
                                     </div>
-                                    
+
                                     <div class="comparisonSelections">
                                         <div class="surveySelect">
                                             <div class="programItem">
@@ -308,7 +315,8 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <button class="submitFilter" id="submitFilterbtnComparison">Apply filters</button>
+                                            <button class="submitFilter" id="submitFilterbtnComparison">Apply
+                                                filters</button>
                                         </div>
 
                                         <div class="surveySelect">
@@ -322,8 +330,9 @@
                                             <div class="dateSelect">
                                                 <div class="dateItem">
                                                     <label for="dateRange">Range type</label>
-                                                    <select name="dateRange" id="selectRangeTypeIdComparison"> 
-                                                        <option value="opcion1" disabled selected hidden>Please select range type</option>
+                                                    <select name="dateRange" id="selectRangeTypeIdComparison">
+                                                        <option value="opcion1" disabled selected hidden>Please select
+                                                            range type</option>
                                                     </select>
                                                 </div>
 
@@ -332,7 +341,7 @@
                                                     <select name="dateRange" id="selectDateRangeIdComparison">
                                                         <option value="opcion1" disabled selected hidden>Please select
                                                             date range</option>
-                                                     
+
                                                     </select>
                                                 </div>
                                             </div>
@@ -342,20 +351,20 @@
 
                                 <div class="comparisonKnowledge">
                                     <!--~ Graph -->
-                                        <div class="cards-container">
-                                            <div class="stat-card red">
-                                                <p class="label">Pre Avg</p>
-                                                <p id="preAvgValue">--%</p>
-                                            </div>
-                                            <div class="stat-card yellow">
-                                                <p class="label">Post Avg</p>
-                                                <p id="postAvgValue">--%</p>
-                                            </div>
-                                            <div class="stat-card green">
-                                                <p class="label">% Change</p>
-                                                <p id="changeValue">--%</p>
-                                            </div>
+                                    <div class="cards-container">
+                                        <div class="stat-card red">
+                                            <p class="label">Pre Avg</p>
+                                            <p id="preAvgValue">--%</p>
                                         </div>
+                                        <div class="stat-card yellow">
+                                            <p class="label">Post Avg</p>
+                                            <p id="postAvgValue">--%</p>
+                                        </div>
+                                        <div class="stat-card green">
+                                            <p class="label">% Change</p>
+                                            <p id="changeValue">--%</p>
+                                        </div>
+                                    </div>
                                     <div class="comparison-layout">
                                         <div class="chart-container">
                                             <canvas id="comparisonChart"></canvas>
@@ -402,7 +411,7 @@
                         <button type="button" class="btn btn-cancel">Cancel</button>
                         <button type="button" class="btn btn-danger" id="download-EXCEL">Excel</button>
                         <button type="button" class="btn btn-danger" id="download-CSV">CSV</button>
-                        
+
                     </div>
                 </div>
             </div>
@@ -419,7 +428,14 @@
     <script src="../../assets/js/analytics/analytics.js"></script>
     <script src="../../assets/js/analytics/comparison.js"></script>
     <script src="../../assets/js/analytics/Response_Analysis.js"></script>
-    <script src="//cdn.datatables.net/2.3.1/js/dataTables.min.js"></script>
+    <script src="../../assets/js/analytics/datatables/datatables.js"></script>
+    <script src="../../assets/js/analytics/datatables/datatableButtons.js"></script>
+    <script src="../../assets/js/analytics/datatables/datatableResponsive.js"></script>
+    <script src="../../assets/js/analytics/datatables/buttonshtml.js"></script>
+    <script src="../../assets/js/analytics/datatables/buttonsprint.js"></script>
+    <script src="../../assets/js/analytics/datatables/jszip.js"></script>
+    <script src="../../assets/js/analytics/datatables/pdfmake.js"></script>
+    <script src="../../assets/js/analytics/datatables/vfs_fonts.js"></script>
     <script src="../../assets/js/analytics/filters.js"></script>
     <script src="../../assets/js/auth/logout.js"></script>
 </body>
