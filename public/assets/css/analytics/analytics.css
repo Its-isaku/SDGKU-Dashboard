@@ -132,6 +132,7 @@
     box-shadow: var(--box-shadow);
     width: 100%;
     background-color: var(--neutral-light);
+    margin-bottom: 30px;
 }
 
 .programSelect,
@@ -145,6 +146,8 @@
     display: flex;
     flex-direction: row;
     gap: 25px;
+    margin-bottom: 30px;
+
 }
 
 .surveyTypeSelect,
@@ -266,3 +269,8 @@
         box-sizing: border-box;
     }
 }
+
+.section-spacing {
+    margin-bottom: 30px;
+}
+

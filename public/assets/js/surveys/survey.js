@@ -31,16 +31,19 @@ function createTrueFalseInput(questionId, container) {
         optionDiv.className = 'option';
 
         const input = document.createElement('input');
+        const inputId = `question_${questionId}_tf_${index}`;
         input.type = 'radio';
         input.name = `question_${questionId}`;
         input.value = index === 0 ? '1' : '0';
         input.required = true;
+        input.id = inputId;
 
         const label = document.createElement('label');
         label.textContent = text;
+        label.setAttribute('for', inputId);
 
-        optionDiv.appendChild(label);
         optionDiv.appendChild(input);
+        optionDiv.appendChild(label);
         optionsContainer.appendChild(optionDiv);
     });
 
@@ -56,21 +59,24 @@ function createMultipleChoiceInput(questionId, container) {
                 const optionsContainer = document.createElement('div');
                 optionsContainer.className = 'options-container';
 
-                data.options.forEach(opt => {
+                data.options.forEach((opt, index) => {
                     const optionDiv = document.createElement('div');
                     optionDiv.className = 'option';
 
                     const input = document.createElement('input');
+                    const inputId = `question_${questionId}_opt_${index}`;
                     input.type = 'radio';
                     input.name = `question_${questionId}`;
                     input.value = opt.option_text;
                     input.required = true;
+                    input.id = inputId;
 
                     const label = document.createElement('label');
                     label.textContent = opt.option_text;
+                    label.setAttribute('for', inputId);
 
-                    optionDiv.appendChild(label);
                     optionDiv.appendChild(input);
+                    optionDiv.appendChild(label);
                     optionsContainer.appendChild(optionDiv);
                 });
 
@@ -83,6 +89,7 @@ function createMultipleChoiceInput(questionId, container) {
             container.innerHTML += `<p>Error loading options.</p>`;
         });
 }
+
 
 // Escala de Likert para preguntas tipo 1-5 o 1-3
 function createLikertScaleInput(questionId, scaleSize, container) {
@@ -199,7 +206,7 @@ function loadCohorts(programId) {
             defaultOption.disabled = true;
             defaultOption.selected = true;
 
-        if (data.success && data.cohorts.length > 0) {
+            if (data.success && data.cohorts.length > 0) {
                 const activeCohorts = data.cohorts.filter(cohort => cohort.status === 'active');
 
                 if (activeCohorts.length > 0) {
@@ -367,13 +374,13 @@ function getAnswers() {
                     let index = Array.from(options).indexOf(selectedTF);
                     console.log("INDEX: ", index);
                     if (index == 0) {
-                        index =  1;
+                        index = 1;
                         console.log("INDEX: ", index);
-                    }else {
+                    } else {
                         console.log("INDEX: ", index);
                         index = 0;
                     }
-                    answer = index.toString(); 
+                    answer = index.toString();
                 }
                 break;
             case 4:
@@ -491,5 +498,17 @@ function init() {
         submitSurvey();
     });
 }
+
+
+document.addEventListener('click', function (e) {
+    const option = e.target.closest('.option');
+    if (option && option.querySelector('input[type="radio"]')) {
+        const input = option.querySelector('input[type="radio"]');
+        input.checked = true;
+
+        // Dispara el evento 'change' por si hay validación
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+});
 
 document.addEventListener('DOMContentLoaded', init);
