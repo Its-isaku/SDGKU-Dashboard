@@ -674,7 +674,7 @@ function openAccessLinkModal(surveyId) {
 
             if (linkInput) {
                 linkInput.value = hasValidToken
-                    ? `https://citecuvp.tij.uabc.mx/SDGKU-Dashboard/public/views/surveys/survey.html?token=${data.token}`
+                    ? `http://localhost/SDGKU-Dashboard/public/views/surveys/survey.html?token=${data.token}`
                     : '';
             }
 
@@ -742,7 +742,7 @@ function openAccessLinkModal(surveyId) {
                         } else {
                             showNotification('Expiration date and token saved successfully!');
                             expirationInput.dataset.original = expirationInput.value;
-                            const newAccessLink = `https://citecuvp.tij.uabc.mx/SDGKU-Dashboard/public/views/surveys/survey.html?token=${data.token}`;
+                            const newAccessLink = `http://localhost/SDGKU-Dashboard/public/views/surveys/survey.html?token=${data.token}`;
                             linkInput.value = newAccessLink;
                             document.getElementById('access-link-survey').value = data.id;
                             document.getElementById('expire-date-label').textContent = new Date(expirationInput.value).toLocaleString();

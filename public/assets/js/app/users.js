@@ -92,12 +92,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const fullName = document.getElementById('full-name').value;
             const email = document.getElementById('email').value.trim();
 
-            if(!email.toLowerCase().endsWith('@sdgku.edu')) {
+            /* if(!email.toLowerCase().endsWith('@sdgku.edu')) {
                 showNotification('Only @sdgku.edu email domains are allowed', 'error');
                 toggleButtonLoading(submitBtn, false);
                 this.classList.remove('processing');
                 return;
-            }
+            } */
 
             const formData = {
                 full_name: fullName,
