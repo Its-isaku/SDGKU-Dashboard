@@ -5,10 +5,9 @@
     width: calc(100% - 250px);
     height: auto;
     overflow-x: hidden;
-    overflow-y: auto;
+    padding: 30px 48px;
     
 }
-
 
 /*Estilos para MiniHeader donde estan la opcion activas e inactivas, search y create*/
 /* ------------------------------------ */
@@ -18,20 +17,23 @@
     margin-bottom: 1.5rem;
     align-items: center;
     gap: 1rem;
-    padding: 20px 25px 0 25px;
+    /* padding: 20px 25px 0 25px; */
     flex-wrap: wrap;
 }
 
 .dashboardDescription{
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 5px;
     width: 600px;
 
 }
 .dashboardDescription h2{
-    margin: 0;
+    margin-bottom: 20px;
+}
+
+.dashboardDescription p{
+    font-size: 0.9rem;
+    margin-bottom: 20px;
 }
 /* div de Search y create juntos */
 /* ------------------------------------ */
@@ -311,10 +313,10 @@
 }
 
 #access-link-input {
- user-select: none;
- pointer-events: none;
- background-color: #f0f0f0;
- color: #333;
+    user-select: none;
+    pointer-events: none;
+    background-color: #f0f0f0;
+    color: #333;
 }
 
 
@@ -466,10 +468,6 @@
 }
 
 .surveyInactive-item:hover{
-    transform: translateY(0px);
-    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.15);
-}
-.survey-item:hover{
     transform: translateY(0px);
     box-shadow: 0 0px 0px rgba(0, 0, 0, 0.15);
 }

@@ -26,7 +26,8 @@ h3.program-title{
     background-color: var(--neutral-light);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    border: 1px solid var(--gray-300);
+    /* border: 1px solid var(--gray-300); */
+    border: none;
     gap: 1rem;
 }
 
@@ -167,7 +168,8 @@ h3.program-title{
     display: flex;
     flex-direction: column;
     justify-content: start;
-    border: 1px solid var(--gray-300);
+    /* border: 1px solid var(--gray-300); */
+    border: none;
 }
 
 .responseChartBox h2 {

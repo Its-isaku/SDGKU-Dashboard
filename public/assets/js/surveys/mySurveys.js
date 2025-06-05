@@ -352,10 +352,10 @@ function renderActiveSurveysAfterLeave(searchTerm = '') {
                         <p>${survey.description}</p>
                     </div>
                         <div class="survey-details">
-                            <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
-                            <span><i class="fa-solid fa-calendar-plus"></i> Last Edited: ${survey.last_edit}</span>
+                            <span><i class="fa-solid fa-calendar-check"></i> Created: ${survey.createdDate}</span>
+                            <span><i class="fa-solid fa-pen-to-square"></i> Last Edited: ${survey.last_edit}</span>
                             <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
-                            <span>Program: ${survey.program}</span>
+                            <span><i class="fa-solid fa-circle-question"></i> Program: ${survey.program}</span>
                         </div>
                     <div class="surveyActive-actions">
                         <div class="actions-container" onmouseleave="closeDropdown(this)">
@@ -387,10 +387,10 @@ function renderActiveSurveysAfterLeave(searchTerm = '') {
                         <p>${survey.description}</p>
                     </div>
                         <div class="survey-details">
-                            <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
-                            <span><i class="fa-solid fa-calendar-plus"></i> Last Edited: ${survey.last_edit}</span>
+                            <span><i class="fa-solid fa-calendar-check"></i> Created: ${survey.createdDate}</span>
+                            <span><i class="fa-solid fa-pen-to-square"></i> Last Edited: ${survey.last_edit}</span>
                             <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} questions</span>
-                            <span>Program: ${survey.program}</span>
+                            <span><i class="fa-solid fa-circle-question"></i> Program: ${survey.program}</span>
                         </div>
                     <div class="surveyActive-actions">
                         <div class="actions-container" onmouseleave="closeDropdown(this)">

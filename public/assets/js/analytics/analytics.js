@@ -1,37 +1,34 @@
 //? <|----------------------------------- cambiar de panel -----------------------------------|>
-
 function showOptionSelected(id) {
-
     const paneles = document.querySelectorAll('.panel');
     paneles.forEach(panel => panel.classList.remove('visible'));
-
 
     const buttons = document.querySelectorAll('.surveyOption');
     buttons.forEach(button => button.classList.remove('selectedOption'));
 
-
     const panelSeleccionado = document.getElementById(id);
     panelSeleccionado.classList.add('visible');
-
 
     const selectedButton = document.querySelector(`button[onclick="showOptionSelected('${id}')"]`);
     if (selectedButton) selectedButton.classList.add('selectedOption');
 
-
     if (id === 'panel4' && typeof loadReports === 'function') {
         loadReports();
     }
-}//? <|----------------------------------- async? -----------------------------------|>
+}
 
+//? <|----------------------------------- async? -----------------------------------|>
 async function loadAnalyticsStats() {
     try {
         const response = await fetch('../../../src/models/get_analytics_stats.php');
         const result = await response.json();
 
         if (result.status === 'success') {
-            document.getElementById('surveyTotalId').textContent = result.data.totalSurveys;
-        }
-        else {
+            const totalBox = document.getElementById('surveyTotalId');
+            if (totalBox) {
+                totalBox.textContent = result.data.totalSurveys;
+            }
+        } else {
             console.error('Error fetching analytics stats:', result.message);
         }
     } catch (error) {
@@ -40,13 +37,6 @@ async function loadAnalyticsStats() {
 }
 
 //? <|----------------------------------- Graphs -----------------------------------|>
-
-document.addEventListener("DOMContentLoaded", () => {
-    loadAnalyticsStats();
-    renderAllCharts();
-    renderOverviewTable();
-});
-
 function renderAllCharts() {
     renderCompletionRateChart();
     renderSurveyTypesChart();
@@ -161,25 +151,84 @@ function renderRatingDistributionChart() {
     });
 }
 
-async function renderOverviewTable() {
-    try {
-        const response = await fetch('../../../src/models/getOverviewData.php');
-        const result = await response.json();
+//?Btn FILTERS
+//!Filters
+document.addEventListener("DOMContentLoaded", () => {
+    loadAnalyticsStats();
+    renderAllCharts();
+    overviewFilterLogic();
 
-        if (result.status !== 'success') {
-            console.warn("No overview data found.");
+    const hasOverviewTable = document.querySelector('#overviewTable');
+    const hasAverageBox = document.getElementById('overallAverageDisplay');
+
+    if (hasOverviewTable && hasAverageBox) {
+        renderOverviewTable(); // inicial sin filtros
+    }
+
+    const boton = document.getElementById('submitFilterbtnOverview');
+    const selectSurveyType = document.getElementById('programIdOverview');
+    const selectYear = document.getElementById('selectYearRangeIdOverview');
+
+    boton.addEventListener('click', async function () {
+        const yearValue = selectYear.value;
+        if (!yearValue || yearValue === 'opcion') {
+            showNotification("Please select a valid year", "error");
             return;
         }
+        const completeDateSelected = getDateRangeSelectedOverview();
+        const from = completeDateSelected[0];
+        const to = completeDateSelected[1];
+        const TypeIndex = selectYear.selectedIndex;
+        const surveyTypeIndex = selectSurveyType.selectedIndex;
+        const surveyTypeId = selectSurveyType.options[surveyTypeIndex].value;
+
+        console.log("Aplicando filtros:", { from, to, surveyTypeId });
+        if (TypeIndex !== 0) {
+            showLoadingModal();
+            if (surveyTypeId !== 'all') {
+                await renderOverviewTable(from, to, surveyTypeId);
+            } else {
+                await renderOverviewTable(from, to, 'all');
+            }
+            hideLoadingModal();
+        } else {
+            showNotification("Please select a year", "error");
+        }
+    });
+});
+
+async function renderOverviewTable(from = null, to = null, programId = null) {
+    try {
+        let url = '../../../src/models/getOverviewData.php';
+
+        const params = new URLSearchParams();
+        if (from && to) {
+            params.append('from', from);
+            params.append('to', to);
+        }
+        if (programId !== null && programId !== '' && programId !== 'all') {
+            params.append('programId', programId);
+        }
+
+        if (params.toString()) {
+            url += '?' + params.toString();
+        }
+
+        const response = await fetch(url);
+        const result = await response.json();
 
         const tableSelector = '#overviewTable';
-        const tbody = document.querySelector(`${tableSelector} tbody`);
+        const tableEl = $(tableSelector);
         const averageBox = document.getElementById('overallAverageDisplay');
 
-        // Limpia tabla si ya existe
-        if ($.fn.DataTable.isDataTable(tableSelector)) {
-            $(tableSelector).DataTable().destroy();
-            $(tableSelector).empty(); // Limpia la tabla completa (incluye thead/tbody)
-            $(tableSelector).html(`
+        if (result.status !== 'success' || !result.data || result.data.length === 0) {
+            console.warn("No overview data found.");
+
+            if ($.fn.DataTable.isDataTable(tableSelector)) {
+                tableEl.DataTable().clear().destroy();
+            }
+
+            tableEl.empty().html(`
                 <thead>
                     <tr>
                         <th>No.</th>
@@ -188,36 +237,51 @@ async function renderOverviewTable() {
                         <th>Value</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                    <tr><td colspan="4" class="text-center">No data found for selected filters.</td></tr>
+                </tbody>
             `);
+
+            averageBox.textContent = 'Overall Average: 0.00';
+            return;
         }
 
-        // Rellenar la tabla
-        const tbodyElement = document.querySelector(`${tableSelector} tbody`);
+        if ($.fn.DataTable.isDataTable(tableEl[0])) {
+            tableEl.DataTable().clear().destroy();
+        }
+
+        tableEl.html(`
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Label</th>
+                    <th>Survey Type</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        `);
+
+        tableEl.find('tbody').empty();
         result.data.forEach(row => {
-            tbodyElement.innerHTML += `
+            tableEl.find('tbody').append(`
                 <tr>
                     <td>${row.no}</td>
                     <td>${row.label}</td>
                     <td>${row.category}</td>
                     <td>${row.value}</td>
                 </tr>
-            `;
+            `);
         });
 
-        // Mostrar el promedio general
         averageBox.textContent = `Overall Average: ${result.average}`;
 
-        // Inicializar DataTable con botones
-        const table = $(tableSelector).DataTable({
+        const dataTable = tableEl.DataTable({
             paging: true,
             searching: true,
             ordering: true,
             lengthMenu: [5, 10, 25, 50],
             pageLength: 10,
-            // columnDefs: [
-            //     { className: "dt-center", targets: "_all" }
-            // ],
             buttons: [
                 { extend: 'copy' },
                 { extend: 'csv' },
@@ -225,30 +289,9 @@ async function renderOverviewTable() {
                 {
                     extend: 'pdf',
                     customize: function (doc) {
-                        // Cambiar estilos de la tabla
-                        doc.styles.tableHeader.fillColor = '#1E3C5A'; // azul oscuro (como tu tabla)
+                        doc.styles.tableHeader.fillColor = '#1E3C5A';
                         doc.styles.tableHeader.color = 'white';
                         doc.styles.tableBodyEven.fillColor = '#F0F0F0';
-
-                        // Footer personalizado
-                        const pageCount = doc.pages.length;
-                        for (let i = 1; i <= pageCount; i++) {
-                            doc.pages[i].footer = function (currentPage, pageCount) {
-                                return {
-                                    columns: [
-                                        {
-                                            text: `Página ${currentPage} de ${pageCount}`,
-                                            alignment: 'center',
-                                            margin: [0, 10],
-                                            color: 'white',
-                                            fillColor: '#C81E2D' // rojo similar a cabecera
-                                        }
-                                    ]
-                                };
-                            };
-                        }
-
-                        // Para pdfmake se usa un método diferente para footer, lo siguiente es lo recomendado:
                         doc['footer'] = function (currentPage, pageCount) {
                             return {
                                 columns: [
@@ -267,34 +310,30 @@ async function renderOverviewTable() {
                 { extend: 'print' }
             ],
             responsive: true,
-            // scrollY: "400px",
             scrollCollapse: true,
-            // dom: 'Bfrtip',
             initComplete: function () {
                 $(window).on('resize', function () {
-                    table.columns.adjust();
+                    dataTable.columns.adjust();
                 });
             }
         });
 
-        // Desvincular eventos antiguos (por si acaso)
         $('#btnOverviewCopy, #btnOverviewCsv, #btnOverviewExcel, #btnOverviewPdf, #btnOverviewPrint').off('click');
 
-        // Asignar botones externos
         $('#btnOverviewCopy').on('click', function () {
-            table.button('.buttons-copy').trigger();
+            dataTable.button('.buttons-copy').trigger();
         });
         $('#btnOverviewCsv').on('click', function () {
-            table.button('.buttons-csv').trigger();
+            dataTable.button('.buttons-csv').trigger();
         });
         $('#btnOverviewExcel').on('click', function () {
-            table.button('.buttons-excel').trigger();
+            dataTable.button('.buttons-excel').trigger();
         });
         $('#btnOverviewPDF').on('click', function () {
-            table.button('.buttons-pdf').trigger();
+            dataTable.button('.buttons-pdf').trigger();
         });
         $('#btnOverviewPrint').on('click', function () {
-            table.button('.buttons-print').trigger();
+            dataTable.button('.buttons-print').trigger();
         });
 
     } catch (error) {

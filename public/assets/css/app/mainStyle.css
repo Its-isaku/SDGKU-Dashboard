@@ -33,6 +33,7 @@
     /*headings*/
     --text-subheading: 1.3rem;
     --text-heading: 1.6rem;
+    --title-size: 2rem;       /* main titles */
     --text-title: 2.5rem;
     --text-display: 3rem;   /* hero/attention text */
 
@@ -168,7 +169,7 @@ html body{
 h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
     line-height: 1.3;
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
 }
 
 h1 {
@@ -177,6 +178,7 @@ h1 {
 
 h2 {
     font-size: 2rem;
+    margin-bottom: 20px;
 }
 
 h3 {
@@ -383,7 +385,7 @@ input {
     width: 100%;
     padding: 12px;
     font-size: 1rem;
-    border: 1px solid var(--gray-300);
+    border: 1px solid var(--gray-200);
     border-radius: var(--border-radius);
 }
 
@@ -469,7 +471,7 @@ input:focus {
 .titulo {
     grid-area: title;
     display: inline-block;
-    margin-top: 1.5rem;
+    /* margin-top: 1.5rem; */
 }
 
 

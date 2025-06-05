@@ -107,11 +107,18 @@ async function getProgramIds(programTypeId) {
     }
 }
 //?---Get programs averages
-async function getProgramAvg(programTypeId) {
+async function getProgramAvg(programTypeId,startDate, endDate) {
+    const url = new URL('/SDGKU-Dashboard/src/models/Response_analysis.php', window.location.origin);
+    url.searchParams.append('action', 'getProgramsAverages');
+    url.searchParams.append('program_type_id', programTypeId);
+    url.searchParams.append('start_date', startDate);
+    url.searchParams.append('end_date', endDate);
     try {
-        const response = await fetch(`/SDGKU-Dashboard/src/models/Response_analysis.php?action=getProgramsAverages&program_type_id=${programTypeId}`);
-        const data = await response.json();
+        const response = await fetch(url.toString());
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
+        const data = await response.json();
+        if (data.status !== 'success') throw new Error(data.message || 'Error fetching data');
         if (data.status === 'success') {
             const ids = data.data.map(item => item.prog_id);
             return ids;
