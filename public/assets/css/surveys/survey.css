@@ -149,14 +149,14 @@ body {
 
 .option {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 0.75rem;
     padding: 0.6rem 1rem;
     border: 1px solid #ddd;
     border-radius: 5px;
     background: #fff;
     transition: background 0.2s ease;
-    min-height: 1.5rem;
+    cursor: pointer;
 }
 
 .option:hover {
@@ -167,6 +167,8 @@ body {
     transform: scale(1.2);
     cursor: pointer;
     margin-right: 0;
+    pointer-events: none; 
+
 }
 
 input[type="radio"] {
