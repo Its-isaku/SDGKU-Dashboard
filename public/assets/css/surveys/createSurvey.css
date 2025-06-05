@@ -22,7 +22,7 @@
     margin: 1rem 0;  
     border-radius: var(--border-radius);
     background-color: var(--neutral-light);
-    border: 1px solid var(--gray-300);
+    border: 1px solid var(--gray-200);
     box-shadow: var(--box-shadow);
 }
 
@@ -32,7 +32,7 @@
 }
 
 .infoTitle h3 {
-    margin-bottom: 0.2rem; 
+    margin-bottom: 20px; 
 }
 
 .infoTitle p {
@@ -67,17 +67,17 @@
     height: 46px;
     padding: 0.5rem;
     border-radius: var(--border-radius);
-    border: 1px solid var(--gray-300);
+    border: 1px solid var(--gray-200);
     background-color: var(--white);
     font-size: 1rem;
 }
 
 .infoInput textarea {
-    width: 100%;
+    width: 101%;
     height: 150px; 
     padding: 0.5rem;
     border-radius: var(--border-radius);
-    border: 1px solid var(--gray-300);
+    border: 1px solid var(--gray-200);
     background-color: var(--white);
     font-size: 1rem;
     resize: none; 
@@ -116,7 +116,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    width: 99%;
+    width: 100%;
     align-items: center;
 }
 
@@ -151,7 +151,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    width: 99%;
+    width: 100%;
     align-items: center;
 }
 
@@ -216,26 +216,22 @@
 }
 
 /** SurveyInfo Media*/
-
-
 /**<--------------------------->*/
 
 /* ? SurveyQuestions */
 .SurveyQuestions{
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 1rem;
     width: 81vw;
-    padding: 1rem;
+    padding: 1.5rem;
     margin: 1rem 0; 
     border-radius: var(--border-radius);
     background-color: var(--neutral-light);
-    border: 1px solid var(--gray-300);
+    border: 1px solid var(--gray-200);
     box-shadow: var(--box-shadow);
 }
 /** SurveyQuestions Media*/
-
-
 /**<--------------------------->*/
 
 /* ? QuestionContent */
@@ -243,10 +239,11 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    padding: 1rem; 
-    margin: 0 .5rem;
+    padding: 1.5rem;
+    margin: 0 auto;
     border-radius: var(--border-radius);
-    border: 1px solid var(--gray-400);
+    border: 1px solid var(--gray-200);
+    width: 98%;
 }
 
 .QuestionInput{
@@ -261,7 +258,7 @@
     width: 50%;
     padding: 0.5rem;
     border-radius: var(--border-radius);
-    border: 1px solid var(--gray-300);
+    border: 1px solid var(--gray-200);
     background-color: var(--white);
     font-size: 1rem;
 }
@@ -271,7 +268,7 @@
     height: 150px; 
     padding: 0.5rem;
     border-radius: var(--border-radius);
-    border: 1px solid var(--gray-300);
+    border: 1px solid var(--gray-3200);
     background-color: var(--white);
     font-size: 1rem;
     resize: none; 
@@ -281,6 +278,7 @@
 .QuestionContent .deleteBtn {
     background-color: var(--secondary-dominant);
     color: var(--neutral-light);
+    border: none;
 }
 
 .QuestionContent .deleteBtn:hover {
@@ -407,7 +405,7 @@
 }
 
 .backBtn{
-    background-color: var(--neutral-light);
+    background-color: transparent;
     color: var(--neutral-dark);
     border: 1px solid var(--gray-400);
 }
@@ -507,7 +505,7 @@
     height: 150px; 
     padding: 0.5rem;
     border-radius: var(--border-radius);
-    border: 1px solid var(--gray-300);
+    border: 1px solid var(--gray-200);
     background-color: var(--white);
     font-size: 1rem;
     resize: none; 
@@ -535,6 +533,7 @@
     gap: 1rem;
     width: 20%;
     font-weight: bold;
+    line-height: 1.6;
 }
 
 .TrueFalseContainer input {
@@ -578,7 +577,7 @@
     margin: 1rem 0; 
     border-radius: var(--border-radius);
     background-color: var(--neutral-light);
-    border: 1px solid var(--gray-300);
+    border: 1px solid var(--gray-200);
     box-shadow: var(--box-shadow);
     margin-bottom: 5px; 
 }
@@ -590,23 +589,9 @@
     padding: 1rem; 
     margin: 0 .5rem;
     border-radius: var(--border-radius);
-    border: 1px solid var(--gray-400);
+    border: 1px solid var(--gray-200);
 }
 
-.emailInput{
-    width: 100%;
-}
-
-.emailContainer{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    color: var(--primary-dominant); 
-    gap: 1rem;
-    padding: .5rem;
-    width: 99%;
-}
 
 .previewContainer h3 {
     color: var(--primary-dominant);
@@ -626,17 +611,6 @@
     margin-bottom: 1.5rem;
     /*! quitar si no convence*/
     padding-bottom: 1rem;
-}
-
-.expirationDate{
-    width: 200px;
-    height: 45px;
-    padding: 12px;
-    font-size: 1rem;
-    border: 1px solid var(--gray-300);
-    border-radius: var(--border-radius);
-    background-color: var(--neutral-light);
-    text-align: center;
 }
 
 /** SurveyPreview Media*/
@@ -813,7 +787,7 @@
     height: 60px;
     padding: 0.5rem;
     border-radius: var(--border-radius);
-    border: 1px solid var(--gray-300);
+    border: 1px solid var(--gray-200);
     background-color: var(--white);
     font-size: 1rem;
     resize: none; 
