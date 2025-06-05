@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--? FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!--? Main Style -->
+    <link rel="stylesheet" href="../../assets/css/app/mainStyle.css">
+    <!--? My surveys Style -->
+    <link rel="stylesheet" href="../../assets/css/surveys/surveyResults.css">
+   
+    <!--? CreateSurvey Style -->    <link rel="stylesheet" href="surveyResult.css"> 
+    <style>
+
+    </style>
+    <title>SDGKU Survey Results</title> 
+</head>
+    
+<body> 
+    <!--? Header  --> 
+    <header class="header">
+        <div class="headerLogo">
+            
+            <img src="../../assets/images/SDGKU_Small_Logo.png" alt="logo" class="small-logo">
+            <div class="full-logo"></div>
+            <h1 class="header-title">SDGKU Survey Platform</h1>
+        </div>
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="headerBtn">
+            <button class="headerBtnOut">Logout</button>
+        </div>
+    </header> 
+
+    <div class="dashboard-container">
+        <aside>
+            <nav>
+                <a href="../app/dashboard.html" class="sideLink">
+                    <i class="fa-solid fa-house-user"></i>
+                    <p>Dashboard</p>
+                </a>
+                
+                <a href="mySurveys.html" class="sideLink">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    <p>My Surveys</p>
+                </a>
+                
+                <a href="createSurvey.html" class="sideLink selectLink">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <p>Create Survey</p>
+                </a>
+                
+                <a href="../analytics/analytics.html" class="sideLink">
+                    <i class="fa-solid fa-square-poll-vertical"></i>
+                    <p>Analytics</p>
+                </a>
+                
+                <a href="../app/users.php" class="sideLink">
+                    <i class="fa-solid fa-users"></i>
+                    <p>Users</p>
+                </a>
+                
+                <a href="../app/settings.html" class="sideLink">
+                    <i class="fa-solid fa-cog"></i>
+                        <p>Settings</p> 
+                </a>
+
+                <div class="asideLogOutBtn">
+                    <button class="asideBtnOut">Logout</button>
+                </div>
+            </nav>
+        </aside>
+
+        <main>
+            <div class="principalDashboard" id="principalDashboard">
+                <!--? Empezar a trabajar aqui -->    
+                <div class="resultsSelections">
+                        <div class="surveySelect">
+                            <label for="yearRange">Year Range </label>
+                            <select name="yearRange" id="selectYearRangeIdResults">
+                                <option value="opcion" disabled selected hidden>Select year
+                                </option>
+                                <!--*  Trimester from db -->
+                            </select>
+                                <div class="dateItem">
+                                    <label for="dateRange">Range type</label>
+                                    <select name="dateRange" id="selectRangeTypeIdResults"> 
+                                        <option value="opcion1" disabled selected hidden>Select range type</option>
+                                    </select>
+                                </div>
+
+                                <div class="dateItem">
+                                    <label for="dateRange">Date Range</label>
+                                    <select name="dateRange" id="selectDateRangeIdResults">
+                                        <option value="opcion1" disabled selected hidden>Select
+                                            date range</option>
+                                        
+                                    </select>
+                                </div>
+                                    <button class="submitFilter" id="submitFilterbtnComparison">Apply filters</button>
+                        </div>
+                <!-- <div class="surveySelect">
+                                            <button class="submitFilter" id="submitFilterbtnComparison">Apply filters</button>
+                                        </div> -->
+                </div>
+                <div class="resultsInformation">
+                        <p id="typeInfo"></p>
+                        <p id="porgramInfo"></p>
+                        <p id="averageInfo"></p>
+                        <p id="responsesInfo"></p>                        
+                </div>            
+                <div id="AllProgramsTable" class="programs-table-container"></div>
+            <div class="surveyInformation" id="surveyInformationId">
+                <!--  -->
+                
+            </div>
+                <!-- Notification -->
+                <div id="notification" class="notification"></div>
+
+            </div>
+        </main>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous"></script>
+    <script src="../../assets/js/app/main.js"></script>
+    <script src="../../assets/js/surveys/survey.js"></script>
+    <script src="../../assets/js/analytics/datatables/datatables.js"></script>
+    <script src="../../assets/js/analytics/datatables/datatableButtons.js"></script>
+    <script src="../../assets/js/analytics/datatables/datatableResponsive.js"></script>
+    <script src="../../assets/js/analytics/datatables/buttonshtml.js"></script>
+    <script src="../../assets/js/analytics/datatables/buttonsprint.js"></script>
+    <script src="../../assets/js/analytics/datatables/jszip.js"></script>
+    <script src="../../assets/js/analytics/datatables/pdfmake.js"></script>
+    <script src="../../assets/js/analytics/datatables/vfs_fonts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../assets/js/analytics/analytics.js"></script>
+    <script src="../../assets/js/analytics/comparison.js"></script>
+    <script src="../../assets/js/analytics/Response_Analysis.js"></script>
+    <script src="//cdn.datatables.net/2.3.1/js/dataTables.min.js"></script>
+    <script src="../../assets/js/analytics/filters.js"></script>
+    <script src="../../assets/js/auth/logout.js"></script>
+    <script src="../../assets/js/surveys/surveyResults.js"></script>
+</body>
+</html> 
