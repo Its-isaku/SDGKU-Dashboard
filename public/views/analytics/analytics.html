@@ -121,31 +121,31 @@
                         <div id="panel1" class="panel visible">
                             <div class="overview visible">
                                 <div class="overviewCard">
-                                    <h1>Survey Overview</h1>
-                                    <p>Summary of survey completion, types, questions, and ratings</p>
-                                    <div class="comparisonSelections">
-                                        <div class="surveySelect">
-                                            <div class="programSelect">
-                                                <div class="programItem">
-
+                                    <div class="overviewFilter">
+                                        <div class="OverviewHeader">
+                                            <h1>Survey Overview</h1>
+                                            <p>Summary of survey completion, types, questions, and ratings</p>
+                                        </div>
+                                        <div class="comparisonSelections">
+                                            <div class="surveySelect">
+                                                <div class="surveySelect">
                                                     <label for="survey">Survey type</label>
                                                     <select name="survey" id="surveyOverview">
                                                         <option value="opcion" disabled selected hidden>Please select survey type</option>
                                                         <!--* Program from db -->
                                                     </select>
-
-                                                    <label for="programType">Program</label>
+                                                    
+                                                    <label for="programType" class="overviewlabel">Program</label>
                                                     <select name="program" id="programIdOverview">
                                                         <option value="opcion" disabled selected hidden>Please select
                                                             program</option>
-                                                        <!--* Program from db -->
+                                                            <!--* Program from db -->
                                                     </select>
                                                 </div>
-                                            </div>
                                             <button class="submitFilter" id="submitFilterbtnOverview">Apply
                                                 filters</button>
-                                        </div>
-
+                                            </div>
+                                            
                                         <div class="surveySelect">
                                             <label for="yearRange">Year Range</label>
                                             <select name="yearRange" id="selectYearRangeIdOverview">
@@ -162,42 +162,42 @@
                                                             range type</option>
                                                     </select>
                                                 </div>
-
+                                                
                                                 <div class="dateItem">
                                                     <label for="dateRange">Date Range</label>
                                                     <select name="dateRange" id="selectDateRangeIdOverview">
                                                         <option value="opcion1" disabled selected hidden>Please select
                                                             date range</option>
-                                                    </select>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <table id="overviewTable" class="display nowrap" style="width:100%">
-                                        <thead>
-                                            <tr>
+                                
+                                    <div class="overviewTable">
+                                        <table id="overviewTable" class="display nowrap" style="width:100%">
+                                            <thead>
+                                                <tr>
                                                 <th>No.</th>
                                                 <th>Label</th>
                                                 <th>Survey Type</th>
                                                 <th>Value</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                    <div class="exportButtons">
-                                        <button id="btnOverviewCopy" class="btnExport"><i
-                                                class="fa-solid fa-clipboard"></i></button>
-                                        <button id="btnOverviewCsv" class="btnExport"><i
-                                                class="fa-solid fa-file-csv"></i></button>
-                                        <button id="btnOverviewExcel" class="btnExport"><i
-                                                class="fa-solid fa-file-excel"></i></button>
-                                        <button id="btnOverviewPDF" class="btnExport"><i
-                                                class="fa-solid fa-file-pdf"></i></button>
-                                        <button id="btnOverviewPrint" class="btnExport"><i
-                                                class="fa-solid fa-print"></i></button>
-                                    </div>
-                                    <div id="overallAverageDisplay"
-                                        style="display: flex; justify-content: center; margin-top: 1rem; font-weight: bold;">
+                                                </tr>
+                                            </thead>
+
+                                            <tbody></tbody>
+                                        </table>
+
+                                        <div class="exportButtons">
+                                            <button id="btnOverviewCopy" class="btnExport"><i class="fa-solid fa-clipboard"></i></button>
+                                            <button id="btnOverviewCsv" class="btnExport"><i class="fa-solid fa-file-csv"></i></button>
+                                            <button id="btnOverviewExcel" class="btnExport"><i class="fa-solid fa-file-excel"></i></button>
+                                            <button id="btnOverviewPDF" class="btnExport"><i class="fa-solid fa-file-pdf"></i></button>
+                                            <button id="btnOverviewPrint" class="btnExport"><i class="fa-solid fa-print"></i></button>
+                                        </div>
+
+                                        <div id="overallAverageDisplay" style="display: flex; justify-content: center; margin-top: 1rem; font-weight: bold;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -218,20 +218,16 @@
                                         <div class="surveySelect">
                                             <label for="programType">Program Type</label>
                                             <select name="programType" id="programTypeId">
-                                                <option value="opcion" disabled selected hidden>Please select program
-                                                    type</option>
+                                                <option value="opcion" disabled selected hidden>Please select program type</option>
                                                 <option value="opcion1">Certificate Program</option>
                                                 <option value="opcion2">Bachelors</option>
                                                 <option value="opcion3">Masters</option>
                                                 <!--* Program Types from db -->
                                             </select>
-                                            <label for="selectProgram" class="programLabel">
-                                                Program
-                                                <p>(Only affects the tables)</p>
+                                            <label for="selectProgram" class="programLabel">Program<p>(Only affects the tables)</p>
                                             </label>
                                             <select name="selectProgram" id="selectProgramId">
-                                                <option value="opcion" disabled selected hidden>Please select program
-                                                </option>
+                                                <option value="opcion" disabled selected hidden>Please select program</option>
                                                 <!--*  Trimester from db -->
                                             </select>
                                             <button class="submitFilter" id="submitFilterbtn">Apply filters</button>

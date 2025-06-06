@@ -170,3 +170,42 @@ p {
 .dataTables_paginate .paginate_button:hover:not(.current) {
     background-color: #eee;
 }
+
+.overviewFilter{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: var(--neutral-light);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    border: 1px solid var(--gray-300);
+    border: none;
+    gap: 1rem;
+    margin-bottom: 4rem;
+    margin-left: 1.25rem;
+    margin-top: 1.25rem;
+}
+
+.overviewFilter label {
+    font-weight:  bold !important;
+}
+
+.OverviewHeader h1 {
+    font-size: var(--text-heading);
+    color: var(--neutral-dark);
+    margin: 0;
+}
+
+.OverviewHeader p {
+    font-size: var(--text-subheading);
+    color: var(--neutral-dark);
+    margin: 0;
+}
+
+.overviewlabel{
+    margin-top: 1rem !important;
+}
+
+.overviewTable{
+    margin-left: 1.25rem;
+}
