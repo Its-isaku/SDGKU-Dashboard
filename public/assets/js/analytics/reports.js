@@ -60,9 +60,9 @@ function renderReportCards(surveys) {
                     <span><i class="fa-solid fa-calendar-plus"></i> Created: ${survey.createdDate}</span>
                     <span><i class="fa-solid fa-clipboard-list"></i> ${survey.questions} Questions</span>
                     <span><i class="fa-solid fa-clipboard-list"></i> ${survey.responses} Responses</span>
-                    <span>Program: ${survey.program}</span>
+                    <span><i class="fa-solid fa-circle-question"></i> Program: ${survey.program}</span>
                 </div>
-                <button class="downloadBtn" data-id="${survey.id}">Download results</button>
+                <button class="downloadBtn" data-id="${survey.id}"><i class="fa-solid fa-download"></i> Download results</button>
         `;
         cardsWrapper.appendChild(card);
     });

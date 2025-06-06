@@ -44,7 +44,7 @@
             <i class="fas fa-bars"></i>
         </div>
         <div class="headerBtn">
-            <button class="headerBtnOut">Logout</button>
+            <button class="headerBtnOut">Logout <i class="fa-solid fa-right-from-bracket"></i></button>
         </div>
     </header>
     <div class="dashboard-container">
@@ -123,14 +123,21 @@
                                 <div class="overviewCard">
                                     <h1>Survey Overview</h1>
                                     <p>Summary of survey completion, types, questions, and ratings</p>
-                                    <div class="comparisonSelections analyticsFilters section-spacing">
+                                    <div class="comparisonSelections">
                                         <div class="surveySelect">
                                             <div class="programSelect">
                                                 <div class="programItem">
-                                                    <label for="programType">Survey type</label>
+
+                                                    <label for="survey">Survey type</label>
+                                                    <select name="survey" id="surveyOverview">
+                                                        <option value="opcion" disabled selected hidden>Please select survey type</option>
+                                                        <!--* Program from db -->
+                                                    </select>
+
+                                                    <label for="programType">Program</label>
                                                     <select name="program" id="programIdOverview">
                                                         <option value="opcion" disabled selected hidden>Please select
-                                                            survey type</option>
+                                                            program</option>
                                                         <!--* Program from db -->
                                                     </select>
                                                 </div>

@@ -30,7 +30,7 @@ function validateSurveyDetails() {
     const subject = document.getElementById('subject').value;
 
     if (!title || !description || !type || !programType || !program || !subject) {
-        showNotification('Please fill in all required survey details before continuing.', 'error'); 
+        showNotification('Please fill in all required survey details before continuing', 'error'); 
         return false;
     }
     return true;
@@ -77,18 +77,18 @@ function validateQuestions() {
 
         if (!title) {
             isValid = false;
-            showNotification(`Question ${index + 1}: Title is required.`, 'error');
+            showNotification(`Question ${index + 1}: Title is required`, 'error');
         }
         if (!type) {
             isValid = false;
-            showNotification(`A question Type is required.`, 'error');
+            showNotification(`A question Type is required`, 'error');
         }
         if (type === '1') { //* Multiple Choice
             const options = form.querySelectorAll('.optionInput input[type="text"]');
             
             if (options.length < 2) {
                 isValid = false;
-                showNotification(`Question ${index + 1}: Multiple choice questions must have at least 2 options.`, 'error');
+                showNotification(`Question ${index + 1}: Multiple choice questions must have at least 2 options`, 'error');
             }
             
             let allFilled = true;
@@ -97,19 +97,19 @@ function validateQuestions() {
             });
             if (!allFilled) {
                 isValid = false;
-                showNotification(`Question ${index + 1}: All multiple choice options must be filled.`, 'error');
+                showNotification(`Question ${index + 1}: All multiple choice options must be filled`, 'error');
             }
             const correct = form.querySelector('.optionInput input[type="radio"]:checked');
             if (!correct) {
                 isValid = false;
-                showNotification(`Question ${index + 1}: A correct answer must be selected for multiple choice.`, 'error');
+                showNotification(`Question ${index + 1}: A correct answer must be selected for multiple choice`, 'error');
             }
         }
         if (type === '5') { //* True/False
             const correct = form.querySelector('.QuestionTrueFalse input[type="radio"]:checked');
             if (!correct) {
                 isValid = false;
-                showNotification(`Question ${index + 1}: A correct answer must be selected for true/false.`, 'error');
+                showNotification(`Question ${index + 1}: A correct answer must be selected for true/false`, 'error');
             }
         }
     });
@@ -126,7 +126,7 @@ function handleSectionClick(clickedId) {
     if (clickedId === 'optionPreview') {
         const isValidQuestions = validateQuestions();
         if (!isValidQuestions) {
-            showNotification('Please complete all questions before previewing.', 'error'); 
+            showNotification('Please complete all questions before previewing', 'error'); 
             return;
         }
     }
@@ -331,7 +331,7 @@ function createQuestionForm(id) {
             const currentOptions = optionsContainer.querySelectorAll('.optionInput');
             
             if (currentOptions.length <= 2) {
-                showNotification('Multiple choice questions must have at least 2 options.', 'error');
+                showNotification('Multiple choice questions must have at least 2 options', 'error');
                 return;
             }
             
@@ -348,7 +348,7 @@ function createQuestionForm(id) {
             const currentOptions = optionsContainer.querySelectorAll('.optionInput');
             
             if (currentOptions.length <= 2) {
-                showNotification('Multiple choice questions must have at least 2 options.', 'error');
+                showNotification('Multiple choice questions must have at least 2 options', 'error');
                 return;
             }
             
@@ -360,7 +360,7 @@ function createQuestionForm(id) {
     container.querySelector('.deleteQuestionBtn').addEventListener('click', () => {
         const totalQuestions = document.querySelectorAll('.QuestionContent').length;
         if (totalQuestions === 1) {
-            showNotification('There must be at least one question in the survey.', 'error');
+            showNotification('There must be at least one question in the survey', 'error');
             return;
         }
         container.remove();
@@ -491,13 +491,13 @@ function updatePreview() {
 document.getElementById('btnPreviewSurvey').addEventListener('click', () => {
     const questionForms = document.querySelectorAll('.QuestionContent');
     if (questionForms.length === 0) {
-        showNotification('You must add at least one question before previewing.', 'error');
+        showNotification('You must add at least one question before previewing', 'error');
         return false;
     }
     surveyData.questions = [];
     const isValid = validateQuestions();
     if (!isValid) {
-        showNotification('Please complete all questions before previewing.', 'error');
+        showNotification('Please complete all questions before previewing', 'error');
         return;
     }
 
@@ -531,7 +531,7 @@ if (previewOption) {
         if (!isValid) {
             //* Prevent navigation to preview if validation fails
             e.preventDefault();
-            showNotification('Please complete all questions before previewing.', 'error');
+            showNotification('Please complete all questions before previewing', 'error');
             return;
         }
         //? Collect current questions into surveyData.questions (same as btnPreviewSurvey)
