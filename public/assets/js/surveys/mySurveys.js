@@ -395,7 +395,7 @@ function renderActiveSurveysAfterLeave(searchTerm = '') {
                     <div class="surveyActive-actions">
                         <div class="actions-container" onmouseleave="closeDropdown(this)">
                             <button class = "actions-btn" onclick="toggleDropdown(this)" >Actions</button>
-                            <div class="dropdown">
+                            <div class="dropdown dropdown5">
                                     <button class="dropdown-copyLink copy-link" data-id="${survey.id}">Copy Access Link</button>
                                     <button class="dropdown-action edit-survey" data-id="${survey.id}">Edit Survey</button>
                                     <button class="dropdown-action duplicate-survey" data-id="${survey.id}">Duplicate</button>

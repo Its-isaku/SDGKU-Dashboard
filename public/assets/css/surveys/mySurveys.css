@@ -390,6 +390,20 @@
     width: 150px!important;
     
 }
+
+@media (max-width: 960px) {
+    .dropdown {
+        left: 20px !important;
+        top: 194px !important;
+    }
+
+    .dropdown5{
+    top: 94px !important;
+}
+}
+
+
+
 .dropdown3{
     top: 194px;
 }
