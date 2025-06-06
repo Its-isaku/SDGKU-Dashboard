@@ -166,38 +166,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const boton = document.getElementById('submitFilterbtnOverview');
-    const selectSurveyType = document.getElementById('programIdOverview');
+    const selectProgram = document.getElementById('programIdOverview');
     const selectYear = document.getElementById('selectYearRangeIdOverview');
 
     boton.addEventListener('click', async function () {
-        const yearValue = selectYear.value;
-        if (!yearValue || yearValue === 'opcion') {
-            showNotification("Please select a valid year", "error");
-            return;
-        }
         const completeDateSelected = getDateRangeSelectedOverview();
+        const getProgramIds = await getAllProgramIds();
         const from = completeDateSelected[0];
         const to = completeDateSelected[1];
-        const TypeIndex = selectYear.selectedIndex;
-        const surveyTypeIndex = selectSurveyType.selectedIndex;
-        const surveyTypeId = selectSurveyType.options[surveyTypeIndex].value;
 
-        console.log("Aplicando filtros:", { from, to, surveyTypeId });
+        const selectSurvey = document.getElementById('surveyOverview');
+        const surveyType = selectSurvey.value;
+
+        const TypeIndex = selectYear.selectedIndex;
+        const programIndex = selectProgram.selectedIndex;
+
         if (TypeIndex !== 0) {
             showLoadingModal();
-            if (surveyTypeId !== 'all') {
-                await renderOverviewTable(from, to, surveyTypeId);
-            } else {
-                await renderOverviewTable(from, to, 'all');
+            if (programIndex !== 0) {
+                //*para el programa Seleccionado
+                await renderOverviewTable(from, to, getProgramIds[programIndex], surveyType);
+            } else if (programIndex === 0) {
+                //*para TODOS los programas
+                await renderOverviewTable(from, to, 'all', surveyType);
             }
             hideLoadingModal();
         } else {
+            //!Notificacion
             showNotification("Please select a year", "error");
         }
     });
 });
 
-async function renderOverviewTable(from = null, to = null, programId = null) {
+async function renderOverviewTable(from = null, to = null, programId = null, surveyType = null) {
     try {
         let url = '../../../src/models/getOverviewData.php';
 
@@ -209,7 +210,9 @@ async function renderOverviewTable(from = null, to = null, programId = null) {
         if (programId !== null && programId !== '' && programId !== 'all') {
             params.append('programId', programId);
         }
-
+        if (surveyType && surveyType !== 'all') {
+            params.append('surveyType', surveyType);
+        }
         if (params.toString()) {
             url += '?' + params.toString();
         }
@@ -221,14 +224,13 @@ async function renderOverviewTable(from = null, to = null, programId = null) {
         const tableEl = $(tableSelector);
         const averageBox = document.getElementById('overallAverageDisplay');
 
+        // Destruir DataTable si ya existe
+        if ($.fn.DataTable.isDataTable(tableSelector)) {
+            tableEl.DataTable().clear().destroy();
+        }
+
         if (result.status !== 'success' || !result.data || result.data.length === 0) {
-            console.warn("No overview data found.");
-
-            if ($.fn.DataTable.isDataTable(tableSelector)) {
-                tableEl.DataTable().clear().destroy();
-            }
-
-            tableEl.empty().html(`
+            tableEl.html(`
                 <thead>
                     <tr>
                         <th>No.</th>
@@ -246,10 +248,7 @@ async function renderOverviewTable(from = null, to = null, programId = null) {
             return;
         }
 
-        if ($.fn.DataTable.isDataTable(tableEl[0])) {
-            tableEl.DataTable().clear().destroy();
-        }
-
+        // Crear nueva tabla con datos
         tableEl.html(`
             <thead>
                 <tr>
@@ -259,24 +258,18 @@ async function renderOverviewTable(from = null, to = null, programId = null) {
                     <th>Value</th>
                 </tr>
             </thead>
-            <tbody></tbody>
         `);
 
-        tableEl.find('tbody').empty();
-        result.data.forEach(row => {
-            tableEl.find('tbody').append(`
-                <tr>
-                    <td>${row.no}</td>
-                    <td>${row.label}</td>
-                    <td>${row.category}</td>
-                    <td>${row.value}</td>
-                </tr>
-            `);
-        });
-
-        averageBox.textContent = `Overall Average: ${result.average}`;
+        const dataSet = result.data.map(row => [row.no, row.label, row.category, row.value]);
 
         const dataTable = tableEl.DataTable({
+            data: dataSet,
+            columns: [
+                { title: "No." },
+                { title: "Label" },
+                { title: "Survey Type" },
+                { title: "Value" }
+            ],
             paging: true,
             searching: true,
             ordering: true,
@@ -318,6 +311,9 @@ async function renderOverviewTable(from = null, to = null, programId = null) {
             }
         });
 
+        averageBox.textContent = `Overall Average: ${result.average}`;
+
+        // Botones
         $('#btnOverviewCopy, #btnOverviewCsv, #btnOverviewExcel, #btnOverviewPdf, #btnOverviewPrint').off('click');
 
         $('#btnOverviewCopy').on('click', function () {

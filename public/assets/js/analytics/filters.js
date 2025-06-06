@@ -3,22 +3,37 @@
 
 async function overviewFilterLogic() {
     const surveyTypes = await getAllSurveyType();
-    const surveyTypeSelect = document.getElementById('programIdOverview');
-    surveyTypeSelect.innerHTML = '';
 
-    const allOption = document.createElement('option');
-    allOption.value = 'all';
-    allOption.textContent = 'All Survey Types';
-    surveyTypeSelect.appendChild(allOption);
+    const surveySelect = document.getElementById('surveyOverview');
+    surveySelect.innerHTML = '';
 
-    surveyTypes.forEach(item => {
+    const allSurveyOption = document.createElement('option');
+    allSurveyOption.value = 'all';
+    allSurveyOption.textContent = 'All Survey Types';
+    surveySelect.appendChild(allSurveyOption);
+
+    surveyTypes.forEach(type => {
         const option = document.createElement('option');
-        option.value = item.survey_type_id;
-        option.textContent = item.type_name;
-        surveyTypeSelect.appendChild(option);
+        option.value = type.survey_type_id;
+        option.textContent = type.type_name;
+        surveySelect.appendChild(option);
     });
 
-    let dateRangeOption = ['Annual', 'Semiannual', 'Trimester'];
+    const dbLabels = await getAllProgramNames();
+    const programOption = document.getElementById('programIdOverview');
+    programOption.innerHTML = '';
+    const allOption = document.createElement('option');
+    allOption.value = 'all';
+    allOption.textContent = 'All Programs';
+    programOption.appendChild(allOption);
+    dbLabels.forEach(programName => {
+        const option = document.createElement('option');
+        option.value = programName;
+        option.textContent = programName;
+        programOption.appendChild(option);
+    });
+
+    let dateRangeOption = ['Annual', 'Semiannual', 'Quarterly'];
     const select = document.getElementById('selectYearRangeIdOverview');
     const currentYear = new Date().getFullYear();
     const startYear = 2020;
@@ -40,7 +55,7 @@ async function overviewFilterLogic() {
         });
     });
 
-    let trimesterRange = ['Select trimester range', 'January - April', 'May - August', 'September - December'];
+    let quarterlyRange = ['Select quarterly range', 'January - March', 'April - June', 'July - September', 'October - December'];
     let semiannualRange = ['Select semiannual range', 'January - June', 'July - December'];
     const selectElement = document.getElementById('selectRangeTypeIdOverview');
     selectElement.addEventListener('change', async function () {
@@ -62,9 +77,10 @@ async function overviewFilterLogic() {
             });
         }
         if (selectedValue == '2') {
+
             const rangeOption = document.getElementById('selectDateRangeIdOverview');
             rangeOption.innerHTML = '';
-            trimesterRange.forEach(range => {
+            quarterlyRange.forEach(range => {
                 const option = document.createElement('option');
                 option.value = range;
                 option.textContent = range;
@@ -96,24 +112,28 @@ function getDateRangeSelectedOverview() {
         completeDateSelected[0] = startDateSelect;
         completeDateSelected[1] = endDateSelect;
         return completeDateSelected;
-    } else if(semiOrQuarterly === 2){
-    switch (index) {
-        case 1:
-            startDateMonths = '-01-01';
-            endDateMonths = '-05-01';
-            break;
-        case 2:
-            startDateMonths = '-05-01';
-            endDateMonths = '-09-01';
-            break;
-        case 3:
-            startDateMonths = '-09-01';
-            endDateMonths = '-12-31';
-            break;
-        default:
-            startDateMonths = '-01-01';
-            endDateMonths = '-12-31';
-    }
+    } else if (semiOrQuarterly === 2) {
+        switch (index) {
+            case 1:
+                startDateMonths = '-01-01';
+                endDateMonths = '-04-01';
+                break;
+            case 2:
+                startDateMonths = '-04-01';
+                endDateMonths = '-07-01';
+                break;
+            case 3:
+                startDateMonths = '-07-01';
+                endDateMonths = '-010-01';
+                break;
+            case 4:
+                startDateMonths = '-10-01';
+                endDateMonths = '-12-31';
+                break;
+            default:
+                startDateMonths = '-01-01';
+                endDateMonths = '-12-31';
+        }
         startDateSelect = `${valorYear}${startDateMonths}`;
         endDateSelect = `${valorYear}${endDateMonths}`;
         completeDateSelected[0] = startDateSelect;
@@ -192,4 +212,3 @@ async function getAllSurveyType() {
         throw error;
     }
 }
-
