@@ -8,6 +8,43 @@
     padding: 30px 48px;
 }
 /** Dashboard Media*/
+@media (max-width: 1200px) and (min-width: 961px) {
+    .principalDashboard {
+        padding-left: 2rem;
+        padding-right: 2rem;
+        box-sizing: border-box;
+        width: 100%;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    aside {
+        width: 250px; 
+    }
+    
+    .principalDashboard {
+        margin-left: 250px; 
+        width: calc(100% - 250px); 
+        padding-left: 1rem;
+        padding-right: 1rem;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 960px) {
+    aside {
+        display: none; 
+    }
+    
+    .principalDashboard {
+        margin-left: 0 !important; 
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        width: 100%;
+        overflow-x: hidden;
+        box-sizing: border-box;
+    }
+}
 
 
 /**<--------------------------->*/
@@ -216,6 +253,82 @@
 }
 
 /** SurveyInfo Media*/
+@media (max-width: 1700px) and (min-width: 1200px) {
+    .SurveyInfo {
+        width: 100%;
+        padding: 1rem;
+    }
+    
+    .infoInput,
+    .infoTypeDate {
+        width: 100%;
+    }
+    
+    .infoTypeDate {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+}
+
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    .titulo {
+        margin-left: 2rem;
+    }
+
+    .SurveyInfo {
+        width: auto;
+        padding: 1rem;
+        margin: 1rem 2rem;
+    }
+    
+    .infoInput,
+    .infoTypeDate {
+        width: 100%;
+    }
+    
+    .infoTypeDate {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 960px) {
+    .titulo {
+        margin-left: 2rem;
+    }
+
+    .programContainer{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cohortContainer {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .QuestionInput select {
+        width: 100% !important;
+    }
+
+    .SurveyInfo {
+        width: auto;
+        padding: 1rem;
+    }
+    
+    .infoInput,
+    .infoTypeDate {
+        width: 100%;
+    }
+    
+    .infoTypeDate {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        gap: 1rem;
+    }
+}
 /**<--------------------------->*/
 
 /* ? SurveyQuestions */
@@ -232,6 +345,26 @@
     box-shadow: var(--box-shadow);
 }
 /** SurveyQuestions Media*/
+@media (max-width: 1200px) and (min-width: 961px) {
+    .SurveyQuestions {
+        width: 100%;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    .SurveyQuestions {
+        width: 100%;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 960px) {
+    .SurveyQuestions {
+        width: 100%;
+        padding: 1rem;
+    }
+}
 /**<--------------------------->*/
 
 /* ? QuestionContent */
@@ -319,6 +452,26 @@
     font-weight: bold;
 }
 /** QuestionContent Media*/
+@media (max-width: 1200px) and (min-width: 961px) {
+    .QuestionInput,
+    .QuestionTitle {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    .QuestionInput,
+    .QuestionTitle {
+        width: 100%;
+    }
+}
+
+@media (max-width: 960px) {
+    .QuestionInput,
+    .QuestionTitle {
+        width: 100%;
+    }
+}
 
 
 /**<--------------------------->*/
@@ -436,6 +589,59 @@
 
 }
 /** QuestionMultiple Media*/
+@media (max-width: 1200px) and (min-width: 961px) {
+    .QuestionEndBtn button,
+    .btnAddQuestion {
+        width: 100%;
+    }
+    
+    .QuestionEndBtn {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .QuestionMultipleContainer {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    .QuestionEndBtn button,
+    .btnAddQuestion {
+        width: 100%;
+    }
+    
+    .QuestionEndBtn {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .QuestionMultipleContainer {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 960px) {
+    .QuestionEndBtn button,
+    .btnAddQuestion {
+        width: 100%;
+    }
+    
+    .QuestionEndBtn {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .QuestionMultipleContainer {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
 
 
 /**<--------------------------->*/
@@ -487,6 +693,29 @@
     white-space: nowrap;      
 }
 /** QuestionGrade Media*/
+@media (max-width: 1200px) and (min-width: 961px) {
+    .gradeContainer {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    .gradeContainer {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 960px) {
+    .gradeContainer {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
 
 
 /**<--------------------------->*/
@@ -512,6 +741,23 @@
     
 }
 /** QuestionOpen Media*/
+@media (max-width: 1200px) and (min-width: 961px) {
+    .OpenInput textarea {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    .OpenInput textarea {
+        width: 100%;
+    }
+}
+
+@media (max-width: 960px) {
+    .OpenInput textarea {
+        width: 100%;
+    }
+}
 
 
 /**<--------------------------->*/
@@ -563,6 +809,29 @@
     margin-left: 0.5rem; 
 }
 /** QuestionTrueFalse Media*/
+@media (max-width: 1200px) and (min-width: 961px) {
+    .TrueFalseContainer {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    .TrueFalseContainer {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 960px) {
+    .TrueFalseContainer {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
 
 
 /**<--------------------------->*/
@@ -614,6 +883,39 @@
 }
 
 /** SurveyPreview Media*/
+@media (max-width: 1200px) and (min-width: 961px) {
+    .SurveyPreview {
+        width: 100%;
+        padding: 1rem;
+    }
+    
+    .previewContainer {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    .SurveyPreview {
+        width: 100%;
+        padding: 1rem;
+    }
+    
+    .previewContainer {
+        width: 100%;
+    }
+}
+
+@media (max-width: 960px) {
+    .SurveyPreview {
+        width: 100%;
+        padding: 1rem;
+    }
+    
+    .previewContainer {
+        flex-direction: column;
+        width: 100%;
+    }
+}
 
 
 /**<--------------------------->*/
@@ -685,6 +987,29 @@
     align-items: center;    
 }
 /** PreviewMultipleOptions Media*/
+@media (max-width: 1200px) and (min-width: 961px) {
+    .previewMultipleOptions {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    .previewMultipleOptions {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 960px) {
+    .previewMultipleOptions {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
 
 
 /**<--------------------------->*/
@@ -727,6 +1052,29 @@
     margin-left: 0.5rem; 
 }
 /** PreviewGrade5 Media*/
+@media (max-width: 1200px) and (min-width: 961px) {
+    .previewGrade5 {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    .previewGrade5 {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 960px) {
+    .previewGrade5 {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
 
 
 /**<--------------------------->*/
@@ -769,6 +1117,29 @@
     margin-left: 0.5rem; 
 }
 /** PreviewGrade3 Media*/
+@media (max-width: 1200px) and (min-width: 961px) {
+    .previewGrade3 {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    .previewGrade3 {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 960px) {
+    .previewGrade3 {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
 
 
 /**<--------------------------->*/
@@ -794,6 +1165,23 @@
     
 }
 /** PreviewOpenText Media*/
+@media (max-width: 1200px) and (min-width: 961px) {
+    .previewOpenText textarea {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    .previewOpenText textarea {
+        width: 100%;
+    }
+}
+
+@media (max-width: 960px) {
+    .previewOpenText textarea {
+        width: 100%;
+    }
+}
 
 
 /**<--------------------------->*/
@@ -836,6 +1224,29 @@
     margin-left: 0.5rem; 
 }
 /** PreviewTrueFalse Media*/
+@media (max-width: 1200px) and (min-width: 961px) {
+    .previewTrueFalse {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    .previewTrueFalse {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 960px) {
+    .previewTrueFalse {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
 
 
 /**<--------------------------->*/
@@ -846,227 +1257,28 @@
     flex-direction: row;
 }
 /** Misc Media*/
-
+@media (max-width: 1200px) and (min-width: 961px) {
+    .QuestionMultipleContainer {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
 
 @media (max-width: 1200px) and (min-width: 961px) {
-    .principalDashboard {
-      padding-left: 2rem;
-      padding-right: 2rem;
-      box-sizing: border-box;
-      width: 100%;
-    }
-  
-    .SurveyOptions,
-    .SurveyInfo,
-    .SurveyQuestions,
-    .SurveyPreview {
-      width: 100%;
-      padding: 1rem;
-    }
-  
-    .infoInput,
-    .QuestionInput,
-    .QuestionTitle,
-    .OpenInput textarea,
-    .previewOpenText textarea,
-    .previewContainer {
-      width: 100%;
-    }
-  
-    .infoTypeDate,
-    .emailContainer {
-      flex-wrap: wrap;
-      gap: 1rem;
-      width: 100%;
-    }
-  
-    .expirationDate,
-    .QuestionEndBtn button,
-    .btnAddQuestion {
-      width: 100%;
-    }
-  
-    .QuestionEndBtn {
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-  
-    .gradeContainer,
-    .TrueFalseContainer,
-    .previewGrade3,
-    .previewGrade5,
-    .previewTrueFalse,
-    .previewMultipleOptions,
     .QuestionMultipleContainer {
-      flex-direction: column;
-      width: 100%;
-      align-items: flex-start;
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
     }
-  
-    .previewEmailBox {
-      width: 100%;
-    }
-  }
-  
-  @media (max-width: 1200px) and (min-width: 961px) {
-    aside {
-      width: 250px; 
-    }
-  
-    .principalDashboard {
-      margin-left: 250px; 
-      width: calc(100% - 250px); 
-      padding-left: 1rem;
-      padding-right: 1rem;
-      box-sizing: border-box;
-    }
-  
-    .SurveyOptions {
-      flex-direction: row;
-      justify-content: space-between;
-      gap: 0.5rem;
-    }
-  
-    .surveyOption {
-      flex: 1;
-      text-align: center;
-      padding: 0.5rem;
-      font-size: 0.9rem;
-    }
-  
-    .surveyOption h3 {
-      font-size: 1rem;
-    }
-  
-    .SurveyInfo,
-    .SurveyQuestions,
-    .SurveyPreview {
-      width: 100%;
-      padding: 1rem;
-    }
-  
-    .infoInput,
-    .QuestionInput,
-    .QuestionTitle,
-    .OpenInput textarea,
-    .previewOpenText textarea,
-    .previewContainer {
-      width: 100%;
-    }
-  
-    .infoTypeDate,
-    .emailContainer {
-      flex-wrap: wrap;
-      gap: 1rem;
-      width: 100%;
-    }
-  
-    .expirationDate,
-    .QuestionEndBtn button,
-    .btnAddQuestion {
-      width: 100%;
-    }
-  
-    .QuestionEndBtn {
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-  
-    .gradeContainer,
-    .TrueFalseContainer,
-    .previewGrade3,
-    .previewGrade5,
-    .previewTrueFalse,
-    .previewMultipleOptions,
-    .QuestionMultipleContainer {
-      flex-direction: column;
-      width: 100%;
-      align-items: flex-start;
-    }
-  
-    .previewEmailBox {
-      width: 100%;
-    }
-  }
-  
+}
 
-  @media (max-width: 960px) {
-        aside {
-          display: none; 
-        }
-      
-        .principalDashboard {
-          margin-left: 0 !important; 
-          padding-left: 1.5rem;
-          padding-right: 1.5rem;
-          width: 100%;
-          overflow-x: hidden;
-          box-sizing: border-box;
-        }
-      
-        .SurveyOptions {
-          flex-direction: column;
-          width: 100%;
-        }
-      
-        .surveyOption {
-          width: 100%;
-          padding: 0.8rem;
-        }
-      
-        .SurveyInfo,
-        .SurveyQuestions,
-        .SurveyPreview {
-          width: 100%;
-          padding: 1rem;
-        }
-      
-        .infoInput,
-        .QuestionInput,
-        .QuestionTitle,
-        .OpenInput textarea,
-        .previewOpenText textarea,
-        .previewContainer {
-          width: 100%;
-        }
-      
-        .infoTypeDate,
-        .emailContainer {
-          flex-direction: column;
-          align-items: flex-start;
-          width: 100%;
-          gap: 1rem;
-        }
-      
-        .expirationDate,
-        .QuestionEndBtn button,
-        .btnAddQuestion {
-          width: 100%;
-        }
-      
-        .QuestionEndBtn {
-          flex-direction: column;
-          gap: 1rem;
-        }
-      
-        .gradeContainer,
-        .TrueFalseContainer,
-        .previewGrade3,
-        .previewGrade5,
-        .previewTrueFalse,
-        .previewMultipleOptions,
-        .QuestionMultipleContainer {
-          flex-direction: column;
-          width: 100%;
-          align-items: flex-start;
-        }
-      
-        .previewEmailBox {
-          width: 100%;
-        }
-      
-        .previewContainer {
-          flex-direction: column;
-          width: 100%;
-        }
-      }
+@media (max-width: 960px) {
+    .QuestionMultipleContainer {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+}
+
+

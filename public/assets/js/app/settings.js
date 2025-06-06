@@ -358,7 +358,7 @@ if (addSectionBtn) {
             return;
         }
         const rawSection = newSectionInput.value.trim();
-        const sectionName = rawSection.startsWith('SC-') ? rawSection : `SC-${rawSection}`; //* add SC- prefix
+        const sectionName = rawSection.startsWith('SS-') ? rawSection : `SS-${rawSection}`; //* add SS- prefix
         const programId = document.getElementById('program').value;
         if (!programId) {
             showNotification('Please select a program before adding a section.', 'error');
@@ -377,7 +377,7 @@ if (addSectionBtn) {
         .then(data => {
             if (data.status === 'success') {
                 showNotification('Section added successfully!', 'success');
-                //* Refresh the section list (solo SC-)
+                //* Refresh the section list (solo SS-)
                 fetch('/SDGKU-Dashboard/src/models/manageSurveyData.php?action=getCohorts')
                     .then(res => res.json())
                     .then(data => {
@@ -386,7 +386,7 @@ if (addSectionBtn) {
                         sectionSelect.innerHTML = '<option value="" disabled selected hidden>Choose a Section</option>';
                         if (data.status === 'success') {
                             data.data
-                                .filter(section => section.cohort.startsWith('SC-'))
+                                .filter(section => section.cohort.startsWith('SS-'))
                                 .forEach(section => {
                                     const option = document.createElement('option');
                                     option.value = section.cohort_id;

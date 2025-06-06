@@ -517,6 +517,62 @@ input:focus {
     pointer-events: none;
 }
 
+/** SurveyOptions Responsive Media Queries */
+@media (max-width: 1600px) and (min-width: 1200px) {
+    .SurveyOptions {
+        max-width: 60%;
+        min-width: 40%;
+        width: auto;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    .SurveyOptions {
+        width: 80%;
+        margin-left: 2rem;
+    }
+}
+
+@media (max-width: 960px) {
+    .SurveyOptions {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.2rem;
+        padding: 8px;
+    }
+    
+    .surveyOption {
+        width: 100%;
+        padding: 8px 16px;
+        font-size: 1rem;
+        border: none;
+    }
+    
+    .surveyOption h3 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 550px) {
+    .SurveyOptions {
+        flex-direction: column !important;
+        width: 100%;
+        gap: 0.2rem;
+        padding: 8px;
+    }
+    
+    .surveyOption {
+        width: 100%;
+        padding: 8px 16px;
+        font-size: 1rem;
+        border: none;
+    }
+    
+    .surveyOption h3 {
+        font-size: 1.1rem;
+    }
+}
+
 /*? modal windows*/
 .modal {
     display: none;

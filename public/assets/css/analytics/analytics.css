@@ -46,16 +46,114 @@
     font-weight: bold;
     width: 100%;
 }
-/*~ Analytics Menu Media */
+
+/*? Sected options */
+.SurveyOptions {
+    background-color: var(--gray-200);
+    display: flex;
+    flex-direction: row;
+    width: 80% !important;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: var(--border-radius);
+    padding: 5px;
+}
+
+.surveyOption {
+    width: 100%;
+    margin: 0;
+    padding: 4px 10px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    flex: 1;
+    font-size: 0.9rem;
+    text-align: center;
+    background-color: transparent; 
+}
+
+.surveyOption:not(.selectedOption):hover {
+    background-color: var(--gray-100);
+}
+
+.surveyOption h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--gray-800);
+}
+
+.selectedOption {
+    background-color: var(--neutral-light);
+    font-weight: bold;
+    border: none;
+    pointer-events: none;
+}
+
+/** SurveyOptions Responsive Media Queries */
+@media (max-width: 1600px) and (min-width: 1200px) {
+    .SurveyOptions {
+        max-width: 100% !important;
+        width: auto !important;
+    }
+
+    .surveyOption {
+        width: 100%;
+        padding: 8px 16px;
+        font-size: 1rem;
+        border: none;
+    }
+    .surveyOption h3 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    .SurveyOptions {
+        display: flex;
+        flex-direction: column;
+        width: 100% !important;
+        margin-left: 0 ;
+    }
+}
+
 @media (max-width: 960px) {
     .SurveyOptions {
         flex-direction: column;
-        width: 100%;
+        width: 100% !important;
+        gap: 0.2rem;
+        padding: 8px;
     }
+    
     .surveyOption {
         width: 100%;
-        padding: 0.8rem;
-        text-align: center;
+        padding: 8px 16px;
+        font-size: 1rem;
+        border: none;
+    }
+    
+    .surveyOption h3 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 550px) {
+    .SurveyOptions {
+        flex-direction: column !important;
+        width: 100%;
+        gap: 0.2rem;
+        padding: 8px;
+    }
+    
+    .surveyOption {
+        width: 100%;
+        padding: 8px 16px;
+        font-size: 1rem;
+        border: none;
+    }
+    
+    .surveyOption h3 {
+        font-size: 1.1rem;
     }
 }
 

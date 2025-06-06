@@ -345,3 +345,10 @@
     font-weight: 500;
     transition: background-color 0.2s;
 }
+
+@media (max-width: 1200px) and (min-width: 961px) {
+    .SurveyOptions {
+        width: 80%;
+        margin-left: 0 !important;
+    }
+}

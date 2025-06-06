@@ -71,7 +71,7 @@
                 <!--? Empezar a trabajar aqui -->
                     <h2 class="settings-title">Settings</h2>
                 
-                    <div class="createSurveyOptions" id="createSurveyOptions">
+                    <div class="SurveyOptions" id="createSurveyOptions">
                         <div class="surveyOption selectedOption" id="security">
                             <h3>Security</h3>
                         </div>
@@ -175,11 +175,11 @@
 
                                     <div class="manageDataInput">
                                         <div class="addCohort">
-                                            <label for="addSection">Add Section(SC)</label>
+                                            <label for="addSection">Add Session(SS)</label>
                                             <p>(Depends on program)</p>
                                         </div>
                                         <div class="addCohortContainer">
-                                            <input type="text" id="newSection" placeholder="Enter new SC-(Section number)" required>
+                                            <input type="text" id="newSection" placeholder="Enter new SS-(Session number)" required>
                                             <button id="addSection">Add</button>
                                         </div>
                                     </div>
@@ -226,7 +226,7 @@
                                         </div>
                                         <div class="deleteContainer">
                                             <select id="deleteCohort" required>
-                                                <option value="" disabled selected hidden>Choose a Cohort/Section to delete</option>
+                                                <option value="" disabled selected hidden>Choose a Cohort/Session to delete</option>
                                                 <!--! options from the db -->
                                             </select>
                                             <button id="deleteCohortBtn">Delete</button>
