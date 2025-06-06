@@ -91,7 +91,7 @@ function createMultipleChoiceInput(questionId, container) {
 }
 
 
-// Escala de Likert para preguntas tipo 1-5 o 1-3
+// Escala de Likert para preguntas tipo 1-5
 function createLikertScaleInput(questionId, scaleSize, container) {
     const type = scaleSize === 5 ? 'Linkert_1_5' : 'Linkert_1_3';
     fetch(`/SDGKU-Dashboard/src/models/survey.php?action=getQuestionOptions&questionId=${questionId}&type=${type}`)
@@ -117,7 +117,7 @@ function createLikertScaleInput(questionId, scaleSize, container) {
                 // Fila con opciones
                 const row = document.createElement('tr');
                 const labelCell = document.createElement('td');
-                labelCell.textContent = 'Your answer:';
+                labelCell.textContent = '';
                 row.appendChild(labelCell);
 
                 data.options.forEach(opt => {
@@ -131,9 +131,9 @@ function createLikertScaleInput(questionId, scaleSize, container) {
                     row.appendChild(td);
                 });
 
-                table.appendChild(header);
                 table.appendChild(row);
                 wrapper.appendChild(table);
+                table.appendChild(header); //! errrrrrrrrrrrrrrrrrrrrrrrr
                 container.appendChild(wrapper);
             } else {
                 container.innerHTML += `<p>No scale options available.</p>`;
@@ -213,10 +213,10 @@ function loadCohorts(programId) {
                     const programType = activeCohorts[0].program_type_id;
 
                     if (programType === 2 || programType === 3) {
-                        defaultOption.textContent = 'Select your section';
-                        selectLabel.innerHTML = 'Your Section <span class="required">*</span>';
+                        defaultOption.textContent = 'Select your Session';
+                        selectLabel.innerHTML = 'Your Session <span class="required">*</span>';
                     } else {
-                        defaultOption.textContent = 'Select your cohort';
+                        defaultOption.textContent = 'Select your Cohort';
                         selectLabel.innerHTML = 'Your Cohort <span class="required">*</span>';
                     }
 
@@ -254,14 +254,14 @@ function validateToken(token) {
             if (data.success) {
                 renderSurvey(data);
             } else {
-                showNotification(data.message || 'Invalid or expired survey token.', 'error');
+                showNotification(data.message || 'Invalid or expired survey token', 'error');
                 document.getElementById('surveyContent').style.display = 'none';
                 document.querySelector('.survey-meta').style.display = 'none';
                 document.getElementById('surveyExpired').style.display = 'block';
             }
         })
         .catch(() => {
-            showNotification('An error occurred validating the token.', 'error');
+            showNotification('An error occurred validating the token', 'error');
             document.getElementById('surveyContent').style.display = 'none';
             document.querySelector('.survey-meta').style.display = 'none';
             document.getElementById('surveyExpired').style.display = 'block';
@@ -286,12 +286,12 @@ function handleNext(token) {
     const isValidEmail = email.endsWith('@sdgku.edu');
 
     if (!email || !isValidEmail) {
-        showNotification('Please enter a valid institutional email (@sdgku.edu).', 'error');
+        showNotification('Please enter a valid institutional email (@sdgku.edu)', 'error');
         return;
     }
 
     if (!cohort) {
-        showNotification('Please select your cohort.', 'error');
+        showNotification('Please select your cohort', 'error');
         return;
     }
 
@@ -308,7 +308,7 @@ function handleNext(token) {
                             );
 
                             if (alreadyResponded) {
-                                showNotification('You already answered the survey.', 'error');
+                                showNotification('You already answered the survey', 'error');
                                 return;
                             }
 
@@ -317,9 +317,9 @@ function handleNext(token) {
                             document.getElementById('infoSection').style.display = 'none';
                             document.getElementById('questionSection').style.display = 'block';
                             document.querySelector('.survey-meta').style.display = 'block';
-                            showNotification('Your information has been validated.', 'success');
+                            showNotification('Your information has been validated', 'success');
                         } else {
-                            showNotification(data.message || 'Could not validate responses.', 'error');
+                            showNotification(data.message || 'Could not validate responses', 'error');
                             return;
                         }
                     })
@@ -407,7 +407,7 @@ function submitSurvey() {
 
     // Validaciones iniciales
     if (!email || !cohortId || !surveyId || !token) {
-        showNotification('Missing required data.', 'error');
+        showNotification('Missing required data', 'error');
         return;
     }
 
@@ -431,7 +431,7 @@ function submitSurvey() {
         if (!answered) {
             item.classList.add('missing-answer');
             item.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            showNotification('Please answer all required questions.', 'error');
+            showNotification('Please answer all required questions', 'error');
             return;
         } else {
             item.classList.remove('missing-answer');
@@ -460,11 +460,11 @@ function submitSurvey() {
                 showNotification('Survey submitted successfully!', 'success');
                 successSurvey();
             } else {
-                showNotification(data.message || 'Submission failed.', 'error');
+                showNotification(data.message || 'Submission failed', 'error');
             }
         })
         .catch(() => {
-            showNotification('Network error while submitting.', 'error');
+            showNotification('Network error while submitting', 'error');
         });
 }
 
@@ -476,7 +476,7 @@ function init() {
     const token = new URLSearchParams(window.location.search).get('token');
     if (!token) {
         document.getElementById('surveyTitle').textContent = 'Invalid or expired survey token.';
-        showNotification('Invalid or expired survey token.', 'error');
+        showNotification('Invalid or expired survey token', 'error');
         document.getElementById('surveyContent').style.display = 'none';
         return;
     }

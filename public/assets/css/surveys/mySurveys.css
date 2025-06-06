@@ -457,9 +457,9 @@
 }
 
 .surveyInactiveStatus p{
-    color: var(--primary-dominant);
+    color: var(--secondary-dominant);
     border-style: solid;
-    border-width: 2px;
+    border-width: 1px;
     border-color: var(--secondary-dominant);
     border-radius: 20px;
     width: 80px;
@@ -506,7 +506,7 @@
 }
 
 .activate-btn:hover {
-    background-color: var(--success-color);
+    background-color: var(--supplementary-color);
     color: var(--neutral-light);
     border-color: transparent;
     transition: transform 0.2s ease-in-out;

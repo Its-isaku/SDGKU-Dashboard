@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         '/SDGKU-Dashboard/src/models/mySurveys.php',
                         { action: 'deleteSurvey', id: id },
                         () => {
-                            showNotification('Survery deleted successfully');
+                            showNotification('Survery deleted successfully!');
                             renderActiveSurveys();
                             closeAllModals();
                         },
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     '/SDGKU-Dashboard/src/models/mySurveys.php',
                     { action: 'deleteSurvey', id: id },
                     () => {
-                        showNotification('Survey deleted successfully');
+                        showNotification('Survey deleted successfully!');
                         renderActiveSurveys();
                         closeAllModals();
                     },
@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 '/SDGKU-Dashboard/src/models/mySurveys.php',
                 { action: 'duplicateSurvey', id: id },
                 () => {
-                    showNotification('Survey duplicated successfully');
+                    showNotification('Survey duplicated successfully!');
                     setTimeout(() => {
                         window.location.reload();
                     }, 1000);
@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 '/SDGKU-Dashboard/src/models/mySurveys.php',
                 { action: 'deactivateSurvey', id: id },
                 () => {
-                    showNotification('Survey deactivated successfully');
+                    showNotification('Survey deactivated successfully!');
                     renderActiveSurveys();
                     closeAllModals();
                 },
@@ -205,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 '/SDGKU-Dashboard/src/models/mySurveys.php',
                 { action: 'activateSurvey', id: id },
                 () => {
-                    showNotification('Survey activated successfully');
+                    showNotification('Survey activated successfully!');
                     renderInactiveSurveys();
                     closeAllModals();
                 },
@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const expirationInput = document.getElementById('expirationDate');
 
             if (!expirationInput.value) {
-                showNotification('Please set an expiration date before copying the link.', 'error');
+                showNotification('Please set an expiration date before copying the link', 'error');
                 return;
             }
 
@@ -713,7 +713,7 @@ function openAccessLinkModal(surveyId) {
 
             newGenerateBtn.addEventListener('click', () => {
                 if (expirationInput.value === expirationInput.dataset.original) {
-                    showNotification('You need to modify the expiration date before generating a new link.', 'error');
+                    showNotification('You need to modify the expiration date before generating a new link', 'error');
                     return;
                 }
 
@@ -757,7 +757,7 @@ function openAccessLinkModal(surveyId) {
 
             copyBtn.addEventListener('click', () => {
                 if (copyBtn.disabled) {
-                    showNotification('You must generate a new link before copying it.', 'error');
+                    showNotification('You must generate a new link before copying it', 'error');
                     return;
                 }
 

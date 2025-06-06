@@ -5,10 +5,8 @@
     width: calc(100% - 250px);
     height: auto;
     overflow-x: hidden;
-    padding: 30px;
     padding: 30px 48px; 
     padding-top: 2rem;
-
 }
 
 .user-management-header {
@@ -172,7 +170,6 @@ th {
     to { transform: rotate(360deg); }
 }
 
-/* No cambia el tamaño del botón, solo agrega el ícono giratorio */
 .btn-loading::after {
     content: "";
     display: inline-block;
@@ -186,55 +183,114 @@ th {
     vertical-align: middle;
 }
 
-/* Desactiva interacciones durante la carga */
 .btn-loading {
     pointer-events: none;
     opacity: 0.7;
 }
 
+@media screen and (max-width: 1024px) {
+    .principalDashboard {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+    }
+    .user-management-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .role-badge, .status-badge {
+        display: inline-block;
+        padding: 0.15rem 0.5rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        text-align: center;
+        white-space: nowrap;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
 @media screen and (max-width: 768px) {
     .user-actions {
-    flex-direction: column;
-    align-items: stretch;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
     }
 
     .search-container {
-    width: 100%;
-    max-width: none;
+        width: 100%;
+        max-width: none;
+        margin-bottom: 10px;
     }
 
     #search-input {
-    max-width: none;
+        max-width: none;
+        width: 100%;
     }
 
     #add-user-btn {
-    width: 100%;
+        width: 100%;
+        text-align: center;
     }
 
     .form-actions {
-    justify-content: center;
+        justify-content: center;
     }
 
     .form-actions button {
-    flex: 1;
+        flex: 1;
     }
+
+    .role-badge, .status-badge {
+        display: inline-block;
+        padding: 0.15rem 0.5rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        text-align: center;
+        white-space: nowrap;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    td {
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+
+    table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    td:nth-child(3), td:nth-child(4) {
+        line-height: 1.2;
+        height: auto;
+    }
+
+    th:nth-child(1), td:nth-child(1) { width: 15%; }  /* NAME */
+    th:nth-child(2), td:nth-child(2) { width: 30%; }  /* EMAIL */
+    th:nth-child(3), td:nth-child(3) { width: 15%; }  /* ROLE */
+    th:nth-child(4), td:nth-child(4) { width: 15%; }  /* STATUS */
+    th:nth-child(5), td:nth-child(5) { width: 25%; }  /* ACTIONS */
 }
 
 @media screen and (max-width: 576px) {
     .principalDashboard {
-    padding: 15px;
+        padding: 15px;
     }
 
     .user-management-header h2 {
-    font-size: 1.5rem;
+        font-size: 1.5rem;
     }
 
     .users-header {
-    padding: 1rem;
+        padding: 1rem;
     }
 
-    th,
-    td {
-    padding: 0.75rem;
+    th, td {
+        padding: 0.75rem;
     }
 }

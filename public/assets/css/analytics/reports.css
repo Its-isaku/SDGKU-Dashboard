@@ -54,6 +54,12 @@
     }
 }
 
+@media (min-width: 769px) and (max-width: 1200px) {
+    .reportCardsContainer {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 /* !------------------Cards--------------- */
 
 .principalInformation {
@@ -94,7 +100,7 @@
     width: 100%;
     font-weight: 600;
     font-size: 1.1rem;
-    color: var(--gray-800);
+    color: var(--neutral-dark);
     margin-bottom: 0.75rem;
     white-space: nowrap;
     overflow: hidden;
