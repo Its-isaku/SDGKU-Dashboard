@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
+/* testemail123@sdgku.edu */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -13,43 +15,24 @@ body {
     color: #272727;
 }
 
-/**--------- header ---------*/
-.surveyInterface {
-    /* background-color: #333333; */
-    color: #fff;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-}
-
-.logoInterface img {
-    height: 40px;
-    margin-right: 15px;
-}
-
-.headerTitleInterface {
-    font-size: 1.5rem;
-    font-weight: 500;
-}
-
 /**--------- main content ---------*/
 .main-content {
-    padding: 1rem;
+    padding: 0;
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 2rem auto;
 }
 
 .survey-container {
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--box-shadow);
     overflow: hidden;
     margin-bottom: 2rem;
 }
 
 /**--------- survey header ---------*/
 .survey-header {
-    background-color: #8B0000;
+    background-color: var(--primary-dominant);
     color: #fff;
     padding: 2rem;
 }
@@ -60,7 +43,7 @@ body {
 }
 
 .surveyDescription {
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.3rem;
     opacity: 0.9;
 }
 
@@ -125,7 +108,7 @@ body {
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #fafafa;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    box-shadow: var(--box-shadow);;
 }
 
 .question-text {
@@ -137,6 +120,20 @@ body {
 
 .question-item{
     margin-bottom: 2rem;
+    margin-top: 2rem;
+    border: 1px solid #ddd;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+}
+
+.question-item:first-of-type {
+    margin-top: 0.5rem;
+}
+
+.question-item strong, 
+.question-text {
+    display: block;
+    margin-bottom: 1.2rem;
 }
 
 /**--------- options ---------*/
@@ -166,35 +163,54 @@ body {
 .option input[type="radio"] {
     transform: scale(1.2);
     cursor: pointer;
-    margin-right: 0;
+    margin: 0;
     pointer-events: none; 
+}
 
+.option input[type="radio"]:checked + label {
+    font-weight: 600;
+    color: var(--primary-dominant);
 }
 
 input[type="radio"] {
     width: auto !important;
+    accent-color: var(--neutral-dark);
 }
 
 /**--------- likert scales ---------*/
 .likert-container {
     margin-top: 1rem;
-    overflow-x: auto;
+    overflow-x: visible;
 }
 
 .likert-scale {
     width: 100%;
     border-collapse: collapse;
     text-align: center;
+    border: none;
+}
+
+.likert-scale tr:first-child td {
+    text-align: center;
+    padding: 8px 5px;
+    border: none;
+    padding-top: 1rem;
+}
+
+.likert-scale input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    margin: 0 auto;
+    display: block;
+    cursor: pointer;
 }
 
 .likert-scale th,
 .likert-scale td {
     padding: 0.75rem;
-    border: 1px solid #ddd;
 }
 
 .likert-scale th {
-    background-color: #f9f9f9;
     font-weight: 500;
     font-size: 0.9rem;
 }
@@ -209,6 +225,7 @@ textarea {
     resize: vertical;
     font-family: inherit;
     font-size: 1rem;
+    resize: none;
 }
 
 /**--------- form actions ---------*/
@@ -269,7 +286,7 @@ textarea {
     margin: 2rem;
     background-color: #f8f9fa;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--box-shadow);;
 }
 
 .expired-notice h2 {

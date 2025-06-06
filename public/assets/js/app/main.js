@@ -3,20 +3,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.querySelector('aside');
     const isLoginPage = window.location.pathname.includes('auth/login.html') || window.location.pathname.includes('auth/forgot-password.html') || window.location.pathname.includes('auth/reset-password.html');
 
-    if (!isLoginPage){
+    const lastSessionCheck = sessionStorage.getItem('lastSessionCheck');
+    const currentTime = Date.now();
+    const sessionCheckInterval = 5000;
+    
+    if (!isLoginPage && (!lastSessionCheck || currentTime - lastSessionCheck > sessionCheckInterval)) {
+        sessionStorage.setItem('lastSessionCheck', currentTime);
+        
         fetch('/SDGKU-Dashboard/src/users/check-session.php', {
-            credentials: 'include'
+            credentials: 'include',
+            cache: 'no-store'
         })
         .then(response => response.json())
         .then(data => {
             if(!data.authenticated) {
                 console.warn('User not authenticated, redirecting to login page.');
-                window.location.href = '/SDGKU-Dashboard/public/views/auth/login.html';
+                setTimeout(() => {
+                    window.location.href = '/SDGKU-Dashboard/public/views/auth/login.html';
+                }, 300);
             }
         })
         .catch(error => {
             console.error('Error checking session:', error);
-            window.location.href = '/SDGKU-Dashboard/public/views/auth/login.html';
+            if (error.name !== 'AbortError' && error.name !== 'TypeError') {
+                setTimeout(() => {
+                    window.location.href = '/SDGKU-Dashboard/public/views/auth/login.html';
+                }, 300);
+            }
         });
     }
     
