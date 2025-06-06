@@ -210,22 +210,23 @@
                         </div>
                         <div class="modal-body">
                             <div class="linkToken-container">
-                                <p>Here is your access link. Be careful with who you share it with.</p>
+                                <p>Share this link with respondents to allow them to access and complete this survey.</p>
 
                                 <div class="dateToken">
-                                    <label>Survey expire date:</label>
+                                    <label>Set survey expiration date: </label>
                                     <input type="datetime-local" id="expirationDate" required>
                                 </div>
 
-                                <div class="dateToken" style="margin-top: 0.5rem;">
-                                    <label id="expire-date-label"></label>
+                                <div class="dateToken">
+                                    <label>Current link expiration date: </label>
+                                    <span id="expire-date-label"></span>
                                 </div>
 
                                 <div class="linkToken">
                                     <input type="hidden" id="access-link-survey">
                                     <input type="text" id="access-link-input">
                                     <button type="button" class="btn btn-danger btn-link"
-                                        id="confirm-activate">Copy</button>
+                                        id="confirm-activate"><i class="fa-solid fa-copy"></i> Copy</button>
                                 </div>
 
                             </div>
