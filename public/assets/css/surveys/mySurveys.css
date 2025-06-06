@@ -331,6 +331,14 @@
 }
 
 /* Link copy container and date */
+#access-link-survey-modal .modal-content {
+    max-width: 500px;
+    margin: auto;
+}
+
+#access-link-survey-modal .modal-body {
+    padding: 20px 24px 24px;
+}
 
 .link-container {
     width: 100%;
@@ -346,29 +354,38 @@
     margin-left: 10px;
     /* padding: 0.25rem 0.1rem; */
     font-size: 0.9rem;
+    color: var(--neutral-light);
+    background-color: var(--secondary-dominant);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
 }
 
 .dateToken {
     display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
 }
 
 .dateToken label {
-    color: var(--gray-500);
-    font-size: 0.9rem;
-    margin-right: 0.5rem;
+    color: var(---neutral-dark);
+    font-size: 1rem;
+    margin-bottom: 5px;
+    display: block;
+    font-weight: var(--font-weight-bold);
 }
 
-.dateToken input {
-    width: 5.5%;
-    padding: 0.1rem 0.1rem;
-    justify-content: center;
+.dateToken input[type="datetime-local"] {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--gray-300);
 }
 
-#access-link-input {
-    user-select: none;
-    pointer-events: none;
-    background-color: #f0f0f0;
-    color: #333;
+.dateToken span {
+    font-size: 1rem;
+    margin-top: 5px;
+    display: block;
 }
 
 
@@ -398,11 +415,9 @@
     }
 
     .dropdown5{
-    top: 94px !important;
+        top: 94px !important;
+    }
 }
-}
-
-
 
 .dropdown3{
     top: 194px;
