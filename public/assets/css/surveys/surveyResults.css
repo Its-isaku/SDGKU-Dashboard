@@ -1,115 +1,315 @@
+/* Main container */
 .principalDashboard {
     overflow-y: auto; 
     overflow-x: hidden;
     margin-left: 250px;
-    padding-left: 40px;
-    padding-bottom: 20px; 
+    padding: 20px 30px; 
     width: calc(100% - 250px);
     min-height: calc(100vh - 70px);
-    background-color: aqua;
-}
-.principalDashboard{
-    background-color: yellow;
-    
-
 }
 
-
+/* Filter section */
 .resultsSelections {
-    margin-top: 20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
     display: flex;
     flex-direction: row;
-    background-color: gray;
-    border-radius: 10px;
-    padding: 20px;
-    
+    border-radius: var(--border-radius);
+    padding: 24px;
+    box-shadow: var(--box-shadow);
 }
-.surveySelect{
-    background-color: aqua;
+
+/* Container para los filtros */
+.surveySelect {
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     gap: 20px;
-    border-radius: 10px;
-    padding: 10px;
+    align-items: flex-end;
+    max-width: 70%;
 }
 
 .resultsSelections select {
-    max-width: 180px;
-    display: flex;
     width: 100%;
-    height: 30px;
-    border-radius: 5px;
+    height: 36px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--gray-200);
+    padding: 0 10px;
+    font-size: 14px;
+    color: #333;
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* Estilo para los labels dentro de surveySelect */
+.surveySelect > label {
+    position: absolute;
+    margin-bottom: 44px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-800);
+}
+
+/* Estilo para la primera select directamente dentro de surveySelect */
+.surveySelect > select {
+    flex: 0 0 180px;
+    margin-bottom: 0;
+    margin-top: 24px;
+}
+
+/* Contenedor para date items */
+.dateItem {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 0 0 180px;
+}
+
+.dateItem label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #475569;
 }
 
 .resultsSelections button {
-    background-color: maroon;
+    background-color: var(--secondary-dominant);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0 16px;
+    height: 36px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
-.resultsInformation{
-    background-color: aquamarine;
+.resultsSelections button:hover {
+    background-color: var(--primary-dominant);
+}
+
+/* Botón de aplicar filtros */
+.submitFilter {
+    background-color: var(--primary-dominant);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0 20px;
+    height: 36px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    white-space: nowrap;
     display: flex;
-    gap: 20px;
-    height: 50px;
-    padding: 20px;
+    align-items: center;
+    justify-content: center;
 }
 
-.programs-table-container{
-    background-color: aliceblue;
-    padding: 20px;
-    
-}
-.theadContainer{
-    background-color: aqua;
+.submitFilter:hover {
+    background-color: var(--secondary-dominant);
 }
 
+.submitFilter i {
+    margin-left: 8px;
+    font-size: 12px;
+}
+
+/* Results information */
+.resultsInformation {
+    background-color: #ffffff;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: var(--box-shadow);
+}
+
+.resultsInformation p {
+    margin: 0;
+    padding: 8px 12px;
+    background-color: #f8fafc;
+    border-radius: 4px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid #f1f5f9;
+}
+
+/* Table containers */
 .programs-table-container {
     padding: 20px;
-    background-color: #f5f5f5;
+    background-color: #ffffff;
     border-radius: 8px;
-    margin: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--box-shadow);
 }
+
 .tableContainer {
-    background: white;
+    background: #ffffff;
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
 .titleContainer {
-    margin-bottom: 20px;
-    border-bottom: 2px solid #f0f0f0;
+    margin-bottom: 15px;
     padding-bottom: 10px;
 }
+
+.titleContainer h3 {
+    color: #333;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
 .program-info {
     display: flex;
-    gap: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
     margin-top: 10px;
+    margin-bottom: 15px;
 }
+
 .program-info p {
-    margin: 5px 0;
-    padding: 5px 10px;
-    background-color: #f8f8f8;
+    margin: 0;
+    padding: 6px 12px;
+    background-color: #f8fafc;
     border-radius: 4px;
-    color: #666;
+    color: #475569;
+    font-size: 14px;
 }
+
+/* Table styling */
 table.display {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
+    font-size: 14px;
 }
+
 .theadContainer th {
-    background-color: #f5f5f5;
+    background-color: #f8fafc;
     padding: 12px;
     text-align: left;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 1px solid #e2e8f0;
+    color: #333;
+    font-weight: 600;
+    font-size: 14px;
 }
+
 .tbodyContainer td {
     padding: 12px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #f1f5f9;
+    color: #475569;
 }
+
+.tbodyContainer tr:hover {
+    background-color: #f8fafc;
+}
+
 .analytics-program-badge {
     color: #333;
-    font-size: 1.2rem;
+    font-size: 16px;
     margin: 0;
+    font-weight: 600;
+}
+
+/* Survey information container */
+.surveyInformation {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Response item styling */
+.response-item {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid #f1f5f9;
+}
+
+.response-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.response-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.response-meta {
+    display: flex;
+    gap: 15px;
+}
+
+.response-meta span {
+    font-size: 13px;
+    color: #475569;
+}
+
+.qa-section {
+    margin-bottom: 10px;
+}
+
+.question {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.answer {
+    color: #475569;
+    background-color: #f8fafc;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 960px) {
+    .principalDashboard {
+        margin-left: 0;
+        width: 100%;
+        padding: 15px;
+    }
+    
+    .surveySelect {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .surveySelect > select {
+        margin-top: 0;
+    }
+    
+    .resultsSelections select {
+        max-width: none;
+        width: 100%;
+    }
+    
+    .resultsSelections button {
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .resultsInformation {
+        flex-direction: column;
+    }
 }
