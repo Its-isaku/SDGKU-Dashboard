@@ -6,22 +6,23 @@ try {
 
     $from = $_GET['from'] ?? null;
     $to = $_GET['to'] ?? null;
-    $surveyTypeId = $_GET['programId'] ?? 'all';
+    $programId = $_GET['programId'] ?? null;
+    $surveyType = $_GET['surveyType'] ?? null;
 
     $sql = "
-        SELECT 
-            q.questions_id AS id,
-            q.question_text AS question,
-            st.type_name AS survey_type,
-            ROUND(AVG(CAST(a.answer_text AS DECIMAL(3,2))), 2) AS average
-        FROM answers a
-        JOIN questions q ON a.question_id = q.questions_id
-        JOIN surveys s ON q.survey_id = s.survey_id
-        JOIN survey_types st ON s.survey_type_id = st.survey_type_id
-        JOIN responses r ON a.response_id = r.responses_id
-        WHERE q.question_type_id = 2
-        AND (st.survey_type_id = 4 OR st.survey_type_id = 5)
-    ";
+            SELECT 
+                q.questions_id AS id,
+                q.question_text AS question,
+                st.type_name AS survey_type,
+                ROUND(AVG(CAST(a.answer_text AS DECIMAL(3,2))), 2) AS average
+            FROM answers a
+            JOIN questions q ON a.question_id = q.questions_id
+            JOIN surveys s ON q.survey_id = s.survey_id
+            JOIN survey_types st ON s.survey_type_id = st.survey_type_id
+            JOIN responses r ON a.response_id = r.responses_id
+            WHERE q.question_type_id = 2
+            AND (st.survey_type_id = 4 OR st.survey_type_id = 5)
+        ";
 
     $params = [];
 
@@ -31,9 +32,14 @@ try {
         $params[':to'] = $to . ' 23:59:59';
     }
 
-    if ($surveyTypeId !== 'all') {
-        $sql .= " AND s.survey_type_id = :surveyTypeId";
-        $params[':surveyTypeId'] = $surveyTypeId;
+    if ($programId !== null && $programId !== '' && $programId !== 'all') {
+        $sql .= " AND s.program_id = :programId";
+        $params[':programId'] = $programId;
+    }
+
+    if ($surveyType !== null && $surveyType !== '' && $surveyType !== 'all') {
+        $sql .= " AND st.survey_type_id = :surveyType";
+        $params[':surveyType'] = $surveyType;
     }
 
     $sql .= " GROUP BY q.questions_id, q.question_text, st.type_name ORDER BY q.questions_id";
