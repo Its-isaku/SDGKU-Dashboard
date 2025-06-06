@@ -193,7 +193,7 @@ p {
 .OverviewHeader h1 {
     font-size: var(--text-heading);
     color: var(--neutral-dark);
-    margin: 0;
+    margin: 0 ;
 }
 
 .OverviewHeader p {
