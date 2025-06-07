@@ -16,6 +16,7 @@
     flex-direction: row;
     border-radius: var(--border-radius);
     padding: 24px;
+    background-color: white;
     box-shadow: var(--box-shadow);
 }
 
