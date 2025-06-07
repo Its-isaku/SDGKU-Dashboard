@@ -10,6 +10,3 @@
     } else {
         console.error("jQuery is not loaded. Please include jQuery in your project.");
     }
-
-
-console.log("TESTING");

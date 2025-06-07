@@ -175,7 +175,7 @@ p {
     display: flex;
     flex-direction: column;
     padding: 20px;
-    background-color: var(--neutral-light);
+    background-color: white;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     border: 1px solid var(--gray-300);
@@ -183,11 +183,13 @@ p {
     gap: 1rem;
     margin-bottom: 4rem;
     margin-left: 1.25rem;
+    margin-right: 1.25rem;
     margin-top: 1.25rem;
 }
 
 .overviewFilter label {
     font-weight:  bold !important;
+    margin-bottom: 0.5rem;
 }
 
 .OverviewHeader h1 {
@@ -206,6 +208,8 @@ p {
     margin-top: 1rem !important;
 }
 
-.overviewTable{
+.overviewTable {
     margin-left: 1.25rem;
+    margin-right: 1.25rem;
+    margin-top: 3rem;
 }

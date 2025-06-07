@@ -561,7 +561,7 @@ document.addEventListener('DOMContentLoaded', function () {
 //? Render the Response Analysis Chart
 function renderResponseAnalysisChart(dbLabels, dbValues) {
     
-    console.log("promedios actualizados: ", dbValues);
+    /* console.log("promedios actualizados: ", dbValues); */
     // const dbValues = JSON.stringify(dbValues2);
     //* Check if the canvas element exists
     const ctx = document.getElementById('responseAnalysisChart').getContext('2d');

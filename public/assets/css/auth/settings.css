@@ -40,7 +40,7 @@
   padding: 2rem;
   margin: 1rem 0;  
   border-radius: var(--border-radius);
-  background-color: var(--neutral-light);
+  background-color: white;
   border: 1px solid var(--gray-200);
   box-shadow: var(--box-shadow);
 }
@@ -110,7 +110,7 @@
   padding: 2rem;
   margin: 1rem 0;  
   border-radius: var(--border-radius);
-  background-color: var(--neutral-light);
+  background-color: white;
   border: 1px solid var(--gray-200);
   box-shadow: var(--box-shadow);
 }

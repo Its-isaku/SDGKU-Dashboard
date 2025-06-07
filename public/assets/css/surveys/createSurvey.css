@@ -61,6 +61,7 @@
     background-color: var(--neutral-light);
     border: 1px solid var(--gray-200);
     box-shadow: var(--box-shadow);
+    background-color: white;
 }
 
 .titulo {
@@ -343,6 +344,7 @@
     background-color: var(--neutral-light);
     border: 1px solid var(--gray-200);
     box-shadow: var(--box-shadow);
+    background-color: white;
 }
 /** SurveyQuestions Media*/
 @media (max-width: 1200px) and (min-width: 961px) {
@@ -849,6 +851,7 @@
     border: 1px solid var(--gray-200);
     box-shadow: var(--box-shadow);
     margin-bottom: 5px; 
+    background-color: white;
 }
 
 .PreviewContent{
@@ -1280,5 +1283,3 @@
         align-items: flex-start;
     }
 }
-
-

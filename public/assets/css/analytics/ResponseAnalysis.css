@@ -23,7 +23,7 @@ h3.program-title{
     display: flex;
     flex-direction: column;
     padding: 20px;
-    background-color: var(--neutral-light);
+    background-color: white;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     /* border: 1px solid var(--gray-300); */
@@ -80,6 +80,7 @@ h3.program-title{
 
 .responseSelections label{
     font-weight: bold !important;
+    margin-bottom: 0.5rem;
 }
 
 .surveySelect,
