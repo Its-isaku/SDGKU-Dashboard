@@ -274,7 +274,7 @@ function createQuestionForm(id) {
         <div class="QuestionOpen questionOptions" id="questionOpenSection${id}" style="display: none;">
             <h4>Open text</h4>
             <div class="OpenInput">
-                <textarea id="Open" placeholder="Type answer here" required></textarea>
+                <textarea id="Open" placeholder="Type answer here" required maxlength="250"></textarea>
             </div>
         </div>
 
