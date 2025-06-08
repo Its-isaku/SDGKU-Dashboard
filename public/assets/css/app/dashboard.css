@@ -134,9 +134,7 @@ main {
     border: 0;
 }
 
-
-
-@media (max-width: 1110px) { 
+@media (max-width: 1450px) { 
     .principalDashboard {
         margin-left: 250px;
         width: calc(100% - 250px);

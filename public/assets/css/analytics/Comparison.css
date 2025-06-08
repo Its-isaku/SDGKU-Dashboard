@@ -83,6 +83,10 @@
   gap: 25px;
 }
 
+.comparisonSelections label {
+  font-weight: bold !important;
+}
+
 .courseSelect {
   display: flex;
   flex-direction: column;
@@ -110,7 +114,7 @@
 }
 
 /*~ Selections Media */
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   .comparisonSelections {
     flex-direction: column;
   }
@@ -227,6 +231,11 @@ h2.program-title{
 
 /*~ Stat Cards Media */
 @media (max-width: 900px) {
+  .cards-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
   .stat-card {
     min-width: 100%;
   }

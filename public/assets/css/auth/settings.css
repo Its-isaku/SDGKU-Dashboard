@@ -346,6 +346,49 @@
     transition: background-color 0.2s;
 }
 
+@media screen and (max-width: 960px) {
+    .principalDashboard {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .securityInfo, .securityInput {
+      width: 100%;
+    }
+
+    .addProgramContent, .addCohortContent {
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .deleteProgramContent{
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+}
+
+  @media screen and (max-width: 1200px) {
+    .securityInfo, .securityInput {
+      width: 100%;
+    }
+
+    .addProgramContent, .addCohortContent {
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .deleteProgramContent{
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
+}
+
 @media (max-width: 1200px) and (min-width: 961px) {
     .SurveyOptions {
         width: 80%;
