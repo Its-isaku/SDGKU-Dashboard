@@ -75,12 +75,14 @@
                 <!--? Empezar a trabajar aqui -->    
                 <div class="resultsSelections">
                         <div class="surveySelect">
+                            <div class="dateItem">
                             <label for="yearRange">Year Range </label>
                             <select name="yearRange" id="selectYearRangeIdResults">
                                 <option value="opcion" disabled selected hidden>Select year
                                 </option>
                                 <!--*  Trimester from db -->
                             </select>
+                            </div>
                                 <div class="dateItem">
                                     <label for="dateRange">Range type</label>
                                     <select name="dateRange" id="selectRangeTypeIdResults"> 
@@ -96,17 +98,21 @@
                                         
                                     </select>
                                 </div>
-                                    <button class="submitFilter" id="submitFilterbtnComparison">Apply filters <i class="fa-solid fa-filter"></i></button>
+                                    <button class="submitFilter" id="submitFilterbtnResults">Apply filters <i class="fa-solid fa-filter"></i></button>
                         </div>
                 <!-- <div class="surveySelect">
                                             <button class="submitFilter" id="submitFilterbtnComparison">Apply filters</button>
                                         </div> -->
                 </div>
                 <div class="resultsInformation">
-                        <p id="typeInfo"></p>
-                        <p id="porgramInfo">Program</p> <!-- ejemplo para tener una referencia en el diseño -->
+                        <p id="surveyType"></p>
+                        <p id="surveyStatus"></p>
+                        <p id="surveyTitle"></p>
+                        <p id="surveyDescription"></p>
+                        <p id="porgramType"></p> 
+                        <p id="program"></p>
                         <p id="averageInfo"></p>
-                        <p id="responsesInfo"></p>                        
+                        <p id="typeInfo"></p>                       
                 </div>            
                 <div id="AllProgramsTable" class="programs-table-container"></div>
             <div class="surveyInformation" id="surveyInformationId">
@@ -122,7 +128,6 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous"></script>
     <script src="../../assets/js/app/main.js"></script>
-    <script src="../../assets/js/surveys/survey.js"></script>
     <script src="../../assets/js/analytics/datatables/datatables.js"></script>
     <script src="../../assets/js/analytics/datatables/datatableButtons.js"></script>
     <script src="../../assets/js/analytics/datatables/datatableResponsive.js"></script>
@@ -132,9 +137,6 @@
     <script src="../../assets/js/analytics/datatables/pdfmake.js"></script>
     <script src="../../assets/js/analytics/datatables/vfs_fonts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../../assets/js/analytics/analytics.js"></script>
-    <script src="../../assets/js/analytics/comparison.js"></script>
-    <script src="../../assets/js/analytics/Response_Analysis.js"></script>
     <script src="//cdn.datatables.net/2.3.1/js/dataTables.min.js"></script>
     <script src="../../assets/js/analytics/filters.js"></script>
     <script src="../../assets/js/auth/logout.js"></script>

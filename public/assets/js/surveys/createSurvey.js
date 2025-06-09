@@ -573,8 +573,7 @@ btnCreateSurvey.addEventListener('click', function() {
         program: document.getElementById('program').value,
         subject: document.getElementById('subject').value,
         surveyType: document.getElementById('surveyType').value,
-        createdAt: getLocalDateTimeString(),
-        email: document.getElementById('studentEmail').value.trim()
+        createdAt: getLocalDateTimeString()
     };
 
     //? Collect all questions

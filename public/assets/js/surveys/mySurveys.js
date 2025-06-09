@@ -162,6 +162,17 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    //!<------------------------- Results Survey ----------------------->
+     document.addEventListener('click', function (e) {
+        if (e.target.classList.contains('results-btn')) {
+            e.preventDefault();
+            e.stopPropagation();
+            const id = e.target.getAttribute('data-id');
+            if (id) {
+                window.location.href = `surveyResults.html?id=${id}`;
+            }
+        }
+    });
     //! <----------------------- EDIT Survey -----------------------> 
 
     document.addEventListener('click', function (e) {
@@ -366,7 +377,7 @@ function renderActiveSurveysAfterLeave(searchTerm = '') {
                                     <button class="dropdown-action deactivate-survey" data-id="${survey.id}">Deactivate</button>
                             </div>
                         </div>
-                        <button class="results-btn">Results</button>
+                        <button class="results-btn"  data-id="${survey.id}">Results</button>
                     </div>
                 `;
                 }
@@ -400,10 +411,10 @@ function renderActiveSurveysAfterLeave(searchTerm = '') {
                                     <button class="dropdown-action edit-survey" data-id="${survey.id}">Edit Survey</button>
                                     <button class="dropdown-action duplicate-survey" data-id="${survey.id}">Duplicate</button>
                                     <button class="dropdown-action deactivate-survey" data-id="${survey.id}">Deactivate</button>
-                                    <button class="dropdown-delete delete-survey" data-id="${survey.id}" style="color: red;">Delete</button>
+                                  
                             </div>
                         </div>
-                        <button class="results-btn">Results</button>
+                        <button class="delete-survey" data-id="${survey.id}" style="color: red;">Delete</button>
                     </div>
                 `;
                 }
@@ -470,7 +481,7 @@ function renderInactiveSurveysAfterLeave(searchTerm = '') {
                     </div>
                     <div class="survey-actions">
                         <button class="activate-btn activate-survey" data-id="${survey.id}"><i class="fa-solid fa-circle-check"></i> Activate</button>
-                        <button class="delete-btn delete-inactive-survey" data-id="${survey.id}">Delete</button>
+                        <button class="results-btn" data-id="${survey.id}">Results</button>
                     </div>
                 `;
                 } else {
