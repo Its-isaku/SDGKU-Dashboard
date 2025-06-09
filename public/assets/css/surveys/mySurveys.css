@@ -395,7 +395,7 @@
 .dropdown {
     position: fixed;
     /* posicion en y */
-    top: 94px;
+    top: 145px;
     /* posicion en x */
     left: 40px;
     background: white;
@@ -416,7 +416,7 @@
     }
 
     .dropdown5{
-        top: 94px !important;
+        top: 144px !important;
     }
 }
 
@@ -437,7 +437,7 @@
     background-color: var(--gray-400);
     color: var(--neutral-light);
 }
-.dropdown .delete-survey:hover {
+.dropdown .deactivate-survey:hover {
     background-color: var(--secondary-dominant);
     color: var(--neutral-light)!important;
     border-bottom-right-radius: 8px;
@@ -488,8 +488,23 @@
     color:var(--neutral-light);
     margin-left: 0.5rem;
 }
-
-
+.delete-survey{
+    background-color: var(--secondary-dominant);
+    color:var(--neutral-light)!important;
+    margin-left: 0.5rem;
+    padding: 0.5rem 1rem;
+    width: 150px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+.delete-survey:hover {
+    background-color: var(--primary-dominant);
+    transition: transform 0.2s ease-in-out;
+    color: var(--neutral-light);
+}
 /* Estilos para las encuestas inactivas */
 /* ---------------------------------------------------- */
 
@@ -588,7 +603,7 @@
 }
 
 .activate-btn:hover {
-    background-color: var(--supplementary-color);
+    background-color: var(--success-color);
     color: var(--neutral-light);
     border-color: transparent;
     transition: transform 0.2s ease-in-out;
@@ -629,10 +644,6 @@
     }
     #searchSurveyId{
         width: 200px;
-    }
-    .dropdown {
-        top: 152px;
-        left: 170px;
     }
 }
 

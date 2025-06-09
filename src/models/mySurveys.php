@@ -369,7 +369,49 @@ switch ($input['action']) {
     echo json_encode(['error' => 'Acción no válida']);
     exit;
 }
+//? <-------------------------------- GET --------------------------------> - Get survey data by ID
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getSurveyData') {
+    try {
+        if (!isset($_GET['survey_id'])) {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'message' => 'Survey ID not provided']);
+            exit;
+        }
 
+        $query = "
+            SELECT 
+                surveys.title, 
+                surveys.description,
+                program_types.program_name AS programType,
+                programs.name AS program, 
+                surveys.survey_type_id, 
+                survey_types.type_name AS survey_type, 
+                surveys.status
+            FROM surveys
+            INNER JOIN programs ON programs.prog_id = surveys.program_id
+            INNER JOIN program_types ON program_types.program_type_id = surveys.program_type_id
+            INNER JOIN survey_types ON survey_types.survey_type_id = surveys.survey_type_id
+            WHERE surveys.survey_id = ?;
+        ";
 
+        $stmt = $pdo->prepare($query);
+        $stmt->execute([$_GET['survey_id']]); 
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            http_response_code(404);
+            echo json_encode(['status' => 'error', 'message' => 'Survey not found']);
+            exit;
+        }
+
+        echo json_encode(['status' => 'success', 'data' => $result]);
+
+    } catch (PDOException $e) {
+        error_log('Database error: ' . $e->getMessage());
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'Database error occurred']);
+    }
+    exit;
+}
 
 ?>
