@@ -183,9 +183,8 @@ navButton('btnBackToQuestions', 'optionQuestions');
 handleSectionClick('optionSurveyDetails');
 
 
-//? Survey Details Collection
-document.getElementById('btnContinueToQuestions').addEventListener('click', () => {
-    //* Collect survey details from form
+//? Helper function to collect survey details from form
+function collectSurveyDetails() {
     const title = document.getElementById('surveyTitle').value.trim();
     const description = document.getElementById('surveyDescription').value.trim();
     const type = document.getElementById('surveyType').value;
@@ -199,6 +198,12 @@ document.getElementById('btnContinueToQuestions').addEventListener('click', () =
     surveyData.details.programType = programType;
     surveyData.details.program = program;
     surveyData.details.subject = subject;
+}
+
+//? Survey Details Collection
+document.getElementById('btnContinueToQuestions').addEventListener('click', () => {
+    //* Collect survey details from form
+    collectSurveyDetails();
 });
 
 
@@ -208,6 +213,11 @@ function createQuestionForm(id) {
     const container = document.createElement('div');
     container.className = 'QuestionContent';
     container.id = `QuestionContent${id}`;
+
+    // Generate a unique identifier for this question form
+    const uniqueId = `q_${id}_${Date.now()}_${Math.floor(Math.random()*100000)}`;
+    // Store the unique ID as a data attribute for later access
+    container.dataset.uniqueId = uniqueId;
 
     container.innerHTML =  /* HTML */ ` 
 
@@ -241,7 +251,7 @@ function createQuestionForm(id) {
                     <div class="QuestionInput optionInput"> 
                         <div class="CorrectAnswerContainer correctAnswer">
                             <label>
-                                <input type="radio" name="correctAnswer${id}" class="correctAnswerRadio">
+                                <input type="radio" name="correctAnswer_${uniqueId}" class="correctAnswerRadio">
                             </label>
                         </div>
                         <input type="text" placeholder="Enter option" required>
@@ -251,7 +261,7 @@ function createQuestionForm(id) {
                     <div class="QuestionInput optionInput">
                         <div class="CorrectAnswerContainer correctAnswer">
                             <label>
-                                <input type="radio" name="correctAnswer${id}" class="correctAnswerRadio">
+                                <input type="radio" name="correctAnswer_${uniqueId}" class="correctAnswerRadio">
                             </label>
                         </div>
                         <input type="text" placeholder="Enter option" required>
@@ -266,11 +276,11 @@ function createQuestionForm(id) {
             <h4>Grade</h4>
 
             <div class="gradeContainer">
-                <label><input type="radio" name="gradeOption${id}" value="1">Strongly Disagree</label>
-                <label><input type="radio" name="gradeOption${id}" value="2">Disagree</label>
-                <label><input type="radio" name="gradeOption${id}" value="3">Neutral</label>
-                <label><input type="radio" name="gradeOption${id}" value="4">Agree</label>
-                <label><input type="radio" name="gradeOption${id}" value="5">Strongly Agree</label>
+                <label><input type="radio" name="gradeOption_${uniqueId}" value="1">Strongly Disagree</label>
+                <label><input type="radio" name="gradeOption_${uniqueId}" value="2">Disagree</label>
+                <label><input type="radio" name="gradeOption_${uniqueId}" value="3">Neutral</label>
+                <label><input type="radio" name="gradeOption_${uniqueId}" value="4">Agree</label>
+                <label><input type="radio" name="gradeOption_${uniqueId}" value="5">Strongly Agree</label>
             </div>
         </div>
 
@@ -288,8 +298,8 @@ function createQuestionForm(id) {
             <P class="answerDiscpription">Select the correct answer</P>
 
             <div class="TrueFalseContainer">
-                <label><input type="radio" name="trueFalse${id}" value=1>True</label>
-                <label><input type="radio" name="trueFalse${id}" value=0>False</label>
+                <label><input type="radio" name="trueFalse_${uniqueId}" value=1>True</label>
+                <label><input type="radio" name="trueFalse_${uniqueId}" value=0>False</label>
             </div>
         </div>
 
@@ -316,13 +326,14 @@ function createQuestionForm(id) {
         //* Add a new option input for multiple choice
         e.preventDefault();
         const optionsContainer = container.querySelector(`#optionsContainer${id}`);
+        const formUniqueId = container.dataset.uniqueId; // Get the stored unique ID
         const opt = document.createElement('div');
         opt.className = 'QuestionInput optionInput';
         opt.innerHTML = /* HTML */`
 
             <div class="CorrectAnswerContainer correctAnswer">
                 <label>
-                    <input type="radio" name="correctAnswer${id}" class="correctAnswerRadio">
+                    <input type="radio" name="correctAnswer_${formUniqueId}" class="correctAnswerRadio">
                 </label>
             </div>
             <input type="text" placeholder="Enter option" required>
@@ -504,6 +515,10 @@ document.getElementById('btnPreviewSurvey').addEventListener('click', () => {
         showNotification('You must add at least one question before previewing', 'error');
         return false;
     }
+    
+    //* Collect survey details first
+    collectSurveyDetails();
+    
     surveyData.questions = [];
     const isValid = validateQuestions();
     if (!isValid) {
@@ -554,6 +569,10 @@ if (previewOption) {
             showNotification('Please complete all questions before previewing', 'error');
             return;
         }
+        
+        //* Collect survey details first
+        collectSurveyDetails();
+        
         //? Collect current questions into surveyData.questions (same as btnPreviewSurvey)
         const questionForms = document.querySelectorAll('.QuestionContent');
         surveyData.questions = [];
@@ -1193,6 +1212,7 @@ function editQuestions(basicQuestions) {
             //* Find options for this question
             const options = questionsInfo.multipleChoice.filter(opt => opt.question_id === questions.question_id);
             const optionsContainer = questionForm.querySelector(`#optionsContainer${index + 1}`);
+            const formUniqueId = questionForm.dataset.uniqueId; // Get the stored unique ID
             
             //* Remove default options
             optionsContainer.innerHTML = '';
@@ -1202,7 +1222,7 @@ function editQuestions(basicQuestions) {
                 optDiv.innerHTML = /* HTML */`
                     <div class="CorrectAnswerContainer correctAnswer">
                         <label>
-                            <input type="radio" name="correctAnswer${index + 1}" class="correctAnswerRadio" ${opt.correct_answer ? 'checked' : ''}>
+                            <input type="radio" name="correctAnswer_${formUniqueId}" class="correctAnswerRadio" ${opt.correct_answer ? 'checked' : ''}>
                         </label>
                     </div>
                     <input type="text" placeholder="Enter option" value="${opt.option_text}" required>
@@ -1226,8 +1246,9 @@ function editQuestions(basicQuestions) {
         //* Set the data for True/False questions
         if(questions.question_type_id == '5') {
             const tf = questionsInfo.trueFalse.find(opt => opt.question_id === questions.question_id); //* Find the true/false question
+            const formUniqueId = questionForm.dataset.uniqueId; // Get the stored unique ID
             if (tf) {
-                const radio = questionForm.querySelector(`input[name="trueFalse${index + 1}"][value="${tf.correct_answer}"]`); //* Find the radio button for the correct answer
+                const radio = questionForm.querySelector(`input[name="trueFalse_${formUniqueId}"][value="${tf.correct_answer}"]`); //* Find the radio button for the correct answer
                 if (radio) radio.checked = true; //* Set the correct answer
             }
         }
