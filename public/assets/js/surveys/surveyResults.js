@@ -85,8 +85,8 @@ function renderProgramTables(answers,surveyInfomation) {
     document.getElementById('surveyDescription').textContent = `${surveyInfomation.description}`;
     document.getElementById('porgramType').textContent = `${surveyInfomation.programType}: ${surveyInfomation.program}`;
     // document.getElementById('program').textContent = `${surveyInfomation.program}`;
-    document.getElementById('averageInfo').textContent = `Average Score: ${calculateAverageScore(answers)}`;
-    document.getElementById('typeInfo').textContent = `Total Responses: ${answers.length}`;
+    document.getElementById('averageInfo').textContent = `Score: ${calculateAverageScore(answers)}`;
+    document.getElementById('typeInfo').textContent = `Responses: ${answers.length}`;
     
     //* Check if the container element exists
     const container = document.getElementById('AllProgramsTable');

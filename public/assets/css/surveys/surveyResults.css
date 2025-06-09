@@ -120,6 +120,7 @@
 }
 .surveyExtra{
     min-height: 100px!important;
+    min-width: 150px!important;
 }
 /* Botón de aplicar filtros */
 .submitFilter {
