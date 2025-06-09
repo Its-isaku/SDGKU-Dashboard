@@ -8,8 +8,14 @@
     min-height: calc(100vh - 70px);
 }
 
-/* Filter section */
-.resultsSelections {
+/* Filter section .tbodyContainer td {
+    padding: 12px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #475569;
+    vertical-align: top;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 0;resultsSelections {
     margin-top: 10px;
     margin-bottom: 20px;
     display: flex;
@@ -28,6 +34,14 @@
     gap: 20px;
     align-items: flex-end;
     max-width: 70%;
+}
+.resultsSelections{
+    display: flex;
+    flex-wrap: wrap;
+    min-width: 379px;
+    gap: 15px;
+    align-items: center;
+    margin: 20px;
 }
 
 .resultsSelections select {
@@ -92,7 +106,21 @@
 .resultsSelections button:hover {
     background-color: var(--primary-dominant);
 }
-
+.TypeAndStatus{
+    min-height: 100px!important;
+}
+.surveyInfo{
+    min-height: 100px!important;
+}
+.tns p{
+    width: 100%;
+}
+.tns{
+    display: flex;
+}
+.surveyExtra{
+    min-height: 100px!important;
+}
 /* Botón de aplicar filtros */
 .submitFilter {
     background-color: var(--primary-dominant);
@@ -124,7 +152,7 @@
 .resultsInformation {
     background-color: #ffffff;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
     gap: 15px;
     padding: 20px;
     margin-bottom: 20px;
@@ -194,11 +222,30 @@ table.display {
     border-collapse: collapse;
     margin-top: 15px;
     font-size: 14px;
+    table-layout: fixed;
 }
 
 .theadContainer th {
     background-color: #f8fafc;
     padding: 12px;
+}
+
+.tbodyContainer td {
+    padding: 12px;
+    vertical-align: top;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 0;
+}
+
+/* Ajustar el ancho de las columnas */
+.tbodyContainer td:first-child {
+    width: 40%;
+}
+
+.tbodyContainer td:last-child {
+    width: 60%;
+
     text-align: left;
     border-bottom: 1px solid #e2e8f0;
     color: #333;
@@ -303,6 +350,7 @@ table.display {
     .resultsSelections select {
         max-width: none;
         width: 100%;
+       
     }
     
     .resultsSelections button {

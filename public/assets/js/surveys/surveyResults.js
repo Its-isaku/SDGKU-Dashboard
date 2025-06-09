@@ -52,10 +52,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                     renderProgramTables(array, surveyInfomation);
                     // hideLoadingModal();
                 } else if(surveyInfomation.survey_type_id == 1 || surveyInfomation.survey_type_id == 2) {
-            
                     const pre_post = await getResultsPerSurvey(surveyId, from, to);
                     const array2 = await fetchSurveyResults(surveyId, from, to, pre_post);
-
+                    renderProgramTables(array2, surveyInfomation);
                 }
             } catch (error) {
                 console.error('Error processing results:', error);
@@ -84,8 +83,8 @@ function renderProgramTables(answers,surveyInfomation) {
     document.getElementById('surveyStatus').textContent = `${surveyInfomation.status}`;
     document.getElementById('surveyTitle').textContent = `${surveyInfomation.title}`;
     document.getElementById('surveyDescription').textContent = `${surveyInfomation.description}`;
-    document.getElementById('porgramType').textContent = `${surveyInfomation.programType}`;
-    document.getElementById('program').textContent = `${surveyInfomation.program}`;
+    document.getElementById('porgramType').textContent = `${surveyInfomation.programType}: ${surveyInfomation.program}`;
+    // document.getElementById('program').textContent = `${surveyInfomation.program}`;
     document.getElementById('averageInfo').textContent = `Average Score: ${calculateAverageScore(answers)}`;
     document.getElementById('typeInfo').textContent = `Total Responses: ${answers.length}`;
     
@@ -140,8 +139,8 @@ function renderProgramTables(answers,surveyInfomation) {
             const tr = document.createElement('tr');
             tr.className = 'tbodyContainer';
             tr.innerHTML = `
-                <td>${measure.openQuestion}</td>
-                <td>${measure.answer}</td>
+                <td style="width: 40%; word-wrap: break-word;">${measure.openQuestion}</td>
+                <td style="width: 60%; word-wrap: break-word;">${measure.answer}</td>
             `;
             tbody.appendChild(tr);
         });
