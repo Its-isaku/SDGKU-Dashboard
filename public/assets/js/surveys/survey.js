@@ -9,7 +9,7 @@ function showNotification(message, type = 'success') {
 
     setTimeout(() => {
         notification.style.display = 'none';
-    }, 5000);
+    }, 3000);
 }
 
 // Tipos de preguntas: cada función crea un input específico
@@ -372,12 +372,12 @@ function getAnswers() {
                 if (selectedTF) {
                     const options = item.querySelectorAll('input[type="radio"]');
                     let index = Array.from(options).indexOf(selectedTF);
-                    console.log("INDEX: ", index);
+                    //console.log("INDEX: ", index);
                     if (index == 0) {
                         index = 1;
-                        console.log("INDEX: ", index);
+                        //console.log("INDEX: ", index);
                     } else {
-                        console.log("INDEX: ", index);
+                       // console.log("INDEX: ", index);
                         index = 0;
                     }
                     answer = index.toString();
